@@ -1,10 +1,31 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
     "section": "",
-    "text": "About this site"
+    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+  },
+  {
+    "objectID": "index.html#sobre-esta-investigación",
+    "href": "index.html#sobre-esta-investigación",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "",
+    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+  },
+  {
+    "objectID": "index.html#avance-bibliográfico",
+    "href": "index.html#avance-bibliográfico",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "Avance bibliográfico",
+    "text": "Avance bibliográfico\n\n\n\n#\nPaper\nTécnica\nEstado\n\n\n\n\n1\nCamiz et al. (2020)\nHFC\n✅ Leído"
+  },
+  {
+    "objectID": "index.html#próximas-secciones",
+    "href": "index.html#próximas-secciones",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "Próximas secciones",
+    "text": "Próximas secciones\n\n📊 Dataset BCRP\n🔬 Resultados de modelos"
   },
   {
     "objectID": "papers/camiz2020.html",
@@ -154,31 +175,59 @@
     "text": "7 Notas de integración con el proyecto\n# Pseudocódigo HFC - Estructura algorítmica para implementación en Python\n# Basado en la descripción formal de Camiz et al. (2020), sección HFC, pasos 1-9\n\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ndef hfc(X: np.ndarray, umbral_segundo_eigenvalor: float = 0.7):\n    \"\"\"\n    Clasificación Factorial Jerárquica (HFC).\n    \n    Parámetros\n    ----------\n    X : np.ndarray, shape (n_periodos, p_variables)\n        Matriz de datos estandarizados (series financieras del BCRP).\n    umbral_segundo_eigenvalor : float\n        Criterio de corte: no fusionar grupos cuyo segundo eigenvalor supere\n        este umbral (criterio de Jolliffe invertido, como en Camiz et al. 2020).\n    \n    Retorna\n    -------\n    jerarquia : list of dicts\n        Lista de nodos con: grupos fusionados, cronología representativa,\n        componente de diferencias, índice de fusión (2do eigenvalor).\n    \"\"\"\n    # Paso 1: Estandarizar y crear singletons\n    scaler = StandardScaler()\n    X_std = scaler.fit_transform(X)\n    \n    # Cada variable inicia como su propia cronología representativa\n    representantes = {i: X_std[:, i] for i in range(X_std.shape[1])}\n    grupos = {i: [i] for i in range(X_std.shape[1])}\n    jerarquia = []\n    \n    while len(representantes) &gt; 1:\n        # Paso 2-3: PCA bivariada para cada par; seleccionar par con min 2do eigenvalor\n        min_lambda2 = np.inf\n        mejor_par = None\n        \n        ids = list(representantes.keys())\n        for i in range(len(ids)):\n            for j in range(i + 1, len(ids)):\n                mat = np.column_stack([representantes[ids[i]], representantes[ids[j]]])\n                cov = np.cov(mat.T)\n                eigenvalores = np.linalg.eigvalsh(cov)[::-1]\n                lambda2 = eigenvalores[1]\n                if lambda2 &lt; min_lambda2:\n                    min_lambda2 = lambda2\n                    mejor_par = (ids[i], ids[j])\n        \n        # Paso 4-8: Fusionar el par óptimo\n        i, j = mejor_par\n        mat = np.column_stack([representantes[i], representantes[j]])\n        cov = np.cov(mat.T)\n        eigenvalores, eigenvectores = np.linalg.eigh(cov)\n        # Ordenar descendente\n        idx = np.argsort(eigenvalores)[::-1]\n        eigenvalores, eigenvectores = eigenvalores[idx], eigenvectores[:, idx]\n        \n        crono_representativa = mat @ eigenvectores[:, 0]\n        componente_diferencias = mat @ eigenvectores[:, 1]\n        nuevo_id = max(representantes.keys()) + 1\n        \n        jerarquia.append({\n            \"nodo\": nuevo_id,\n            \"grupos_fusionados\": (i, j),\n            \"variables\": grupos[i] + grupos[j],\n            \"indice_fusion_lambda2\": eigenvalores[1],\n            \"lambda1\": eigenvalores[0],\n            \"crono_representativa\": crono_representativa,\n            \"componente_diferencias\": componente_diferencias,\n        })\n        \n        # Paso 9: Actualizar grupos y representantes\n        representantes[nuevo_id] = crono_representativa\n        grupos[nuevo_id] = grupos[i] + grupos[j]\n        del representantes[i], representantes[j]\n        del grupos[i], grupos[j]\n    \n    return jerarquia\n\nNota metodológica: La implementación anterior es una primera aproximación basada en la descripción textual del paper. Debe validarse contra los resultados de la Tabla 3 del artículo (valores propios del caso Pinus pinea) antes de aplicarse a los datos del BCRP."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+    "text": "About this site"
   },
   {
-    "objectID": "index.html#sobre-esta-investigación",
-    "href": "index.html#sobre-esta-investigación",
-    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "objectID": "notebooks/01_exploracion_bcrp.html",
+    "href": "notebooks/01_exploracion_bcrp.html",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
     "section": "",
-    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+    "text": "Tesis: Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning\nAutor: Roberto Samaniego\nAsesor: Dr. Sergio Camiz\nFecha: 2024\nEste notebook realiza la exploración inicial de las series macroeconómicas disponibles en el BCRP: descarga, limpieza, visualización y análisis de correlaciones."
   },
   {
-    "objectID": "index.html#avance-bibliográfico",
-    "href": "index.html#avance-bibliográfico",
-    "title": "Tesis Maestría — Ciclo Financiero Perú",
-    "section": "Avance bibliográfico",
-    "text": "Avance bibliográfico\n\n\n\n#\nPaper\nTécnica\nEstado\n\n\n\n\n1\nCamiz et al. (2020)\nHFC\n✅ Leído"
+    "objectID": "notebooks/01_exploracion_bcrp.html#librerías",
+    "href": "notebooks/01_exploracion_bcrp.html#librerías",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "1. Librerías",
+    "text": "1. Librerías\n\nimport os\nos.chdir('..')  # sube un nivel desde notebooks/ a la raíz del repo\nprint(f\"✅ Directorio: {os.getcwd()}\")\n\n✅ Directorio: /Users/robert/Documents/tesis-ciclo-financiero-peru\n\n\n\nimport requests\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport matplotlib.gridspec as gridspec\nimport warnings\nwarnings.filterwarnings('ignore')\n\nprint('✅ Librerías cargadas')\n\n✅ Librerías cargadas"
   },
   {
-    "objectID": "index.html#próximas-secciones",
-    "href": "index.html#próximas-secciones",
-    "title": "Tesis Maestría — Ciclo Financiero Perú",
-    "section": "Próximas secciones",
-    "text": "Próximas secciones\n\n📊 Dataset BCRP\n🔬 Resultados de modelos"
+    "objectID": "notebooks/01_exploracion_bcrp.html#definición-de-series-y-descarga-desde-api-bcrp",
+    "href": "notebooks/01_exploracion_bcrp.html#definición-de-series-y-descarga-desde-api-bcrp",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "2. Definición de series y descarga desde API BCRP",
+    "text": "2. Definición de series y descarga desde API BCRP\n\n# Códigos de series del BCRP\nSERIES = {\n    # CRÉDITO\n    'Crédito sector privado':   'PN01207PM',\n    'Crédito hipotecario':      'PN01210PM',\n    'Crédito consumo':          'PN01209PM',\n    'Crédito en ME':            'PN01208PM',\n    # TASAS\n    'Tasa activa (TAMN)':       'PN07807NM',\n    'Tasa referencia BCRP':     'PD04722MM',\n    # TIPO DE CAMBIO\n    'Tipo de cambio S//$':      'PN01246PM',\n    # ACTIVIDAD\n    'PBI (índice)':             'PN01773AM',\n    'Demanda interna':          'PN01774AM',\n}\n\nBLOQUES = {\n    'Crédito': ['Crédito sector privado', 'Crédito hipotecario', 'Crédito consumo', 'Crédito en ME'],\n    'Tasas':   ['Tasa activa (TAMN)', 'Tasa referencia BCRP'],\n    'TC':      ['Tipo de cambio S//$'],\n    'Actividad': ['PBI (índice)', 'Demanda interna'],\n}\n\nBASE_URL = 'https://estadisticas.bcrp.gob.pe/estadisticas/series/api'\n\ndef descargar_serie(codigo, inicio='2000-1', fin='2024-12'):\n    \"\"\"Descarga una serie del BCRP por código.\"\"\"\n    url = f'{BASE_URL}/{codigo}/json/{inicio}/{fin}/ing'\n    try:\n        r = requests.get(url, timeout=15)\n        data = r.json()\n        periodos = data.get('periods', [])\n        registros = []\n        for p in periodos:\n            valor = p['values'][0]\n            try:\n                valor = float(str(valor).replace(',', '.'))\n            except:\n                valor = None\n            registros.append({'fecha': p['name'], 'valor': valor})\n        df = pd.DataFrame(registros)\n        df['fecha'] = pd.to_datetime(df['fecha'], format='%b.%Y', errors='coerce')\n        return df.dropna(subset=['fecha']).set_index('fecha').sort_index()\n    except Exception as e:\n        print(f'Error en {codigo}: {e}')\n        return pd.DataFrame()\n\n# Descargar todas las series\nprint('Descargando series del BCRP...')\ndata = {}\nfor nombre, codigo in SERIES.items():\n    df = descargar_serie(codigo)\n    if not df.empty:\n        data[nombre] = df['valor']\n        print(f'  ✅ {nombre} — {len(df)} obs. ({df.index[0].strftime(\"%Y-%m\")} a {df.index[-1].strftime(\"%Y-%m\")})')\n\nprint(f'\\nTotal: {len(data)} series descargadas')\n\nDescargando series del BCRP...\n  ✅ Crédito sector privado — 300 obs. (2000-01 a 2024-12)\n  ✅ Crédito hipotecario — 300 obs. (2000-01 a 2024-12)\n  ✅ Crédito consumo — 300 obs. (2000-01 a 2024-12)\n  ✅ Crédito en ME — 300 obs. (2000-01 a 2024-12)\n  ✅ Tasa activa (TAMN) — 300 obs. (2000-01 a 2024-12)\n  ✅ Tasa referencia BCRP — 256 obs. (2003-09 a 2024-12)\n  ✅ Tipo de cambio S//$ — 300 obs. (2000-01 a 2024-12)\n  ✅ PBI (índice) — 264 obs. (2003-01 a 2024-12)\n  ✅ Demanda interna — 264 obs. (2003-01 a 2024-12)\n\nTotal: 9 series descargadas"
+  },
+  {
+    "objectID": "notebooks/01_exploracion_bcrp.html#resumen-estadístico",
+    "href": "notebooks/01_exploracion_bcrp.html#resumen-estadístico",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "3. Resumen estadístico",
+    "text": "3. Resumen estadístico\n\n# Construir DataFrame consolidado\ndf_all = pd.DataFrame(data)\n\n# Resumen\nresumen = pd.DataFrame({\n    'Inicio':  df_all.apply(lambda x: x.dropna().index.min().strftime('%Y-%m')),\n    'Fin':     df_all.apply(lambda x: x.dropna().index.max().strftime('%Y-%m')),\n    'Obs':     df_all.count(),\n    'Nulos%':  round(df_all.isna().sum() / len(df_all) * 100, 1),\n    'Media':   round(df_all.mean(), 2),\n    'Mín':     round(df_all.min(), 2),\n    'Máx':     round(df_all.max(), 2),\n    'Último':  round(df_all.iloc[-1], 2),\n})\n\nprint('RESUMEN ESTADÍSTICO DE SERIES BCRP')\nprint('=' * 70)\nresumen\n\nRESUMEN ESTADÍSTICO DE SERIES BCRP\n======================================================================\n\n\n\n\n\n\n\n\n\nInicio\nFin\nObs\nNulos%\nMedia\nMín\nMáx\nÚltimo\n\n\n\n\nCrédito sector privado\n2000-01\n2024-12\n300\n0.0\n3.28\n2.55\n4.11\n3.74\n\n\nCrédito hipotecario\n2000-01\n2024-12\n300\n0.0\n3.28\n2.55\n4.11\n3.73\n\n\nCrédito consumo\n2000-01\n2024-12\n300\n0.0\n3.28\n2.55\n4.11\n3.74\n\n\nCrédito en ME\n2000-01\n2024-12\n300\n0.0\n3.28\n2.55\n4.10\n3.73\n\n\nTasa activa (TAMN)\n2000-01\n2024-12\n300\n0.0\n18.99\n10.49\n32.37\n14.88\n\n\nTasa referencia BCRP\n2003-09\n2024-12\n256\n14.7\n3.75\n0.25\n7.75\n5.00\n\n\nTipo de cambio S//$\n2000-01\n2024-12\n300\n0.0\n3.28\n2.55\n4.11\n3.73\n\n\nPBI (índice)\n2003-01\n2024-12\n264\n12.0\n136.10\n75.00\n187.90\n186.37\n\n\nDemanda interna\n2003-01\n2024-12\n264\n12.0\n144.62\n68.48\n227.03\n227.03"
+  },
+  {
+    "objectID": "notebooks/01_exploracion_bcrp.html#visualización-de-series",
+    "href": "notebooks/01_exploracion_bcrp.html#visualización-de-series",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "4. Visualización de series",
+    "text": "4. Visualización de series\n\ncolores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']\n\nfig = plt.figure(figsize=(16, 12))\nfig.suptitle('Series Macroeconómicas BCRP — Ciclo Financiero Perú (2000–2024)',\n             fontsize=13, fontweight='bold', y=0.98)\n\ngs = gridspec.GridSpec(3, 2, figure=fig, hspace=0.5, wspace=0.35)\n\n# Crédito (fila completa)\nax1 = fig.add_subplot(gs[0, :])\nfor i, nombre in enumerate(BLOQUES['Crédito']):\n    if nombre in data:\n        ax1.plot(data[nombre].index, data[nombre].values,\n                label=nombre, color=colores[i], linewidth=1.5)\nax1.set_title('Crédito', fontweight='bold')\nax1.legend(fontsize=8)\nax1.grid(True, alpha=0.3)\n\n# Tasas\nax2 = fig.add_subplot(gs[1, 0])\nfor i, nombre in enumerate(BLOQUES['Tasas']):\n    if nombre in data:\n        ax2.plot(data[nombre].index, data[nombre].values,\n                label=nombre, color=colores[i], linewidth=1.5)\nax2.set_title('Tasas de interés (%)', fontweight='bold')\nax2.legend(fontsize=8)\nax2.grid(True, alpha=0.3)\n\n# Tipo de cambio\nax3 = fig.add_subplot(gs[1, 1])\nif 'Tipo de cambio S//$' in data:\n    ax3.plot(data['Tipo de cambio S//$'].index, data['Tipo de cambio S//$'].values,\n            color='#d62728', linewidth=1.5)\nax3.set_title('Tipo de cambio (S/. por US$)', fontweight='bold')\nax3.grid(True, alpha=0.3)\n\n# Actividad económica (fila completa)\nax4 = fig.add_subplot(gs[2, :])\nfor i, nombre in enumerate(BLOQUES['Actividad']):\n    if nombre in data:\n        ax4.plot(data[nombre].index, data[nombre].values,\n                label=nombre, color=colores[i], linewidth=1.5)\nax4.set_title('Actividad económica (índice)', fontweight='bold')\nax4.legend(fontsize=8)\nax4.grid(True, alpha=0.3)\n\nplt.savefig('reports/figures/01_series_bcrp.png', dpi=150, bbox_inches='tight')\nprint('✅ Gráfico guardado en reports/figures/01_series_bcrp.png')\nplt.show()\n\n✅ Gráfico guardado en reports/figures/01_series_bcrp.png"
+  },
+  {
+    "objectID": "notebooks/01_exploracion_bcrp.html#matriz-de-correlaciones",
+    "href": "notebooks/01_exploracion_bcrp.html#matriz-de-correlaciones",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "5. Matriz de correlaciones",
+    "text": "5. Matriz de correlaciones\n\ndf_corr = df_all.dropna()\ncorr = df_corr.corr()\n\nfig, ax = plt.subplots(figsize=(10, 8))\nim = ax.imshow(corr.values, cmap='RdBu_r', vmin=-1, vmax=1)\nax.set_xticks(range(len(corr.columns)))\nax.set_yticks(range(len(corr.columns)))\nax.set_xticklabels(corr.columns, rotation=45, ha='right', fontsize=9)\nax.set_yticklabels(corr.columns, fontsize=9)\nfor i in range(len(corr)):\n    for j in range(len(corr)):\n        ax.text(j, i, f'{corr.values[i,j]:.2f}',\n               ha='center', va='center', fontsize=8)\nplt.colorbar(im, ax=ax, shrink=0.8)\nax.set_title('Matriz de correlaciones — Series BCRP', fontsize=12, fontweight='bold')\nplt.tight_layout()\nplt.savefig('reports/figures/01_correlaciones_bcrp.png', dpi=150, bbox_inches='tight')\nprint('✅ Guardado en reports/figures/01_correlaciones_bcrp.png')\nplt.show()\n\n✅ Guardado en reports/figures/01_correlaciones_bcrp.png"
+  },
+  {
+    "objectID": "notebooks/01_exploracion_bcrp.html#guardar-dataset-consolidado",
+    "href": "notebooks/01_exploracion_bcrp.html#guardar-dataset-consolidado",
+    "title": "Exploración de Series Macroeconómicas del BCRP",
+    "section": "6. Guardar dataset consolidado",
+    "text": "6. Guardar dataset consolidado\n\n# Guardar dataset completo\ndf_all.to_csv('data/processed/series_bcrp_consolidado.csv')\nprint('✅ Dataset guardado en data/processed/series_bcrp_consolidado.csv')\nprint(f'   Dimensiones: {df_all.shape[0]} filas x {df_all.shape[1]} columnas')\ndf_all.tail()\n\n✅ Dataset guardado en data/processed/series_bcrp_consolidado.csv\n   Dimensiones: 300 filas x 9 columnas\n\n\n\n\n\n\n\n\n\nCrédito sector privado\nCrédito hipotecario\nCrédito consumo\nCrédito en ME\nTasa activa (TAMN)\nTasa referencia BCRP\nTipo de cambio S//$\nPBI (índice)\nDemanda interna\n\n\nfecha\n\n\n\n\n\n\n\n\n\n\n\n\n\n2024-08-01\n3.741850\n3.741325\n3.745550\n3.737100\n14.9261\n5.50\n3.741325\n185.173622\n204.442675\n\n\n2024-09-01\n3.768962\n3.768214\n3.772143\n3.764286\n14.7177\n5.25\n3.768214\n184.332773\n202.193806\n\n\n2024-10-01\n3.754364\n3.753591\n3.757500\n3.749682\n14.7445\n5.25\n3.753591\n184.553940\n213.531675\n\n\n2024-11-01\n3.779135\n3.778850\n3.783050\n3.774650\n14.7810\n5.00\n3.778850\n187.895068\n203.029432\n\n\n2024-12-01\n3.735537\n3.734895\n3.740158\n3.729632\n14.8781\n5.00\n3.734895\n186.365603\n227.031995"
   }
 ]
