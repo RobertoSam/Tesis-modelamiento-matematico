@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.env
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (no subir datos crudos pesados)
+data/raw/*.csv
+data/raw/*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
