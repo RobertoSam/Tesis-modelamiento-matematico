@@ -105,6 +105,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../papers/camiz2020.html">
  <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020) v2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
+ <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -245,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
