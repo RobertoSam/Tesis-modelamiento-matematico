@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "papers/camiz2020.html",
+    "href": "papers/camiz2020.html",
+    "title": "Camiz et al. (2020) — HFC",
+    "section": "",
+    "text": "Camiz, S., Spada, F., Denimal, J.-J., & Piraino, S. (2020). Hierarchical factor classification of dendrochronological time-series. Annals of Silvicultural Research, 45(1), 62–75."
+  },
+  {
+    "objectID": "papers/camiz2020.html#referencia",
+    "href": "papers/camiz2020.html#referencia",
+    "title": "Camiz et al. (2020) — HFC",
+    "section": "",
+    "text": "Camiz, S., Spada, F., Denimal, J.-J., & Piraino, S. (2020). Hierarchical factor classification of dendrochronological time-series. Annals of Silvicultural Research, 45(1), 62–75."
+  },
+  {
+    "objectID": "papers/camiz2020.html#resumen",
+    "href": "papers/camiz2020.html#resumen",
+    "title": "Camiz et al. (2020) — HFC",
+    "section": "Resumen",
+    "text": "Resumen\nEl paper presenta la Clasificación Factorial Jerárquica (HFC) como alternativa complementaria al PCA para identificar señales comunes en series de tiempo sincrónicas."
+  },
+  {
+    "objectID": "papers/camiz2020.html#aporte-a-la-tesis",
+    "href": "papers/camiz2020.html#aporte-a-la-tesis",
+    "title": "Camiz et al. (2020) — HFC",
+    "section": "Aporte a la tesis",
+    "text": "Aporte a la tesis\nHFC es el método nuclear de la investigación. Este paper provee la formalización matemática del algoritmo que se aplicará a series financieras del BCRP."
+  },
+  {
+    "objectID": "papers/camiz2020.html#limitaciones",
+    "href": "papers/camiz2020.html#limitaciones",
+    "title": "Camiz et al. (2020) — HFC",
+    "section": "Limitaciones",
+    "text": "Limitaciones\nNo captura la variación temporal de la estructura de correlación — esto justifica directamente la extensión EPCA/EHFC propuesta en la tesis."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "",
+    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+  },
+  {
+    "objectID": "index.html#sobre-esta-investigación",
+    "href": "index.html#sobre-esta-investigación",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "",
+    "text": "Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).\nAutor: Roberto Samaniego\nPrograma: Maestría\nAsesor: Dr. Sergio Camiz\nEstado: En progreso — Revisión bibliográfica"
+  },
+  {
+    "objectID": "index.html#avance-bibliográfico",
+    "href": "index.html#avance-bibliográfico",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "Avance bibliográfico",
+    "text": "Avance bibliográfico\n\n\n\n#\nPaper\nTécnica\nEstado\n\n\n\n\n1\nCamiz et al. (2020)\nHFC\n✅ Leído"
+  },
+  {
+    "objectID": "index.html#próximas-secciones",
+    "href": "index.html#próximas-secciones",
+    "title": "Tesis Maestría — Ciclo Financiero Perú",
+    "section": "Próximas secciones",
+    "text": "Próximas secciones\n\n📊 Dataset BCRP\n🔬 Resultados de modelos"
+  }
+]
