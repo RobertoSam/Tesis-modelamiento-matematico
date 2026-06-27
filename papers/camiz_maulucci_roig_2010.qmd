@@ -1,0 +1,203 @@
+---
+title: "Ficha Bibliográfica: Camiz, Maulucci & Roig (2010)"
+subtitle: "Exploratory Analysis Methods Applied to Dendrochronological Series"
+author: "Roberto Samaniego"
+date: last-modified
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    lang: es
+categories: [PCA-evolutiva, Statis, ventana-móvil, series-de-tiempo, análisis-exploratorio]
+---
+
+## Referencia completa (APA 7)
+
+Camiz, S., Maulucci, R., & Roig, F. A. (2010). Exploratory analysis methods applied to dendrochronological series. En O. Papu (Ed.), *Actas E-ICES 5: Proceedings of the Fifth Meeting on Nuclear and Environmental Studies* (pp. 61–67). Comisión Nacional de Energía Atómica.
+
+> **Nota de verificación**: Este paper fue publicado como actas de congreso (E-ICES 5, Malargüe, Mendoza, Argentina, 24–27 de octubre de 2009). Los datos de edición deben verificarse antes de incluir la cita en la tesis, ya que la disponibilidad de ISBN/DOI para este tipo de publicación es incierta.
+
+---
+
+## Resumen narrativo
+
+El artículo aborda un problema fundamental en dendrocronología: la estructura de correlación entre series sincrónicas de anillos de árboles no es estacionaria a lo largo del tiempo, de modo que un análisis PCA global puede ocultar cambios importantes en la co-variación entre series en distintos períodos históricos. Para explorar esta variación temporal, los autores proponen una estrategia basada en la combinación de tres herramientas: (i) PCA estática sobre el conjunto completo de datos; (ii) **análisis Statis dual** (*dual Statis*, Lavit, 1988), una técnica de análisis de datos de tres vías que compara matrices de correlación a través del tiempo; y (iii) **PCA evolutiva** mediante ventana móvil de longitud fija (25 años), donde se calcula una PCA independiente para cada subtabla de la ventana y se sintetizan los resultados —valores propios y correlaciones variables-componentes— como series temporales. El caso de estudio comprende 23 series sincrónicas de *Nothofagus pumilio* (lenga) del Valle de Andorra, Tierra del Fuego, Argentina, abarcando 135 años (1850–1984).
+
+Los resultados del PCA global revelan una estructura débilmente correlacionada entre las 23 series (sólo el 48% de la varianza explicada por los tres primeros componentes), lo que impide construir una cronología única con señal común fuerte. El análisis Statis dual, al comparar las 111 subtablas de 25 años en un espacio de tablas, identifica puntos de quiebre significativos en la estructura de correlación: los años 1885, 1927 y 1928 emergen como momentos de ruptura, coherentes con los detectados por el patrón de los años en el PCA global (separación visible entre los años anteriores a 1912 y posteriores a 1913). La PCA evolutiva confirma y enriquece este diagnóstico: la serie de primeros valores propios exhibe una tendencia descendente de largo plazo (de ≈8.5 a ≈6.0), indicando una pérdida sostenida del 25% en la coherencia unidimensional del conjunto, con fluctuaciones locales marcadas en los subperíodos 1861–1885 y 1903–1928. El análisis de las correlaciones variables-componentes en los subperíodos de quiebre identifica qué series individuales son responsables del cambio estructural.
+
+La contribución metodológica central del artículo es la sistematización de la **PCA evolutiva** como herramienta diagnóstica de la estacionariedad de la estructura factorial en datos de panel con dimensión temporal, anticipando lo que en la literatura econométrica más reciente se denomina análisis de *time-varying factor models*. Los autores posicionan explícitamente el enfoque en el marco del **análisis exploratorio de datos** (sensu Tukey, 1977), subrayando que los resultados son descriptivos del sample y no generalizables estadísticamente a poblaciones de referencia sin análisis confirmatorio adicional.
+
+---
+
+## Aporte a la tesis
+
+Este paper es el antecedente metodológico directo de la extensión **EPCA/EHFC** (*Evolutionary PCA / Evolutionary Hierarchical Factor Classification*), que constituye uno de los cinco métodos a comparar en la tesis de Roberto. Sus aportes específicos son:
+
+1. **Formalización de la PCA evolutiva con ventana móvil**: el procedimiento de construir *p − 1* subtablas de longitud *w* desplazando la ventana año a año, y sintetizar los resultados (eigenvalores, correlaciones) como series temporales, es el núcleo operacional de EPCA. La elección del tamaño de ventana (*w* = 25 años en el paper) es un hiperparámetro crítico a calibrar para las series del BCRP (trimestral, horizonte del ciclo financiero: 8–30 años).
+
+2. **Análisis Statis dual como complemento diagnóstico**: el paper demuestra que Statis dual permite identificar puntos de quiebre en la estructura factorial antes de realizar las PCAs individuales por ventana, optimizando el análisis. Esta estrategia es transferible a los datos del BCRP para detectar cambios de régimen en el ciclo financiero peruano (ej.: crisis 1998–1999, pandemia COVID-19 2020).
+
+3. **Interpretación del perfil temporal de eigenvalores**: la discusión sobre la tendencia descendente del primer eigenvalor a lo largo del tiempo (caída en la coherencia del factor común) proporciona un marco interpretativo para analizar si la sincronización del ciclo financiero peruano ha variado históricamente.
+
+4. **Problema de dimensionalidad alta en la ventana**: el paper opera con 23 series y ventanas de 25 observaciones, enfrentando el problema de matrices de correlación con *p > n/w*. Este problema es más agudo en la tesis si el número de indicadores del BCRP supera la longitud de ventana elegida, requiriendo regularización o reducción previa.
+
+5. **Puente entre HFC estático y EHFC evolutivo**: dado que Camiz et al. (2020) cita este paper como el antecedente del análisis evolutivo complementario a HFC, la lectura conjunta de ambos papers define el continuo metodológico HFC → EHFC, que es la segunda columna del diseño metodológico de la tesis.
+
+> **Advertencia de coherencia**: El paper no implementa EHFC explícitamente (aplica solo PCA y Statis, no HFC, en el análisis evolutivo). La extensión a EHFC es planteada en Camiz & Roig (2011), paper citado en Camiz et al. (2020). Se recomienda obtener y fichar ese paper para completar la cadena metodológica.
+
+---
+
+## Conceptos clave
+
+| Concepto | Definición en el paper | Equivalente en la tesis |
+|---|---|---|
+| **PCA evolutiva** | Secuencia de PCAs sobre subtablas generadas por una ventana móvil desplazada a lo largo de la dimensión temporal | EPCA aplicada a series financieras del BCRP para detectar variación temporal del ciclo |
+| **Statis dual** | Método de análisis de tres vías que compara matrices de correlación entre tablas mediante un producto escalar; identifica la estructura común (*compromis*) y los puntos de quiebre | Herramienta diagnóstica para detectar cambios de régimen en el ciclo financiero |
+| **Tabla serie** (*table series*) | Conjunto de subtablas indexadas por el tiempo, generadas por la ventana móvil | Panel de datos del BCRP segmentado por períodos |
+| **Índice de fusión / segundo eigenvalor** | Eigenvalor de la PCA bivariada entre dos grupos; mide heterogeneidad interna del grupo potencial (ver Camiz et al., 2020) | Criterio de agrupamiento de variables financieras en EHFC |
+| **Punto de quiebre** (*breakpoint*) | Posición en la serie temporal de tablas donde la distancia entre tablas contiguas es anormalmente grande, indicando un cambio estructural en la correlación | Cambio de régimen del ciclo financiero (crisis, expansión) |
+| **Interstructura** (Statis) | Primera fase de Statis: PCA del producto escalar entre matrices de correlación; resume las relaciones entre las tablas | Representación de la evolución temporal de la estructura factorial |
+| **Señal común** (*common signal*) | Componente de la variación compartida por un conjunto de series sincrónicas; estimada por el primer componente principal | Factor latente del ciclo financiero |
+| **RBAR** | Correlación media entre todas las series de un conjunto; mide la fuerza de la señal común | Indicador de sincronización financiera |
+| **Efecto Guttman** | Patrón en arco en las representaciones de Statis o PCA de series temporales, producto de la naturaleza seriada de los datos | Artefacto a distinguir de estructura real en gráficos PCA de datos financieros |
+
+---
+
+## Limitaciones
+
+- **Publicación en actas de congreso**: el paper no fue publicado en revista indexada, lo que limita su peso como referencia principal en la tesis. Se recomienda citar como fuente primaria del método a Denimal (2007) y Lavit (1988), y usar este paper como evidencia de aplicación empírica en dendrocronología.
+
+- **Dominio de aplicación no financiero**: al igual que Camiz et al. (2020), el paper opera sobre series estacionarias y de alta coherencia temporal. La transferencia a series financieras del BCRP requiere aplicar filtros de ciclo (Hodrick-Prescott, Baxter-King) o diferenciar las series antes de la ventana móvil para garantizar estacionariedad aproximada en cada subtabla.
+
+- **Elección del tamaño de ventana no justificada formalmente**: los autores fijan *w* = 25 años sin criterio estadístico explícito. En el contexto del ciclo financiero (definido operacionalmente como fluctuaciones de 8 a 30 años, Borio, 2014), el tamaño de ventana óptimo para datos trimestrales del BCRP deberá calibrarse mediante análisis de sensibilidad.
+
+- **Statis dual no implementado en Python estándar**: la librería `pandas` y `scikit-learn` no incluyen Statis dual. Existen implementaciones en R (`ade4`, función `statis`) pero no equivalentes directos en Python. Para la tesis, podría aproximarse mediante PCA de la matriz de productos escalares entre matrices de correlación calculada manualmente.
+
+- **El papel no formaliza EHFC**: el análisis evolutivo del paper se limita a PCA; la extensión a HFC evolutivo (EHFC) es mencionada como trabajo en curso. Esto introduce incertidumbre sobre la disponibilidad de una especificación formal de EHFC en la literatura.
+
+- **Problema *p > n* no abordado**: con 23 series y ventanas de 25 años, el cociente *p/w ≈ 0.92* es próximo a 1, generando matrices de correlación potencialmente inestables. El paper no discute estrategias de regularización para este caso.
+
+---
+
+## Referencias internas relevantes
+
+- **Lavit, C. (1988)**. *Analyse Conjointe de Tableaux Quantitatifs*. Masson. *(Fuente primaria del método Statis. Pendiente de obtener.)*
+
+- **Camiz, S., & Roig, F. A. (2011)**. Evolutionary Analysis Applied to Tree-ring Chronologies Series. *In Actas E-ICES 6*, Malargüe, Argentina. *(Extiende el análisis evolutivo a HFC, constituyendo el antecedente directo de EHFC. **Pendiente de obtener y fichar**; citado en Camiz et al., 2020.)*
+
+- **Camiz, S., Spada, F., Denimal, J.-J., & Piraino, S. (2020)**. Hierarchical Factor Classification of Dendrochronological Time-Series. *Annals of Silvicultural Research*, *45*(1), 62–75. *(Companion paper; ver ficha `camiz_et_al_2020.qmd`.)*
+
+- **Wigley, T. M. L., Briffa, K. R., & Jones, P. D. (1984)**. On the average value of correlated time series, with applications in dendroclimatology and hydrometeorology. *Journal of Climate and Applied Meteorology*, *23*, 201–213. *(Introduce RBAR; puede ser relevante si la tesis adopta métricas de señal común similares.)*
+
+- **Borio, C. (2014)**. The financial cycle and macroeconomics: What have we learnt? *Journal of Banking & Finance*, *45*, 182–198. *(No citado en el paper, pero necesario para anclar la definición de ciclo financiero en la tesis y justificar el tamaño de ventana en EPCA.)*
+
+---
+
+## Notas de implementación en Python
+
+```python
+# Esquema de PCA evolutiva con ventana móvil
+# Replicación del enfoque de Camiz, Maulucci & Roig (2010) para datos del BCRP
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+def pca_evolutiva(
+    df: pd.DataFrame,
+    ventana: int = 20,          # en trimestres; 20t = 5 años (ajustar para BCRP)
+    n_componentes: int = 3
+) -> dict:
+    """
+    PCA evolutiva con ventana móvil sobre series financieras del BCRP.
+    
+    Parámetros
+    ----------
+    df : pd.DataFrame
+        DataFrame con índice temporal (trimestres) y columnas = variables financieras.
+        Las series deben estar pretratadas (estacionarias, estandarizadas).
+    ventana : int
+        Longitud de la ventana móvil en número de períodos.
+    n_componentes : int
+        Número de componentes a retener en cada subtabla.
+    
+    Retorna
+    -------
+    resultados : dict
+        - 'eigenvalores': DataFrame (n_ventanas × n_componentes) con eigenvalores por ventana.
+        - 'varianza_explicada': DataFrame con % de varianza explicada.
+        - 'correlaciones': dict de DataFrames (uno por componente) con correlaciones
+          variables-componente en cada ventana.
+        - 'fechas_centro': Series con la fecha central de cada ventana (para graficar).
+    """
+    scaler = StandardScaler()
+    n = len(df)
+    p = df.shape[1]
+    n_ventanas = n - ventana + 1
+    
+    fechas_centro = df.index[ventana // 2: n_ventanas + ventana // 2]
+    
+    eigenvalores = np.zeros((n_ventanas, n_componentes))
+    varianza_explicada = np.zeros((n_ventanas, n_componentes))
+    correlaciones = {k: np.zeros((n_ventanas, p)) for k in range(n_componentes)}
+    
+    for t in range(n_ventanas):
+        # Subtabla de la ventana
+        subtabla = df.iloc[t: t + ventana].values
+        subtabla_std = scaler.fit_transform(subtabla)
+        
+        # PCA de la subtabla
+        pca = PCA(n_components=n_componentes)
+        scores = pca.fit_transform(subtabla_std)
+        
+        eigenvalores[t, :] = pca.explained_variance_
+        varianza_explicada[t, :] = pca.explained_variance_ratio_ * 100
+        
+        # Correlaciones variables-componentes en esta ventana
+        for k in range(n_componentes):
+            for j in range(p):
+                correlaciones[k][t, j] = np.corrcoef(
+                    subtabla_std[:, j], scores[:, k]
+                )[0, 1]
+    
+    # Empaquetar en DataFrames
+    cols_eig = [f"λ{k+1}" for k in range(n_componentes)]
+    return {
+        "eigenvalores": pd.DataFrame(
+            eigenvalores, index=fechas_centro, columns=cols_eig
+        ),
+        "varianza_explicada": pd.DataFrame(
+            varianza_explicada, index=fechas_centro,
+            columns=[f"VE_CP{k+1}(%)" for k in range(n_componentes)]
+        ),
+        "correlaciones": {
+            k: pd.DataFrame(
+                correlaciones[k], index=fechas_centro, columns=df.columns
+            )
+            for k in range(n_componentes)
+        },
+        "fechas_centro": fechas_centro
+    }
+
+
+# ─── Ejemplo de uso con datos del BCRP ──────────────────────────────────────
+# df_bcrp = pd.read_parquet("data/bcrp_series_financieras.parquet")
+# resultados = pca_evolutiva(df_bcrp, ventana=20, n_componentes=3)
+#
+# # Graficar evolución del primer eigenvalor
+# import matplotlib.pyplot as plt
+# fig, ax = plt.subplots(figsize=(12, 4))
+# resultados["eigenvalores"]["λ1"].plot(ax=ax, label="λ₁ (Factor común)")
+# ax.axhline(y=0.7, color="red", linestyle="--", label="Umbral Jolliffe (0.7)")
+# ax.set_title("PCA Evolutiva - Primer eigenvalor (ventana = 20 trimestres)")
+# ax.set_xlabel("Período central de la ventana")
+# ax.set_ylabel("Eigenvalor")
+# ax.legend()
+# plt.tight_layout()
+# plt.savefig("outputs/pca_evolutiva_lambda1.png", dpi=150)
+```
+
+> **Nota metodológica**: El tamaño de ventana de 20 trimestres (5 años) es un punto de partida tentativo para series trimestrales del BCRP. La literatura de ciclo financiero (Borio, 2014; Schüler et al., 2020) sugiere que el ciclo financiero en economías emergentes puede tener períodos más cortos que en economías avanzadas, lo que podría justificar ventanas de 12–16 trimestres. Se recomienda análisis de sensibilidad.

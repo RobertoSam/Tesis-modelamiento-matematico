@@ -1,0 +1,183 @@
+---
+title: "Ficha Bibliográfica: Camiz et al. (2020)"
+subtitle: "Hierarchical Factor Classification of Dendrochronological Time-Series"
+author: "Roberto Samaniego"
+date: last-modified
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    lang: es
+categories: [HFC, PCA, series-de-tiempo, análisis-exploratorio, reducción-dimensional]
+---
+
+## Referencia completa (APA 7)
+
+Camiz, S., Spada, F., Denimal, J.-J., & Piraino, S. (2020). Hierarchical Factor Classification of Dendrochronological Time-Series. *Annals of Silvicultural Research*, *45*(1), 62–75. <https://doi.org/10.12899/asr-1968>
+
+---
+
+## Resumen narrativo
+
+El artículo introduce la **Clasificación Factorial Jerárquica** (*Hierarchical Factor Classification*, HFC), un método exploratorio de clasificación de caracteres (variables) propuesto originalmente por Denimal (2007), y lo evalúa en comparación directa con el Análisis de Componentes Principales (PCA) sobre un conjunto de cinco cronologías sincrónicas de *Pinus pinea* L. de la costa tirrena italiana, con una extensión de 79 años (1925–2003). El argumento central es que, si bien PCA es la técnica exploratorio-multivariada de referencia en dendrocronología, carece de la capacidad de clasificar simultáneamente las series en grupos con coherencia interna, limitando la interpretación del analista a la observación de los círculos de correlación y la estructura de componentes, sin producir una jerarquía formal de las variables.
+
+HFC opera como un método jerárquico ascendente sobre los caracteres (no sobre las unidades/años), construyendo en cada paso una PCA bivariada entre los representantes de dos grupos candidatos a fusión. El criterio de fusión es el **segundo valor propio** de dicha PCA: cuanto más pequeño, mayor es la homogeneidad interna del grupo potencial, es decir, menor es la varianza no explicada por el componente representativo común. Para cada nodo formado se obtienen dos series: (i) la *cronología representativa* (*representative chronology*), equivalente al primer componente principal del nodo, que captura la señal compartida; y (ii) el *componente de diferencias* (*differences component*), que cuantifica las divergencias entre las cronologías del grupo. Los autores demuestran que los resultados de HFC son cuasi-óptimos respecto a PCA —con correlaciones de 0.995 entre el primer eje de PCA y el componente representativo del nodo final— al tiempo que añaden la ventaja de producir una partición explícita de las series en grupos con cronologías representativas propias.
+
+La aplicación empírica revela que tres de las cinco cronologías (San Rossore, Castelporziano y Circeo) comparten una señal común robusta y pueden sintetizarse en una única cronología representativa (correlación >0.998 entre la cronología representativa de HFC y el primer componente principal de PCA sobre ese subgrupo), mientras que Cecina y Duna Feniglia resultan independientes, debiendo mantenerse separadas. Los autores señalan explícitamente las limitaciones de PCA cuando se usa de manera instrumental —sin profundizar en la estructura de los datos— y posicionan HFC como una alternativa exploratoria superior para contextos donde se requiere tanto ordenación como clasificación. Asimismo, advierten que ninguno de los dos métodos incorpora la variación temporal de la estructura de correlaciones, aspecto que remiten a trabajos complementarios (Camiz et al., 2010; Camiz y Roig, 2011).
+
+---
+
+## Aporte a la tesis
+
+Este paper es **fundamento metodológico directo** de la tesis. Proporciona la formalización algorítmica de HFC, uno de los cuatro métodos de reducción dimensional que Roberto evaluará sobre las series financieras del BCRP. Los aportes específicos son:
+
+1. **Descripción algorítmica paso a paso de HFC**: los pasos 1–9 del artículo (sección "Hierarchical Factor Classification") constituyen la especificación formal del método, trasladable directamente al marco matemático de la tesis.
+
+2. **Criterio de corte del dendrograma**: la regla de Jolliffe (2002) invertida —mantener la fusión solo cuando el segundo valor propio es menor a 0.7— ofrece un criterio operativo para determinar el número de grupos en los datos del BCRP.
+
+3. **Benchmark PCA vs. HFC**: el paper demuestra empíricamente que HFC aproxima PCA en sus resultados globales (cuasi-optimalidad), lo que justifica comparar ambos métodos como columna vertebral del capítulo metodológico de la tesis.
+
+4. **Interoperabilidad de métodos**: la proyección de los componentes de los nodos HFC como elementos ilustrativos en el círculo de correlaciones de PCA proporciona una estrategia de visualización comparativa replicable en Python con `matplotlib` y `scikit-learn`.
+
+5. **Marco epistemológico exploratorio**: el tratamiento explícito de la distinción entre análisis exploratorio y confirmatorio (sensu Tukey, 1977 / Benzécri, 1973) es coherente con el enfoque metodológico de la tesis, donde PCA, HFC, autoencoders y LSTM son tratados como herramientas de reducción dimensional, no como modelos inferenciales en sí mismos.
+
+> **Conexión directa**: El concepto de *cronología representativa* de HFC es análogo, en el contexto financiero, al índice latente del ciclo financiero que la tesis busca estimar. La pregunta empírica se traslada: ¿es el ciclo financiero peruano unidimensional (un solo componente representativo del nodo raíz de HFC basta) o multidimensional?
+
+---
+
+## Conceptos clave
+
+| Concepto | Definición en el paper | Equivalente en la tesis |
+|---|---|---|
+| **HFC** (*Hierarchical Factor Classification*) | Método jerárquico ascendente de clasificación de caracteres basado en PCAs bivariadas sucesivas | Método de reducción dimensional aplicado a series financieras del BCRP |
+| **Cronología representativa** | Primer componente principal del nodo HFC; sintetiza la señal común al grupo | Índice latente del ciclo financiero para un clúster de variables |
+| **Componente de diferencias** | Segundo componente principal del nodo HFC; captura las divergencias entre series del grupo | Componente residual / idiosincrático de cada variable financiera |
+| **Índice de fusión** (*fusion index*) | Segundo valor propio de la PCA bivariada entre dos grupos candidatos; mide heterogeneidad interna | Criterio de agrupamiento de variables financieras |
+| **Cuasi-optimalidad de HFC** | Convergencia empírica entre el plano principal de PCA y el plano del nodo final de HFC | Justificación para comparar PCA y HFC como métodos alternativos |
+| **Inertia** | Suma ponderada de cuadrados: medida de información en el análisis exploratorio | Varianza total explicada (análogo a la varianza acumulada en PCA) |
+| **Análisis exploratorio** (*sensu* Tukey, 1977) | Métodos que "dejan hablar a los datos" sin modelo estadístico *a priori* | Enfoque metodológico general de la tesis para los métodos de reducción dimensional |
+| **PCC** (*Principal Component Chronology*) | Primer componente principal cuando todos sus coeficientes son positivos; representa la señal común | Análogo al Factor Común en modelos de factores dinámicos |
+
+---
+
+## Limitaciones
+
+Las siguientes limitaciones del paper son relevantes para la transferencia metodológica a la tesis:
+
+- **Dominio de aplicación restringido**: HFC se presenta y valida exclusivamente sobre series dendrocronológicas (anillos de árboles), cuya estructura estocástica difiere significativamente de las series financieras: baja autocorrelación, estacionariedad aproximada, ausencia de tendencias. Las series del BCRP (crédito, precio de activos, spreads) son no estacionarias, lo que requiere pretratamiento (diferenciación, filtros HP/BK) antes de aplicar HFC.
+
+- **Número reducido de series**: el caso de estudio comprende apenas 5 cronologías, lo que no permite evaluar el comportamiento de HFC en espacios de alta dimensionalidad. La tesis operará con un número potencialmente mayor de indicadores del BCRP, cuya escala podría afectar la estabilidad del algoritmo.
+
+- **Ausencia de validación estadística formal**: el paper es explícitamente exploratorio; no ofrece tests de significancia para la estructura jerárquica obtenida ni intervalos de confianza para los componentes representativos. Para la tesis, esto implica que los resultados de HFC deberán complementarse con análisis confirmatorios.
+
+- **No aborda variación temporal de la estructura de correlaciones**: los autores reconocen que HFC, al igual que PCA, asume estacionariedad en la estructura de correlaciones entre las series. Este supuesto es problemático para ciclos financieros, donde las correlaciones entre variables evolucionan a lo largo del ciclo. Los autores remiten esta limitación a Camiz et al. (2010), que introduce el análisis evolutivo mediante ventana móvil.
+
+- **Implementación no disponible en Python**: HFC es un método desarrollado en el entorno de la estadística francesa (tradición de Benzécri). No existe, hasta donde se conoce, una implementación estándar en `scikit-learn` o librerías equivalentes, lo que implica que deberá desarrollarse ad hoc en Python para la tesis.
+
+---
+
+## Referencias internas relevantes
+
+Las siguientes referencias citadas en el paper son pertinentes para el marco teórico de la tesis:
+
+- **Denimal, J.-J. (2007)**. Classification hiérarchique optimisée d'un tableau de mesures. *Revue de Statistique Appliquée*, *148*(2), 29–61. *(Fuente primaria del algoritmo HFC. Pendiente de obtener y fichar.)*
+
+- **Camiz, S., Denimal, J.-J., & Pillar, V. D. (2006)**. Hierarchical Factor Classification of Variables in Ecology. *Community Ecology*, *7*(2), 165–179. *(Primera aplicación ecológica de HFC; puede proporcionar variantes del algoritmo.)*
+
+- **Camiz, S., & Pillar, V. D. (2018)**. Identifying the Informational/Signal Dimension in Principal Component Analysis. *Mathematics*, *6*(11), 269. *(Complementa la discusión sobre la elección del número de componentes en PCA; relevante para el debate PCA vs. HFC.)*
+
+- **Camiz, S., Maulucci, R., & Roig, F. (2010)**. Exploratory Analysis Methods Applied to Dendrochronological Series. *In Actas E-ICES 5*, Malargüe, Argentina. *(Introduce el análisis evolutivo de PCA mediante ventana móvil y Statis dual; directamente relevante para la extensión temporal de HFC = EHFC en la tesis. **Disponible en el proyecto**.)*
+
+- **Jolliffe, I. (2002)**. *Principal Component Analysis*. Springer. *(Referencia canónica de PCA; el criterio del valor propio ≥ 0.7 que usa el paper proviene de aquí.)*
+
+- **Lebart, L., Piron, M., & Morineau, A. (2006)**. *Statistique exploratoire multidimensionnelle*. Dunod. *(Marco teórico general del análisis exploratorio multidimensional en la tradición francesa.)*
+
+---
+
+## Notas de integración con el proyecto
+
+```python
+# Pseudocódigo HFC - Estructura algorítmica para implementación en Python
+# Basado en la descripción formal de Camiz et al. (2020), sección HFC, pasos 1-9
+
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+
+def hfc(X: np.ndarray, umbral_segundo_eigenvalor: float = 0.7):
+    """
+    Clasificación Factorial Jerárquica (HFC).
+    
+    Parámetros
+    ----------
+    X : np.ndarray, shape (n_periodos, p_variables)
+        Matriz de datos estandarizados (series financieras del BCRP).
+    umbral_segundo_eigenvalor : float
+        Criterio de corte: no fusionar grupos cuyo segundo eigenvalor supere
+        este umbral (criterio de Jolliffe invertido, como en Camiz et al. 2020).
+    
+    Retorna
+    -------
+    jerarquia : list of dicts
+        Lista de nodos con: grupos fusionados, cronología representativa,
+        componente de diferencias, índice de fusión (2do eigenvalor).
+    """
+    # Paso 1: Estandarizar y crear singletons
+    scaler = StandardScaler()
+    X_std = scaler.fit_transform(X)
+    
+    # Cada variable inicia como su propia cronología representativa
+    representantes = {i: X_std[:, i] for i in range(X_std.shape[1])}
+    grupos = {i: [i] for i in range(X_std.shape[1])}
+    jerarquia = []
+    
+    while len(representantes) > 1:
+        # Paso 2-3: PCA bivariada para cada par; seleccionar par con min 2do eigenvalor
+        min_lambda2 = np.inf
+        mejor_par = None
+        
+        ids = list(representantes.keys())
+        for i in range(len(ids)):
+            for j in range(i + 1, len(ids)):
+                mat = np.column_stack([representantes[ids[i]], representantes[ids[j]]])
+                cov = np.cov(mat.T)
+                eigenvalores = np.linalg.eigvalsh(cov)[::-1]
+                lambda2 = eigenvalores[1]
+                if lambda2 < min_lambda2:
+                    min_lambda2 = lambda2
+                    mejor_par = (ids[i], ids[j])
+        
+        # Paso 4-8: Fusionar el par óptimo
+        i, j = mejor_par
+        mat = np.column_stack([representantes[i], representantes[j]])
+        cov = np.cov(mat.T)
+        eigenvalores, eigenvectores = np.linalg.eigh(cov)
+        # Ordenar descendente
+        idx = np.argsort(eigenvalores)[::-1]
+        eigenvalores, eigenvectores = eigenvalores[idx], eigenvectores[:, idx]
+        
+        crono_representativa = mat @ eigenvectores[:, 0]
+        componente_diferencias = mat @ eigenvectores[:, 1]
+        nuevo_id = max(representantes.keys()) + 1
+        
+        jerarquia.append({
+            "nodo": nuevo_id,
+            "grupos_fusionados": (i, j),
+            "variables": grupos[i] + grupos[j],
+            "indice_fusion_lambda2": eigenvalores[1],
+            "lambda1": eigenvalores[0],
+            "crono_representativa": crono_representativa,
+            "componente_diferencias": componente_diferencias,
+        })
+        
+        # Paso 9: Actualizar grupos y representantes
+        representantes[nuevo_id] = crono_representativa
+        grupos[nuevo_id] = grupos[i] + grupos[j]
+        del representantes[i], representantes[j]
+        del grupos[i], grupos[j]
+    
+    return jerarquia
+```
+
+> **Nota metodológica**: La implementación anterior es una primera aproximación basada en la descripción textual del paper. Debe validarse contra los resultados de la Tabla 3 del artículo (valores propios del caso *Pinus pinea*) antes de aplicarse a los datos del BCRP.

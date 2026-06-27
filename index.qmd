@@ -1,0 +1,28 @@
+---
+title: "Tesis Maestría — Ciclo Financiero Perú"
+---
+
+## Sobre esta investigación
+
+Medición del ciclo financiero en Perú mediante técnicas de reducción 
+dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).
+
+**Autor:** Roberto Samaniego  
+**Programa:** Maestría  
+**Asesor:** Dr. Sergio Camiz  
+**Estado:** En progreso — Revisión bibliográfica
+
+---
+
+## Avance bibliográfico
+
+| # | Paper | Técnica | Estado |
+|---|---|---|---|
+| 1 | Camiz et al. (2020) | HFC | ✅ Leído |
+
+---
+
+## Próximas secciones
+
+- 📊 Dataset BCRP
+- 🔬 Resultados de modelos
