@@ -9,15 +9,18 @@ website:
         text: Inicio
       - text: Papers
         menu:
-          - href: papers/camiz2020.qmd
-            text: "Camiz et al. (2020)"
           - href: papers/camiz_et_al_2020.qmd
-            text: "Camiz et al. (2020) v2"
+            text: "Camiz et al. (2020)"
           - href: papers/camiz_maulucci_roig_2010.qmd
             text: "Camiz, Maulucci & Roig (2010)"
+      - text: Data BCRP
+        menu:
+          - href: notebooks/01_exploracion_bcrp.ipynb
+            text: "Exploración inicial"
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
+
