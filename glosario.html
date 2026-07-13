@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>untitled – Tesis — Ciclo Financiero Perú</title>
+<title>Glosario de terminología – Tesis — Ciclo Financiero Perú</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -101,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Marco conceptual</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./glosario.html"> 
+    <a class="nav-link active" href="./glosario.html" aria-current="page"> 
 <span class="menu-text">Glosario</span></a>
   </li>  
   <li class="nav-item">
@@ -188,17 +188,170 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#conceptos-centrales-del-ciclo-financiero" id="toc-conceptos-centrales-del-ciclo-financiero" class="nav-link active" data-scroll-target="#conceptos-centrales-del-ciclo-financiero">Conceptos centrales del ciclo financiero</a></li>
+  <li><a href="#métodos-de-reducción-dimensional-y-clasificación" id="toc-métodos-de-reducción-dimensional-y-clasificación" class="nav-link" data-scroll-target="#métodos-de-reducción-dimensional-y-clasificación">Métodos de reducción dimensional y clasificación</a></li>
+  <li><a href="#aprendizaje-profundo-aplicado-a-series-temporales" id="toc-aprendizaje-profundo-aplicado-a-series-temporales" class="nav-link" data-scroll-target="#aprendizaje-profundo-aplicado-a-series-temporales">Aprendizaje profundo aplicado a series temporales</a></li>
+  <li><a href="#evaluación-y-comparación-de-métodos" id="toc-evaluación-y-comparación-de-métodos" class="nav-link" data-scroll-target="#evaluación-y-comparación-de-métodos">Evaluación y comparación de métodos</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Glosario de terminología</h1>
+<p class="subtitle lead">Conceptos metodológicos centrales de la tesis, en lenguaje accesible</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<div class="callout callout-style-default callout-note callout-titled" title="Alcance de este glosario">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Alcance de este glosario
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este glosario cubre los <strong>conceptos metodológicos</strong> que atraviesan toda la tesis (régimen, ciclo, métodos de reducción dimensional y aprendizaje automático). Para la terminología de <strong>variables e indicadores macrofinancieros</strong> (crédito, liquidez, tasas, etc.), ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a>, que tiene su propio glosario estadístico básico.</p>
+</div>
+</div>
+<section id="conceptos-centrales-del-ciclo-financiero" class="level2">
+<h2 class="anchored" data-anchor-id="conceptos-centrales-del-ciclo-financiero">Conceptos centrales del ciclo financiero</h2>
+<dl>
+<dt><strong>Régimen financiero</strong></dt>
+<dd>
+Un período de tiempo durante el cual el sistema financiero peruano se comporta de forma relativamente estable: las relaciones entre variables como crédito, tasas, liquidez e inflación se mantienen parecidas. No es “una variable en un nivel alto o bajo”, sino una forma de organización conjunta del sistema.
+</dd>
+<dt><strong>Transición de régimen</strong></dt>
+<dd>
+El momento (o período) en que esa forma de organización cambia de manera significativa y duradera — no un movimiento pasajero de una sola variable, sino una reconfiguración de cómo se relacionan varias variables entre sí.
+</dd>
+<dt><strong>Ciclo financiero</strong></dt>
+<dd>
+La secuencia de expansión y contracción del crédito, la liquidez y los precios de activos (como bienes raíces o acciones) a lo largo del tiempo. Es un fenómeno de <strong>más largo plazo</strong> (típicamente 8 a 20 años) que el ciclo económico tradicional.
+</dd>
+<dt><strong>Ciclo económico</strong></dt>
+<dd>
+La secuencia de expansión y contracción de la actividad económica general (medida principalmente por el PBI). Es más corto que el ciclo financiero (típicamente 1 a 8 años). Ver la página <a href="./papers/ciclo_economico.html">Ciclo económico</a> para el desarrollo completo de esta distinción.
+</dd>
+<dt><strong>Ventana móvil</strong></dt>
+<dd>
+Un tramo de tiempo de tamaño fijo (por ejemplo, 24 meses) que se desplaza mes a mes sobre la serie completa de datos, permitiendo observar cómo cambian las relaciones entre variables a medida que avanza el tiempo, en lugar de calcular un único resultado para todo el período histórico.
+</dd>
+</dl>
+</section>
+<section id="métodos-de-reducción-dimensional-y-clasificación" class="level2">
+<h2 class="anchored" data-anchor-id="métodos-de-reducción-dimensional-y-clasificación">Métodos de reducción dimensional y clasificación</h2>
+<dl>
+<dt><strong>PCA (Análisis de Componentes Principales)</strong></dt>
+<dd>
+Una técnica que toma muchas variables relacionadas entre sí (por ejemplo, 15 indicadores financieros) y las resume en unas pocas “combinaciones” nuevas, llamadas componentes, que capturan la mayor parte de la información original con menos dimensiones.
+</dd>
+<dt><strong>Componente principal</strong></dt>
+<dd>
+Cada una de las nuevas variables resumidas que produce el PCA. Se interpreta observando qué variables originales tienen mayor peso dentro de ella (por ejemplo, un componente puede estar dominado por variables de crédito y liquidez, lo que sugiere que representa “condiciones de financiamiento”).
+</dd>
+<dt><strong>Carga factorial</strong></dt>
+<dd>
+El peso o importancia que tiene cada variable original dentro de un componente principal. Cargas altas (en valor absoluto) indican que esa variable contribuye mucho a ese componente.
+</dd>
+<dt><strong>Varianza explicada</strong></dt>
+<dd>
+Qué porcentaje de la información (variabilidad) total de los datos originales logra capturar un componente o un conjunto de componentes. Más varianza explicada con menos componentes significa un resumen más eficiente.
+</dd>
+<dt><strong>HFC (Clasificación Factorial Jerárquica)</strong></dt>
+<dd>
+Un método que combina el PCA con clasificación: primero reduce la dimensión de los datos y luego agrupa observaciones (por ejemplo, meses) o variables en clases con comportamiento similar, mostrando ese agrupamiento como un árbol jerárquico.
+</dd>
+<dt><strong>Dendrograma</strong></dt>
+<dd>
+La representación visual en forma de árbol que produce una clasificación jerárquica como la HFC, mostrando en qué nivel de similitud se van uniendo los grupos.
+</dd>
+<dt><strong>Cluster</strong></dt>
+<dd>
+Un grupo de observaciones (por ejemplo, un conjunto de meses) que comparten características similares según el método de clasificación usado.
+</dd>
+<dt><strong>EPCA (PCA Evolutivo)</strong></dt>
+<dd>
+La versión del PCA que se aplica sobre ventanas móviles en lugar de sobre todo el período a la vez, permitiendo observar cómo cambia la estructura de componentes a medida que pasa el tiempo.
+</dd>
+<dt><strong>EHFC (HFC Evolutivo)</strong></dt>
+<dd>
+La versión evolutiva de la HFC: aplica la clasificación jerárquica sobre ventanas móviles sucesivas, permitiendo ver cómo se reconfiguran los grupos (clusters) con el tiempo — clave para detectar transiciones de régimen.
+</dd>
+</dl>
+</section>
+<section id="aprendizaje-profundo-aplicado-a-series-temporales" class="level2">
+<h2 class="anchored" data-anchor-id="aprendizaje-profundo-aplicado-a-series-temporales">Aprendizaje profundo aplicado a series temporales</h2>
+<dl>
+<dt><strong>Autoencoder</strong></dt>
+<dd>
+Una red neuronal que aprende a comprimir los datos en una representación más pequeña (espacio latente) y luego a reconstruirlos, intentando que la reconstrucción se parezca lo más posible a los datos originales. Es una alternativa no lineal al PCA.
+</dd>
+<dt><strong>Espacio latente</strong></dt>
+<dd>
+La representación comprimida que produce un Autoencoder (o método similar): un conjunto reducido de números que resume la información esencial de los datos originales, de forma similar a los componentes principales pero permitiendo relaciones no lineales.
+</dd>
+<dt><strong>Error de reconstrucción</strong></dt>
+<dd>
+Qué tan diferente es la salida reconstruida del Autoencoder respecto a los datos originales que recibió. Un aumento sostenido en este error puede ser una señal de que el sistema está atravesando un cambio de régimen (algo “inusual” para el modelo).
+</dd>
+<dt><strong>LSTM (Long Short-Term Memory)</strong></dt>
+<dd>
+Un tipo de red neuronal diseñada para trabajar con secuencias temporales, con una capacidad especial de “recordar” información relevante de períodos pasados y “olvidar” la que ya no es útil, lo que la hace apta para modelar dependencias de largo plazo en series financieras.
+</dd>
+<dt><strong>Estado oculto</strong></dt>
+<dd>
+La “memoria interna” que mantiene una red LSTM mientras procesa una secuencia, actualizándose en cada paso de tiempo con la nueva información que recibe.
+</dd>
+</dl>
+</section>
+<section id="evaluación-y-comparación-de-métodos" class="level2">
+<h2 class="anchored" data-anchor-id="evaluación-y-comparación-de-métodos">Evaluación y comparación de métodos</h2>
+<dl>
+<dt><strong>Interpretabilidad</strong></dt>
+<dd>
+Qué tan fácil es entender y explicar económicamente lo que un método encontró (por ejemplo, si un componente principal se puede asociar claramente a “condiciones de crédito”).
+</dd>
+<dt><strong>Estabilidad temporal</strong></dt>
+<dd>
+Si la estructura que encuentra un método se mantiene parecida entre ventanas de tiempo consecutivas cuando no hay una transición real, y cambia cuando sí la hay.
+</dd>
+<dt><strong>Capacidad descriptiva</strong></dt>
+<dd>
+Qué tan bien resume un método la información original del sistema (por ejemplo, la varianza explicada en PCA o la calidad de reconstrucción en un Autoencoder).
+</dd>
+<dt><strong>Robustez</strong></dt>
+<dd>
+Si los resultados de un método cambian mucho o poco ante variaciones razonables en las decisiones de diseño (tamaño de ventana, conjunto de variables, transformaciones aplicadas).
+</dd>
+</dl>
+<hr>
+<p><em>Este glosario se actualiza conforme se precisan nuevas definiciones en el marco conceptual. Ver también <a href="./marco_conceptual.html">Marco conceptual</a> para el desarrollo matemático completo de cada concepto.</em></p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

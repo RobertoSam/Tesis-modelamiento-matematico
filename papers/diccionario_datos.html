@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>pca_hfc – Tesis — Ciclo Financiero Perú</title>
+<title>Diccionario de datos – Tesis — Ciclo Financiero Perú</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -96,22 +96,34 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Inicio</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_conceptual.html"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../papers/diccionario_datos.html" aria-current="page"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Papers</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
         <li>
-    <a class="dropdown-item" href="../papers/camiz2020.html">
- <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
- <span class="dropdown-text">Camiz et al.&nbsp;(2020) v2</span></a>
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
  <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
     </ul>
   </li>
@@ -121,8 +133,47 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
         <li>
-    <a class="dropdown-item" href="../notebooks/01_exploracion_bcrp.html">
- <span class="dropdown-text">Exploración inicial</span></a>
+    <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
     </ul>
   </li>
@@ -137,17 +188,396 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#glosario-general" id="toc-glosario-general" class="nav-link active" data-scroll-target="#glosario-general">Glosario general</a></li>
+  <li><a href="#bloque-crédito" id="toc-bloque-crédito" class="nav-link" data-scroll-target="#bloque-crédito">Bloque: Crédito</a></li>
+  <li><a href="#bloque-liquidez" id="toc-bloque-liquidez" class="nav-link" data-scroll-target="#bloque-liquidez">Bloque: Liquidez</a></li>
+  <li><a href="#bloque-tasas-de-interés" id="toc-bloque-tasas-de-interés" class="nav-link" data-scroll-target="#bloque-tasas-de-interés">Bloque: Tasas de interés</a></li>
+  <li><a href="#bloque-inflación" id="toc-bloque-inflación" class="nav-link" data-scroll-target="#bloque-inflación">Bloque: Inflación</a></li>
+  <li><a href="#bloque-tipo-de-cambio-y-mercado-de-capitales" id="toc-bloque-tipo-de-cambio-y-mercado-de-capitales" class="nav-link" data-scroll-target="#bloque-tipo-de-cambio-y-mercado-de-capitales">Bloque: Tipo de cambio y mercado de capitales</a></li>
+  <li><a href="#bloque-riesgo" id="toc-bloque-riesgo" class="nav-link" data-scroll-target="#bloque-riesgo">Bloque: Riesgo</a></li>
+  <li><a href="#bloque-actividad-económica" id="toc-bloque-actividad-económica" class="nav-link" data-scroll-target="#bloque-actividad-económica">Bloque: Actividad económica</a></li>
+  <li><a href="#bloque-precios-de-activos-inmobiliarios" id="toc-bloque-precios-de-activos-inmobiliarios" class="nav-link" data-scroll-target="#bloque-precios-de-activos-inmobiliarios">Bloque: Precios de activos inmobiliarios</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Diccionario de datos</h1>
+<p class="subtitle lead">Nombre de columna real, descripción conceptual, código BCRP y transformación aplicada</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<div class="callout callout-style-default callout-note callout-titled" title="Cómo usar esta página">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Cómo usar esta página
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este diccionario refleja <strong>exactamente</strong> los nombres de columna que produce el pipeline real (<code>data/raw/series_bcrp_raw.csv</code>, <code>embi_peru_raw.csv</code> e <code>indice_precios_inmuebles_bcrp.csv</code>), no una nomenclatura conceptual aparte. Si ves una columna en un notebook, la encuentras aquí con el mismo nombre.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Estado de verificación">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Estado de verificación
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Todos los códigos BCRP de esta tabla están <strong>verificados</strong> contra la API oficial del BCRP (<code>estadisticas.bcrp.gob.pe</code>). Ninguno queda pendiente.</p>
+</div>
+</div>
+<section id="glosario-general" class="level2">
+<h2 class="anchored" data-anchor-id="glosario-general">Glosario general</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Término</th>
+<th>Significado en lenguaje simple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Log-diferencia</strong></td>
+<td>Cambio porcentual entre dos periodos, calculado con logaritmos; se usa en variables de nivel (créditos, precios, índices) porque estabiliza la varianza y es el insumo estándar para PCA/HFC.</td>
+</tr>
+<tr class="even">
+<td><strong>Diferencia simple</strong></td>
+<td>Cambio absoluto entre dos periodos; se usa en variables que ya son tasas o porcentajes (TAMN, TIPMN, EMBI), donde una “diferencia de diferencia” no tendría sentido económico.</td>
+</tr>
+<tr class="odd">
+<td><strong>Estandarización</strong></td>
+<td>Transformar una variable para que tenga promedio 0 y desviación estándar 1, de modo que variables en unidades distintas (soles, %, puntos básicos) se puedan comparar y combinar en PCA/HFC.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-crédito" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-crédito">Bloque: Crédito</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Crédito SF sector privado</code></td>
+<td><code>PN00518MM</code></td>
+<td>Suma total del crédito que el sistema financiero peruano otorga a hogares y empresas.</td>
+<td><strong>Ninguna</strong> — se excluye del dataset transformado por colinealidad casi perfecta con la suma de sus tres componentes.</td>
+</tr>
+<tr class="even">
+<td><code>Crédito empresarial</code></td>
+<td><code>PN00532MM</code></td>
+<td>Préstamos otorgados a empresas (capital de trabajo, inversión, etc.).</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="odd">
+<td><code>Crédito consumo</code></td>
+<td><code>PN00533MM</code></td>
+<td>Préstamos a personas para gastos personales (tarjetas, préstamos personales), no vivienda ni negocio.</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="even">
+<td><code>Crédito hipotecario</code></td>
+<td><code>PN00534MM</code></td>
+<td>Préstamos destinados a compra o construcción de vivienda.</td>
+<td>Log-diferencia</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><strong>Nota de colinealidad:</strong> <code>Crédito SF sector privado</code> ≈ <code>Crédito empresarial</code> + <code>Crédito consumo</code> + <code>Crédito hipotecario</code>. Por eso el total se mantiene en el dataset de niveles (para consulta/gráficos) pero no entra al PCA/HFC junto con sus tres componentes.</p>
+</blockquote>
+</section>
+<section id="bloque-liquidez" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-liquidez">Bloque: Liquidez</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Liquidez M1</code></td>
+<td><code>PN00199MM</code></td>
+<td>“Dinero” en su forma más líquida: circulante (billetes y monedas) más depósitos a la vista.</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="even">
+<td><code>Liquidez M2</code></td>
+<td><code>PN00208MM</code></td>
+<td>M1 más depósitos de ahorro y otros instrumentos de corto plazo en soles (“cuasidinero”).</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="odd">
+<td><code>Liquidez M3</code></td>
+<td><code>PN00214MM</code></td>
+<td>Liquidez total del sistema financiero, sumando soles y moneda extranjera.</td>
+<td>Log-diferencia</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-tasas-de-interés" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-tasas-de-interés">Bloque: Tasas de interés</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Tasa activa TAMN</code></td>
+<td><code>PN07807NM</code></td>
+<td>Tasa promedio que cobran los bancos al prestar dinero en soles a sus clientes.</td>
+<td>Diferencia simple</td>
+</tr>
+<tr class="even">
+<td><code>Tasa pasiva TIPMN</code></td>
+<td><code>PN07816NM</code></td>
+<td>Tasa promedio que pagan los bancos por depósitos en soles.</td>
+<td>Diferencia simple</td>
+</tr>
+<tr class="odd">
+<td><code>Tasa referencia BCRP</code></td>
+<td><code>PD04722MM</code></td>
+<td>Tasa de interés que fija el Banco Central como guía de política monetaria.</td>
+<td>Diferencia simple</td>
+</tr>
+<tr class="even">
+<td><code>Tasa interbancaria</code></td>
+<td><code>PN07819NM</code></td>
+<td>Tasa a la que los bancos se prestan dinero entre sí a muy corto plazo.</td>
+<td>Diferencia simple</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-inflación" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-inflación">Bloque: Inflación</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>IPC Lima</code></td>
+<td><code>PN38705PM</code></td>
+<td>Índice de Precios al Consumidor de Lima Metropolitana (nivel, no variación).</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="even">
+<td><code>IPC Subyacente</code></td>
+<td><code>PN38708PM</code></td>
+<td>IPC excluyendo los rubros más volátiles (alimentos frescos, combustibles); mide la tendencia de fondo de la inflación.</td>
+<td><strong>Ninguna todavía</strong> — serie de contraste/validación; pendiente decidir si entra al modelo (ver nota en <code>04_preprocesamiento.ipynb</code>).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-tipo-de-cambio-y-mercado-de-capitales" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-tipo-de-cambio-y-mercado-de-capitales">Bloque: Tipo de cambio y mercado de capitales</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Tipo de cambio</code></td>
+<td><code>PN01246PM</code></td>
+<td>Tipo de Cambio Nominal Promedio, cuántos soles cuesta un dólar.</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="even">
+<td><code>Índice BVL</code></td>
+<td><code>PN01142MM</code></td>
+<td>Índice General de la Bolsa de Valores de Lima (base 31/12/1991=100).</td>
+<td>Log-diferencia</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-riesgo" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-riesgo">Bloque: Riesgo</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>embi_peru</code></td>
+<td><code>PD04709XD</code></td>
+<td>Spread EMBIG Perú, en puntos básicos: cuánto más caro le resulta al Perú endeudarse en dólares frente a EE.UU. (mayor valor = mayor riesgo percibido). Serie <strong>diaria</strong> en origen (<code>data/raw/embi_peru_raw.csv</code>), resampleada a trimestral (promedio del periodo) en <code>04_preprocesamiento</code>.</td>
+<td>Diferencia simple</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-actividad-económica" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-actividad-económica">Bloque: Actividad económica</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>PBI desestacionalizado</code></td>
+<td><code>PN01773AM</code></td>
+<td>Producto Bruto Interno mensual, ajustado por estacionalidad (índice 2007=100).</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="even">
+<td><code>Demanda interna</code></td>
+<td><code>PN01774AM</code></td>
+<td>Indicador de Demanda Interna (índice 2007=100): gasto total de hogares, empresas y gobierno.</td>
+<td>Log-diferencia</td>
+</tr>
+<tr class="odd">
+<td><code>Reservas internacionales</code></td>
+<td><code>PN00027MM</code></td>
+<td>Activos en moneda extranjera que mantiene el BCRP como respaldo del sistema financiero.</td>
+<td>Log-diferencia</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bloque-precios-de-activos-inmobiliarios" class="level2">
+<h2 class="anchored" data-anchor-id="bloque-precios-de-activos-inmobiliarios">Bloque: Precios de activos inmobiliarios</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna real</th>
+<th>Código BCRP</th>
+<th>Descripción conceptual</th>
+<th>Transformación aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>indice_precios_inmuebles</code></td>
+<td><em>(serie trimestral, cargada desde <code>data/raw/indice_precios_inmuebles_bcrp.csv</code>; código a documentar si aún no está registrado)</em></td>
+<td>Índice de precios de venta de inmuebles, indicador clave del ciclo financiero (precios de activos).</td>
+<td>Log-diferencia</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Resumen del pipeline:</strong> 18 variables mensuales/diarias en <code>data/raw/</code>, sincronizadas a trimestral en <code>04_preprocesamiento.ipynb</code>, de las cuales 16 entran al dataset transformado y estandarizado para PCA/HFC (se excluyen <code>Crédito SF sector privado</code> por colinealidad e <code>IPC Subyacente</code> pendiente de decisión).</p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Roberto Samaniego Salcedo">
+<meta name="dcterms.date" content="2026-06-01">
+
+<title>Marco conceptual y metodológico preliminar – Tesis — Ciclo Financiero Perú</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Tesis — Ciclo Financiero Perú</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./marco_conceptual.html" aria-current="page"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./papers/diccionario_datos.html"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Papers</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
+        <li>
+    <a class="dropdown-item" href="./papers/camiz_et_al_2020.html">
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/camiz_maulucci_roig_2010.html">
+ <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-bcrp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data BCRP</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
+        <li>
+    <a class="dropdown-item" href="./notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="./notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#objetivo-del-documento" id="toc-objetivo-del-documento" class="nav-link active" data-scroll-target="#objetivo-del-documento">1. Objetivo del documento</a></li>
+  <li><a href="#marco-conceptual-de-trabajo" id="toc-marco-conceptual-de-trabajo" class="nav-link" data-scroll-target="#marco-conceptual-de-trabajo">2. Marco conceptual de trabajo</a>
+  <ul class="collapse">
+  <li><a href="#régimen-financiero" id="toc-régimen-financiero" class="nav-link" data-scroll-target="#régimen-financiero">2.1 Régimen financiero</a></li>
+  <li><a href="#transición-de-régimen" id="toc-transición-de-régimen" class="nav-link" data-scroll-target="#transición-de-régimen">2.2 Transición de régimen</a></li>
+  <li><a href="#detección-de-régimen" id="toc-detección-de-régimen" class="nav-link" data-scroll-target="#detección-de-régimen">2.3 Detección de régimen</a></li>
+  <li><a href="#evidencia-de-cambio-de-régimen" id="toc-evidencia-de-cambio-de-régimen" class="nav-link" data-scroll-target="#evidencia-de-cambio-de-régimen">2.4 Evidencia de cambio de régimen</a></li>
+  </ul></li>
+  <li><a href="#mapa-metodológico" id="toc-mapa-metodológico" class="nav-link" data-scroll-target="#mapa-metodológico">3. Mapa metodológico</a>
+  <ul class="collapse">
+  <li><a href="#lectura-del-mapa" id="toc-lectura-del-mapa" class="nav-link" data-scroll-target="#lectura-del-mapa">Lectura del mapa</a></li>
+  </ul></li>
+  <li><a href="#rol-de-cada-método-dentro-de-la-tesis" id="toc-rol-de-cada-método-dentro-de-la-tesis" class="nav-link" data-scroll-target="#rol-de-cada-método-dentro-de-la-tesis">4. Rol de cada método dentro de la tesis</a>
+  <ul class="collapse">
+  <li><a href="#pca-análisis-de-componentes-principales" id="toc-pca-análisis-de-componentes-principales" class="nav-link" data-scroll-target="#pca-análisis-de-componentes-principales">4.1 PCA: análisis de componentes principales</a></li>
+  <li><a href="#hfc-clasificación-factorial-jerárquica" id="toc-hfc-clasificación-factorial-jerárquica" class="nav-link" data-scroll-target="#hfc-clasificación-factorial-jerárquica">4.2 HFC: Clasificación Factorial Jerárquica</a></li>
+  <li><a href="#epca-y-ehfc-dimensión-evolutiva" id="toc-epca-y-ehfc-dimensión-evolutiva" class="nav-link" data-scroll-target="#epca-y-ehfc-dimensión-evolutiva">4.3 EPCA y EHFC: dimensión evolutiva</a></li>
+  <li><a href="#autoencoder-temporal" id="toc-autoencoder-temporal" class="nav-link" data-scroll-target="#autoencoder-temporal">4.4 Autoencoder temporal</a></li>
+  <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">4.5 LSTM</a></li>
+  </ul></li>
+  <li><a href="#inventario-inicial-de-variables" id="toc-inventario-inicial-de-variables" class="nav-link" data-scroll-target="#inventario-inicial-de-variables">5. Inventario inicial de variables</a></li>
+  <li><a href="#criterios-iniciales-de-validación" id="toc-criterios-iniciales-de-validación" class="nav-link" data-scroll-target="#criterios-iniciales-de-validación">6. Criterios iniciales de validación</a>
+  <ul class="collapse">
+  <li><a href="#interpretabilidad" id="toc-interpretabilidad" class="nav-link" data-scroll-target="#interpretabilidad">6.1 Interpretabilidad</a></li>
+  <li><a href="#estabilidad-temporal" id="toc-estabilidad-temporal" class="nav-link" data-scroll-target="#estabilidad-temporal">6.2 Estabilidad temporal</a></li>
+  <li><a href="#capacidad-descriptiva" id="toc-capacidad-descriptiva" class="nav-link" data-scroll-target="#capacidad-descriptiva">6.3 Capacidad descriptiva</a></li>
+  <li><a href="#robustez" id="toc-robustez" class="nav-link" data-scroll-target="#robustez">6.4 Robustez</a></li>
+  </ul></li>
+  <li><a href="#bibliografía-inicial-comentada" id="toc-bibliografía-inicial-comentada" class="nav-link" data-scroll-target="#bibliografía-inicial-comentada">7. Bibliografía inicial comentada</a>
+  <ul class="collapse">
+  <li><a href="#ciclo-financiero-y-regímenes-financieros" id="toc-ciclo-financiero-y-regímenes-financieros" class="nav-link" data-scroll-target="#ciclo-financiero-y-regímenes-financieros">7.1 Ciclo financiero y regímenes financieros</a></li>
+  <li><a href="#regime-switching-y-cambios-estructurales" id="toc-regime-switching-y-cambios-estructurales" class="nav-link" data-scroll-target="#regime-switching-y-cambios-estructurales">7.2 Regime switching y cambios estructurales</a></li>
+  <li><a href="#change-point-detection" id="toc-change-point-detection" class="nav-link" data-scroll-target="#change-point-detection">7.3 Change Point Detection</a></li>
+  <li><a href="#análisis-factorial-pca-y-clasificación" id="toc-análisis-factorial-pca-y-clasificación" class="nav-link" data-scroll-target="#análisis-factorial-pca-y-clasificación">7.4 Análisis factorial, PCA y clasificación</a></li>
+  <li><a href="#autoencoders-y-representaciones-latentes" id="toc-autoencoders-y-representaciones-latentes" class="nav-link" data-scroll-target="#autoencoders-y-representaciones-latentes">7.5 Autoencoders y representaciones latentes</a></li>
+  <li><a href="#lstm-y-modelamiento-secuencial" id="toc-lstm-y-modelamiento-secuencial" class="nav-link" data-scroll-target="#lstm-y-modelamiento-secuencial">7.6 LSTM y modelamiento secuencial</a></li>
+  <li><a href="#fuentes-de-datos" id="toc-fuentes-de-datos" class="nav-link" data-scroll-target="#fuentes-de-datos">7.7 Fuentes de datos</a></li>
+  </ul></li>
+  <li><a href="#agenda-de-revisión" id="toc-agenda-de-revisión" class="nav-link" data-scroll-target="#agenda-de-revisión">8. Agenda de revisión</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Marco conceptual y metodológico preliminar</h1>
+<p class="subtitle lead">Detección evolutiva de regímenes del ciclo financiero peruano mediante Clasificación Factorial Jerárquica y aprendizaje automático</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Roberto Samaniego Salcedo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 1, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled" title="Lectura rápida">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Lectura rápida
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este documento convierte los entregables de la Semana 1 en una base más profunda de discusión. Su función es ordenar conceptos, precisar términos, vincular cada técnica con una finalidad dentro de la tesis y preparar una primera conversación académica más rigurosa.</p>
+</div>
+</div>
+<p><strong>Programa:</strong> Maestría en Ciencias en Modelización Matemática y Computacional <strong>Versión:</strong> 0.2 — material de discusión <strong>Fecha:</strong> Junio 2026</p>
+<section id="objetivo-del-documento" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo-del-documento">1. Objetivo del documento</h2>
+<p>La ficha de inscripción de tesis ya plantea un problema relevante: identificar cambios de régimen en el ciclo financiero peruano usando indicadores macrofinancieros del BCRP, técnicas exploratorias evolutivas y métodos de aprendizaje automático. La propuesta combina PCA, HFC, EPCA/EHFC, Autoencoders temporales y LSTM.</p>
+<p>El objetivo de esta Semana 1 es transformar esa formulación inicial en un marco de investigación más claro. Para ello se requiere precisar cuatro aspectos:</p>
+<ol type="1">
+<li>qué se entenderá por régimen financiero;</li>
+<li>qué se entenderá por transición de régimen;</li>
+<li>qué significa detectar un régimen mediante datos;</li>
+<li>qué tipo de evidencia permitirá sostener que hubo cambio estructural.</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled" title="Pregunta rectora de la Semana 1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Pregunta rectora de la Semana 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>¿Cómo convertir la idea económica de “régimen financiero” en un objeto matemático-computacional que pueda ser estudiado mediante análisis multivariado, métodos evolutivos y aprendizaje automático?</p>
+</div>
+</div>
+</section>
+<section id="marco-conceptual-de-trabajo" class="level2">
+<h2 class="anchored" data-anchor-id="marco-conceptual-de-trabajo">2. Marco conceptual de trabajo</h2>
+<p>La tesis requiere distinguir entre tres niveles de análisis que suelen mezclarse:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nivel</th>
+<th>Pregunta</th>
+<th>Ejemplo en la tesis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fenómeno económico</td>
+<td>¿Qué ocurre en el sistema financiero?</td>
+<td>Expansión del crédito, estrés financiero, cambios en liquidez o tasas.</td>
+</tr>
+<tr class="even">
+<td>Objeto matemático</td>
+<td>¿Cómo represento ese fenómeno?</td>
+<td>Matriz multivariada temporal, estructura de covarianza, espacio latente, partición de observaciones.</td>
+</tr>
+<tr class="odd">
+<td>Procedimiento computacional</td>
+<td>¿Cómo lo estimo o detecto?</td>
+<td>PCA, HFC, EPCA, Autoencoder, LSTM, métricas de estabilidad.</td>
+</tr>
+</tbody>
+</table>
+<p>Una tesis sólida necesita que estos tres niveles estén conectados. El fenómeno económico motiva el estudio; el objeto matemático lo hace tratable; el procedimiento computacional genera evidencia.</p>
+<section id="régimen-financiero" class="level3">
+<h3 class="anchored" data-anchor-id="régimen-financiero">2.1 Régimen financiero</h3>
+<p><strong>Definición operacional preliminar</strong></p>
+<blockquote class="blockquote">
+<p>Un régimen financiero es un intervalo temporal durante el cual el sistema macrofinanciero presenta una configuración relativamente estable de relaciones entre variables financieras, monetarias y macroeconómicas.</p>
+</blockquote>
+<p>Esta definición pone el énfasis en la <strong>configuración conjunta</strong>, no en una variable aislada. Un régimen financiero no equivale simplemente a “tasas altas”, “inflación baja” o “crédito creciente”. Es una forma de organización del sistema observada a través de múltiples variables.</p>
+<p><span class="math display">\[
+X_t = (x_{1t}, x_{2t}, \ldots, x_{pt}) \in \mathbb{R}^p
+\]</span></p>
+<p>Donde <span class="math inline">\(X_t\)</span> representa el vector de indicadores macrofinancieros en el tiempo <span class="math inline">\(t\)</span>. El sistema financiero se observa como una trayectoria:</p>
+<p><span class="math display">\[
+\{X_t\}_{t=1}^{T}
+\]</span></p>
+<p>Un régimen puede entenderse como un subconjunto temporal <span class="math inline">\(I_k\)</span> en el cual las propiedades estructurales de esa trayectoria se mantienen relativamente estables.</p>
+<p><span class="math display">\[
+I_k = [t_a, t_b] \quad \text{tal que la estructura de } X_t \text{ es estable para } t \in I_k
+\]</span></p>
+<p><strong>Dimensiones estructurales del régimen</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimensión</th>
+<th>Interpretación</th>
+<th>Representación posible</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Factorial</td>
+<td>Variables que se mueven conjuntamente y explican la variabilidad dominante.</td>
+<td>Componentes principales, cargas factoriales, varianza explicada.</td>
+</tr>
+<tr class="even">
+<td>Clasificatoria</td>
+<td>Agrupación de observaciones, períodos o variables con comportamiento similar.</td>
+<td>Clusters, dendrogramas, particiones temporales.</td>
+</tr>
+<tr class="odd">
+<td>Latente no lineal</td>
+<td>Representación compacta que captura relaciones no necesariamente lineales.</td>
+<td>Embeddings de Autoencoder, códigos latentes.</td>
+</tr>
+<tr class="even">
+<td>Dinámica</td>
+<td>Dependencias temporales y memoria del sistema.</td>
+<td>Estados ocultos, secuencias, LSTM, medidas de persistencia.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implicancia para la tesis</strong></p>
+<p>El régimen financiero será más defendible si se define como una <strong>propiedad de la estructura multivariada</strong>. Esto permite conectar la definición con PCA, HFC, EPCA/EHFC y Autoencoders sin reducir la tesis a una clasificación subjetiva de episodios históricos.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Definición de trabajo para revisión">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Definición de trabajo para revisión
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un régimen financiero será entendido como una configuración temporalmente persistente de relaciones multivariadas entre indicadores macrofinancieros, identificable mediante estructuras factoriales, agrupamientos o representaciones latentes.</p>
+</div>
+</div>
+</section>
+<section id="transición-de-régimen" class="level3">
+<h3 class="anchored" data-anchor-id="transición-de-régimen">2.2 Transición de régimen</h3>
+<p><strong>Definición operacional preliminar</strong></p>
+<blockquote class="blockquote">
+<p>Una transición de régimen es un cambio significativo y persistente en la estructura multivariada que caracteriza al sistema financiero.</p>
+</blockquote>
+<p>La transición no se define como un salto puntual de una variable, sino como una reconfiguración de relaciones. Por ejemplo, un aumento transitorio del tipo de cambio puede no constituir transición si no altera la estructura conjunta del sistema. En cambio, una modificación sostenida en la relación entre crédito, liquidez, inflación, tasas y mercado cambiario puede ser interpretada como transición.</p>
+<p><strong>Tipos de transición</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Señal esperada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Transición suave</td>
+<td>Cambio gradual en la estructura del sistema.</td>
+<td>Rotación progresiva de factores o desplazamiento continuo del espacio latente.</td>
+</tr>
+<tr class="even">
+<td>Transición abrupta</td>
+<td>Reconfiguración rápida asociada a shock financiero o macroeconómico.</td>
+<td>Cambio marcado en componentes, clusters o error de reconstrucción.</td>
+</tr>
+<tr class="odd">
+<td>Transición parcial</td>
+<td>Cambio en un bloque del sistema sin alterar toda la estructura.</td>
+<td>Reordenamiento de variables específicas o clusters parciales.</td>
+</tr>
+<tr class="even">
+<td>Transición persistente</td>
+<td>Cambio que permanece en varias ventanas temporales.</td>
+<td>Estabilidad posterior de una nueva configuración.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Objeto matemático de la transición</strong></p>
+<p>La transición puede formularse como un cambio entre estructuras estimadas en dos ventanas temporales consecutivas:</p>
+<p><span class="math display">\[
+S(W_j) \neq S(W_{j+1})
+\]</span></p>
+<p>donde <span class="math inline">\(S(W_j)\)</span> representa la estructura estimada en la ventana <span class="math inline">\(W_j\)</span>. Esa estructura puede ser una matriz de cargas factoriales, una matriz de distancias, una partición de clusters o una representación latente.</p>
+<p><strong>Implicancia metodológica</strong></p>
+<p>El uso de ventanas móviles permite convertir el problema en una comparación entre estructuras sucesivas. Esta lógica es compatible con EPCA/EHFC y también con representaciones latentes obtenidas mediante modelos de aprendizaje profundo.</p>
+</section>
+<section id="detección-de-régimen" class="level3">
+<h3 class="anchored" data-anchor-id="detección-de-régimen">2.3 Detección de régimen</h3>
+<p><strong>Definición operacional preliminar</strong></p>
+<blockquote class="blockquote">
+<p>Detectar un régimen consiste en identificar intervalos temporales donde las observaciones comparten una estructura multivariada relativamente homogénea y diferenciable de otros intervalos.</p>
+</blockquote>
+<p>La detección puede tener varios grados de exigencia:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nivel</th>
+<th>Descripción</th>
+<th>Ejemplo de evidencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Descriptivo</td>
+<td>El método muestra agrupamientos o patrones diferenciados.</td>
+<td>Clusters temporales, mapas factoriales.</td>
+</tr>
+<tr class="even">
+<td>Estructural</td>
+<td>El método muestra cambios en las relaciones entre variables.</td>
+<td>Cambios en cargas factoriales o distancias entre estructuras.</td>
+</tr>
+<tr class="odd">
+<td>Evolutivo</td>
+<td>El método muestra cuándo y cómo cambian las estructuras.</td>
+<td>Trayectorias de componentes, secuencias de particiones.</td>
+</tr>
+<tr class="even">
+<td>Comparativo</td>
+<td>El método permite contrastar resultados con otras aproximaciones.</td>
+<td>Coincidencia o divergencia entre EPCA, HFC y Autoencoder.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled" title="Pregunta clave">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Pregunta clave
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Cuando dos métodos detecten períodos diferentes, la tesis necesitará criterios para interpretar la discrepancia: sensibilidad al cambio, estabilidad temporal, interpretabilidad económica, robustez o capacidad de reconstrucción.</p>
+</div>
+</div>
+</section>
+<section id="evidencia-de-cambio-de-régimen" class="level3">
+<h3 class="anchored" data-anchor-id="evidencia-de-cambio-de-régimen">2.4 Evidencia de cambio de régimen</h3>
+<p>La evidencia deberá ser multidimensional. Una única señal puede ser insuficiente para sostener una transición. El diseño puede organizar la evidencia en cuatro familias:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Familia de evidencia</th>
+<th>Qué observa</th>
+<th>Métricas candidatas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Geométrica</td>
+<td>Cambios en la posición, orientación o distancia dentro del espacio de representación.</td>
+<td>Distancia entre subespacios, ángulo entre componentes, distancia Procrustes.</td>
+</tr>
+<tr class="even">
+<td>Factorial</td>
+<td>Cambios en la explicación de varianza y cargas de variables.</td>
+<td>Varianza explicada, correlación entre cargas, estabilidad de componentes.</td>
+</tr>
+<tr class="odd">
+<td>Clasificatoria</td>
+<td>Cambios en agrupamientos o pertenencias.</td>
+<td>Adjusted Rand Index, matriz de transición, persistencia de clusters.</td>
+</tr>
+<tr class="even">
+<td>Latente-computacional</td>
+<td>Cambios en embeddings o capacidad de reconstrucción.</td>
+<td>Error de reconstrucción, distancia entre embeddings, separación latente.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="mapa-metodológico" class="level2">
+<h2 class="anchored" data-anchor-id="mapa-metodológico">3. Mapa metodológico</h2>
+<p>El flujo de trabajo puede organizarse en cinco capas. Esta separación ayuda a distinguir el dato original, la representación matemática, la estimación computacional, la detección de estructuras y la validación.</p>
+<pre><code>CAPA 1: DATOS OBSERVADOS
+Indicadores BCRP / SBS / mercado
+        │
+        ▼
+CAPA 2: PREPROCESAMIENTO
+Frecuencia común, limpieza, transformación, estandarización
+        │
+        ▼
+CAPA 3: REPRESENTACIONES
+Matriz temporal multivariada, ventanas móviles, espacios latentes
+        │
+        ├──────────────► PCA / EPCA
+        │                    └── estructura factorial evolutiva
+        │
+        ├──────────────► HFC / EHFC
+        │                    └── agrupamientos y evolución de clases
+        │
+        ├──────────────► Autoencoder temporal
+        │                    └── representación latente no lineal
+        │
+        └──────────────► LSTM
+                             └── representación dinámica secuencial
+        │
+        ▼
+CAPA 4: DETECCIÓN DE REGÍMENES
+Identificación de intervalos, transiciones y patrones persistentes
+        │
+        ▼
+CAPA 5: VALIDACIÓN Y COMPARACIÓN
+Interpretabilidad, estabilidad temporal, capacidad descriptiva, robustez</code></pre>
+<section id="lectura-del-mapa" class="level3">
+<h3 class="anchored" data-anchor-id="lectura-del-mapa">Lectura del mapa</h3>
+<p>El mapa no debe interpretarse como una cadena rígida donde un método reemplaza al anterior. La tesis puede organizarse como una comparación de representaciones:</p>
+<ul>
+<li><strong>representación lineal:</strong> PCA / EPCA;</li>
+<li><strong>representación clasificatoria:</strong> HFC / EHFC;</li>
+<li><strong>representación no lineal:</strong> Autoencoder;</li>
+<li><strong>representación dinámica:</strong> LSTM.</li>
+</ul>
+<p>El aporte se fortalecerá cuando la comparación no se limite a “qué método funciona mejor”, sino a <strong>qué tipo de estructura revela cada método</strong> y bajo qué criterios se considera útil, estable o interpretable.</p>
+</section>
+</section>
+<section id="rol-de-cada-método-dentro-de-la-tesis" class="level2">
+<h2 class="anchored" data-anchor-id="rol-de-cada-método-dentro-de-la-tesis">4. Rol de cada método dentro de la tesis</h2>
+<section id="pca-análisis-de-componentes-principales" class="level3">
+<h3 class="anchored" data-anchor-id="pca-análisis-de-componentes-principales">4.1 PCA: análisis de componentes principales</h3>
+<p>El PCA permite construir combinaciones lineales de variables que explican la mayor parte de la variabilidad. En esta tesis, su función es generar una primera representación de la estructura macrofinanciera.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td>Matriz de indicadores estandarizados.</td>
+</tr>
+<tr class="even">
+<td><strong>Salida</strong></td>
+<td>Componentes principales, cargas factoriales, scores.</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilidad</strong></td>
+<td>Identificar factores dominantes del sistema financiero.</td>
+</tr>
+<tr class="even">
+<td><strong>Lectura económica</strong></td>
+<td>Los componentes pueden asociarse a dimensiones como liquidez, crédito, condiciones monetarias o estrés financiero, siempre que las cargas lo permitan.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hfc-clasificación-factorial-jerárquica" class="level3">
+<h3 class="anchored" data-anchor-id="hfc-clasificación-factorial-jerárquica">4.2 HFC: Clasificación Factorial Jerárquica</h3>
+<p>La HFC combina representación factorial y clasificación jerárquica. Su utilidad está en clasificar observaciones o variables dentro de un espacio reducido, evitando clasificar directamente en una dimensión alta y potencialmente ruidosa.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td>Coordenadas factoriales o estructura derivada del PCA.</td>
+</tr>
+<tr class="even">
+<td><strong>Salida</strong></td>
+<td>Árbol jerárquico, clases, grupos homogéneos.</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilidad</strong></td>
+<td>Identificar agrupamientos asociados a períodos financieros o familias de variables.</td>
+</tr>
+<tr class="even">
+<td><strong>Valor para la tesis</strong></td>
+<td>Permite traducir estructuras continuas en clases interpretables.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="epca-y-ehfc-dimensión-evolutiva" class="level3">
+<h3 class="anchored" data-anchor-id="epca-y-ehfc-dimensión-evolutiva">4.3 EPCA y EHFC: dimensión evolutiva</h3>
+<p>EPCA y EHFC incorporan explícitamente la dimensión temporal. El interés no está solo en obtener una estructura promedio para todo el período, sino en observar cómo esa estructura cambia al desplazarse en el tiempo.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td>Ventanas móviles de la matriz temporal multivariada.</td>
+</tr>
+<tr class="even">
+<td><strong>Salida</strong></td>
+<td>Secuencia de estructuras factoriales o clasificatorias.</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilidad</strong></td>
+<td>Evaluar estabilidad temporal, rotación de componentes y reconfiguración de clases.</td>
+</tr>
+<tr class="even">
+<td><strong>Conexión con régimen</strong></td>
+<td>Un régimen corresponde a un tramo donde la estructura evolutiva presenta estabilidad relativa.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="autoencoder-temporal" class="level3">
+<h3 class="anchored" data-anchor-id="autoencoder-temporal">4.4 Autoencoder temporal</h3>
+<p>Un Autoencoder aprende una representación comprimida de los datos intentando reconstruir la entrada. En la tesis puede utilizarse para generar un espacio latente no lineal que complemente la representación lineal del PCA.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td>Vectores o ventanas temporales de indicadores.</td>
+</tr>
+<tr class="even">
+<td><strong>Salida</strong></td>
+<td>Código latente, error de reconstrucción, representación no lineal.</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilidad</strong></td>
+<td>Capturar relaciones no lineales entre indicadores macrofinancieros.</td>
+</tr>
+<tr class="even">
+<td><strong>Indicador de transición</strong></td>
+<td>Incrementos persistentes en error de reconstrucción o desplazamientos en el espacio latente.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lstm" class="level3">
+<h3 class="anchored" data-anchor-id="lstm">4.5 LSTM</h3>
+<p>Las redes LSTM modelan dependencias temporales mediante mecanismos de memoria. En el contexto de la tesis, su papel puede estar vinculado a representar secuencias macrofinancieras y detectar patrones donde el estado actual depende de trayectorias pasadas.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td>Secuencias temporales multivariadas.</td>
+</tr>
+<tr class="even">
+<td><strong>Salida</strong></td>
+<td>Estados ocultos, predicción, representación secuencial o clasificación de regímenes.</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilidad</strong></td>
+<td>Capturar memoria temporal y dependencia de largo plazo.</td>
+</tr>
+<tr class="even">
+<td><strong>Conexión con régimen</strong></td>
+<td>Un cambio de régimen puede expresarse como cambio en el patrón secuencial aprendido.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="inventario-inicial-de-variables" class="level2">
+<h2 class="anchored" data-anchor-id="inventario-inicial-de-variables">5. Inventario inicial de variables</h2>
+<p>El diseño de variables debe representar el sistema financiero desde varios bloques. Cada bloque cumple una función conceptual distinta.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bloque</th>
+<th>Variables candidatas</th>
+<th>Justificación</th>
+<th>Transformaciones candidatas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Crédito</td>
+<td>Crédito total, empresarial, consumo, hipotecario, microempresa, pequeña empresa.</td>
+<td>El crédito es una dimensión central del ciclo financiero y de la expansión/contracción del sistema.</td>
+<td>Variación mensual, variación anual, ratio sobre PBI, log-diferencias.</td>
+</tr>
+<tr class="even">
+<td>Liquidez</td>
+<td>M1, M2, M3, liquidez del sistema financiero.</td>
+<td>Representa condiciones monetarias y disponibilidad de fondos.</td>
+<td>Crecimiento anual, ratios, estandarización.</td>
+</tr>
+<tr class="odd">
+<td>Tasas</td>
+<td>Tasa de referencia, interbancaria, activa promedio, pasiva promedio.</td>
+<td>Capturan el precio del dinero y condiciones de financiamiento.</td>
+<td>Niveles, spreads, diferencias.</td>
+</tr>
+<tr class="even">
+<td>Inflación</td>
+<td>IPC, inflación anual, inflación subyacente.</td>
+<td>Condiciona política monetaria, tasas reales y dinámica de crédito.</td>
+<td>Variación anual, inflación mensual anualizada.</td>
+</tr>
+<tr class="odd">
+<td>Tipo de cambio</td>
+<td>Tipo de cambio nominal, variación cambiaria.</td>
+<td>Representa presión externa, dolarización financiera y expectativas.</td>
+<td>Log-diferencias, volatilidad móvil.</td>
+</tr>
+<tr class="even">
+<td>Mercado de capitales</td>
+<td>Índice bursátil, rendimientos, capitalización si está disponible.</td>
+<td>Introduce una dimensión de valoración financiera y apetito por riesgo.</td>
+<td>Rendimiento mensual, volatilidad móvil.</td>
+</tr>
+<tr class="odd">
+<td>Riesgo</td>
+<td>EMBI Perú, spreads, indicadores de estrés si están disponibles.</td>
+<td>Permite capturar estrés financiero y percepción de riesgo soberano.</td>
+<td>Niveles, cambios mensuales, z-score.</td>
+</tr>
+<tr class="even">
+<td>Actividad económica</td>
+<td>PBI mensual, demanda interna, producción sectorial.</td>
+<td>Permite relacionar la dinámica financiera con el ciclo real.</td>
+<td>Variación anual, brecha respecto a tendencia.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled" title="Punto de diseño">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Punto de diseño
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El inventario inicial deberá depurarse considerando frecuencia, disponibilidad histórica, estabilidad de definiciones, valores faltantes, cambios metodológicos y redundancia entre variables.</p>
+</div>
+</div>
+<p><strong>Nota de actualización (revisión posterior):</strong> las series de crédito del inventario original (PN01208PM, PN01209PM, PN01210PM) fueron identificadas como series de tipo de cambio mal etiquetadas y reemplazadas por los códigos verificados del Cuadro 19 del BCRP: PN00532MM (crédito empresarial), PN00533MM (crédito consumo) y PN00534MM (crédito hipotecario). Adicionalmente, se eliminó “Crédito bancario SP” (PN00522MM) por colinealidad casi perfecta con la serie de crédito total. Ver notebooks 01–02 del pipeline de datos para el detalle de esta corrección.</p>
+</section>
+<section id="criterios-iniciales-de-validación" class="level2">
+<h2 class="anchored" data-anchor-id="criterios-iniciales-de-validación">6. Criterios iniciales de validación</h2>
+<p>La ficha de tesis plantea comparar los métodos en términos de interpretabilidad, estabilidad temporal y capacidad descriptiva. Estos criterios deben convertirse en métricas observables.</p>
+<section id="interpretabilidad" class="level3">
+<h3 class="anchored" data-anchor-id="interpretabilidad">6.1 Interpretabilidad</h3>
+<p>Evalúa si el resultado puede asociarse a dimensiones económicas comprensibles.</p>
+<ul>
+<li>concentración de cargas factoriales;</li>
+<li>variables dominantes por componente;</li>
+<li>coherencia económica de clusters;</li>
+<li>capacidad de explicar episodios históricos sin forzar la interpretación.</li>
+</ul>
+</section>
+<section id="estabilidad-temporal" class="level3">
+<h3 class="anchored" data-anchor-id="estabilidad-temporal">6.2 Estabilidad temporal</h3>
+<p>Evalúa si las estructuras identificadas permanecen relativamente constantes dentro de un período y cambian cuando aparece una transición.</p>
+<ul>
+<li>correlación entre componentes de ventanas sucesivas;</li>
+<li>distancia entre subespacios factoriales;</li>
+<li>persistencia de clusters;</li>
+<li>estabilidad de embeddings latentes.</li>
+</ul>
+</section>
+<section id="capacidad-descriptiva" class="level3">
+<h3 class="anchored" data-anchor-id="capacidad-descriptiva">6.3 Capacidad descriptiva</h3>
+<p>Evalúa si el método resume de manera útil la información del sistema.</p>
+<ul>
+<li>varianza explicada en PCA;</li>
+<li>calidad de reconstrucción en Autoencoder;</li>
+<li>separación entre grupos;</li>
+<li>coherencia temporal de los regímenes detectados.</li>
+</ul>
+</section>
+<section id="robustez" class="level3">
+<h3 class="anchored" data-anchor-id="robustez">6.4 Robustez</h3>
+<p>Aunque no aparece como criterio central en la ficha, la robustez será importante para sostener conclusiones.</p>
+<ul>
+<li>sensibilidad al tamaño de ventana;</li>
+<li>sensibilidad al conjunto de variables;</li>
+<li>sensibilidad a transformaciones;</li>
+<li>sensibilidad a períodos de entrenamiento.</li>
+</ul>
+</section>
+</section>
+<section id="bibliografía-inicial-comentada" class="level2">
+<h2 class="anchored" data-anchor-id="bibliografía-inicial-comentada">7. Bibliografía inicial comentada</h2>
+<p>La bibliografía se organiza por función dentro de la tesis. Esta primera lista no reemplaza la revisión sistemática; sirve como punto de partida para estructurar el estado del arte. Ver también la página <a href="./papers/ciclo_economico.html">Ciclo económico</a> para la bibliografía específica sobre ciclo económico (business cycle), que complementa —y se distingue de— la del ciclo financiero listada aquí.</p>
+<section id="ciclo-financiero-y-regímenes-financieros" class="level3">
+<h3 class="anchored" data-anchor-id="ciclo-financiero-y-regímenes-financieros">7.1 Ciclo financiero y regímenes financieros</h3>
+<ol type="1">
+<li><strong>Borio, C. (2014).</strong> <em>The financial cycle and macroeconomics: What have we learnt?</em> Journal of Banking &amp; Finance. Texto base para entender el ciclo financiero como fenómeno diferente del ciclo económico tradicional.</li>
+<li><strong>Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012).</strong> <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> BIS Working Papers. Referencia central para indicadores del ciclo financiero, especialmente crédito y precios de activos.</li>
+<li><strong>Claessens, S., Kose, M. A., &amp; Terrones, M. E. (2011/2012).</strong> Trabajos sobre ciclos financieros y ciclos de negocios. Útiles para conectar régimen financiero con episodios de expansión y contracción.</li>
+</ol>
+</section>
+<section id="regime-switching-y-cambios-estructurales" class="level3">
+<h3 class="anchored" data-anchor-id="regime-switching-y-cambios-estructurales">7.2 Regime switching y cambios estructurales</h3>
+<ol start="4" type="1">
+<li><strong>Hamilton, J. D. (1989).</strong> <em>A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle.</em> Econometrica. Referencia clásica para modelos de cambio de régimen en series económicas.</li>
+<li><strong>Hamilton, J. D. (1994).</strong> <em>Time Series Analysis.</em> Princeton University Press. Base teórica amplia para series de tiempo y regímenes.</li>
+<li><strong>Kim, C. J., &amp; Nelson, C. R. (1999).</strong> <em>State-Space Models with Regime Switching.</em> MIT Press. Útil para comprender regímenes como estados no observados.</li>
+<li><strong>Krolzig, H. M. (1997).</strong> <em>Markov-Switching Vector Autoregressions.</em> Springer. Referencia para enfoques multivariados de cambio de régimen.</li>
+</ol>
+</section>
+<section id="change-point-detection" class="level3">
+<h3 class="anchored" data-anchor-id="change-point-detection">7.3 Change Point Detection</h3>
+<ol start="8" type="1">
+<li><strong>Truong, C., Oudre, L., &amp; Vayatis, N. (2020).</strong> <em>Selective review of offline change point detection methods.</em> Signal Processing. Organiza los métodos de detección de cambios en tres elementos: función de costo, método de búsqueda y restricción sobre número de cambios.</li>
+<li><strong>Aminikhanghahi, S., &amp; Cook, D. J. (2017).</strong> <em>A survey of methods for time series change point detection.</em> Knowledge and Information Systems. Referencia de revisión para métodos de detección de puntos de cambio.</li>
+</ol>
+</section>
+<section id="análisis-factorial-pca-y-clasificación" class="level3">
+<h3 class="anchored" data-anchor-id="análisis-factorial-pca-y-clasificación">7.4 Análisis factorial, PCA y clasificación</h3>
+<ol start="10" type="1">
+<li><strong>Pearson, K. (1901).</strong> <em>On lines and planes of closest fit to systems of points in space.</em> Philosophical Magazine. Origen geométrico del PCA.</li>
+<li><strong>Hotelling, H. (1933).</strong> <em>Analysis of a complex of statistical variables into principal components.</em> Journal of Educational Psychology. Formalización clásica del análisis de componentes principales.</li>
+<li><strong>Jolliffe, I. T. (2002).</strong> <em>Principal Component Analysis.</em> Springer. Referencia estándar para teoría y aplicaciones de PCA.</li>
+<li><strong>Lebart, L., Morineau, A., &amp; Piron, M. (1995).</strong> <em>Statistique exploratoire multidimensionnelle.</em> Dunod. Base para análisis exploratorio multidimensional.</li>
+<li><strong>Camiz, S. y coautores.</strong> Trabajos sobre análisis factorial, clasificación y métodos evolutivos. Esta línea deberá organizarse con especial cuidado por su vínculo directo con PCA, HFC, EPCA y EHFC. Ver fichas FB-001 y FB-002 en el sistema de fichas bibliográficas del proyecto.</li>
+</ol>
+</section>
+<section id="autoencoders-y-representaciones-latentes" class="level3">
+<h3 class="anchored" data-anchor-id="autoencoders-y-representaciones-latentes">7.5 Autoencoders y representaciones latentes</h3>
+<ol start="15" type="1">
+<li><strong>Hinton, G. E., &amp; Salakhutdinov, R. R. (2006).</strong> <em>Reducing the Dimensionality of Data with Neural Networks.</em> Science. Referencia clásica sobre autoencoders como método no lineal de reducción de dimensionalidad.</li>
+<li><strong>Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</strong> <em>Deep Learning.</em> MIT Press. Marco general de aprendizaje profundo y representaciones.</li>
+<li><strong>Chalapathy, R., &amp; Chawla, S. (2019).</strong> <em>Deep Learning for Anomaly Detection: A Survey.</em> Relevante si el error de reconstrucción se utiliza como indicador de cambio o anomalía.</li>
+</ol>
+</section>
+<section id="lstm-y-modelamiento-secuencial" class="level3">
+<h3 class="anchored" data-anchor-id="lstm-y-modelamiento-secuencial">7.6 LSTM y modelamiento secuencial</h3>
+<ol start="18" type="1">
+<li><strong>Hochreiter, S., &amp; Schmidhuber, J. (1997).</strong> <em>Long Short-Term Memory.</em> Neural Computation. Referencia fundacional de LSTM.</li>
+<li><strong>Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (2000).</strong> <em>Learning to forget: Continual prediction with LSTM.</em> Neural Computation. Introduce mecanismos relevantes para memoria secuencial.</li>
+</ol>
+</section>
+<section id="fuentes-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="fuentes-de-datos">7.7 Fuentes de datos</h3>
+<ol start="20" type="1">
+<li><strong>Banco Central de Reserva del Perú (BCRP).</strong> Series estadísticas macroeconómicas y financieras. Fuente principal para variables monetarias, financieras, cambiarias y de actividad.</li>
+<li><strong>Superintendencia de Banca, Seguros y AFP (SBS).</strong> Información del sistema financiero peruano. Fuente complementaria para crédito, tasas, morosidad y estructura financiera.</li>
+</ol>
+</section>
+</section>
+<section id="agenda-de-revisión" class="level2">
+<h2 class="anchored" data-anchor-id="agenda-de-revisión">8. Agenda de revisión</h2>
+<p>Para revisar este documento de forma eficiente, las siguientes preguntas ordenan la discusión:</p>
+<ol type="1">
+<li>¿La definición de régimen financiero captura adecuadamente el fenómeno que se quiere estudiar?</li>
+<li>¿El régimen debe definirse sobre observaciones temporales, sobre variables o sobre estructuras de relación?</li>
+<li>¿La transición de régimen debe exigir persistencia mínima? Si sí, ¿cuántos períodos o ventanas?</li>
+<li>¿La comparación entre métodos debe ser simétrica o cada método debe tener un rol específico?</li>
+<li>¿LSTM será un método central de detección, una extensión computacional o un modelo comparativo?</li>
+<li>¿Qué variables son esenciales para representar el ciclo financiero peruano?</li>
+<li>¿Qué métrica será prioritaria cuando los métodos entreguen conclusiones distintas?</li>
+</ol>
+<hr>
+<p><em>Documento generado como asistente de investigación. Versión preliminar para revisión conceptual, metodológica y bibliográfica. Las referencias deberán validarse y completarse en la matriz bibliográfica correspondiente.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

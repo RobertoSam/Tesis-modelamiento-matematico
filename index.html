@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tesis Maestría — Ciclo Financiero Perú – Tesis — Ciclo Financiero Perú</title>
+<title>Medición del ciclo financiero en Perú – Tesis — Ciclo Financiero Perú</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -75,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -96,22 +96,34 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Inicio</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./marco_conceptual.html"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./papers/diccionario_datos.html"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Papers</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
         <li>
-    <a class="dropdown-item" href="./papers/camiz2020.html">
- <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="./papers/camiz_et_al_2020.html">
- <span class="dropdown-text">Camiz et al.&nbsp;(2020) v2</span></a>
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./papers/camiz_maulucci_roig_2010.html">
  <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
     </ul>
   </li>
@@ -121,8 +133,47 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
         <li>
-    <a class="dropdown-item" href="./notebooks/01_exploracion_bcrp.html">
- <span class="dropdown-text">Exploración inicial</span></a>
+    <a class="dropdown-item" href="./notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="./notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
     </ul>
   </li>
@@ -137,23 +188,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#sobre-esta-investigación" id="toc-sobre-esta-investigación" class="nav-link active" data-scroll-target="#sobre-esta-investigación">Sobre esta investigación</a></li>
-  <li><a href="#avance-bibliográfico" id="toc-avance-bibliográfico" class="nav-link" data-scroll-target="#avance-bibliográfico">Avance bibliográfico</a></li>
-  <li><a href="#próximas-secciones" id="toc-próximas-secciones" class="nav-link" data-scroll-target="#próximas-secciones">Próximas secciones</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tesis Maestría — Ciclo Financiero Perú</h1>
+<h1 class="title">Medición del ciclo financiero en Perú</h1>
+<p class="subtitle lead">Mediante técnicas de reducción dimensional y machine learning</p>
 </div>
 
 
@@ -170,43 +212,112 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="sobre-esta-investigación" class="level2">
-<h2 class="anchored" data-anchor-id="sobre-esta-investigación">Sobre esta investigación</h2>
-<p>Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning (PCA, HFC, EPCA/EHFC, Autoencoders, LSTM).</p>
-<p><strong>Autor:</strong> Roberto Samaniego<br>
-<strong>Programa:</strong> Maestría<br>
-<strong>Asesor:</strong> Dr.&nbsp;Sergio Camiz<br>
-<strong>Estado:</strong> En progreso — Revisión bibliográfica</p>
-<hr>
+<div class="callout callout-style-default callout-note callout-titled" title="Sobre este sitio">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sobre este sitio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este sitio documenta el avance de la tesis de maestría de Roberto Samaniego Salcedo, bajo la supervisión del Dr.&nbsp;Sergio Camiz. Reúne el marco conceptual, la revisión bibliográfica y el pipeline de datos del BCRP en un solo lugar de consulta.</p>
+</div>
+</div>
+<section id="resumen-del-avance" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-del-avance">Resumen del avance</h2>
+<!--
+NOTA METODOLÓGICA (visible solo en el código fuente, no en el HTML):
+Este avance se calcula solo sobre frentes con una unidad discreta
+contable ("X de Y completos"). El marco conceptual y la validación de
+resultados no tienen todavía una unidad de conteo clara y por eso se
+muestran como estado cualitativo, no como porcentaje.
+
+Fórmula del avance global: promedio simple de los tres frentes
+cuantificables (bibliografía, pipeline de datos, modelamiento).
+Para actualizar: cambia los numeradores/denominadores de cada frente
+más abajo y recalcula el promedio a mano antes de publicar.
+-->
+<div class="callout callout-style-default callout-important callout-titled" title="Avance global aproximado: 40%">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Avance global aproximado: 40%
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (20%), pipeline de datos (100%) y modelamiento (0%). El marco conceptual y la validación de resultados se muestran aparte porque no tienen todavía una unidad de conteo definida.</p>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+<p><strong>Marco conceptual</strong><br> <span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor</span></p>
+</div>
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+<strong>Bibliografía</strong><br>
+<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
+<div style="background: #486581; width: 20%; height: 10px; border-radius: 999px;">
+
+</div>
+</div>
+<p><span style="color: #6b7280; font-size: 14px;">3 de 15 fichas núcleo completas</span></p>
+</div>
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+<strong>Pipeline de datos BCRP</strong><br>
+<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
+<div style="background: #486581; width: 100%; height: 10px; border-radius: 999px;">
+
+</div>
+</div>
+<p><span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · 18 variables (ampliado de 13)</span></p>
+</div>
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+<strong>Modelamiento</strong><br>
+<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
+<div style="background: #486581; width: 0%; height: 10px; border-radius: 999px;">
+
+</div>
+</div>
+<p><span style="color: #6b7280; font-size: 14px;">0 de 3 técnicas (notebooks por regenerar)</span></p>
+</div>
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+<p><strong>Validación de resultados</strong><br> <span style="color: #6b7280; font-size: 14px;">No iniciado</span></p>
+</div>
+</div>
 </section>
-<section id="avance-bibliográfico" class="level2">
-<h2 class="anchored" data-anchor-id="avance-bibliográfico">Avance bibliográfico</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>#</th>
-<th>Paper</th>
-<th>Técnica</th>
-<th>Estado</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Camiz et al.&nbsp;(2020)</td>
-<td>HFC</td>
-<td>✅ Leído</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="próximas-secciones" class="level2">
-<h2 class="anchored" data-anchor-id="próximas-secciones">Próximas secciones</h2>
-<ul>
-<li>📊 Dataset BCRP</li>
-<li>🔬 Resultados de modelos</li>
+<section id="literatura-revisada" class="level2">
+<h2 class="anchored" data-anchor-id="literatura-revisada">Literatura revisada</h2>
+<p>Fichas bibliográficas completas siguiendo la Ficha Estándar del proyecto. Ver el detalle de cada una en la sección <a href="./papers/camiz_et_al_2020.html">Papers</a>.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked=""><strong>Camiz et al.&nbsp;(2020)</strong> — Hierarchical Factor Classification of Dendrochronological Time Series. Referencia metodológica central para HFC.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Drehmann, Borio &amp; Tsatsaronis (2012)</strong> — Characterising the financial cycle. Referencia central para indicadores del ciclo financiero.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Camiz, Maulucci &amp; Roig (2010)</strong> — EPCA / Statis dual. Fundamento metodológico de la extensión evolutiva del PCA.</label></li>
+<li><label><input type="checkbox"><strong>Camiz &amp; Roig (2011)</strong> — eslabón faltante en la cadena metodológica HFC → EHFC. <em>Pendiente de localizar y procesar.</em></label></li>
+<li><label><input type="checkbox">Referencias adicionales del núcleo (11 pendientes) — ver <a href="./marco_conceptual.html#bibliografia">Marco conceptual, sección 7</a> para el listado completo de la bibliografía inicial identificada.</label></li>
 </ul>
+</section>
+<section id="pipeline-de-datos-bcrp" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-de-datos-bcrp">Pipeline de datos BCRP</h2>
+<p>Organizado por etapa metodológica, no por notebook individual:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked=""><strong>Extracción</strong> — conexión a la API del BCRP, descarga de series. Ampliado recientemente de 13 a <strong>18 variables</strong> (se agregaron liquidez M1/M2/M3, tasa interbancaria, IPC subyacente y el spread EMBI Perú). Ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a> para el detalle completo de cada serie y su código BCRP verificado.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Carga y verificación</strong> — corrección de códigos de series mal etiquetados (tipo de cambio vs.&nbsp;crédito), verificación de integridad.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Análisis exploratorio</strong> — documentación de la colinealidad entre crédito total y sus componentes (empresarial, consumo, hipotecario).</label></li>
+<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), remuestreo trimestral, estandarización. Dataset final: <strong>72 trimestres × 18 variables transformadas</strong>, listo para PCA/HFC.</label></li>
+</ul>
+</section>
+<section id="modelamiento-próxima-etapa" class="level2">
+<h2 class="anchored" data-anchor-id="modelamiento-próxima-etapa">Modelamiento (próxima etapa)</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"><strong>PCA / HFC</strong> — análisis de componentes principales y clasificación factorial jerárquica.</label></li>
+<li><label><input type="checkbox"><strong>EPCA / EHFC</strong> — extensión evolutiva con ventanas móviles.</label></li>
+<li><label><input type="checkbox"><strong>Autoencoder / LSTM</strong> — representaciones latentes no lineales y modelamiento secuencial.</label></li>
+</ul>
+<hr>
+<p><em>Este resumen se actualiza manualmente conforme avanza la tesis. Última actualización: ver historial de commits de <code>index.qmd</code> en GitHub.</em></p>
 
 
 </section>

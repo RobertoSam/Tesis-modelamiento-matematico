@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/03_epca_ehfc.html</loc>
-    <lastmod>2026-06-27T21:14:31.676Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/marco_conceptual.html</loc>
+    <lastmod>2026-07-10T14:14:27.613Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/04_autoencoder_lstm.html</loc>
-    <lastmod>2026-06-27T21:14:31.676Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/03_analisis_exploratorio.html</loc>
+    <lastmod>2026-07-10T21:02:13.683Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/02_pca_hfc.html</loc>
-    <lastmod>2026-06-27T21:14:31.676Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/01_extraccion_bcrp.html</loc>
+    <lastmod>2026-07-10T20:59:44.708Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/index.html</loc>
-    <lastmod>2026-06-27T21:04:36.419Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/06a_seleccion_ventana_epca.html</loc>
+    <lastmod>2026-07-13T03:28:27.441Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/papers/camiz2020.html</loc>
-    <lastmod>2026-06-27T21:07:50.336Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/999_pca_hfc.html</loc>
+    <lastmod>2026-07-07T11:53:29.152Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/999_autoencoder_lstm.html</loc>
+    <lastmod>2026-07-07T11:53:28.751Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/05_pca.html</loc>
+    <lastmod>2026-07-13T03:27:24.493Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/about.html</loc>
+    <lastmod>2026-06-27T20:59:22.224Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/Untitled.html</loc>
+    <lastmod>2026-06-27T21:58:34.856Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/papers/ciclo_economico.html</loc>
+    <lastmod>2026-07-10T14:14:27.627Z</lastmod>
   </url>
   <url>
     <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/papers/camiz_maulucci_roig_2010.html</loc>
@@ -29,19 +49,39 @@
     <lastmod>2026-06-27T21:25:11.057Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/Untitled.html</loc>
-    <lastmod>2026-06-27T21:58:34.856Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/papers/diccionario_datos.html</loc>
+    <lastmod>2026-07-12T18:05:01.189Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/about.html</loc>
-    <lastmod>2026-06-27T20:59:22.224Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/index.html</loc>
+    <lastmod>2026-07-12T18:05:01.200Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/01_exploracion_bcrp.html</loc>
-    <lastmod>2026-06-27T22:12:03.048Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/glosario.html</loc>
+    <lastmod>2026-07-10T15:19:12.209Z</lastmod>
   </url>
   <url>
-    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/01_exploracion_datos.html</loc>
-    <lastmod>2026-06-27T21:14:31.676Z</lastmod>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/999_epca_ehfc.html</loc>
+    <lastmod>2026-07-07T11:53:28.951Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/06_epca.html</loc>
+    <lastmod>2026-07-13T03:29:28.319Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/02_carga_y_verificacion.html</loc>
+    <lastmod>2026-07-10T21:01:40.018Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/06b_seleccion_ventana_epca_mensual.html</loc>
+    <lastmod>2026-07-13T03:29:06.376Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/04b_preprocesamiento_mensual.html</loc>
+    <lastmod>2026-07-13T03:27:08.645Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RobertoSam.github.io/Tesis-modelamiento-matematico/notebooks/04_preprocesamiento.html</loc>
+    <lastmod>2026-07-13T03:26:44.603Z</lastmod>
   </url>
 </urlset>
