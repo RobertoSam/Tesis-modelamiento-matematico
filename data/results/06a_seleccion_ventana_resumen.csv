@@ -1,0 +1,13 @@
+ventana_trimestres,ventana_anios,n_ventanas_generadas,estabilidad_promedio,estabilidad_std,n_caidas_detectadas,dataset
+20,5.0,27,0.885,0.228,3,transformado_estandarizado
+24,6.0,25,0.921,0.149,4,transformado_estandarizado
+28,7.0,23,0.913,0.179,3,transformado_estandarizado
+32,8.0,21,0.895,0.214,2,transformado_estandarizado
+36,9.0,19,0.898,0.224,2,transformado_estandarizado
+40,10.0,17,0.922,0.147,3,transformado_estandarizado
+20,5.0,27,0.827,0.228,4,niveles_estandarizado (PC2)
+24,6.0,25,0.869,0.226,3,niveles_estandarizado (PC2)
+28,7.0,23,0.872,0.223,3,niveles_estandarizado (PC2)
+32,8.0,21,0.873,0.218,2,niveles_estandarizado (PC2)
+36,9.0,19,0.853,0.244,2,niveles_estandarizado (PC2)
+40,10.0,17,0.875,0.203,2,niveles_estandarizado (PC2)

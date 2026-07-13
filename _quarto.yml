@@ -1,26 +1,50 @@
 project:
   type: website
-
 website:
   title: "Tesis — Ciclo Financiero Perú"
   navbar:
     left:
       - href: index.qmd
         text: Inicio
+      - href: marco_conceptual.qmd
+        text: "Marco conceptual"
+      - href: glosario.qmd
+        text: "Glosario"
+      - href: papers/diccionario_datos.qmd
+        text: "Diccionario de datos"
       - text: Papers
         menu:
           - href: papers/camiz_et_al_2020.qmd
             text: "Camiz et al. (2020)"
           - href: papers/camiz_maulucci_roig_2010.qmd
             text: "Camiz, Maulucci & Roig (2010)"
+          - href: papers/ciclo_economico.qmd
+            text: "Ciclo económico"
       - text: Data BCRP
         menu:
-          - href: notebooks/01_exploracion_bcrp.ipynb
-            text: "Exploración inicial"
+          - href: notebooks/01_extraccion_bcrp.ipynb
+            text: "01 · Extracción"
+          - href: notebooks/02_carga_y_verificacion.ipynb
+            text: "02 · Carga y verificación"
+          - href: notebooks/03_analisis_exploratorio.ipynb
+            text: "03 · Análisis exploratorio"
+          - href: notebooks/04_preprocesamiento.ipynb
+            text: "04 · Preprocesamiento (trimestral)"
+          - href: notebooks/04b_preprocesamiento_mensual.ipynb
+            text: "04b · Preprocesamiento (mensual)"
+      - text: Modelamiento
+        menu:
+          - href: notebooks/05_pca.ipynb
+            text: "05 · PCA (trimestral)"
+          - href: notebooks/06a_seleccion_ventana_epca.ipynb
+            text: "06a · Selección de ventana (trimestral)"
+          - href: notebooks/06b_seleccion_ventana_epca_mensual.ipynb
+            text: "06b · Selección de ventana (mensual)"
+          - href: notebooks/06_epca.ipynb
+            text: "06 · EPCA (mensual)"
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-

@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>04b · Preprocesamiento — versión MENSUAL (pipeline paralelo) – Tesis — Ciclo Financiero Perú</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Tesis — Ciclo Financiero Perú</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_conceptual.html"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../papers/diccionario_datos.html"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Papers</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
+ <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-bcrp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data BCRP</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#librerías-y-carga-de-datos-crudos-solo-lectura" id="toc-librerías-y-carga-de-datos-crudos-solo-lectura" class="nav-link active" data-scroll-target="#librerías-y-carga-de-datos-crudos-solo-lectura">1. Librerías y carga de datos crudos (solo lectura)</a></li>
+  <li><a href="#embi-perú-resampleo-a-mensual-no-trimestral" id="toc-embi-perú-resampleo-a-mensual-no-trimestral" class="nav-link" data-scroll-target="#embi-perú-resampleo-a-mensual-no-trimestral">2. EMBI Perú: resampleo a MENSUAL (no trimestral)</a></li>
+  <li><a href="#unir-embi-con-el-resto-de-series-mensuales" id="toc-unir-embi-con-el-resto-de-series-mensuales" class="nav-link" data-scroll-target="#unir-embi-con-el-resto-de-series-mensuales">3. Unir EMBI con el resto de series mensuales</a></li>
+  <li><a href="#revisión-y-tratamiento-de-nulos" id="toc-revisión-y-tratamiento-de-nulos" class="nav-link" data-scroll-target="#revisión-y-tratamiento-de-nulos">4. Revisión y tratamiento de nulos</a></li>
+  <li><a href="#versión-niveles-estandarización-sin-transformar" id="toc-versión-niveles-estandarización-sin-transformar" class="nav-link" data-scroll-target="#versión-niveles-estandarización-sin-transformar">5. Versión niveles + estandarización (SIN transformar)</a></li>
+  <li><a href="#transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" id="toc-transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" class="nav-link" data-scroll-target="#transformaciones-de-estacionariedad-log-diferencia-diferencia-simple">6. Transformaciones de estacionariedad (log-diferencia / diferencia simple)</a></li>
+  <li><a href="#estandarización-de-la-versión-transformada" id="toc-estandarización-de-la-versión-transformada" class="nav-link" data-scroll-target="#estandarización-de-la-versión-transformada">7. Estandarización de la versión transformada</a></li>
+  <li><a href="#guardar-los-cuatro-datasets-mensuales" id="toc-guardar-los-cuatro-datasets-mensuales" class="nav-link" data-scroll-target="#guardar-los-cuatro-datasets-mensuales">8. Guardar los cuatro datasets mensuales</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">04b · Preprocesamiento — versión MENSUAL (pipeline paralelo)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Tesis:</strong> Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning</p>
+<p><strong>Por qué existe este notebook aparte de <code>04_preprocesamiento.ipynb</code>:</strong> Con 72 trimestres (18 años), la restricción n &gt; p limita mucho el tamaño de ventana viable para EPCA/EHFC (ver <code>06a_seleccion_ventana_epca.ipynb</code>). En mensual se dispone de ~216 observaciones en vez de 72, lo que permite ventanas más cortas en tiempo calendario sin caer en matrices de correlación degeneradas.</p>
+<p><strong>Diferencia clave frente a la versión trimestral: NO incluye <code>indice_precios_inmuebles</code>.</strong> Esa serie es trimestral en origen (no existe una versión mensual real publicada por el BCRP); incluirla aquí obligaría a interpolar 2 de cada 3 meses, es decir, fabricar información que no existe. Se prefiere excluirla explícitamente antes que inventar datos. Esto se documenta como decisión metodológica reconocida, no oculta.</p>
+<p><strong>Entradas (solo lectura):</strong> - <code>data/raw/series_bcrp_raw.csv</code> (ya mensual, sin resamplear) - <code>data/raw/embi_peru_raw.csv</code> (diario, se resamplea aquí a MENSUAL, no trimestral)</p>
+<p><strong>Salidas:</strong> cuatro datasets en <code>data/processed/</code>, sufijo <code>_mensual</code>, en paralelo exacto a los cuatro de la versión trimestral.</p>
+<section id="librerías-y-carga-de-datos-crudos-solo-lectura" class="level2">
+<h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos-crudos-solo-lectura">1. Librerías y carga de datos crudos (solo lectura)</h2>
+<div id="ea0aae99" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_raw <span class="op">=</span> pd.read_csv(<span class="st">'data/raw/series_bcrp_raw.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df_raw <span class="op">=</span> df_raw.sort_index()</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Series crudas mensuales: </span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_raw<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_raw<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_raw<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series crudas mensuales: 228 meses x 18 variables
+Periodo: 2007-01 a 2025-12</code></pre>
+</div>
+</div>
+</section>
+<section id="embi-perú-resampleo-a-mensual-no-trimestral" class="level2">
+<h2 class="anchored" data-anchor-id="embi-perú-resampleo-a-mensual-no-trimestral">2. EMBI Perú: resampleo a MENSUAL (no trimestral)</h2>
+<p>Mismo criterio de promedio del periodo que en la versión trimestral, pero agregando a nivel mes.</p>
+<div id="e1091c66" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_embi_diario <span class="op">=</span> pd.read_csv(<span class="st">'data/raw/embi_peru_raw.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df_embi_mensual <span class="op">=</span> df_embi_diario.resample(<span class="st">'MS'</span>).mean()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'EMBI Perú (resampleado a mensual): </span><span class="sc">{</span>df_embi_mensual<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>EMBI Perú (resampleado a mensual): 276 observaciones</code></pre>
+</div>
+</div>
+</section>
+<section id="unir-embi-con-el-resto-de-series-mensuales" class="level2">
+<h2 class="anchored" data-anchor-id="unir-embi-con-el-resto-de-series-mensuales">3. Unir EMBI con el resto de series mensuales</h2>
+<div id="4b488324" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_completo <span class="op">=</span> df_raw.join(df_embi_mensual, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset mensual sincronizado: </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>df_completo.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset mensual sincronizado: 228 filas x 19 columnas
+Periodo: 2007-01 a 2025-12</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Crédito SF sector privado</th>
+<th data-quarto-table-cell-role="th">Crédito empresarial</th>
+<th data-quarto-table-cell-role="th">Crédito consumo</th>
+<th data-quarto-table-cell-role="th">Crédito hipotecario</th>
+<th data-quarto-table-cell-role="th">Tasa activa TAMN</th>
+<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN</th>
+<th data-quarto-table-cell-role="th">Tasa referencia BCRP</th>
+<th data-quarto-table-cell-role="th">Tipo de cambio</th>
+<th data-quarto-table-cell-role="th">Índice BVL</th>
+<th data-quarto-table-cell-role="th">IPC Lima</th>
+<th data-quarto-table-cell-role="th">PBI desestacionalizado</th>
+<th data-quarto-table-cell-role="th">Demanda interna</th>
+<th data-quarto-table-cell-role="th">Reservas internacionales</th>
+<th data-quarto-table-cell-role="th">Liquidez M1</th>
+<th data-quarto-table-cell-role="th">Liquidez M2</th>
+<th data-quarto-table-cell-role="th">Liquidez M3</th>
+<th data-quarto-table-cell-role="th">Tasa interbancaria</th>
+<th data-quarto-table-cell-role="th">IPC Subyacente</th>
+<th data-quarto-table-cell-role="th">embi_peru</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">fecha</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-08-01</th>
+<td>470356.301562</td>
+<td>247323.020900</td>
+<td>104750.3996</td>
+<td>72784.2576</td>
+<td>15.1490</td>
+<td>2.1348</td>
+<td>4.50</td>
+<td>3.543200</td>
+<td>34937.73</td>
+<td>115.586828</td>
+<td>191.100818</td>
+<td>216.143896</td>
+<td>87752.818921</td>
+<td>158984.423067</td>
+<td>516153.852177</td>
+<td>702940.601847</td>
+<td>4.5079</td>
+<td>115.998679</td>
+<td>133.095238</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2025-09-01</th>
+<td>470208.838774</td>
+<td>246752.668765</td>
+<td>105563.9020</td>
+<td>73326.4468</td>
+<td>15.3507</td>
+<td>2.1383</td>
+<td>4.25</td>
+<td>3.502818</td>
+<td>38054.76</td>
+<td>115.599718</td>
+<td>191.867835</td>
+<td>210.518623</td>
+<td>85148.225305</td>
+<td>161111.064693</td>
+<td>520987.904396</td>
+<td>709175.882797</td>
+<td>4.3685</td>
+<td>116.016556</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-10-01</th>
+<td>470552.782777</td>
+<td>247446.294924</td>
+<td>106685.7408</td>
+<td>73902.4976</td>
+<td>15.5555</td>
+<td>2.1200</td>
+<td>4.25</td>
+<td>3.414091</td>
+<td>38599.28</td>
+<td>115.484549</td>
+<td>192.028747</td>
+<td>217.057443</td>
+<td>89960.765240</td>
+<td>163534.940316</td>
+<td>525748.900702</td>
+<td>712922.060965</td>
+<td>4.2500</td>
+<td>116.070864</td>
+<td>123.173913</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2025-11-01</th>
+<td>474468.883319</td>
+<td>249857.815330</td>
+<td>107487.5164</td>
+<td>74421.5588</td>
+<td>15.7477</td>
+<td>2.0993</td>
+<td>4.25</td>
+<td>3.372850</td>
+<td>38978.53</td>
+<td>115.612485</td>
+<td>190.919048</td>
+<td>215.534038</td>
+<td>90898.183584</td>
+<td>170252.343551</td>
+<td>534918.802279</td>
+<td>721826.606486</td>
+<td>4.2478</td>
+<td>116.220266</td>
+<td>126.100000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-12-01</th>
+<td>479089.326795</td>
+<td>252432.680596</td>
+<td>107850.7452</td>
+<td>74632.2836</td>
+<td>15.8871</td>
+<td>1.9771</td>
+<td>4.25</td>
+<td>3.366737</td>
+<td>43464.77</td>
+<td>115.894705</td>
+<td>193.429032</td>
+<td>242.172683</td>
+<td>90214.484300</td>
+<td>178926.594941</td>
+<td>550978.611986</td>
+<td>737697.228516</td>
+<td>4.2411</td>
+<td>116.492958</td>
+<td>126.782609</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="revisión-y-tratamiento-de-nulos" class="level2">
+<h2 class="anchored" data-anchor-id="revisión-y-tratamiento-de-nulos">4. Revisión y tratamiento de nulos</h2>
+<p>Mismo criterio que la versión trimestral: se documenta cuántas filas se pierden antes de eliminarlas, no se hace en silencio.</p>
+<div id="9abd3f92" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nulos_por_columna <span class="op">=</span> df_completo.isna().<span class="bu">sum</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Valores faltantes por columna:'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nulos_por_columna[nulos_por_columna <span class="op">&gt;</span> <span class="dv">0</span>])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>filas_antes <span class="op">=</span> df_completo.shape[<span class="dv">0</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df_limpio <span class="op">=</span> df_completo.dropna()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>filas_despues <span class="op">=</span> df_limpio.shape[<span class="dv">0</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Filas antes de dropna: </span><span class="sc">{</span>filas_antes<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Filas despues de dropna: </span><span class="sc">{</span>filas_despues<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Filas eliminadas: </span><span class="sc">{</span>filas_antes <span class="op">-</span> filas_despues<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo final: </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Valores faltantes por columna:
+embi_peru    19
+dtype: int64
+
+Filas antes de dropna: 228
+Filas despues de dropna: 209
+Filas eliminadas: 19
+Periodo final: 2007-01 a 2025-12</code></pre>
+</div>
+</div>
+</section>
+<section id="versión-niveles-estandarización-sin-transformar" class="level2">
+<h2 class="anchored" data-anchor-id="versión-niveles-estandarización-sin-transformar">5. Versión niveles + estandarización (SIN transformar)</h2>
+<p>Igual que la sección 4b de la versión trimestral: permite comparar PCA/HFC sobre niveles vs.&nbsp;transformado, ahora en frecuencia mensual.</p>
+<div id="d19c0eb5" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scaler_niveles <span class="op">=</span> StandardScaler()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    scaler_niveles.fit_transform(df_limpio),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_limpio.index,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_limpio.columns</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, mensual):'</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, mensual):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Crédito SF sector privado</th>
+<th data-quarto-table-cell-role="th">Crédito empresarial</th>
+<th data-quarto-table-cell-role="th">Crédito consumo</th>
+<th data-quarto-table-cell-role="th">Crédito hipotecario</th>
+<th data-quarto-table-cell-role="th">Tasa activa TAMN</th>
+<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN</th>
+<th data-quarto-table-cell-role="th">Tasa referencia BCRP</th>
+<th data-quarto-table-cell-role="th">Tipo de cambio</th>
+<th data-quarto-table-cell-role="th">Índice BVL</th>
+<th data-quarto-table-cell-role="th">IPC Lima</th>
+<th data-quarto-table-cell-role="th">PBI desestacionalizado</th>
+<th data-quarto-table-cell-role="th">Demanda interna</th>
+<th data-quarto-table-cell-role="th">Reservas internacionales</th>
+<th data-quarto-table-cell-role="th">Liquidez M1</th>
+<th data-quarto-table-cell-role="th">Liquidez M2</th>
+<th data-quarto-table-cell-role="th">Liquidez M3</th>
+<th data-quarto-table-cell-role="th">Tasa interbancaria</th>
+<th data-quarto-table-cell-role="th">IPC Subyacente</th>
+<th data-quarto-table-cell-role="th">embi_peru</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">std</th>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" class="level2">
+<h2 class="anchored" data-anchor-id="transformaciones-de-estacionariedad-log-diferencia-diferencia-simple">6. Transformaciones de estacionariedad (log-diferencia / diferencia simple)</h2>
+<p>Mismo criterio ya sustentado (Drehmann, Borio &amp; Tsatsaronis, 2012; Nelson &amp; Plosser, 1982): log-diferencia para niveles, diferencia simple para tasas y spreads. Idéntica clasificación de variables que en la versión trimestral, sin <code>indice_precios_inmuebles</code> (no existe aquí).</p>
+<div id="914d8e1a" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>VARS_LOG_DIFF <span class="op">=</span> [</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'Crédito SF sector privado',  # Total -- excluir por colinealidad, igual que en trimestral</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crédito empresarial'</span>, <span class="st">'Crédito consumo'</span>, <span class="st">'Crédito hipotecario'</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tipo de cambio'</span>, <span class="st">'Índice BVL'</span>, <span class="st">'IPC Lima'</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PBI desestacionalizado'</span>, <span class="st">'Demanda interna'</span>, <span class="st">'Reservas internacionales'</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Liquidez M1'</span>, <span class="st">'Liquidez M2'</span>, <span class="st">'Liquidez M3'</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>VARS_DIFF_SIMPLE <span class="op">=</span> [</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa activa TAMN'</span>, <span class="st">'Tasa pasiva TIPMN'</span>, <span class="st">'Tasa referencia BCRP'</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa interbancaria'</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'embi_peru'</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 'IPC Subyacente' queda fuera, misma decision pendiente que en la version trimestral.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>df_limpio.index)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_LOG_DIFF:</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_log_diff'</span>] <span class="op">=</span> np.log(df_limpio[col]).diff()</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_DIFF_SIMPLE:</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_diff'</span>] <span class="op">=</span> df_limpio[col].diff()</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> df_transformado.dropna()</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset transformado (mensual, estacionario): </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>df_transformado.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset transformado (mensual, estacionario): 208 filas x 17 columnas</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Crédito empresarial_log_diff</th>
+<th data-quarto-table-cell-role="th">Crédito consumo_log_diff</th>
+<th data-quarto-table-cell-role="th">Crédito hipotecario_log_diff</th>
+<th data-quarto-table-cell-role="th">Tipo de cambio_log_diff</th>
+<th data-quarto-table-cell-role="th">Índice BVL_log_diff</th>
+<th data-quarto-table-cell-role="th">IPC Lima_log_diff</th>
+<th data-quarto-table-cell-role="th">PBI desestacionalizado_log_diff</th>
+<th data-quarto-table-cell-role="th">Demanda interna_log_diff</th>
+<th data-quarto-table-cell-role="th">Reservas internacionales_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M1_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M2_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M3_log_diff</th>
+<th data-quarto-table-cell-role="th">Tasa activa TAMN_diff</th>
+<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN_diff</th>
+<th data-quarto-table-cell-role="th">Tasa referencia BCRP_diff</th>
+<th data-quarto-table-cell-role="th">Tasa interbancaria_diff</th>
+<th data-quarto-table-cell-role="th">embi_peru_diff</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">fecha</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-07-01</th>
+<td>0.008822</td>
+<td>0.004928</td>
+<td>0.002894</td>
+<td>-0.013325</td>
+<td>0.021602</td>
+<td>0.002312</td>
+<td>0.011317</td>
+<td>0.051459</td>
+<td>0.025666</td>
+<td>0.029998</td>
+<td>0.022872</td>
+<td>0.023006</td>
+<td>0.0638</td>
+<td>-0.1121</td>
+<td>0.00</td>
+<td>0.001106</td>
+<td>-13.134576</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2025-08-01</th>
+<td>0.006494</td>
+<td>0.008378</td>
+<td>0.007042</td>
+<td>-0.003662</td>
+<td>0.043806</td>
+<td>-0.002907</td>
+<td>0.004533</td>
+<td>-0.003674</td>
+<td>0.003114</td>
+<td>-0.002453</td>
+<td>0.005962</td>
+<td>0.003252</td>
+<td>0.1045</td>
+<td>-0.0268</td>
+<td>0.00</td>
+<td>0.007900</td>
+<td>-7.817805</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-10-01</th>
+<td>0.000498</td>
+<td>0.018307</td>
+<td>0.015247</td>
+<td>-0.037119</td>
+<td>0.099666</td>
+<td>-0.000885</td>
+<td>0.004844</td>
+<td>0.004218</td>
+<td>0.024850</td>
+<td>0.028220</td>
+<td>0.018419</td>
+<td>0.014100</td>
+<td>0.4065</td>
+<td>-0.0148</td>
+<td>-0.25</td>
+<td>-0.257900</td>
+<td>-9.921325</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2025-11-01</th>
+<td>0.009698</td>
+<td>0.007487</td>
+<td>0.006999</td>
+<td>-0.012153</td>
+<td>0.009777</td>
+<td>0.001107</td>
+<td>-0.005796</td>
+<td>-0.007043</td>
+<td>0.010366</td>
+<td>0.040255</td>
+<td>0.017291</td>
+<td>0.012413</td>
+<td>0.1922</td>
+<td>-0.0207</td>
+<td>0.00</td>
+<td>-0.002200</td>
+<td>2.926087</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2025-12-01</th>
+<td>0.010253</td>
+<td>0.003374</td>
+<td>0.002828</td>
+<td>-0.001814</td>
+<td>0.108940</td>
+<td>0.002438</td>
+<td>0.013061</td>
+<td>0.116532</td>
+<td>-0.007550</td>
+<td>0.049694</td>
+<td>0.029581</td>
+<td>0.021749</td>
+<td>0.1394</td>
+<td>-0.1222</td>
+<td>0.00</td>
+<td>-0.006700</td>
+<td>0.682609</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="estandarización-de-la-versión-transformada" class="level2">
+<h2 class="anchored" data-anchor-id="estandarización-de-la-versión-transformada">7. Estandarización de la versión transformada</h2>
+<div id="85f6a5a7" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>scaler_transf <span class="op">=</span> StandardScaler()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    scaler_transf.fit_transform(df_transformado),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_transformado.index,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_transformado.columns</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (transformado + estandarizado, mensual):'</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>df_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verificación — media ≈ 0, varianza ≈ 1 (transformado + estandarizado, mensual):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Crédito empresarial_log_diff</th>
+<th data-quarto-table-cell-role="th">Crédito consumo_log_diff</th>
+<th data-quarto-table-cell-role="th">Crédito hipotecario_log_diff</th>
+<th data-quarto-table-cell-role="th">Tipo de cambio_log_diff</th>
+<th data-quarto-table-cell-role="th">Índice BVL_log_diff</th>
+<th data-quarto-table-cell-role="th">IPC Lima_log_diff</th>
+<th data-quarto-table-cell-role="th">PBI desestacionalizado_log_diff</th>
+<th data-quarto-table-cell-role="th">Demanda interna_log_diff</th>
+<th data-quarto-table-cell-role="th">Reservas internacionales_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M1_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M2_log_diff</th>
+<th data-quarto-table-cell-role="th">Liquidez M3_log_diff</th>
+<th data-quarto-table-cell-role="th">Tasa activa TAMN_diff</th>
+<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN_diff</th>
+<th data-quarto-table-cell-role="th">Tasa referencia BCRP_diff</th>
+<th data-quarto-table-cell-role="th">Tasa interbancaria_diff</th>
+<th data-quarto-table-cell-role="th">embi_peru_diff</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">std</th>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+<td>1.002</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="guardar-los-cuatro-datasets-mensuales" class="level2">
+<h2 class="anchored" data-anchor-id="guardar-los-cuatro-datasets-mensuales">8. Guardar los cuatro datasets mensuales</h2>
+<p>Mismo esquema de nombres que la versión trimestral, con sufijo <code>_mensual</code> para que ambos pipelines convivan sin sobrescribirse.</p>
+<div id="2cdf1779" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/processed'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df_limpio.to_csv(<span class="st">'data/processed/dataset_niveles_mensual.csv'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.to_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>df_transformado.to_csv(<span class="st">'data/processed/dataset_transformado_mensual.csv'</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>df_estandarizado.to_csv(<span class="st">'data/processed/dataset_estandarizado_mensual.csv'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Datasets guardados en data/processed/:'</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_mensual.csv'</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_estandarizado_mensual.csv'</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_transformado_mensual.csv'</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_estandarizado_mensual.csv'</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Comparación de tamaño de muestra:'</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Trimestral: 72 observaciones x ~18 variables (n/p ≈ 4.5)'</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Mensual:    </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones x </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables '</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(n/p ≈ </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="op">/</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Datasets guardados en data/processed/:
+  - dataset_niveles_mensual.csv
+  - dataset_niveles_estandarizado_mensual.csv
+  - dataset_transformado_mensual.csv
+  - dataset_estandarizado_mensual.csv
+
+Comparación de tamaño de muestra:
+  Trimestral: 72 observaciones x ~18 variables (n/p ≈ 4.5)
+  Mensual:    208 observaciones x 17 variables (n/p ≈ 12.2)</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -18,3 +18,6 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+.virtual_documents/
+*.bak
+.ipynb_checkpoints/
