@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Medición del ciclo financiero en Perú – Tesis — Ciclo Financiero Perú</title>
+<title>Hochreiter &amp; Schmidhuber (1997) — Long Short-Term Memory – Tesis — Ciclo Financiero Perú</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,23 +26,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,18 +71,47 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Tesis — Ciclo Financiero Perú</span>
     </a>
   </div>
@@ -93,19 +122,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Inicio</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./marco_conceptual.html"> 
+    <a class="nav-link" href="../marco_conceptual.html"> 
 <span class="menu-text">Marco conceptual</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./glosario.html"> 
+    <a class="nav-link" href="../glosario.html"> 
 <span class="menu-text">Glosario</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./papers/diccionario_datos.html"> 
+    <a class="nav-link" href="../papers/diccionario_datos.html"> 
 <span class="menu-text">Diccionario de datos</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -114,39 +143,39 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
         <li>
-    <a class="dropdown-item" href="./papers/camiz_et_al_2020.html">
+    <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
  <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/camiz_maulucci_roig_2010.html">
+    <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
  <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/camiz_roig_2011.html">
+    <a class="dropdown-item" href="../papers/camiz_roig_2011.html">
  <span class="dropdown-text">Camiz &amp; Roig (2011)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/camiz_cerda_atoche_2026.html">
+    <a class="dropdown-item" href="../papers/camiz_cerda_atoche_2026.html">
  <span class="dropdown-text">Camiz, Cerda Hernández &amp; Atoche Murrieta (2026)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/drehmann_borio_tsatsaronis_2012.html">
+    <a class="dropdown-item" href="../papers/drehmann_borio_tsatsaronis_2012.html">
  <span class="dropdown-text">Drehmann, Borio &amp; Tsatsaronis (2012)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/hochreiter_schmidhuber_1997.html">
+    <a class="dropdown-item" href="../papers/hochreiter_schmidhuber_1997.html">
  <span class="dropdown-text">Hochreiter &amp; Schmidhuber (1997)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/hinton_salakhutdinov_2006.html">
+    <a class="dropdown-item" href="../papers/hinton_salakhutdinov_2006.html">
  <span class="dropdown-text">Hinton &amp; Salakhutdinov (2006)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/tuhin_et_al_2025.html">
+    <a class="dropdown-item" href="../papers/tuhin_et_al_2025.html">
  <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./papers/ciclo_economico.html">
+    <a class="dropdown-item" href="../papers/ciclo_economico.html">
  <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
     </ul>
@@ -157,23 +186,23 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
         <li>
-    <a class="dropdown-item" href="./notebooks/01_extraccion_bcrp.html">
+    <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
  <span class="dropdown-text">01 · Extracción</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/02_carga_y_verificacion.html">
+    <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
  <span class="dropdown-text">02 · Carga y verificación</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/03_analisis_exploratorio.html">
+    <a class="dropdown-item" href="../notebooks/03_analisis_exploratorio.html">
  <span class="dropdown-text">03 · Análisis exploratorio</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/04_preprocesamiento.html">
+    <a class="dropdown-item" href="../notebooks/04_preprocesamiento.html">
  <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/04b_preprocesamiento_mensual.html">
+    <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
  <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
   </li>  
     </ul>
@@ -184,19 +213,19 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
         <li>
-    <a class="dropdown-item" href="./notebooks/05_pca.html">
+    <a class="dropdown-item" href="../notebooks/05_pca.html">
  <span class="dropdown-text">05 · PCA (trimestral)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/06a_seleccion_ventana_epca.html">
+    <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
  <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/06b_seleccion_ventana_epca_mensual.html">
+    <a class="dropdown-item" href="../notebooks/06b_seleccion_ventana_epca_mensual.html">
  <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./notebooks/06_epca.html">
+    <a class="dropdown-item" href="../notebooks/06_epca.html">
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
     </ul>
@@ -212,14 +241,36 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#datos-identificadores" id="toc-datos-identificadores" class="nav-link active" data-scroll-target="#datos-identificadores">1. Datos identificadores</a></li>
+  <li><a href="#referencia-completa-apa-7.ª-edición" id="toc-referencia-completa-apa-7.ª-edición" class="nav-link" data-scroll-target="#referencia-completa-apa-7.ª-edición">2. Referencia completa (APA 7.ª edición)</a></li>
+  <li><a href="#clasificación-temática" id="toc-clasificación-temática" class="nav-link" data-scroll-target="#clasificación-temática">3. Clasificación temática</a></li>
+  <li><a href="#resumen-analítico" id="toc-resumen-analítico" class="nav-link" data-scroll-target="#resumen-analítico">4. Resumen analítico</a>
+  <ul class="collapse">
+  <li><a href="#problema-abordado" id="toc-problema-abordado" class="nav-link" data-scroll-target="#problema-abordado">Problema abordado</a></li>
+  <li><a href="#propuesta-metodológica-la-arquitectura-lstm" id="toc-propuesta-metodológica-la-arquitectura-lstm" class="nav-link" data-scroll-target="#propuesta-metodológica-la-arquitectura-lstm">Propuesta metodológica: la arquitectura LSTM</a></li>
+  <li><a href="#resultados-experimentales-clave" id="toc-resultados-experimentales-clave" class="nav-link" data-scroll-target="#resultados-experimentales-clave">Resultados experimentales clave</a></li>
+  </ul></li>
+  <li><a href="#conceptos-clave-equivalencia-de-dominio" id="toc-conceptos-clave-equivalencia-de-dominio" class="nav-link" data-scroll-target="#conceptos-clave-equivalencia-de-dominio">5. Conceptos clave (equivalencia de dominio)</a></li>
+  <li><a href="#aporte-a-la-tesis-limitaciones-y-diferenciación" id="toc-aporte-a-la-tesis-limitaciones-y-diferenciación" class="nav-link" data-scroll-target="#aporte-a-la-tesis-limitaciones-y-diferenciación">6. Aporte a la tesis, limitaciones y diferenciación</a>
+  <ul class="collapse">
+  <li><a href="#aporte" id="toc-aporte" class="nav-link" data-scroll-target="#aporte">Aporte</a></li>
+  <li><a href="#limitaciones-relevantes-para-tu-adaptación" id="toc-limitaciones-relevantes-para-tu-adaptación" class="nav-link" data-scroll-target="#limitaciones-relevantes-para-tu-adaptación">Limitaciones (relevantes para tu adaptación)</a></li>
+  </ul></li>
+  <li><a href="#referencias-internas-relevantes" id="toc-referencias-internas-relevantes" class="nav-link" data-scroll-target="#referencias-internas-relevantes">7. Referencias internas relevantes</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Medición del ciclo financiero en Perú</h1>
-<p class="subtitle lead">Mediante técnicas de reducción dimensional y machine learning</p>
+<h1 class="title">Hochreiter &amp; Schmidhuber (1997) — Long Short-Term Memory</h1>
 </div>
 
 
@@ -236,112 +287,184 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Sobre este sitio">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Sobre este sitio
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Este sitio documenta el avance de la tesis de maestría de Roberto Samaniego Salcedo, bajo la supervisión del Dr.&nbsp;Sergio Camiz. Reúne el marco conceptual, la revisión bibliográfica y el pipeline de datos del BCRP en un solo lugar de consulta.</p>
-</div>
-</div>
-<section id="resumen-del-avance" class="level2">
-<h2 class="anchored" data-anchor-id="resumen-del-avance">Resumen del avance</h2>
-<!--
-NOTA METODOLÓGICA (visible solo en el código fuente, no en el HTML):
-Este avance se calcula solo sobre frentes con una unidad discreta
-contable ("X de Y completos"). El marco conceptual y la validación de
-resultados no tienen todavía una unidad de conteo clara y por eso se
-muestran como estado cualitativo, no como porcentaje.
-
-Fórmula del avance global: promedio simple de los tres frentes
-cuantificables (bibliografía, pipeline de datos, modelamiento).
-Para actualizar: cambia los numeradores/denominadores de cada frente
-más abajo y recalcula el promedio a mano antes de publicar.
--->
-<div class="callout callout-style-default callout-important callout-titled" title="Avance global aproximado: 40%">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Avance global aproximado: 40%
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (20%), pipeline de datos (100%) y modelamiento (0%). El marco conceptual y la validación de resultados se muestran aparte porque no tienen todavía una unidad de conteo definida.</p>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
-<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<p><strong>Marco conceptual</strong><br> <span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor</span></p>
-</div>
-<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<strong>Bibliografía</strong><br>
-<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 20%; height: 10px; border-radius: 999px;">
-
-</div>
-</div>
-<p><span style="color: #6b7280; font-size: 14px;">3 de 15 fichas núcleo completas</span></p>
-</div>
-<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<strong>Pipeline de datos BCRP</strong><br>
-<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 100%; height: 10px; border-radius: 999px;">
-
-</div>
-</div>
-<p><span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · 18 variables (ampliado de 13)</span></p>
-</div>
-<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<strong>Modelamiento</strong><br>
-<div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 0%; height: 10px; border-radius: 999px;">
-
-</div>
-</div>
-<p><span style="color: #6b7280; font-size: 14px;">0 de 3 técnicas (notebooks por regenerar)</span></p>
-</div>
-<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<p><strong>Validación de resultados</strong><br> <span style="color: #6b7280; font-size: 14px;">No iniciado</span></p>
-</div>
-</div>
+<section id="datos-identificadores" class="level2">
+<h2 class="anchored" data-anchor-id="datos-identificadores">1. Datos identificadores</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Código de ficha</strong></td>
+<td>FB-007 <em>(verificar numeración contra fichas ya existentes en el repo)</em></td>
+</tr>
+<tr class="even">
+<td><strong>Fecha de procesamiento</strong></td>
+<td>29 de julio de 2026</td>
+</tr>
+<tr class="odd">
+<td><strong>Procesado por</strong></td>
+<td>Roberto Samaniego Salcedo</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="literatura-revisada" class="level2">
-<h2 class="anchored" data-anchor-id="literatura-revisada">Literatura revisada</h2>
-<p>Fichas bibliográficas completas siguiendo la Ficha Estándar del proyecto. Ver el detalle de cada una en la sección <a href="./papers/camiz_et_al_2020.html">Papers</a>.</p>
-<ul class="task-list">
-<li><label><input type="checkbox" checked=""><strong>Camiz et al.&nbsp;(2020)</strong> — Hierarchical Factor Classification of Dendrochronological Time Series. Referencia metodológica central para HFC.</label></li>
-<li><label><input type="checkbox" checked=""><strong>Drehmann, Borio &amp; Tsatsaronis (2012)</strong> — Characterising the financial cycle. Referencia central para indicadores del ciclo financiero.</label></li>
-<li><label><input type="checkbox" checked=""><strong>Camiz, Maulucci &amp; Roig (2010)</strong> — EPCA / Statis dual. Fundamento metodológico de la extensión evolutiva del PCA.</label></li>
-<li><label><input type="checkbox"><strong>Camiz &amp; Roig (2011)</strong> — eslabón faltante en la cadena metodológica HFC → EHFC. <em>Pendiente de localizar y procesar.</em></label></li>
-<li><label><input type="checkbox">Referencias adicionales del núcleo (11 pendientes) — ver <a href="./marco_conceptual.html#bibliografia">Marco conceptual, sección 7</a> para el listado completo de la bibliografía inicial identificada.</label></li>
+<section id="referencia-completa-apa-7.ª-edición" class="level2">
+<h2 class="anchored" data-anchor-id="referencia-completa-apa-7.ª-edición">2. Referencia completa (APA 7.ª edición)</h2>
+<p>Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation, 9</em>(8), 1735–1780. https://doi.org/10.1162/neco.1997.9.8.1735</p>
+<blockquote class="blockquote">
+<p><strong>Nota de verificación</strong>: el PDF que procesé es el <strong>Technical Report FKI-207-95, versión 3.0</strong> (revisado en diciembre de 1996), que es el manuscrito previo a la publicación formal en <em>Neural Computation</em> (1997). El contenido técnico es equivalente, pero verifica que la cita final apunte a la versión publicada en la revista, no al reporte técnico.</p>
+</blockquote>
+</section>
+<section id="clasificación-temática" class="level2">
+<h2 class="anchored" data-anchor-id="clasificación-temática">3. Clasificación temática</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Área principal</strong></td>
+<td>Redes neuronales recurrentes — arquitectura LSTM para resolver el problema del gradiente que se desvanece/explota en dependencias temporales largas</td>
+</tr>
+<tr class="even">
+<td><strong>Área secundaria</strong></td>
+<td>Comparación experimental contra RTRL, BPTT, Recurrent Cascade-Correlation, redes de Elman y “Neural Sequence Chunking”</td>
+</tr>
+<tr class="odd">
+<td><strong>Relevancia para la tesis</strong></td>
+<td><strong>FUNDACIONAL — referencia obligatoria para cualquier uso de LSTM.</strong> No aporta directamente al ciclo financiero ni a series macroeconómicas, pero es la base teórica que sustenta por qué LSTM es adecuado para capturar dependencias temporales largas en tus series BCRP.</td>
+</tr>
+<tr class="even">
+<td><strong>Frente de la tesis al que aporta</strong></td>
+<td>Frente 3 (Marco matemático) — definición formal del algoritmo LSTM</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="resumen-analítico" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-analítico">4. Resumen analítico</h2>
+<section id="problema-abordado" class="level3">
+<h3 class="anchored" data-anchor-id="problema-abordado">Problema abordado</h3>
+<p>Las redes neuronales recurrentes (RNN) entrenadas con Back-Propagation Through Time (BPTT) o Real-Time Recurrent Learning (RTRL) sufren de <strong>gradientes que se desvanecen o explotan exponencialmente</strong> conforme aumenta la distancia temporal entre una señal de entrada relevante y la señal de error correspondiente. Esto hace prácticamente imposible aprender dependencias temporales que abarquen más de ~10 pasos con los métodos convencionales de la época.</p>
+</section>
+<section id="propuesta-metodológica-la-arquitectura-lstm" class="level3">
+<h3 class="anchored" data-anchor-id="propuesta-metodológica-la-arquitectura-lstm">Propuesta metodológica: la arquitectura LSTM</h3>
+<p>Los autores introducen la <strong>célula de memoria (memory cell)</strong> como unidad central, construida alrededor de un <strong>“carrusel de error constante” (Constant Error Carousel, CEC)</strong>: una autoconexión lineal con peso fijo 1.0 que permite que el error fluya hacia atrás en el tiempo sin decaer ni explotar. Para proteger este mecanismo, se introducen dos <strong>unidades multiplicativas de compuerta (gate units)</strong>:</p>
+<ul>
+<li><strong>Compuerta de entrada (input gate)</strong>: controla si la señal de entrada puede modificar el estado interno de la célula, protegiéndola de perturbaciones por entradas irrelevantes.</li>
+<li><strong>Compuerta de salida (output gate)</strong>: controla si el contenido de la célula puede influir en otras unidades, protegiendo al resto de la red de contenidos de memoria momentáneamente irrelevantes.</li>
+</ul>
+<p>Formalmente (ecuaciones centrales del paper):</p>
+<p><span class="math display">\[f_t = \sigma(W_f x_t + U_f h_{t-1} + b_f), \quad i_t = \sigma(W_i x_t + U_i h_{t-1} + b_i), \quad o_t = \sigma(W_o x_t + U_o h_{t-1} + b_o)\]</span> <span class="math display">\[c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t, \quad h_t = o_t \odot \tanh(c_{t-1})\]</span></p>
+<p><em>(Nota: la versión de 1997 no incluye todavía la “forget gate” explícita tal como se popularizó después — esa es la contribución específica de Gers, Schmidhuber &amp; Cummins (2000), que ya tienes identificado como pendiente de fichar.)</em></p>
+</section>
+<section id="resultados-experimentales-clave" class="level3">
+<h3 class="anchored" data-anchor-id="resultados-experimentales-clave">Resultados experimentales clave</h3>
+<p>LSTM resuelve tareas con retrasos temporales de <strong>más de 1000 pasos</strong>, algo que ningún algoritmo recurrente previo había logrado. En el “Experimento 2c” (retrasos de 1000 pasos con símbolos distractores), LSTM logra 100% de éxito mientras que RTRL y BPTT fallan por completo incluso con retrasos de solo 10 pasos. La complejidad computacional de actualización por paso de tiempo es <span class="math inline">\(O(W)\)</span> (W = número de pesos), igual de eficiente que BPTT pero con capacidad muy superior para dependencias largas.</p>
+</section>
+</section>
+<section id="conceptos-clave-equivalencia-de-dominio" class="level2">
+<h2 class="anchored" data-anchor-id="conceptos-clave-equivalencia-de-dominio">5. Conceptos clave (equivalencia de dominio)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concepto del paper (tareas sintéticas de secuencias)</th>
+<th>Equivalente/aplicación en tu tesis (series macrofinancieras BCRP)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Retraso temporal (time lag) entre señal relevante y señal de error</td>
+<td>Rezagos entre un shock macrofinanciero (ej. alza de tasas) y su efecto observable en otras variables del ciclo financiero — exactamente el tipo de dependencia que EPCA/HFC no capturan explícitamente por construcción lineal.</td>
+</tr>
+<tr class="even">
+<td>Carrusel de Error Constante (CEC)</td>
+<td>Mecanismo técnico que justificaría preferir LSTM sobre una RNN simple para capturar la persistencia de regímenes financieros a lo largo de varios meses/trimestres.</td>
+</tr>
+<tr class="odd">
+<td>Compuertas de entrada/salida</td>
+<td>Análogas conceptualmente (aunque no formalmente) al concepto de “filtrar información irrelevante” que en tu marco EPCA se resuelve mediante ventanas móviles — aquí se resuelve de forma aprendida, no fija.</td>
+</tr>
+<tr class="even">
+<td>Símbolos distractores en las secuencias sintéticas</td>
+<td>Análogo a variables BCRP ruidosas o con baja relación causal con el ciclo financiero (ej. las series ya excluidas por colinealidad, como el crédito total vs.&nbsp;sus componentes).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aporte-a-la-tesis-limitaciones-y-diferenciación" class="level2">
+<h2 class="anchored" data-anchor-id="aporte-a-la-tesis-limitaciones-y-diferenciación">6. Aporte a la tesis, limitaciones y diferenciación</h2>
+<section id="aporte" class="level3">
+<h3 class="anchored" data-anchor-id="aporte">Aporte</h3>
+<p>Esta es la referencia que debes citar cuando definas formalmente la arquitectura LSTM en tu capítulo de marco matemático, antes de aplicarla a tus series BCRP. Te da: - La <strong>formalización matemática completa</strong> del mecanismo de memoria a largo plazo, necesaria para justificar teóricamente por qué LSTM podría capturar persistencia de régimen mejor que EPCA (que usa ventanas fijas) o HFC (que es esencialmente estático). - Evidencia empírica clara y bien documentada de la <strong>superioridad de LSTM sobre RNN convencionales</strong> en dependencias largas — argumento directamente citable en tu Justificación Técnica.</p>
+</section>
+<section id="limitaciones-relevantes-para-tu-adaptación" class="level3">
+<h3 class="anchored" data-anchor-id="limitaciones-relevantes-para-tu-adaptación">Limitaciones (relevantes para tu adaptación)</h3>
+<ul>
+<li><strong>Nunca se aplica a series financieras ni económicas.</strong> Todas las tareas experimentales son sintéticas (gramáticas de Reber, problemas de suma/multiplicación con marcadores, clasificación de orden temporal). La transferencia a tu dominio requiere justificación propia y probablemente adaptación arquitectónica.</li>
+<li>No incluye “forget gate” — la versión aquí descrita es la LSTM original, no la variante estándar usada actualmente en la mayoría de librerías (Keras, PyTorch), que incorpora la compuerta de olvido de Gers et al.&nbsp;(2000). Si usas una librería moderna, en realidad estarás implementando esa variante posterior, no exactamente esta.</li>
+<li>Arquitecturas seleccionadas de forma bastante arbitraria por los propios autores (“Our LSTM architectures are selected quite arbitrarily”), sin un método sistemático de diseño — deberás definir tu propia arquitectura para el caso peruano sin poder apoyarte en una receta de este paper.</li>
+<li>No aborda en absoluto la aplicación a <strong>series financieras multivariadas cortas</strong> (tu caso: ~263 observaciones mensuales, 15-17 variables) — todas las tareas usan miles de repeticiones de entrenamiento para converger, lo que refuerza la limitación de datos ya señalada en la ficha de Tuhin et al.&nbsp;(2025).</li>
 </ul>
 </section>
-<section id="pipeline-de-datos-bcrp" class="level2">
-<h2 class="anchored" data-anchor-id="pipeline-de-datos-bcrp">Pipeline de datos BCRP</h2>
-<p>Organizado por etapa metodológica, no por notebook individual:</p>
-<ul class="task-list">
-<li><label><input type="checkbox" checked=""><strong>Extracción</strong> — conexión a la API del BCRP, descarga de series. Ampliado recientemente de 13 a <strong>18 variables</strong> (se agregaron liquidez M1/M2/M3, tasa interbancaria, IPC subyacente y el spread EMBI Perú). Ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a> para el detalle completo de cada serie y su código BCRP verificado.</label></li>
-<li><label><input type="checkbox" checked=""><strong>Carga y verificación</strong> — corrección de códigos de series mal etiquetados (tipo de cambio vs.&nbsp;crédito), verificación de integridad.</label></li>
-<li><label><input type="checkbox" checked=""><strong>Análisis exploratorio</strong> — documentación de la colinealidad entre crédito total y sus componentes (empresarial, consumo, hipotecario).</label></li>
-<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), remuestreo trimestral, estandarización. Dataset final: <strong>72 trimestres × 18 variables transformadas</strong>, listo para PCA/HFC.</label></li>
-</ul>
 </section>
-<section id="modelamiento-próxima-etapa" class="level2">
-<h2 class="anchored" data-anchor-id="modelamiento-próxima-etapa">Modelamiento (próxima etapa)</h2>
-<ul class="task-list">
-<li><label><input type="checkbox"><strong>PCA / HFC</strong> — análisis de componentes principales y clasificación factorial jerárquica.</label></li>
-<li><label><input type="checkbox"><strong>EPCA / EHFC</strong> — extensión evolutiva con ventanas móviles.</label></li>
-<li><label><input type="checkbox"><strong>Autoencoder / LSTM</strong> — representaciones latentes no lineales y modelamiento secuencial.</label></li>
-</ul>
-<hr>
-<p><em>Este resumen se actualiza manualmente conforme avanza la tesis. Última actualización: ver historial de commits de <code>index.qmd</code> en GitHub.</em></p>
+<section id="referencias-internas-relevantes" class="level2">
+<h2 class="anchored" data-anchor-id="referencias-internas-relevantes">7. Referencias internas relevantes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Referencia citada en el paper</th>
+<th>Prioridad</th>
+<th>Estado en el proyecto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (2000) — Learning to Forget: Continual prediction with LSTM</td>
+<td><strong>Alta — ya identificada como pendiente</strong>, complementa directamente esta ficha con la “forget gate” estándar</td>
+<td>Pendiente de fichar</td>
+</tr>
+<tr class="even">
+<td>Hochreiter, S. (1991) — Untersuchungen zu dynamischen neuronalen Netzen (tesis de diploma)</td>
+<td>Baja — análisis original del problema de gradiente desvaneciente, en alemán, difícil de conseguir/leer</td>
+<td>No prioritario</td>
+</tr>
+<tr class="odd">
+<td>Williams &amp; Zipser (1992) — Gradient-based learning algorithms for recurrent networks</td>
+<td>Media — referencia de BPTT, útil si se quiere comparar LSTM contra el estado del arte previo</td>
+<td>No identificado en tu carpeta</td>
+</tr>
+<tr class="even">
+<td>Elman, J. L. (1988) — Finding structure in time</td>
+<td>Baja — antecedente de RNN simples, contexto histórico</td>
+<td>No prioritario</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

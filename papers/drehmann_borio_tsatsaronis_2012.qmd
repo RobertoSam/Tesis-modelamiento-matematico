@@ -1,0 +1,58 @@
+---
+title: "Drehmann, Borio & Tsatsaronis (2012)"
+subtitle: "Characterising the Financial Cycle: Don't Lose Sight of the Medium Term!"
+---
+
+**Código de ficha:** FB-003 *(según registro previo del proyecto; verificar contra la numeración real antes de publicar)*
+**Estado:** Ficha completa — recuperada de fuente pública (BIS), reemplaza copia extraviada
+**Prioridad:** Alta — referencia empírica fundacional del concepto de "ciclo financiero" usado en toda la tesis
+
+## 1. Referencia completa (APA 7)
+
+Drehmann, M., Borio, C., & Tsatsaronis, K. (2012). *Characterising the financial cycle: Don't lose sight of the medium term!* (BIS Working Paper No. 380). Bank for International Settlements. https://www.bis.org/publ/work380.pdf
+
+## 2. Resumen narrativo
+
+Los autores caracterizan empíricamente el ciclo financiero mediante dos métodos complementarios: filtros basados en frecuencia (band-pass de Christiano y Fitzgerald, 2003) y análisis de puntos de giro (turning-point analysis, algoritmo de Bry y Boschan, 1971, adaptado por Harding y Pagan, 2002). Aplican ambos métodos a seis variables (crédito, crédito/PBI, precios inmobiliarios, precios bursátiles, un índice agregado de precios de activos, y PBI) en siete países desarrollados (Australia, Alemania, Japón, Noruega, Suecia, Reino Unido y Estados Unidos), con datos trimestrales de 1960 a 2011.
+
+Distinguen ciclos de corto plazo (1 a 8 años, equivalentes al ciclo económico tradicional) de ciclos de mediano plazo (8 a 30 años). El hallazgo central es que el crédito y los precios inmobiliarios comparten un componente de mediano plazo altamente sincronizado (índice de concordancia ~70%), mientras que los precios bursátiles se comportan de forma distinta (mayor volatilidad de corto plazo, menor sincronía con crédito e inmuebles, picos que preceden a las crisis en promedio 11 trimestres antes en vez de coincidir con ellas). En consecuencia, definen el **ciclo financiero** como el componente de mediano plazo conjunto de crédito, crédito/PBI y precios inmobiliarios, excluyendo explícitamente los precios bursátiles y el índice agregado de activos.
+
+Los picos del ciclo financiero así definido coinciden estrechamente con crisis bancarias sistémicas: de 10 crisis de origen doméstico en la muestra, todas ocurren cerca de un pico en el ciclo de crédito y precios inmobiliarios. La duración y amplitud del ciclo financiero aumentó desde mediados de los años 80 (de ~11 a ~20 años en promedio), atribuido a la liberalización financiera y al cambio de régimen de política monetaria. Las recesiones que coinciden con la fase de contracción del ciclo financiero son en promedio 50% más profundas que las que no coinciden. Los autores acuñan el concepto de **"recesión inconclusa" (unfinished recession)**: cuando la política económica reacciona solo a caídas bursátiles de corto plazo e ignora que crédito y precios inmobiliarios siguen expandiéndose, el ajuste se pospone y la crisis posterior resulta más severa.
+
+## 3. Aporte a la tesis
+
+- **Ancla conceptual y definicional del "ciclo financiero"** usada en la introducción y en toda la tesis: la definición operacional de Camiz et al. (2020, 2026) y de esta tesis —fluctuación de mediano-largo plazo entre fases de expansión y contracción del crédito, precios de activos y tolerancia al riesgo— deriva directamente de este paper.
+- **Metodología alternativa de datación de ciclos**, complementaria a PCA/HFC/EPCA: mientras el enfoque de Camiz es exploratorio multivariado (reducción dimensional), este paper usa datación univariada de puntos de giro sobre variables individuales y luego las combina. El **índice de concordancia de Harding y Pagan (2006)** —fracción del tiempo en que dos series están en la misma fase— es una métrica directamente transferible para medir cuánto coinciden en el tiempo los regímenes detectados por PCA/HFC/EPCA, por un lado, y por Autoencoder/LSTM, por el otro, dentro del objetivo de comparación de la tesis (objetivo específico de comparar métodos bajo interpretabilidad, estabilidad, capacidad descriptiva y robustez).
+- **Procedimiento formal para combinar series individuales en un ciclo común** (Harding & Pagan, 2006, adaptado en este paper): distancia mediana a los puntos de giro, con ventanas de tolerancia ("regular" vs. "débil") para declarar un punto de giro común. Es un antecedente metodológico útil, aunque no directamente aplicable sin adaptación, para la datación de régimen que se plantea formalizar con el algoritmo de Fisher (1958) sobre la primera componente del EPCA.
+- **Evidencia empírica que sustenta la justificación social y de política** del informe (sección 3.2): el concepto de "recesión inconclusa" es precisamente el mecanismo por el cual un indicador de régimen financiero temprano y bien calibrado tendría valor para el BCRP y otros hacedores de política.
+
+## 4. Conceptos clave
+
+- **Ciclo de mediano plazo (medium-term cycle)**: 8 a 30 años, frente al ciclo económico tradicional de 1 a 8 años.
+- **Filtro band-pass de Christiano y Fitzgerald (2003)**: aísla el componente cíclico de una frecuencia específica; se aplica sobre tasas de crecimiento anuales (diferencias de cuatro trimestres en log-niveles).
+- **Análisis de puntos de giro (turning-point analysis)**: identifica máximos y mínimos locales con reglas de censura (longitud mínima del ciclo y de cada fase), siguiendo Bry y Boschan (1971) y Harding y Pagan (2002).
+- **Índice de concordancia**: fracción de tiempo en que dos series están en la misma fase (expansión o contracción); 100% = sincronía total, 50% = independencia, 0% = fases opuestas.
+- **Recesión inconclusa (unfinished recession)**: fenómeno de política en que ignorar el ciclo financiero de mediano plazo contiene la recesión de corto plazo a costa de una recesión mayor más adelante.
+
+## 5. Metodología transferible
+
+- El criterio de selección de variables para el ciclo financiero (excluir series con baja concordancia y alta volatilidad de corto plazo, como se hizo aquí con los precios bursátiles) es análogo, en espíritu, a la exclusión de *avexr* y *glevb* en Camiz, Cerda Hernández y Atoche Murrieta (2026) — ambos casos excluyen series por comportamiento estadístico distintivo, no por criterio temático a priori.
+- El uso de dos metodologías independientes (filtro de frecuencia y datación de puntos de giro) para verificar convergencia de resultados es un patrón de robustez transferible: la tesis ya contempla algo análogo al comparar PCA/HFC/EPCA contra Autoencoder/LSTM.
+
+## 6. Limitaciones y advertencias metodológicas
+
+- **Ámbito geográfico**: los siete países analizados son economías desarrolladas con mercados financieros profundos; Perú, con un sistema bancario concentrado y mercado de bonos poco profundo, no es directamente comparable — esta diferencia ya está señalada en la sección 3.2 del informe de avance.
+- **Requisito de datos**: el estudio exige series de al menos 40 años para identificar ciclos de mediano plazo; el dataset BCRP de la tesis cubre un horizonte considerablemente menor, lo que limita la aplicabilidad directa del método de datación de puntos de giro tal como está especificado aquí.
+- **Frecuencia de datos**: el paper usa datos trimestrales; el pipeline de la tesis trabaja principalmente en frecuencia mensual, lo que exige adaptar las ventanas de censura (mínimo de trimestres) si se quisiera replicar la metodología de puntos de giro directamente.
+- **Definición estrecha del ciclo financiero**: excluye explícitamente precios bursátiles y activos agregados, y depende centralmente de precios inmobiliarios — variable que en el dataset BCRP de la tesis solo está disponible en frecuencia trimestral y ya fue excluida del pipeline mensual, una limitación de datos ya documentada en el proyecto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Harding, D. & Pagan, A. (2002) — Dissecting the cycle: A methodological investigation. *Journal of Monetary Economics, 49* | Alta — algoritmo base de datación de puntos de giro (adaptación de Bry & Boschan, 1971) | No identificado en la carpeta de literatura |
+| Harding, D. & Pagan, A. (2006) — Synchronization of cycles. *Journal of Econometrics, 132* | Alta — fuente del índice de concordancia y del procedimiento de combinación de series, directamente transferible | No identificado en la carpeta de literatura |
+| Bry, G. & Boschan, C. (1971) — Cyclical analysis of time series (NBER Technical Paper 20) | Media — algoritmo original de datación, antecedente de Harding & Pagan (2002) | No identificado en la carpeta de literatura |
+| Christiano, L. & Fitzgerald, T. (2003) — The band-pass filter. *International Economic Review, 44* | Media — filtro de frecuencia usado como método alternativo/complementario | No identificado en la carpeta de literatura |
+| Claessens, S., Kose, M. A., & Terrones, M. E. (2011a, 2011b) — Financial cycles: What? How? When? / How do business and financial cycles interact? (IMF Working Papers) | Media-alta — antecedente directo citado como comparación de hallazgos, ya identificado como pendiente en el Anexo C del informe | Identificado en Anexo C, pendiente de fichar |
+| Borio, C. (2012, 2014) — The financial cycle and macroeconomics: What have we learnt? | Alta — desarrollo posterior del mismo marco conceptual por uno de los mismos autores | No identificado en la carpeta de literatura; recomendable localizar como complemento directo |

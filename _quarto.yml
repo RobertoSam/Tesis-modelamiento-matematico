@@ -18,6 +18,18 @@ website:
             text: "Camiz et al. (2020)"
           - href: papers/camiz_maulucci_roig_2010.qmd
             text: "Camiz, Maulucci & Roig (2010)"
+          - href: papers/camiz_roig_2011.qmd
+            text: "Camiz & Roig (2011)"
+          - href: papers/camiz_cerda_atoche_2026.qmd
+            text: "Camiz, Cerda Hernández & Atoche Murrieta (2026)"
+          - href: papers/drehmann_borio_tsatsaronis_2012.qmd
+            text: "Drehmann, Borio & Tsatsaronis (2012)"
+          - href: papers/hochreiter_schmidhuber_1997.qmd
+            text: "Hochreiter & Schmidhuber (1997)"
+          - href: papers/hinton_salakhutdinov_2006.qmd
+            text: "Hinton & Salakhutdinov (2006)"
+          - href: papers/tuhin_et_al_2025.qmd
+            text: "Tuhin et al. (2025)"
           - href: papers/ciclo_economico.qmd
             text: "Ciclo económico"
       - text: Data BCRP

@@ -1,0 +1,78 @@
+---
+title: "Hinton & Salakhutdinov (2006) — Reducing the Dimensionality of Data with Neural Networks"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-008 *(verificar numeración contra fichas ya existentes en el repo)* |
+| **Fecha de procesamiento** | 29 de julio de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hinton, G. E., & Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. *Science, 313*(5786), 504–507. https://doi.org/10.1126/science.1127647
+
+> **Nota de verificación importante**: el PDF que procesé corresponde al **Supporting Online Material (SOM)** del artículo — es decir, el material suplementario con detalles metodológicos, figuras adicionales y código Matlab — **no el artículo principal de *Science***. El SOM asume que el lector ya conoce el argumento central del artículo (publicado en las 4 páginas principales de *Science* 313, pp. 504-507). Si necesitas citar el argumento central (arquitectura autoencoder profundo, comparación con PCA, resultados en MNIST/rostros/documentos), te recomiendo conseguir también el artículo principal, no solo este SOM.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Reducción de dimensionalidad no lineal mediante autoencoders profundos (deep autoencoders), con preentrenamiento capa por capa usando Restricted Boltzmann Machines (RBM) |
+| **Área secundaria** | Comparación empírica con PCA, Análisis Semántico Latente (LSA) y Local Linear Embedding (LLE) |
+| **Relevancia para la tesis** | **FUNDACIONAL — referencia obligatoria para cualquier uso de Autoencoders.** Es el paper que popularizó el uso de redes neuronales profundas para reducción de dimensionalidad no lineal, contraparte directa (y complementaria) del PCA que ya usas en tu tesis. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) — definición formal del autoencoder profundo y su relación con PCA |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+PCA encuentra la mejor reconstrucción **lineal** de baja dimensión de un conjunto de datos. Cuando la estructura subyacente de los datos es no lineal, PCA es subóptimo. El paper propone que **redes neuronales profundas ("autoencoders") con preentrenamiento adecuado** pueden encontrar códigos de baja dimensión sustancialmente mejores que PCA, superando el problema histórico de que las redes profundas con inicialización aleatoria quedan atrapadas en mínimos locales pobres.
+
+### Propuesta metodológica
+
+1. **Preentrenamiento capa por capa (greedy layer-wise pretraining)** usando **Restricted Boltzmann Machines (RBM)**: cada capa se entrena de forma no supervisada para modelar la distribución de sus entradas, produciendo una buena región inicial de pesos.
+2. **Ajuste fino (fine-tuning)** de la red completa (codificador + decodificador) usando el **método de gradientes conjugados**, minimizando el error de reconstrucción (error cuadrático o entropía cruzada, según el tipo de dato).
+3. **Arquitectura simétrica**: codificador que reduce progresivamente la dimensión (ej. 784-1000-500-250-2 para dígitos MNIST) y decodificador que la reconstruye en espejo.
+4. **Comparaciones empíricas**: en curvas sintéticas, dígitos MNIST, rostros (Olivetti) y documentos de texto (Reuters, 20 Newsgroups), el autoencoder profundo produce reconstrucciones y códigos de menor dimensión sustancialmente mejores que PCA, LSA y LLE — especialmente evidente en la separación visual de clases en el espacio 2D reducido (ver Figs. S3 y S4 del material suplementario: el autoencoder separa mucho mejor los dígitos manuscritos por clase que PCA con las mismas 2 dimensiones).
+
+### Detalle técnico relevante del SOM (material suplementario)
+
+- El preentrenamiento usa mini-lotes de 100 vectores, 50 pasadas por capa.
+- El ajuste fino usa gradientes conjugados con lotes de 1000 vectores y validación cruzada para detectar sobreajuste.
+- Para datos con valores extremos (como píxeles de MNIST), se usa función logística en vez de gaussiana — **detalle relevante**: la elección de función de activación de salida debe adaptarse a la naturaleza de los datos, algo que deberás decidir para tus series macrofinancieras (continuas, estandarizadas) — probablemente identidad o tangente hiperbólica, no logística.
+- Sobreajuste fue observado únicamente en el dataset de rostros (dataset pequeño relativo a la capacidad del modelo) — **advertencia directamente relevante para tu caso**, dado que tu dataset BCRP es aún más pequeño que el de rostros usado aquí.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper (imágenes, texto) | Equivalente/aplicación en tu tesis (series macrofinancieras BCRP) |
+|---|---|
+| Código de baja dimensión (bottleneck) del autoencoder | Análogo directo a los "scores" o componentes principales de tu PCA — pero permite relaciones no lineales entre las 15-17 variables BCRP. |
+| Comparación explícita autoencoder vs. PCA en separación de clases | Puedes replicar esta comparación: ¿el autoencoder separa mejor los períodos de "régimen financiero" (crisis vs. estabilidad) que los componentes de tu PCA/HFC? Es un experimento directamente transferible y con precedente citable. |
+| Preentrenamiento con RBM para evitar mínimos locales pobres | Con tu dataset pequeño, el preentrenamiento tipo RBM es probablemente innecesario o incluso contraproducente (requiere aún más datos); considera arquitecturas más simples y regularización fuerte en su lugar. |
+| Sobreajuste en el dataset más pequeño (rostros) | **Advertencia crítica y transferible**: si un dataset de miles de imágenes ya mostró señales de sobreajuste con esta arquitectura, tu dataset de ~263 observaciones mensuales requiere extremo cuidado (arquitecturas mucho más simples, regularización, posible necesidad de datos sintéticos o aumento de datos). |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+Esta es la referencia que debes citar al definir formalmente el Autoencoder en tu marco matemático, y te da:
+- Fundamento teórico y empírico de por qué un autoencoder puede capturar estructura **no lineal** que PCA (lineal por construcción) no puede — argumento directo para justificar por qué tu tesis va más allá de PCA/HFC/EPCA.
+- Precedente metodológico para **comparar explícitamente autoencoder vs. PCA** en la calidad de la reducción de dimensionalidad, replicable en tu contexto (comparar cómo separan visualmente los regímenes del ciclo financiero peruano).
+- Advertencias empíricas concretas sobre sobreajuste con datasets pequeños, directamente aplicables a tu situación de escasez relativa de datos BCRP.
+
+### Limitaciones (relevantes para tu adaptación)
+
+- **No es un modelo temporal.** El autoencoder de este paper trata cada observación (imagen, documento) de forma independiente — no incorpora dependencia secuencial en el tiempo. Para tu tesis, necesitarás un **autoencoder temporal** (ej. combinado con LSTM, como en Tuhin et al. 2025, ya fichado) o adaptaciones específicas para series de tiempo.
+- Todas las aplicaciones son en dominios con **datasets grandes** (60,000 imágenes MNIST, 804,414 documentos Reuters) — la misma limitación de escala de datos que ya señalamos en la ficha de Tuhin et al. (2025) aplica aquí con más fuerza todavía, dado que es el paper más antiguo (2006) y sin ninguna adaptación a series de tiempo cortas.
+- El documento que tienes es el **material suplementario**, no el artículo principal — asegúrate de conseguir y citar también el argumento central publicado en las páginas 504-507 de *Science* 313, para no depender solo de los detalles técnicos del SOM.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Roweis, S. T., & Saul, L. K. (2000) — Nonlinear dimensionality reduction by locally linear embedding. *Science, 290* | Media — LLE, método comparado en el paper, relevante como alternativa de reducción no lineal | No identificado en tu carpeta |
+| Hinton, G. E. (2002) — Training products of experts by minimizing contrastive divergence. *Neural Computation, 14* | Media-alta — fundamenta el entrenamiento de las RBM usadas en el preentrenamiento | No identificado en tu carpeta |
+| LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998) — Gradient-based learning applied to document recognition | Baja — contexto de redes convolucionales, tangencial a tu caso | No prioritario |

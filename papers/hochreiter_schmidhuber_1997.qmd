@@ -1,0 +1,83 @@
+---
+title: "Hochreiter & Schmidhuber (1997) — Long Short-Term Memory"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-007 *(verificar numeración contra fichas ya existentes en el repo)* |
+| **Fecha de procesamiento** | 29 de julio de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory. *Neural Computation, 9*(8), 1735–1780. https://doi.org/10.1162/neco.1997.9.8.1735
+
+> **Nota de verificación**: el PDF que procesé es el **Technical Report FKI-207-95, versión 3.0** (revisado en diciembre de 1996), que es el manuscrito previo a la publicación formal en *Neural Computation* (1997). El contenido técnico es equivalente, pero verifica que la cita final apunte a la versión publicada en la revista, no al reporte técnico.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Redes neuronales recurrentes — arquitectura LSTM para resolver el problema del gradiente que se desvanece/explota en dependencias temporales largas |
+| **Área secundaria** | Comparación experimental contra RTRL, BPTT, Recurrent Cascade-Correlation, redes de Elman y "Neural Sequence Chunking" |
+| **Relevancia para la tesis** | **FUNDACIONAL — referencia obligatoria para cualquier uso de LSTM.** No aporta directamente al ciclo financiero ni a series macroeconómicas, pero es la base teórica que sustenta por qué LSTM es adecuado para capturar dependencias temporales largas en tus series BCRP. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) — definición formal del algoritmo LSTM |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Las redes neuronales recurrentes (RNN) entrenadas con Back-Propagation Through Time (BPTT) o Real-Time Recurrent Learning (RTRL) sufren de **gradientes que se desvanecen o explotan exponencialmente** conforme aumenta la distancia temporal entre una señal de entrada relevante y la señal de error correspondiente. Esto hace prácticamente imposible aprender dependencias temporales que abarquen más de ~10 pasos con los métodos convencionales de la época.
+
+### Propuesta metodológica: la arquitectura LSTM
+
+Los autores introducen la **célula de memoria (memory cell)** como unidad central, construida alrededor de un **"carrusel de error constante" (Constant Error Carousel, CEC)**: una autoconexión lineal con peso fijo 1.0 que permite que el error fluya hacia atrás en el tiempo sin decaer ni explotar. Para proteger este mecanismo, se introducen dos **unidades multiplicativas de compuerta (gate units)**:
+
+- **Compuerta de entrada (input gate)**: controla si la señal de entrada puede modificar el estado interno de la célula, protegiéndola de perturbaciones por entradas irrelevantes.
+- **Compuerta de salida (output gate)**: controla si el contenido de la célula puede influir en otras unidades, protegiendo al resto de la red de contenidos de memoria momentáneamente irrelevantes.
+
+Formalmente (ecuaciones centrales del paper):
+
+$$f_t = \sigma(W_f x_t + U_f h_{t-1} + b_f), \quad i_t = \sigma(W_i x_t + U_i h_{t-1} + b_i), \quad o_t = \sigma(W_o x_t + U_o h_{t-1} + b_o)$$
+$$c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t, \quad h_t = o_t \odot \tanh(c_{t-1})$$
+
+*(Nota: la versión de 1997 no incluye todavía la "forget gate" explícita tal como se popularizó después — esa es la contribución específica de Gers, Schmidhuber & Cummins (2000), que ya tienes identificado como pendiente de fichar.)*
+
+### Resultados experimentales clave
+
+LSTM resuelve tareas con retrasos temporales de **más de 1000 pasos**, algo que ningún algoritmo recurrente previo había logrado. En el "Experimento 2c" (retrasos de 1000 pasos con símbolos distractores), LSTM logra 100% de éxito mientras que RTRL y BPTT fallan por completo incluso con retrasos de solo 10 pasos. La complejidad computacional de actualización por paso de tiempo es $O(W)$ (W = número de pesos), igual de eficiente que BPTT pero con capacidad muy superior para dependencias largas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper (tareas sintéticas de secuencias) | Equivalente/aplicación en tu tesis (series macrofinancieras BCRP) |
+|---|---|
+| Retraso temporal (time lag) entre señal relevante y señal de error | Rezagos entre un shock macrofinanciero (ej. alza de tasas) y su efecto observable en otras variables del ciclo financiero — exactamente el tipo de dependencia que EPCA/HFC no capturan explícitamente por construcción lineal. |
+| Carrusel de Error Constante (CEC) | Mecanismo técnico que justificaría preferir LSTM sobre una RNN simple para capturar la persistencia de regímenes financieros a lo largo de varios meses/trimestres. |
+| Compuertas de entrada/salida | Análogas conceptualmente (aunque no formalmente) al concepto de "filtrar información irrelevante" que en tu marco EPCA se resuelve mediante ventanas móviles — aquí se resuelve de forma aprendida, no fija. |
+| Símbolos distractores en las secuencias sintéticas | Análogo a variables BCRP ruidosas o con baja relación causal con el ciclo financiero (ej. las series ya excluidas por colinealidad, como el crédito total vs. sus componentes). |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+Esta es la referencia que debes citar cuando definas formalmente la arquitectura LSTM en tu capítulo de marco matemático, antes de aplicarla a tus series BCRP. Te da:
+- La **formalización matemática completa** del mecanismo de memoria a largo plazo, necesaria para justificar teóricamente por qué LSTM podría capturar persistencia de régimen mejor que EPCA (que usa ventanas fijas) o HFC (que es esencialmente estático).
+- Evidencia empírica clara y bien documentada de la **superioridad de LSTM sobre RNN convencionales** en dependencias largas — argumento directamente citable en tu Justificación Técnica.
+
+### Limitaciones (relevantes para tu adaptación)
+
+- **Nunca se aplica a series financieras ni económicas.** Todas las tareas experimentales son sintéticas (gramáticas de Reber, problemas de suma/multiplicación con marcadores, clasificación de orden temporal). La transferencia a tu dominio requiere justificación propia y probablemente adaptación arquitectónica.
+- No incluye "forget gate" — la versión aquí descrita es la LSTM original, no la variante estándar usada actualmente en la mayoría de librerías (Keras, PyTorch), que incorpora la compuerta de olvido de Gers et al. (2000). Si usas una librería moderna, en realidad estarás implementando esa variante posterior, no exactamente esta.
+- Arquitecturas seleccionadas de forma bastante arbitraria por los propios autores ("Our LSTM architectures are selected quite arbitrarily"), sin un método sistemático de diseño — deberás definir tu propia arquitectura para el caso peruano sin poder apoyarte en una receta de este paper.
+- No aborda en absoluto la aplicación a **series financieras multivariadas cortas** (tu caso: ~263 observaciones mensuales, 15-17 variables) — todas las tareas usan miles de repeticiones de entrenamiento para converger, lo que refuerza la limitación de datos ya señalada en la ficha de Tuhin et al. (2025).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Gers, F. A., Schmidhuber, J., & Cummins, F. (2000) — Learning to Forget: Continual prediction with LSTM | **Alta — ya identificada como pendiente**, complementa directamente esta ficha con la "forget gate" estándar | Pendiente de fichar |
+| Hochreiter, S. (1991) — Untersuchungen zu dynamischen neuronalen Netzen (tesis de diploma) | Baja — análisis original del problema de gradiente desvaneciente, en alemán, difícil de conseguir/leer | No prioritario |
+| Williams & Zipser (1992) — Gradient-based learning algorithms for recurrent networks | Media — referencia de BPTT, útil si se quiere comparar LSTM contra el estado del arte previo | No identificado en tu carpeta |
+| Elman, J. L. (1988) — Finding structure in time | Baja — antecedente de RNN simples, contexto histórico | No prioritario |

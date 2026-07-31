@@ -1,0 +1,70 @@
+---
+title: "Camiz, Cerda Hernández & Atoche Murrieta (2026)"
+subtitle: "Exploratory Procedure to Identify Financial Cycle: an Application to Peruvian Data"
+---
+
+**Código de ficha:** FB-009 *(verificar contra la numeración real ya usada en el proyecto antes de publicar)*
+**Estado:** Ficha completa
+**Prioridad:** Alta — antecedente directo (mismo país, misma fuente de datos, mismo núcleo metodológico PCA-HFC-EPCA)
+
+## 1. Referencia completa (APA 7)
+
+Camiz, S., Cerda Hernández, J. J., & Atoche Murrieta, L. K. (2026). *Exploratory procedure to identify financial cycle: An application to Peruvian data* [Manuscrito no publicado]. Fecha del manuscrito: 25 de abril de 2026.
+
+> **Nota de verificación:** el documento no incluye datos de revista, volumen ni DOI en la fecha indicada en el propio manuscrito (25 de abril de 2026). Debe confirmarse con el Dr. Camiz si a la fecha actual ya tiene estado de publicación formal (revista o actas de congreso).
+
+## 2. Resumen narrativo
+
+El artículo aplica PCA, HFC y EPCA sobre 17 series mensuales de indicadores macrofinancieros del BCRP (enero de 1999 a noviembre/diciembre de 2020, 263 observaciones), con el objetivo de identificar el ciclo financiero peruano. Es la continuación directa de la tesis de maestría de Atoche Murrieta (2022, PUCP), realizada bajo supervisión de Camiz como profesor visitante en Lima.
+
+El procedimiento aplicado, en orden, es:
+
+1. **PCA sobre las 17 series completas.** El primer componente concentra 72.06% de la inercia; el segundo y tercero, 12.87% y 7.12% adicionales. Dos series —tipo de cambio interbancario (*avexr*) y apalancamiento global bancario (*glevb*)— muestran correlación baja con el primer componente y alta con el segundo/tercero, y se excluyen del análisis principal.
+2. **PCA reducido sobre 15 series** (sin *avexr* ni *glevb*): tres componentes explican 79.70%, 90.15% y 95.11% de la inercia acumulada.
+3. **HFC sobre las 17 series**, que identifica tres grupos homogéneos, excluyendo naturalmente *avexr* y *glevb* como series aisladas de baja correlación con el resto:
+   - **Grupo *24* — Salud económica y financiera:** activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez, reservas internacionales netas. El grupo más homogéneo (segundo autovalor de la jerarquía = 0.052; primer factor explica ~94% de la inercia del grupo).
+   - **Grupo *27* — Tasas de interés:** tasas activas y pasivas, en moneda nacional y extranjera. Segundo autovalor = 0.209; primer factor explica 92.8%.
+   - **Grupo *29* — Riesgo de mercado financiero:** reservas, índice bursátil de Lima, EMBIG, coeficiente de dolarización. El grupo menos homogéneo (dipolo, segundo autovalor = 0.423; primer factor explica 84%).
+4. **EPCA sobre el conjunto completo y sobre cada grupo por separado**, con ventana móvil gaussiana de 48 meses (4 años, parámetro de forma s=3), particionando el período en subperíodos de estabilidad estructural mediante el algoritmo de Fisher (1958) sobre la serie del primer autovalor, seleccionando el número de cortes con el criterio de Calinski-Harabász (1974).
+
+Los resultados muestran que el grupo *24* (salud financiera) es el más estable en el tiempo; el grupo *27* (tasas) funciona como indicador de alerta temprana, perdiendo estabilidad antes de episodios de crisis; y el grupo *29* (riesgo de mercado) es el menos unidimensional y el más afectado por shocks puntuales (burbuja punto-com 2002, crisis financiera 2008, guerra comercial EE.UU.-China 2018-2019).
+
+## 3. Aporte a la tesis
+
+Este es el antecedente metodológico más directo de toda la revisión bibliográfica, y aporta cuatro elementos concretos y verificables:
+
+- **Confirma textualmente que HFC y EPCA se aplican de forma secuencial, no fusionada.** El propio artículo (sección 5, conclusión) propone como procedimiento recomendado: "(1) aplicar HFC al conjunto de series para identificar grupos suficientemente unidimensionales; (2) aplicar EPCA evolutivo a cada grupo para verificar unidimensionalidad y estabilidad de interpretación en el tiempo." No existe, ni aquí ni en los antecedentes previos, una fusión formal en un único algoritmo evolutivo (EHFC). Esto valida directamente el vacío metodológico identificado en la sección 2.4 del informe de avance.
+- **Confirma que la ventana de EPCA (48 meses) se elige por experimentación informal, no por un criterio objetivo.** El texto dice literalmente que la elección de una ventana de cuatro años y el parámetro de la distribución gaussiana (s=3) resultan de "cierta experimentación" (*"some experimentation showed that a kind of Gaussian distribution may be chosen..."*), sin un procedimiento de selección formal. Es la tercera fuente que confirma este mismo vacío (junto con Camiz, Maulucci & Roig, 2010 y la práctica ya observada en Camiz et al., 2020), y refuerza directamente el objetivo específico de formalizar dicho criterio.
+- **Proporciona el precedente metodológico exacto para la datación de regímenes**: Fisher (1958) sobre la serie del primer autovalor + criterio de Calinski-Harabász (1974) para el número de cortes. Es la misma combinación que la tesis planea usar (objetivo específico de datación de regímenes), ahora con precedente aplicado a datos BCRP reales, no solo a series dendrocronológicas.
+- **Ofrece fechas de transición estructural específicas para Perú**, más allá de las genéricas 2008/2013/2020: burbuja punto-com (2002), renuncia de Fujimori (2000), crisis financiera global (2008), renuncia de Kuczynski (2018), guerra comercial EE.UU.-China (2018-2019). Estas fechas son directamente utilizables como puntos de validación adicionales para calibrar el umbral de transición de régimen, tanto en la parte clásica como en Autoencoder/LSTM.
+
+## 4. Conceptos clave
+
+- **Selección de series**: de 17 indicadores iniciales, 2 se excluyen (*avexr*, *glevb*) por baja correlación con la estructura principal — precedente directo para el propio proceso de selección/depuración de variables de Roberto.
+- **Convención de nombres de grupo**: los grupos se identifican por el número de nodo de la jerarquía HFC (*24*, *27*, *29*), no por nombre temático — útil tenerlo presente si se comparan resultados de Roberto con los de este paper.
+- **Los mismos 17 códigos BCRP están listados con etiqueta corta y estadística descriptiva** (Tabla 1 del paper): activos internos, circulante, ahorro total, reservas, crédito total, índice bursátil Lima, fondos de pensiones, tipo de cambio interbancario, liquidez, dolarización, RIN, apalancamiento global, tasas activa/pasiva en moneda nacional y extranjera, EMBIG. Es una referencia útil para contrastar contra el diccionario de datos ya construido en el pipeline propio.
+
+## 5. Metodología transferible
+
+- El criterio de corte del dendrograma HFC usado aquí es el mismo que en Camiz et al. (2020): segundo autovalor de la jerarquía por debajo de 0.7 (umbral de Jolliffe, 2002).
+- La ponderación gaussiana de la ventana móvil EPCA (mayor peso al centro de la ventana, menor en los extremos) sigue el esquema propuesto por Camiz y Diblasi (2013), no discutido con este nivel de detalle en Camiz, Maulucci & Roig (2010).
+- El artículo aplica el procedimiento completo tanto al conjunto total de series como a cada grupo HFC por separado, lo que da un patrón replicable para estructurar los propios notebooks `06_epca` (ventana global) y una futura extensión por grupo.
+
+## 6. Limitaciones y advertencias metodológicas
+
+- **Estado de publicación no verificado** (ver nota en sección 1) — no citar como fuente publicada en el informe final sin confirmación.
+- La muestra termina en noviembre/diciembre de 2020: no cubre dinámica pos-pandemia, exactamente la misma limitación que ya se documentó para Atoche Murrieta (2022) en la sección 2.4 del informe.
+- El propio artículo reconoce (sección 4, Discusión) que la interpretación de los componentes 2 y 3 del PCA global es compleja y solo parcialmente comparable con factores de estudios previos (Menden & Proaño, 2017) — no tomar la interpretación económica de los componentes como definitiva sin contraste propio.
+- Datos y código en R están disponibles "a solicitud" (*on demand*), no en repositorio público al momento de escritura del paper — no asumir acceso directo sin solicitarlo a los autores.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Camiz, S. (2021) — Exploratory classification of time-series (capítulo en Handbook of Research on Emerging Theories...) | Alta — HFC aplicado a mercados bursátiles, precedente directo del enfoque de este paper | Identificado en Anexo C (Camiz 2021, dos documentos), pendiente de fichar |
+| Camiz, S. & Diblasi, A. (2013) — Evolutionary principal component analysis (Actas Coloquio Argentino de Estadística) | Alta — fuente original del esquema de ponderación gaussiana de la ventana EPCA usado en este paper | Identificado en Anexo C, pendiente de fichar |
+| Denimal, J.-J. (2001, 2007) — Hierarchical factorial analysis / Classification factorielle hiérarchique optimisée | Alta — definición original de HFC, antecedente teórico de Camiz et al. (2020) | No identificado aún en la carpeta de literatura; pendiente de localizar |
+| Fisher, W. D. (1958) — On grouping for maximum homogeneity | Alta — algoritmo de datación de regímenes, ya usado en Camiz & Roig (2011) y aquí | Identificado en Anexo C (Grupo 2), pendiente de fichar |
+| Calinski, T. & Harabász, J. (1974) — A dendrite method for cluster analysis | Alta — criterio de selección del número de cortes en EPCA | No identificado en la carpeta de literatura; pendiente de localizar |
+| Menden, C. & Proaño, C. R. (2017) — Dissecting the financial cycle with dynamic factor models | Media — usado como referencia comparativa de interpretación de factores | No identificado en la carpeta de literatura |
+| Atoche Murrieta, L. K. (2022) — tesis de maestría, PUCP | Ya revisada | Ya fichada en el proyecto (con nota de discrepancia de rango de años, ver informe) |

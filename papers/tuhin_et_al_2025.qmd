@@ -1,0 +1,80 @@
+---
+title: "Tuhin, Nobi, Rakib & Lee (2025) — Long short-term memory autoencoder based network of financial indices"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-006 *(verificar numeración contra fichas ya existentes en el repo)* |
+| **Fecha de procesamiento** | 29 de julio de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Tuhin, K. H., Nobi, A., Rakib, M. H., & Lee, J. W. (2025). Long short-term memory autoencoder based network of financial indices. *Humanities and Social Sciences Communications, 12*, Article 100. https://doi.org/10.1057/s41599-025-04412-y
+
+> **Nota de verificación**: la página muestra "…" tras el tercer autor listado (posibles autores adicionales no visibles en el extracto obtenido) — verificar la lista completa de autores contra la fuente original antes de citar formalmente.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Redes financieras construidas mediante Autoencoder LSTM; detección de crisis financieras a través de propiedades topológicas de red |
+| **Área secundaria** | Comparación metodológica frente a métodos clásicos de construcción de redes (correlación de Pearson, información mutua, causalidad de Granger, transferencia de entropía) |
+| **Relevancia para la tesis** | **ALTA — sostiene directamente tu diferenciación metodológica hacia Autoencoders/LSTM.** A diferencia de Camiz et al., este paper no usa PCA/HFC/EPCA en absoluto: es un antecedente metodológico puro de deep learning aplicado a detección de regímenes/crisis financieras, con una técnica concreta y transferible (ver Sección 6). |
+| **Frente de la tesis al que aporta** | Frente 1 (Bibliografía), Frente 3 (Marco matemático — arquitectura Autoencoder y métricas de régimen) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Inferir la estructura de red (correlaciones direccionales) entre 375 acciones del S&P 500 a partir únicamente de sus series de retornos diarios (2000–2022, 5786 días de cotización), y usar las propiedades topológicas de esa red para **identificar crisis financieras** (burbuja punto-com 2002, crisis financiera global 2008, crisis de deuda soberana europea 2011, caída global 2015, pandemia COVID-19 2020) sin necesidad de etiquetas ni modelos supervisados.
+
+### Propuesta metodológica (arquitectura y procedimiento)
+
+1. **Preprocesamiento**: retornos logarítmicos diarios normalizados por año (media y desviación estándar propias de cada año), segmentados en ventanas deslizantes de 5 días.
+2. **Arquitectura LSTM Autoencoder de 5 capas**: dos capas LSTM como codificador → **una capa densa central (bottleneck)** → dos capas LSTM como decodificador. La reconstrucción de cada acción usa como insumo las series de *todas las demás* acciones simultáneamente.
+3. **Extracción de la matriz de "influencia"**: tras entrenar el modelo de forma no supervisada (pérdida = error cuadrático medio de reconstrucción), **la matriz de pesos de la capa densa central se interpreta como matriz de correlación/influencia entre series** — asimétrica (direccional), a diferencia de una matriz de correlación clásica.
+4. **Construcción de redes de umbral (threshold networks)**: se fija un umbral (media + desviación estándar de los pesos absolutos) para retener solo conexiones significativas, generando una red por año.
+5. **Métricas topológicas por año**: coeficiente de clustering promedio, entropía estructural, longitud promedio de camino más corto, centralidad de alcance global (GRC), densidad de red, grado máximo (in/out-degree).
+6. **Hallazgo central**: durante los períodos de crisis, las redes muestran **mayor clustering, menor entropía estructural (más jerárquicas, dominadas por pocos nodos), mayor densidad y mayor GRC** — un patrón topológico distintivo y detectado consistentemente en las cinco crisis estudiadas, superando en claridad a los métodos clásicos de construcción de redes (Pearson, información mutua, Granger, transferencia de entropía).
+7. **Análisis sectorial**: mediante un "Índice de Direccionalidad" se identifica qué sectores dominan la influencia durante cada crisis (ej. Financials en 2008 y 2011; Tecnología de la Información y Salud en COVID-19 2020).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper (mercado bursátil EE.UU.) | Equivalente/adaptación para tu tesis (ciclo financiero peruano) |
+|---|---|
+| 375 series de retornos diarios de acciones S&P 500 | Tus ~15-17 series macrofinancieras mensuales/trimestrales del BCRP — **nota importante de escala**: aquí son 5786 observaciones diarias; tu dataset BCRP tiene ~263 observaciones mensuales — una diferencia de orden de magnitud relevante (ver limitaciones). |
+| Capa densa central del Autoencoder como matriz de "influencia" direccional | Podría adaptarse como una alternativa no lineal y direccional a la matriz de correlación usada en PCA/HFC — útil para contrastar con los grupos hallados por HFC en Camiz-Cerda-Atoche (2026). |
+| Umbral dinámico/fijo sobre pesos para construir redes de umbral | Método candidato para definir de forma objetiva "conexiones relevantes" entre indicadores BCRP, análogo al criterio de corte de jerarquía en HFC (segundo autovalor < 0.7). |
+| Métricas topológicas (clustering, entropía estructural, densidad, GRC) que suben/bajan en crisis | **Aporta directamente a tu diferenciación #3** (detección explícita de regímenes): estas métricas, calculadas año a año (o ventana a ventana), podrían servir como tu propio indicador cuantitativo de "régimen de estrés financiero" para el caso peruano, validable contra episodios conocidos (crisis 2008, taper tantrum 2013, COVID 2020). |
+| Entrenamiento del modelo por año (no por ventana móvil continua) | Diferente del EPCA de Camiz (ventana móvil continua). Es una alternativa metodológica a evaluar: ¿ventana móvil continua (estilo EPCA) o reentrenamiento por período fijo (estilo este paper)? Puede ser un punto de comparación explícito en tu tesis. |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte — por qué este paper es más valioso que los clásicos de 1997/2006 para tu diferenciación
+
+A diferencia de Hochreiter & Schmidhuber (1997) o Hinton & Salakhutdinov (2006), que son referencias teóricas fundacionales sin aplicación a ciclo/regímenes financieros, **este paper (2025) es precedente metodológico directo y reciente** de exactamente lo que propone tu Ficha de Inscripción: usar Autoencoders/LSTM para **detectar regímenes/crisis financieras**, no solo para pronosticar o comprimir datos. Te da:
+
+- Una **arquitectura concreta y replicable** (5 capas: 2 LSTM encoder + densa central + 2 LSTM decoder) que puedes adaptar o citar como punto de partida para tu propio Autoencoder temporal.
+- Un **procedimiento formal para convertir la salida del Autoencoder en un indicador de régimen** (métricas topológicas de red basadas en la matriz de pesos), que es precisamente el tipo de "detección explícita de regímenes validada contra episodios históricos" que identificamos como tu diferenciación #3 frente a Camiz-Cerda-Atoche (2026).
+- Evidencia empírica de que este enfoque **supera a métodos clásicos** (correlación, información mutua, Granger, transferencia de entropía) en identificar crisis con claridad — argumento citable para justificar por qué vale la pena ir más allá de PCA/HFC/EPCA en tu propia tesis.
+
+### Limitaciones (reconocidas por los propios autores, y relevantes para tu adaptación)
+
+- **Requiere datasets grandes**: los autores mismos señalan que el enfoque exige "cantidades sustanciales de datos" para entrenar efectivamente. Esto es una limitación **crítica para tu adaptación**: el paper usa 5786 observaciones diarias × 375 series; tu dataset BCRP tiene aproximadamente 263 observaciones mensuales × 15-17 series — una diferencia de escala de más de un orden de magnitud. Tendrás que evaluar cuidadosamente si un Autoencoder/LSTM es viable con tan pocas observaciones, posiblemente requiriendo arquitecturas mucho más simples (menos capas/unidades) o técnicas de regularización agresivas.
+- Computacionalmente más demandante que métodos clásicos.
+- **Interpretabilidad limitada** ("caja negra") — los propios autores lo reconocen como reto para la interpretación económica de los pesos aprendidos, algo que contrasta con la interpretabilidad explícita que ofrece HFC (ventaja que Camiz-Cerda-Atoche 2026 explota deliberadamente).
+- Aplicado a acciones bursátiles individuales, no a indicadores macrofinancieros agregados — la transferencia de dominio (de red de acciones a red de indicadores macro) requiere justificación propia.
+- Red direccional pero no simétrica — los autores mismos plantean como trabajo futuro generar pesos simétricos para poder aplicar MST/PMFG, técnicas que si podrían conectar más directamente con el enfoque de Camiz (HFC produce agrupamientos, no jerarquías de red en el sentido de teoría de grafos).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Hochreiter & Schmidhuber (1997) — Long Short-Term Memory | Ya identificada como pendiente de fichar | Pendiente — referencia fundacional de LSTM, aún no fichada |
+| Sagheer & Kotb (2019) — Unsupervised Pre-training of a Deep LSTM-based Stacked Autoencoder for Multivariate Time Series Forecasting | Alta — combina LSTM + Autoencoder + series multivariadas, muy cercano a tu propio diseño planeado | No identificado en tu carpeta; considerar localizar |
+| Baiardi et al. (2020) — The Dynamics of the S&P 500 under a Crisis Context: Insights from a Three-Regime Switching Model | Alta — modelo de cambio de régimen (3 regímenes) aplicado a mercado bursátil bajo crisis, directamente relacionado con tu concepto de "régimen" | No identificado en tu carpeta; considerar localizar |
+| Almog & Shmueli (2019) — Structural entropy: monitoring correlation-based networks over time with application to financial markets | Media-alta — métrica de entropía estructural usada como indicador temprano de crisis, aplicable a tu detección de regímenes | No identificado en tu carpeta |
+| Nobi & Lee (2017) — Systemic risk and hierarchical transitions of financial networks | Media — antecedente de transiciones jerárquicas en redes financieras durante crisis | No identificado en tu carpeta |

@@ -1,0 +1,82 @@
+---
+title: "Camiz & Roig (2011) — Evolutionary analysis applied to tree-ring series"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-004 *(verificar numeración contra fichas ya existentes en el repo)* |
+| **Fecha de procesamiento** | 29 de julio de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Roig, F. A. (2011). Evolutionary analysis applied to tree-ring series. En O. Papú (Ed.), *Actas E-ICES 6* (pp. 30–37). Comisión Nacional de Energía Atómica. ISBN 978-987-1323-21-0.
+
+> **Nota de verificación**: el nombre del editor (O. Papú) se infiere por analogía con la referencia interna [1] del propio paper, que cita "Actas E-ICES 5" bajo el mismo editor, y por la mención a "Oscar Hugo Papú Director" en los créditos de la publicación. Verificar contra la fuente original antes de dar esta cita por definitiva.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis exploratorio evolutivo — combinación de PCA, HFC y EPCA sobre series de tiempo sincrónicas |
+| **Área secundaria** | Detección de periodos de homogeneidad/cambio estructural mediante agrupamiento de Fisher sobre series de autovalores |
+| **Relevancia para la tesis** | **ALTA**, con una precisión importante (ver Sección 6): no formaliza una "EHFC" unificada, pero sí es el antecedente más directo de la aplicación conjunta HFC + EPCA + detección de regímenes que la tesis busca replicar sobre datos financieros peruanos. |
+| **Frente de la tesis al que aporta** | Frente 1 (Bibliografía), Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+El paper estudia el comportamiento de nueve cronologías sincrónicas de anillos de árbol (*Araucaria araucana*, Andes argentinos, provincia de Neuquén) a lo largo de un período común de 492 años (1483–1974), buscando identificar variaciones importantes en la estructura de correlación entre las series a través del tiempo.
+
+### Propuesta metodológica
+
+Es la aplicación práctica (caso de estudio) del enfoque exploratorio desarrollado en Camiz, Maulucci & Roig (2010) [ref. interna 1, ya fichado en el proyecto], extendido con HFC. Se combinan tres técnicas:
+
+1. **Tandem Analysis** (PCA seguido de Clasificación Jerárquica Ascendente — HAC — con criterio de Ward): da una visión general estática de la estructura de los datos, clasificando los *años* según homogeneidad de crecimiento.
+2. **Hierarchical Factor Classification (HFC)**, propuesta originalmente por Denimal (2001) [ref. interna 15]: clasifica las *variables* (cronologías) en una jerarquía, donde cada nodo tiene un plano factorial propio (dos componentes principales) — el primero sintetiza lo que las variables del grupo tienen en común, el segundo sus diferencias internas. El criterio de corte de la jerarquía se basa en el segundo autovalor de cada nodo (los autores cortan por debajo de 0.7, siguiendo el criterio de Jolliffe [18] para PCA).
+3. **Evolutionary PCA (EPCA)**: PCA corrido sobre una ventana móvil (25 y 50 años en este caso), generando series de tiempo de autovalores y correlaciones que permiten visualizar cómo cambia la estructura de correlación a lo largo del tiempo.
+
+### Procedimiento de identificación de regímenes (clave para la tesis)
+
+Sobre la serie temporal del primer autovalor del EPCA, se aplica el algoritmo de agrupamiento de **Fisher (1958)** [ref. interna 21] para encontrar puntos de corte óptimos que dividan el período en intervalos de máxima homogeneidad interna. En este caso se hallaron tres puntos de corte (1615, 1686, 1875), definiendo cuatro períodos. Sobre cada período se corrió una PCA independiente, mostrando una tendencia clara: la inercia total explicada por los dos primeros ejes aumenta de manera sostenida entre períodos (45% → 56% → 63% → 75%), lo que los autores interpretan como una convergencia hacia una estructura cada vez más unidimensional (mayor homogeneidad entre series) a lo largo del tiempo.
+
+**Esta es la pieza directamente transferible a la tesis**: el patrón "EPCA (ventana móvil) → serie de autovalores → clustering de Fisher sobre esa serie → períodos → PCA estático por período → interpretación de la evolución de la estructura" es un procedimiento completo y replicable para identificar regímenes del ciclo financiero peruano, incluso sin necesitar una "EHFC" formalmente unificada.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto en el paper (dendrocronología) | Equivalente en la tesis (ciclo financiero) |
+|---|---|
+| Cronologías de ancho de anillos de árbol | Series macrofinancieras del BCRP (crédito, tasas, tipo de cambio, etc.) |
+| Homogeneidad de crecimiento entre árboles | Sincronía/co-movimiento entre variables macrofinancieras |
+| Ventana móvil de 25/50 años | Ventana móvil trimestral/mensual sobre datos BCRP (a definir según la selección ya explorada en `06a`/`06b`) |
+| Períodos de mayor/menor homogeneidad estructural | Regímenes o fases del ciclo financiero (expansión, contracción, transición) |
+| Corte de Fisher sobre la serie del primer autovalor | Método candidato para detectar transiciones de régimen de forma objetiva, en vez de corrección manual de signo/ventana |
+
+## 6. Aporte a la tesis y limitaciones
+
+### Aporte
+
+- Proporciona un **procedimiento completo y ya validado empíricamente** para combinar HFC + EPCA + detección de regímenes, aplicable directamente al pipeline `06_epca.ipynb` / `06a`-`06b` de la tesis.
+- El uso del **algoritmo de Fisher (1958) sobre la serie de autovalores** es una alternativa objetiva y citable a la corrección manual de signo que actualmente se hace en el enfoque de ventana EPCA — vale la pena evaluarlo como reemplazo o complemento.
+- Refuerza el criterio de corte de jerarquía HFC (segundo autovalor < 0.7, siguiendo a Jolliffe) ya usado en `07_pca_rcamiz.qmd`.
+
+### Limitaciones y precisión importante
+
+- **No formaliza una "EHFC" (HFC evolutiva) como método unificado.** HFC se corre de forma estática sobre todo el período; EPCA se corre por separado. La integración es a nivel de *interpretación conjunta de resultados*, no de algoritmo combinado. Si la tesis necesita una HFC que se mueva en ventana (análoga a EPCA), ese eslabón formal aún no está identificado en la bibliografía — pendiente de búsqueda adicional.
+- Aplicado a datos dendrocronológicos, no financieros; la transferencia del método a series macrofinancieras (con potenciales problemas de estacionariedad, ruido de mercado, y frecuencias mixtas mensual/trimestral) requiere validación propia.
+- El tamaño de ventana (25 vs. 50 años) se elige por criterio exploratorio informal, sin un procedimiento formal de selección — consistente con lo que ya se documentó en los notebooks `06a`/`06b` de la tesis.
+- Publicado en actas de congreso (E-ICES 6, 2010/2011), no en revista indexada — usar con las mismas reservas que Camiz, Maulucci & Roig (2010).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada en el paper | Prioridad | Estado en el proyecto |
+|---|---|---|
+| [1] Camiz, Maulucci & Roig (2010) — antecedente directo de este mismo procedimiento aplicado a otro dataset | Ya revisada | **Ya fichada** en el proyecto |
+| [15] Denimal (2001) — Hierarchical Factorial Analysis, definición original de HFC | Alta | Pendiente de localizar y fichar (no está en tu carpeta de 31 papers según lo revisado) |
+| [16] Camiz, Denimal & Pillar (2006) — Hierarchical Factor Classification of Variables in Ecology | Alta | **Ya identificado** en tu carpeta de literatura (Grupo 2, pendiente de fichar) |
+| [21] Fisher (1958) — On Grouping for Maximum Homogeneity | Alta — método usado para detección de regímenes | **Ya identificado** en tu carpeta de literatura (Grupo 2, pendiente de fichar) |
+| [20] Ward (1963) — Hierarchical Grouping to optimize an objective function | Media — criterio de agregación en HAC | No identificado en tu carpeta; verificar si se necesita |
+| [18] Jolliffe (2002) — Principal Component Analysis | Media — ya usado como referencia de criterio de corte en `07_pca_rcamiz.qmd` | Verificar si ya está fichado |
