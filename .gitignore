@@ -21,3 +21,4 @@ Thumbs.db
 .virtual_documents/
 *.bak
 .ipynb_checkpoints/
+~$*
