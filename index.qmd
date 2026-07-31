@@ -10,7 +10,8 @@ format:
 Este sitio documenta el avance de la tesis de maestría de Roberto
 Samaniego Salcedo, bajo la supervisión del Dr. Sergio Camiz. Reúne el
 marco conceptual, la revisión bibliográfica y el pipeline de datos del
-BCRP en un solo lugar de consulta.
+BCRP en un solo lugar de consulta. El informe de avance completo está
+disponible como descarga en la carpeta `docs/` del repositorio.
 :::
 
 ## Resumen del avance
@@ -26,12 +27,14 @@ Fórmula del avance global: promedio simple de los tres frentes
 cuantificables (bibliografía, pipeline de datos, modelamiento).
 Para actualizar: cambia los numeradores/denominadores de cada frente
 más abajo y recalcula el promedio a mano antes de publicar.
+
+Última actualización de cifras: 30 de julio de 2026.
 -->
 
-::: {.callout-important title="Avance global aproximado: 40%"}
+::: {.callout-important title="Avance global aproximado: 59%"}
 Cálculo informal de trabajo (no es una evaluación del asesor), basado
 en el promedio de los tres frentes con conteo discreto: bibliografía
-(20%), pipeline de datos (100%) y modelamiento (0%). El marco
+(53%), pipeline de datos (100%) y modelamiento (25%). El marco
 conceptual y la validación de resultados se muestran aparte porque no
 tienen todavía una unidad de conteo definida.
 :::
@@ -46,9 +49,9 @@ tienen todavía una unidad de conteo definida.
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Bibliografía</strong><br/>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-  <div style="background: #486581; width: 20%; height: 10px; border-radius: 999px;"></div>
+  <div style="background: #486581; width: 53%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">3 de 15 fichas núcleo completas</span>
+<span style="color: #6b7280; font-size: 14px;">8 de 15 fichas núcleo completas</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -56,15 +59,15 @@ tienen todavía una unidad de conteo definida.
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
   <div style="background: #486581; width: 100%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · 18 variables (ampliado de 13)</span>
+<span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · versiones trimestral (72×18) y mensual (208×17)</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Modelamiento</strong><br/>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-  <div style="background: #486581; width: 0%; height: 10px; border-radius: 999px;"></div>
+  <div style="background: #486581; width: 25%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">0 de 3 técnicas (notebooks por regenerar)</span>
+<span style="color: #6b7280; font-size: 14px;">1 de 4 técnicas completas (PCA estático)</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -82,14 +85,23 @@ proyecto. Ver el detalle de cada una en la sección [Papers](papers/camiz_et_al_
 - [x] **Camiz et al. (2020)** — Hierarchical Factor Classification of
   Dendrochronological Time Series. Referencia metodológica central
   para HFC.
+- [x] **Camiz, Maulucci & Roig (2010)** — EPCA / Statis dual.
+  Fundamento metodológico de la extensión evolutiva del PCA.
+- [x] **Camiz & Roig (2011)** — HFC + EPCA + clustering de Fisher para
+  regímenes. Eslabón directo entre HFC y el enfoque evolutivo.
+- [x] **Camiz, Cerda Hernández & Atoche Murrieta (2026)** — PCA/HFC/EPCA
+  aplicado a datos peruanos del BCRP. Antecedente directo de esta tesis.
 - [x] **Drehmann, Borio & Tsatsaronis (2012)** — Characterising the
   financial cycle. Referencia central para indicadores del ciclo
   financiero.
-- [x] **Camiz, Maulucci & Roig (2010)** — EPCA / Statis dual.
-  Fundamento metodológico de la extensión evolutiva del PCA.
-- [ ] **Camiz & Roig (2011)** — eslabón faltante en la cadena
-  metodológica HFC → EHFC. *Pendiente de localizar y procesar.*
-- [ ] Referencias adicionales del núcleo (11 pendientes) — ver
+- [x] **Hochreiter & Schmidhuber (1997)** — Long Short-Term Memory.
+  Arquitectura fundacional de LSTM.
+- [x] **Hinton & Salakhutdinov (2006)** — Reducing the dimensionality
+  of data with neural networks. Autoencoder profundo fundacional.
+- [x] **Tuhin, Nobi, Rakib & Lee (2025)** — LSTM Autoencoder para
+  detección de crisis financieras. Puente metodológico directo entre
+  Autoencoder/LSTM y un indicador cuantitativo de régimen.
+- [ ] Referencias adicionales del núcleo (7 pendientes) — ver
   [Marco conceptual, sección 7](marco_conceptual.qmd#bibliografia)
   para el listado completo de la bibliografía inicial identificada.
 
@@ -109,17 +121,22 @@ Organizado por etapa metodológica, no por notebook individual:
   entre crédito total y sus componentes (empresarial, consumo,
   hipotecario).
 - [x] **Preprocesamiento** — transformaciones (log-diferencia para
-  niveles, diferencia simple para tasas y spreads), remuestreo
-  trimestral, estandarización. Dataset final: **72 trimestres × 18
-  variables transformadas**, listo para PCA/HFC.
+  niveles, diferencia simple para tasas y spreads), estandarización.
+  Dataset trimestral: **72 × 18 variables transformadas**; dataset
+  mensual: **208 × 17 variables transformadas**. Ambos listos para
+  PCA/HFC/EPCA.
 
-## Modelamiento (próxima etapa)
+## Modelamiento (en curso)
 
-- [ ] **PCA / HFC** — análisis de componentes principales y
-  clasificación factorial jerárquica.
-- [ ] **EPCA / EHFC** — extensión evolutiva con ventanas móviles.
-- [ ] **Autoencoder / LSTM** — representaciones latentes no lineales y
-  modelamiento secuencial.
+- [x] **PCA estático** — completado. Confirma contaminación por
+  tendencia en niveles (r≈0.994 con el tiempo) frente a estructura de
+  régimen en datos transformados (r≈0.089); validado en R (Rcamiz)
+  contra scikit-learn con equivalencia confirmada (|r|=1).
+- [ ] **HFC** — pendiente de implementar sobre los datos BCRP.
+- [~] **EPCA / EHFC** — parcial: selección de ventana en exploración
+  empírica (notebooks 06a/06b); pendiente adoptar la regla de
+  alineación de signo determinista de Rcamiz.
+- [ ] **Autoencoder / LSTM** — no iniciado.
 
 ---
 
