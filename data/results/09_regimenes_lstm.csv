@@ -1,8 +1,3 @@
 inicio,fin,meses,componente_credito_medio,fase,episodios_contenidos
-2008-02,2009-03,13,0.76,Transición,Crisis financiera global
-2009-04,2010-07,15,0.15,Transición,Crisis financiera global
-2010-08,2013-04,30,0.55,Expansión,
-2013-05,2020-05,78,-0.17,Transición,"Taper tantrum, COVID-19"
-2020-06,2022-01,18,-0.51,Contracción,COVID-19
-2022-02,2023-08,18,-0.31,Contracción,
-2023-10,2025-12,25,-0.51,Contracción,
+2008-01,2013-08,68,0.49,Expansión,"Crisis financiera global, Taper tantrum"
+2013-09,2025-12,148,-0.31,Contracción,"Taper tantrum, COVID-19"

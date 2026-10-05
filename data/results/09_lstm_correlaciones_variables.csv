@@ -1,18 +1,18 @@
 ,LSTM1,LSTM2,LSTM3
-Crédito empresarial,0.18,0.27,0.46
-Crédito consumo,-0.21,0.38,0.2
-Crédito hipotecario,0.01,0.52,0.53
-Tipo de cambio,0.01,-0.03,0.02
-Índice BVL,0.06,-0.12,-0.1
-IPC Lima,-0.33,0.18,-0.13
-PBI desestacionalizado,0.13,-0.03,0.07
-Demanda interna,0.08,0.01,0.07
-Reservas internacionales,0.17,0.09,0.22
-Liquidez M1,0.23,0.06,0.27
-Liquidez M2,0.23,0.06,0.24
-Liquidez M3,0.27,0.08,0.31
-Tasa activa TAMN,-0.34,0.13,-0.21
-Tasa pasiva TIPMN,-0.6,0.36,-0.16
-Tasa referencia BCRP,-0.28,0.15,-0.12
-Tasa interbancaria,-0.3,0.2,-0.09
-embi_peru,-0.08,0.1,0.06
+Crédito empresarial,0.1,0.23,0.41
+Crédito consumo,-0.25,0.38,0.24
+Crédito hipotecario,-0.09,0.5,0.56
+Tipo de cambio,0.01,-0.03,-0.01
+Índice BVL,0.08,-0.17,-0.15
+IPC Lima,-0.37,0.24,-0.08
+PBI desestacionalizado,0.08,-0.03,0.04
+Demanda interna,0.05,-0.01,0.03
+Reservas internacionales,0.13,0.1,0.27
+Liquidez M1,0.2,-0.02,0.19
+Liquidez M2,0.23,-0.05,0.17
+Liquidez M3,0.25,-0.04,0.21
+Tasa activa TAMN,-0.35,0.19,-0.12
+Tasa pasiva TIPMN,-0.66,0.45,-0.09
+Tasa referencia BCRP,-0.37,0.25,-0.04
+Tasa interbancaria,-0.39,0.27,-0.04
+embi_peru,-0.11,0.15,0.1
