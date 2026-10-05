@@ -10,6 +10,8 @@ website:
         text: "Marco conceptual"
       - href: marco_matematico_ae_lstm.qmd
         text: "Marco matemático AE/LSTM"
+      - href: linea_temporal.qmd
+        text: "Línea temporal"
       - href: glosario.qmd
         text: "Glosario"
       - href: papers/diccionario_datos.qmd
