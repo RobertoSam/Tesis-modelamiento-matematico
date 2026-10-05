@@ -28,46 +28,57 @@ cuantificables (bibliografía, pipeline de datos, modelamiento).
 Para actualizar: cambia los numeradores/denominadores de cada frente
 más abajo y recalcula el promedio a mano antes de publicar.
 
-Última actualización de cifras: 30 de julio de 2026.
+Última actualización de cifras: 4 de octubre de 2026.
+Bibliografía: 10 completas / 15 núcleo (las 6 preliminares no cuentan).
+Pipeline: 4 de 6 etapas (01b y 04c, extensión desde 1985, pendientes de ejecución local).
+Modelamiento: PCA = 1; Autoencoder/LSTM implementado pero provisional = 0,5 → 1,5 de 4.
 -->
 
-::: {.callout-important title="Avance global aproximado: 59%"}
+::: {.callout-important title="Avance global aproximado: 57%"}
 Cálculo informal de trabajo (no es una evaluación del asesor), basado
 en el promedio de los tres frentes con conteo discreto: bibliografía
-(53%), pipeline de datos (100%) y modelamiento (25%). El marco
-conceptual y la validación de resultados se muestran aparte porque no
-tienen todavía una unidad de conteo definida.
+(67%), pipeline de datos (67%) y modelamiento (38%). El porcentaje baja
+respecto de julio porque el pipeline ganó dos etapas nuevas (extensión
+desde 1985), no porque se haya perdido avance.
+:::
+
+::: {.callout-warning title="Alerta de datos (4 de octubre de 2026)"}
+El dataset mensual vigente omite los **19 meses de septiembre
+(2007–2025)**. Las fechas de septiembre del EMBI diario ("Set") no se
+parseaban y el `dropna()` de `04b` eliminaba esos meses de todo el
+panel. La corrección ya está en `01` y `04b`. Los resultados de `06`,
+`06b`, `08` y `09` son **provisionales** hasta re-ejecutar el pipeline.
 :::
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Marco conceptual</strong><br/>
-<span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor</span>
+<span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor · <a href="marco_matematico_ae_lstm.qmd">marco matemático AE/LSTM</a> v0.1</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Bibliografía</strong><br/>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-  <div style="background: #486581; width: 53%; height: 10px; border-radius: 999px;"></div>
+  <div style="background: #486581; width: 67%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">8 de 15 fichas núcleo completas</span>
+<span style="color: #6b7280; font-size: 14px;">10 de 15 fichas núcleo completas · 6 preliminares · 1 de exploración</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Pipeline de datos BCRP</strong><br/>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-  <div style="background: #486581; width: 100%; height: 10px; border-radius: 999px;"></div>
+  <div style="background: #486581; width: 67%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · versiones trimestral (72×18) y mensual (208×17)</span>
+<span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · re-ejecución pendiente por septiembres faltantes</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Modelamiento</strong><br/>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-  <div style="background: #486581; width: 25%; height: 10px; border-radius: 999px;"></div>
+  <div style="background: #486581; width: 38%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">1 de 4 técnicas completas (PCA estático)</span>
+<span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados (provisionales)</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -101,7 +112,16 @@ proyecto. Ver el detalle de cada una en la sección [Papers](papers/camiz_et_al_
 - [x] **Tuhin, Nobi, Rakib & Lee (2025)** — LSTM Autoencoder para
   detección de crisis financieras. Puente metodológico directo entre
   Autoencoder/LSTM y un indicador cuantitativo de régimen.
-- [ ] Referencias adicionales del núcleo (7 pendientes) — ver
+- [x] **Vincent et al. (2008)** — Autoencoders *denoising*. Base del
+  ruido de entrada como regularización.
+- [x] **Srivastava, Mansimov & Salakhutdinov (2015)** — LSTM-Autoencoder.
+  Arquitectura del notebook 09.
+- [~] **Fichas preliminares** (referencia localizada, lectura pendiente):
+  Baldi & Hornik (1989), Bourlard & Kamp (1988), Gers, Schmidhuber &
+  Cummins (2000), Gal & Ghahramani (2016), Fisher (1958), Robert &
+  Escoufier (1976).
+- [~] **Exploración (*preprint*)**: Plaut (2018).
+- [ ] Referencias adicionales del núcleo (5 pendientes) — ver
   [Marco conceptual, sección 7](marco_conceptual.qmd#bibliografia)
   para el listado completo de la bibliografía inicial identificada.
 
@@ -123,8 +143,12 @@ Organizado por etapa metodológica, no por notebook individual:
 - [x] **Preprocesamiento** — transformaciones (log-diferencia para
   niveles, diferencia simple para tasas y spreads), estandarización.
   Dataset trimestral: **72 × 18 variables transformadas**; dataset
-  mensual: **208 × 17 variables transformadas**. Ambos listos para
-  PCA/HFC/EPCA.
+  mensual: **208 × 17 variables transformadas**. ⚠ El mensual omite los
+  19 septiembres (ver alerta); `04b` ahora se detiene si hay huecos.
+- [ ] **Extensión desde 1985** — `01b` (descarga y diagnóstico de
+  cobertura y resolución numérica) y `04c` (frontera n–p, paneles
+  largo/estabilización/metas, regímenes monetarios, familias nominal y
+  real). Pendientes de ejecución local.
 
 ## Modelamiento (en curso)
 
@@ -136,7 +160,14 @@ Organizado por etapa metodológica, no por notebook individual:
 - [~] **EPCA / EHFC** — parcial: selección de ventana en exploración
   empírica (notebooks 06a/06b); pendiente adoptar la regla de
   alineación de signo determinista de Rcamiz.
-- [ ] **Autoencoder / LSTM** — no iniciado.
+- [~] **Autoencoder / LSTM** — implementados y ejecutados (notebooks 08
+  y 09, [marco matemático](marco_matematico_ae_lstm.qmd)). Resultados
+  provisionales: el AE lineal reproduce el PCA exactamente; la no
+  linealidad no mejora la reconstrucción fuera de muestra; el valor del
+  AE está en detectar anomalías (oct-2008); la datación de regímenes con
+  LSTM se explica en gran parte por el suavizado temporal (control
+  PCA-MM12). Horn sugiere 4 dimensiones, no 3: decisión pendiente con
+  el asesor.
 
 ---
 

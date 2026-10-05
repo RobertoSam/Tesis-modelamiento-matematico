@@ -22,3 +22,18 @@ reports/figures/   → Gráficos y visualizaciones
 reports/tables/    → Tablas de resultados
 docs/              → Fichas bibliográficas y notas
 ```
+
+## Requisitos para los notebooks de aprendizaje profundo (08, 09)
+
+```
+pip install torch
+```
+
+Basta la versión CPU. Las funciones comunes están en `notebooks/modelos_dl.py`.
+
+## Orden de ejecución tras la corrección de septiembre (oct-2026)
+
+```
+01_extraccion_bcrp → 04b_preprocesamiento_mensual → 06b → 06_epca → 08_autoencoder → 09_lstm_autoencoder
+01b_extraccion_extendida_1985 → 04c_preprocesamiento_extendido
+```
