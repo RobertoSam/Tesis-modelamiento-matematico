@@ -139,6 +139,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Marco conceptual</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../marco_matematico_ae_lstm.html"> 
+<span class="menu-text">Marco matemático AE/LSTM</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../glosario.html"> 
 <span class="menu-text">Glosario</span></a>
   </li>  
@@ -184,6 +188,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../papers/vincent_et_al_2008.html">
+ <span class="dropdown-text">Vincent et al.&nbsp;(2008)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/srivastava_mansimov_salakhutdinov_2015.html">
+ <span class="dropdown-text">Srivastava, Mansimov &amp; Salakhutdinov (2015)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Fichas preliminares</li>
+        <li>
+    <a class="dropdown-item" href="../papers/baldi_hornik_1989.html">
+ <span class="dropdown-text">Baldi &amp; Hornik (1989)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/bourlard_kamp_1988.html">
+ <span class="dropdown-text">Bourlard &amp; Kamp (1988)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gers_schmidhuber_cummins_2000.html">
+ <span class="dropdown-text">Gers, Schmidhuber &amp; Cummins (2000)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gal_ghahramani_2016.html">
+ <span class="dropdown-text">Gal &amp; Ghahramani (2016)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/fisher_1958.html">
+ <span class="dropdown-text">Fisher (1958)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/robert_escoufier_1976.html">
+ <span class="dropdown-text">Robert &amp; Escoufier (1976)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/plaut_2018.html">
+ <span class="dropdown-text">Plaut (2018) — exploración</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
     <a class="dropdown-item" href="../papers/ciclo_economico.html">
  <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
@@ -197,6 +240,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
  <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/01b_extraccion_extendida_1985.html">
+ <span class="dropdown-text">01b · Extracción extendida (desde 1985)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
@@ -213,6 +260,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
  <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04c_preprocesamiento_extendido.html">
+ <span class="dropdown-text">04c · Preprocesamiento extendido (1985+)</span></a>
   </li>  
     </ul>
   </li>
@@ -237,6 +288,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../notebooks/06_epca.html">
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/08_autoencoder.html">
+ <span class="dropdown-text">08 · Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/09_lstm_autoencoder.html">
+ <span class="dropdown-text">09 · LSTM-Autoencoder y regímenes</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -258,7 +317,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#librerías-y-carga-de-datos-crudos-solo-lectura" id="toc-librerías-y-carga-de-datos-crudos-solo-lectura" class="nav-link active" data-scroll-target="#librerías-y-carga-de-datos-crudos-solo-lectura">1. Librerías y carga de datos crudos (solo lectura)</a></li>
   <li><a href="#embi-perú-resampleo-a-mensual-no-trimestral" id="toc-embi-perú-resampleo-a-mensual-no-trimestral" class="nav-link" data-scroll-target="#embi-perú-resampleo-a-mensual-no-trimestral">2. EMBI Perú: resampleo a MENSUAL (no trimestral)</a></li>
   <li><a href="#unir-embi-con-el-resto-de-series-mensuales" id="toc-unir-embi-con-el-resto-de-series-mensuales" class="nav-link" data-scroll-target="#unir-embi-con-el-resto-de-series-mensuales">3. Unir EMBI con el resto de series mensuales</a></li>
-  <li><a href="#revisión-y-tratamiento-de-nulos" id="toc-revisión-y-tratamiento-de-nulos" class="nav-link" data-scroll-target="#revisión-y-tratamiento-de-nulos">4. Revisión y tratamiento de nulos</a></li>
+  <li><a href="#revisión-y-tratamiento-de-nulos" id="toc-revisión-y-tratamiento-de-nulos" class="nav-link" data-scroll-target="#revisión-y-tratamiento-de-nulos">4. Revisión y tratamiento de nulos</a>
+  <ul class="collapse">
+  <li><a href="#control-de-continuidad-mensual-agregado-2026-10-04" id="toc-control-de-continuidad-mensual-agregado-2026-10-04" class="nav-link" data-scroll-target="#control-de-continuidad-mensual-agregado-2026-10-04">4.1 Control de continuidad mensual (agregado 2026-10-04)</a></li>
+  </ul></li>
   <li><a href="#versión-niveles-estandarización-sin-transformar" id="toc-versión-niveles-estandarización-sin-transformar" class="nav-link" data-scroll-target="#versión-niveles-estandarización-sin-transformar">5. Versión niveles + estandarización (SIN transformar)</a></li>
   <li><a href="#transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" id="toc-transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" class="nav-link" data-scroll-target="#transformaciones-de-estacionariedad-log-diferencia-diferencia-simple">6. Transformaciones de estacionariedad (log-diferencia / diferencia simple)</a></li>
   <li><a href="#estandarización-de-la-versión-transformada" id="toc-estandarización-de-la-versión-transformada" class="nav-link" data-scroll-target="#estandarización-de-la-versión-transformada">7. Estandarización de la versión transformada</a></li>
@@ -295,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Salidas:</strong> cuatro datasets en <code>data/processed/</code>, sufijo <code>_mensual</code>, en paralelo exacto a los cuatro de la versión trimestral.</p>
 <section id="librerías-y-carga-de-datos-crudos-solo-lectura" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos-crudos-solo-lectura">1. Librerías y carga de datos crudos (solo lectura)</h2>
-<div id="ea0aae99" class="cell" data-execution_count="1">
+<div id="ea0aae99" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:56.073740Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:56.073296Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.456735Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.456435Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -316,7 +378,7 @@ Periodo: 2007-01 a 2025-12</code></pre>
 <section id="embi-perú-resampleo-a-mensual-no-trimestral" class="level2">
 <h2 class="anchored" data-anchor-id="embi-perú-resampleo-a-mensual-no-trimestral">2. EMBI Perú: resampleo a MENSUAL (no trimestral)</h2>
 <p>Mismo criterio de promedio del periodo que en la versión trimestral, pero agregando a nivel mes.</p>
-<div id="e1091c66" class="cell" data-execution_count="2">
+<div id="e1091c66" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.458338Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.458213Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.470332Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.470098Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_embi_diario <span class="op">=</span> pd.read_csv(<span class="st">'data/raw/embi_peru_raw.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df_embi_mensual <span class="op">=</span> df_embi_diario.resample(<span class="st">'MS'</span>).mean()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'EMBI Perú (resampleado a mensual): </span><span class="sc">{</span>df_embi_mensual<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -327,7 +389,7 @@ Periodo: 2007-01 a 2025-12</code></pre>
 </section>
 <section id="unir-embi-con-el-resto-de-series-mensuales" class="level2">
 <h2 class="anchored" data-anchor-id="unir-embi-con-el-resto-de-series-mensuales">3. Unir EMBI con el resto de series mensuales</h2>
-<div id="4b488324" class="cell" data-execution_count="3">
+<div id="4b488324" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.471934Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.471814Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.485939Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.485711Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_completo <span class="op">=</span> df_raw.join(df_embi_mensual, how<span class="op">=</span><span class="st">'inner'</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset mensual sincronizado: </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
@@ -430,7 +492,7 @@ Periodo: 2007-01 a 2025-12</code></pre>
 <td>709175.882797</td>
 <td>4.3685</td>
 <td>116.016556</td>
-<td>NaN</td>
+<td>124.045455</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2025-10-01</th>
@@ -508,7 +570,7 @@ Periodo: 2007-01 a 2025-12</code></pre>
 <section id="revisión-y-tratamiento-de-nulos" class="level2">
 <h2 class="anchored" data-anchor-id="revisión-y-tratamiento-de-nulos">4. Revisión y tratamiento de nulos</h2>
 <p>Mismo criterio que la versión trimestral: se documenta cuántas filas se pierden antes de eliminarlas, no se hace en silencio.</p>
-<div id="9abd3f92" class="cell" data-execution_count="4">
+<div id="9abd3f92" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.487547Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.487437Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.490824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.490589Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nulos_por_columna <span class="op">=</span> df_completo.isna().<span class="bu">sum</span>()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Valores faltantes por columna:'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nulos_por_columna[nulos_por_columna <span class="op">&gt;</span> <span class="dv">0</span>])</span>
@@ -523,32 +585,49 @@ Periodo: 2007-01 a 2025-12</code></pre>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo final: </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valores faltantes por columna:
-embi_peru    19
-dtype: int64
+Series([], dtype: int64)
 
 Filas antes de dropna: 228
-Filas despues de dropna: 209
-Filas eliminadas: 19
+Filas despues de dropna: 228
+Filas eliminadas: 0
 Periodo final: 2007-01 a 2025-12</code></pre>
 </div>
 </div>
+<section id="control-de-continuidad-mensual-agregado-2026-10-04" class="level3">
+<h3 class="anchored" data-anchor-id="control-de-continuidad-mensual-agregado-2026-10-04">4.1 Control de continuidad mensual (agregado 2026-10-04)</h3>
+<p><code>dropna()</code> elimina filas completas. Si una sola serie tiene un mes vacío, ese mes desaparece del dataset y la diferencia siguiente pasa a medir <strong>dos meses</strong>. Así se perdieron los 19 septiembres 2007–2025 (EMBI diario sin parsear en septiembre; ver corrección en <code>01</code>). Este control detiene el pipeline si hay huecos en el calendario.</p>
+<div id="dc6079c2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.492200Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.492100Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.495546Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.495327Z&quot;}}" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>calendario <span class="op">=</span> pd.date_range(df_limpio.index.<span class="bu">min</span>(), df_limpio.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>huecos <span class="op">=</span> calendario.difference(df_limpio.index)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(huecos):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Meses faltantes:'</span>, <span class="st">', '</span>.join(h.strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> h <span class="kw">in</span> huecos))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Columnas con NaN en esos meses:'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df_completo.reindex(huecos).isna().<span class="bu">sum</span>()[<span class="kw">lambda</span> s: s <span class="op">&gt;</span> <span class="dv">0</span>])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'El dataset mensual tiene </span><span class="sc">{</span><span class="bu">len</span>(huecos)<span class="sc">}</span><span class="ss"> meses faltantes: '</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'las diferencias no serían mensuales. Revisar 01_extraccion_bcrp.'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Continuidad mensual verificada: </span><span class="sc">{</span><span class="bu">len</span>(calendario)<span class="sc">}</span><span class="ss"> meses sin huecos'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Continuidad mensual verificada: 228 meses sin huecos</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="versión-niveles-estandarización-sin-transformar" class="level2">
 <h2 class="anchored" data-anchor-id="versión-niveles-estandarización-sin-transformar">5. Versión niveles + estandarización (SIN transformar)</h2>
 <p>Igual que la sección 4b de la versión trimestral: permite comparar PCA/HFC sobre niveles vs.&nbsp;transformado, ahora en frecuencia mensual.</p>
-<div id="d19c0eb5" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scaler_niveles <span class="op">=</span> StandardScaler()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    scaler_niveles.fit_transform(df_limpio),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_limpio.index,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_limpio.columns</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, mensual):'</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d19c0eb5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.496908Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.496811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.514880Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.514661Z&quot;}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>scaler_niveles <span class="op">=</span> StandardScaler()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    scaler_niveles.fit_transform(df_limpio),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_limpio.index,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_limpio.columns</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, mensual):'</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, mensual):</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -581,24 +660,24 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">mean</th>
 <td>0.000</td>
-<td>-0.000</td>
-<td>-0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>-0.000</td>
-<td>-0.000</td>
-<td>0.000</td>
-<td>-0.000</td>
 <td>0.000</td>
 <td>-0.000</td>
 <td>0.000</td>
 <td>0.000</td>
 <td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
 <td>0.000</td>
 <td>0.000</td>
 <td>-0.000</td>
+<td>-0.000</td>
 <td>0.000</td>
+<td>-0.000</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">std</th>
@@ -632,38 +711,38 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <section id="transformaciones-de-estacionariedad-log-diferencia-diferencia-simple" class="level2">
 <h2 class="anchored" data-anchor-id="transformaciones-de-estacionariedad-log-diferencia-diferencia-simple">6. Transformaciones de estacionariedad (log-diferencia / diferencia simple)</h2>
 <p>Mismo criterio ya sustentado (Drehmann, Borio &amp; Tsatsaronis, 2012; Nelson &amp; Plosser, 1982): log-diferencia para niveles, diferencia simple para tasas y spreads. Idéntica clasificación de variables que en la versión trimestral, sin <code>indice_precios_inmuebles</code> (no existe aquí).</p>
-<div id="914d8e1a" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>VARS_LOG_DIFF <span class="op">=</span> [</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'Crédito SF sector privado',  # Total -- excluir por colinealidad, igual que en trimestral</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crédito empresarial'</span>, <span class="st">'Crédito consumo'</span>, <span class="st">'Crédito hipotecario'</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tipo de cambio'</span>, <span class="st">'Índice BVL'</span>, <span class="st">'IPC Lima'</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PBI desestacionalizado'</span>, <span class="st">'Demanda interna'</span>, <span class="st">'Reservas internacionales'</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Liquidez M1'</span>, <span class="st">'Liquidez M2'</span>, <span class="st">'Liquidez M3'</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>VARS_DIFF_SIMPLE <span class="op">=</span> [</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa activa TAMN'</span>, <span class="st">'Tasa pasiva TIPMN'</span>, <span class="st">'Tasa referencia BCRP'</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa interbancaria'</span>,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'embi_peru'</span>,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 'IPC Subyacente' queda fuera, misma decision pendiente que en la version trimestral.</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>df_limpio.index)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_LOG_DIFF:</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_log_diff'</span>] <span class="op">=</span> np.log(df_limpio[col]).diff()</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_DIFF_SIMPLE:</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_diff'</span>] <span class="op">=</span> df_limpio[col].diff()</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> df_transformado.dropna()</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset transformado (mensual, estacionario): </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>df_transformado.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="914d8e1a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.516311Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.516199Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.527359Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.527151Z&quot;}}" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>VARS_LOG_DIFF <span class="op">=</span> [</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'Crédito SF sector privado',  # Total -- excluir por colinealidad, igual que en trimestral</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crédito empresarial'</span>, <span class="st">'Crédito consumo'</span>, <span class="st">'Crédito hipotecario'</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tipo de cambio'</span>, <span class="st">'Índice BVL'</span>, <span class="st">'IPC Lima'</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PBI desestacionalizado'</span>, <span class="st">'Demanda interna'</span>, <span class="st">'Reservas internacionales'</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Liquidez M1'</span>, <span class="st">'Liquidez M2'</span>, <span class="st">'Liquidez M3'</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>VARS_DIFF_SIMPLE <span class="op">=</span> [</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa activa TAMN'</span>, <span class="st">'Tasa pasiva TIPMN'</span>, <span class="st">'Tasa referencia BCRP'</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa interbancaria'</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'embi_peru'</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 'IPC Subyacente' queda fuera, misma decision pendiente que en la version trimestral.</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>df_limpio.index)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_LOG_DIFF:</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_log_diff'</span>] <span class="op">=</span> np.log(df_limpio[col]).diff()</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_DIFF_SIMPLE:</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_diff'</span>] <span class="op">=</span> df_limpio[col].diff()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> df_transformado.dropna()</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset transformado (mensual, estacionario): </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>df_transformado.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dataset transformado (mensual, estacionario): 208 filas x 17 columnas</code></pre>
+<pre><code>Dataset transformado (mensual, estacionario): 227 filas x 17 columnas</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -712,26 +791,6 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2025-07-01</th>
-<td>0.008822</td>
-<td>0.004928</td>
-<td>0.002894</td>
-<td>-0.013325</td>
-<td>0.021602</td>
-<td>0.002312</td>
-<td>0.011317</td>
-<td>0.051459</td>
-<td>0.025666</td>
-<td>0.029998</td>
-<td>0.022872</td>
-<td>0.023006</td>
-<td>0.0638</td>
-<td>-0.1121</td>
-<td>0.00</td>
-<td>0.001106</td>
-<td>-13.134576</td>
-</tr>
-<tr class="even">
 <th data-quarto-table-cell-role="th">2025-08-01</th>
 <td>0.006494</td>
 <td>0.008378</td>
@@ -748,28 +807,48 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <td>0.1045</td>
 <td>-0.0268</td>
 <td>0.00</td>
-<td>0.007900</td>
+<td>0.0079</td>
 <td>-7.817805</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2025-09-01</th>
+<td>-0.002309</td>
+<td>0.007736</td>
+<td>0.007422</td>
+<td>-0.011462</td>
+<td>0.085459</td>
+<td>0.000112</td>
+<td>0.004006</td>
+<td>-0.026370</td>
+<td>-0.030130</td>
+<td>0.013288</td>
+<td>0.009322</td>
+<td>0.008831</td>
+<td>0.2017</td>
+<td>0.0035</td>
+<td>-0.25</td>
+<td>-0.1394</td>
+<td>-9.049784</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2025-10-01</th>
-<td>0.000498</td>
-<td>0.018307</td>
-<td>0.015247</td>
-<td>-0.037119</td>
-<td>0.099666</td>
-<td>-0.000885</td>
-<td>0.004844</td>
-<td>0.004218</td>
-<td>0.024850</td>
-<td>0.028220</td>
-<td>0.018419</td>
-<td>0.014100</td>
-<td>0.4065</td>
-<td>-0.0148</td>
-<td>-0.25</td>
-<td>-0.257900</td>
-<td>-9.921325</td>
+<td>0.002807</td>
+<td>0.010571</td>
+<td>0.007825</td>
+<td>-0.025657</td>
+<td>0.014207</td>
+<td>-0.000997</td>
+<td>0.000838</td>
+<td>0.030588</td>
+<td>0.054980</td>
+<td>0.014933</td>
+<td>0.009097</td>
+<td>0.005269</td>
+<td>0.2048</td>
+<td>-0.0183</td>
+<td>0.00</td>
+<td>-0.1185</td>
+<td>-0.871542</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">2025-11-01</th>
@@ -788,7 +867,7 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <td>0.1922</td>
 <td>-0.0207</td>
 <td>0.00</td>
-<td>-0.002200</td>
+<td>-0.0022</td>
 <td>2.926087</td>
 </tr>
 <tr class="odd">
@@ -808,7 +887,7 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <td>0.1394</td>
 <td>-0.1222</td>
 <td>0.00</td>
-<td>-0.006700</td>
+<td>-0.0067</td>
 <td>0.682609</td>
 </tr>
 </tbody>
@@ -820,19 +899,19 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 </section>
 <section id="estandarización-de-la-versión-transformada" class="level2">
 <h2 class="anchored" data-anchor-id="estandarización-de-la-versión-transformada">7. Estandarización de la versión transformada</h2>
-<div id="85f6a5a7" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>scaler_transf <span class="op">=</span> StandardScaler()</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_estandarizado <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    scaler_transf.fit_transform(df_transformado),</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_transformado.index,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_transformado.columns</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (transformado + estandarizado, mensual):'</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>df_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="85f6a5a7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.528716Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.528622Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.543647Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.543414Z&quot;}}" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>scaler_transf <span class="op">=</span> StandardScaler()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    scaler_transf.fit_transform(df_transformado),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_transformado.index,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_transformado.columns</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (transformado + estandarizado, mensual):'</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>df_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Verificación — media ≈ 0, varianza ≈ 1 (transformado + estandarizado, mensual):</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -868,17 +947,17 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <td>0.000</td>
 <td>0.000</td>
 <td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>-0.000</td>
+<td>0.000</td>
+<td>-0.000</td>
 <td>0.000</td>
 <td>0.000</td>
 <td>-0.000</td>
 <td>-0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>-0.000</td>
-<td>0.000</td>
-<td>0.000</td>
-<td>0.000</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">std</th>
@@ -910,24 +989,24 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 <section id="guardar-los-cuatro-datasets-mensuales" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-los-cuatro-datasets-mensuales">8. Guardar los cuatro datasets mensuales</h2>
 <p>Mismo esquema de nombres que la versión trimestral, con sufijo <code>_mensual</code> para que ambos pipelines convivan sin sobrescribirse.</p>
-<div id="2cdf1779" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/processed'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df_limpio.to_csv(<span class="st">'data/processed/dataset_niveles_mensual.csv'</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.to_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>df_transformado.to_csv(<span class="st">'data/processed/dataset_transformado_mensual.csv'</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>df_estandarizado.to_csv(<span class="st">'data/processed/dataset_estandarizado_mensual.csv'</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Datasets guardados en data/processed/:'</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_mensual.csv'</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_estandarizado_mensual.csv'</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_transformado_mensual.csv'</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_estandarizado_mensual.csv'</span>)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Comparación de tamaño de muestra:'</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Trimestral: 72 observaciones x ~18 variables (n/p ≈ 4.5)'</span>)</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Mensual:    </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones x </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables '</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(n/p ≈ </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="op">/</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2cdf1779" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:34:59.544969Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:34:59.544883Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:34:59.563933Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:34:59.563713Z&quot;}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/processed'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df_limpio.to_csv(<span class="st">'data/processed/dataset_niveles_mensual.csv'</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.to_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>df_transformado.to_csv(<span class="st">'data/processed/dataset_transformado_mensual.csv'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>df_estandarizado.to_csv(<span class="st">'data/processed/dataset_estandarizado_mensual.csv'</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Datasets guardados en data/processed/:'</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_mensual.csv'</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_estandarizado_mensual.csv'</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_transformado_mensual.csv'</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_estandarizado_mensual.csv'</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Comparación de tamaño de muestra:'</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Trimestral: 72 observaciones x ~18 variables (n/p ≈ 4.5)'</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'  Mensual:    </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones x </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables '</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(n/p ≈ </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="op">/</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Datasets guardados en data/processed/:
   - dataset_niveles_mensual.csv
@@ -937,7 +1016,7 @@ Periodo final: 2007-01 a 2025-12</code></pre>
 
 Comparación de tamaño de muestra:
   Trimestral: 72 observaciones x ~18 variables (n/p ≈ 4.5)
-  Mensual:    208 observaciones x 17 variables (n/p ≈ 12.2)</code></pre>
+  Mensual:    227 observaciones x 17 variables (n/p ≈ 13.4)</code></pre>
 </div>
 </div>
 

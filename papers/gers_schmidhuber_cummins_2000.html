@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Camiz, Cerda Hernández &amp; Atoche Murrieta (2026) – Tesis — Ciclo Financiero Perú</title>
+<title>Gers, Schmidhuber &amp; Cummins (2000) — Learning to forget: Continual prediction with LSTM – Tesis — Ciclo Financiero Perú</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,6 +71,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -276,12 +305,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#referencia-completa-apa-7" id="toc-referencia-completa-apa-7" class="nav-link active" data-scroll-target="#referencia-completa-apa-7">1. Referencia completa (APA 7)</a></li>
-  <li><a href="#resumen-narrativo" id="toc-resumen-narrativo" class="nav-link" data-scroll-target="#resumen-narrativo">2. Resumen narrativo</a></li>
-  <li><a href="#aporte-a-la-tesis" id="toc-aporte-a-la-tesis" class="nav-link" data-scroll-target="#aporte-a-la-tesis">3. Aporte a la tesis</a></li>
-  <li><a href="#conceptos-clave" id="toc-conceptos-clave" class="nav-link" data-scroll-target="#conceptos-clave">4. Conceptos clave</a></li>
-  <li><a href="#metodología-transferible" id="toc-metodología-transferible" class="nav-link" data-scroll-target="#metodología-transferible">5. Metodología transferible</a></li>
-  <li><a href="#limitaciones-y-advertencias-metodológicas" id="toc-limitaciones-y-advertencias-metodológicas" class="nav-link" data-scroll-target="#limitaciones-y-advertencias-metodológicas">6. Limitaciones y advertencias metodológicas</a></li>
+  <li><a href="#datos-identificadores" id="toc-datos-identificadores" class="nav-link active" data-scroll-target="#datos-identificadores">1. Datos identificadores</a></li>
+  <li><a href="#referencia-completa-apa-7.ª-edición" id="toc-referencia-completa-apa-7.ª-edición" class="nav-link" data-scroll-target="#referencia-completa-apa-7.ª-edición">2. Referencia completa (APA 7.ª edición)</a></li>
+  <li><a href="#clasificación-temática" id="toc-clasificación-temática" class="nav-link" data-scroll-target="#clasificación-temática">3. Clasificación temática</a></li>
+  <li><a href="#resumen-analítico" id="toc-resumen-analítico" class="nav-link" data-scroll-target="#resumen-analítico">4. Resumen analítico</a>
+  <ul class="collapse">
+  <li><a href="#problema-abordado" id="toc-problema-abordado" class="nav-link" data-scroll-target="#problema-abordado">Problema abordado</a></li>
+  <li><a href="#propuesta-metodológica" id="toc-propuesta-metodológica" class="nav-link" data-scroll-target="#propuesta-metodológica">Propuesta metodológica</a></li>
+  </ul></li>
+  <li><a href="#conceptos-clave-equivalencia-de-dominio" id="toc-conceptos-clave-equivalencia-de-dominio" class="nav-link" data-scroll-target="#conceptos-clave-equivalencia-de-dominio">5. Conceptos clave (equivalencia de dominio)</a></li>
+  <li><a href="#aporte-a-la-tesis-limitaciones-y-diferenciación" id="toc-aporte-a-la-tesis-limitaciones-y-diferenciación" class="nav-link" data-scroll-target="#aporte-a-la-tesis-limitaciones-y-diferenciación">6. Aporte a la tesis, limitaciones y diferenciación</a>
+  <ul class="collapse">
+  <li><a href="#aporte" id="toc-aporte" class="nav-link" data-scroll-target="#aporte">Aporte</a></li>
+  <li><a href="#limitaciones-relevantes-para-la-adaptación" id="toc-limitaciones-relevantes-para-la-adaptación" class="nav-link" data-scroll-target="#limitaciones-relevantes-para-la-adaptación">Limitaciones (relevantes para la adaptación)</a></li>
+  </ul></li>
   <li><a href="#referencias-internas-relevantes" id="toc-referencias-internas-relevantes" class="nav-link" data-scroll-target="#referencias-internas-relevantes">7. Referencias internas relevantes</a></li>
   </ul>
 </nav>
@@ -291,8 +328,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Camiz, Cerda Hernández &amp; Atoche Murrieta (2026)</h1>
-<p class="subtitle lead">Exploratory Procedure to Identify Financial Cycle: an Application to Peruvian Data</p>
+<h1 class="title">Gers, Schmidhuber &amp; Cummins (2000) — Learning to forget: Continual prediction with LSTM</h1>
 </div>
 
 
@@ -309,116 +345,160 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>Código de ficha:</strong> FB-009 <em>(verificar contra la numeración real ya usada en el proyecto antes de publicar)</em> <strong>Estado:</strong> Ficha completa <strong>Prioridad:</strong> Alta — antecedente directo (mismo país, misma fuente de datos, mismo núcleo metodológico PCA-HFC-EPCA)</p>
-<section id="referencia-completa-apa-7" class="level2">
-<h2 class="anchored" data-anchor-id="referencia-completa-apa-7">1. Referencia completa (APA 7)</h2>
-<p>Camiz, S., Cerda Hernández, J. J., &amp; Atoche Murrieta, L. K. (2026). <em>Exploratory procedure to identify financial cycle: An application to Peruvian data</em> [Manuscrito no publicado]. Fecha del manuscrito: 25 de abril de 2026.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Ficha PRELIMINAR">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Ficha PRELIMINAR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente documentado del trabajo, <strong>sin lectura del texto completo</strong>. Antes de citarla en el informe final hay que leer el artículo y completar o corregir las secciones 4 a 6.</p>
+</div>
+</div>
+<section id="datos-identificadores" class="level2">
+<h2 class="anchored" data-anchor-id="datos-identificadores">1. Datos identificadores</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Código de ficha</strong></td>
+<td>FB-012 <em>(verificar numeración contra las fichas existentes)</em></td>
+</tr>
+<tr class="even">
+<td><strong>Fecha de procesamiento</strong></td>
+<td>4 de octubre de 2026</td>
+</tr>
+<tr class="odd">
+<td><strong>Procesado por</strong></td>
+<td>Roberto Samaniego Salcedo (con asistencia de Claude)</td>
+</tr>
+<tr class="even">
+<td><strong>Estado de lectura</strong></td>
+<td>No leído — localizado (preliminar)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referencia-completa-apa-7.ª-edición" class="level2">
+<h2 class="anchored" data-anchor-id="referencia-completa-apa-7.ª-edición">2. Referencia completa (APA 7.ª edición)</h2>
+<p>Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (2000). Learning to forget: Continual prediction with LSTM. <em>Neural Computation, 12</em>(10), 2451–2471. https://doi.org/10.1162/089976600300015015</p>
 <blockquote class="blockquote">
-<p><strong>Nota de verificación:</strong> el documento no incluye datos de revista, volumen ni DOI en la fecha indicada en el propio manuscrito (25 de abril de 2026). Debe confirmarse con el Dr.&nbsp;Camiz si a la fecha actual ya tiene estado de publicación formal (revista o actas de congreso).</p>
+<p><strong>Verificación:</strong> Referencia localizada en ACM Digital Library, PubMed (PMID 11032042) y Semantic Scholar (2026-10-04). Verificar el DOI contra el registro de MIT Press.</p>
 </blockquote>
 </section>
-<section id="resumen-narrativo" class="level2">
-<h2 class="anchored" data-anchor-id="resumen-narrativo">2. Resumen narrativo</h2>
-<p>El artículo aplica PCA, HFC y EPCA sobre 17 series mensuales de indicadores macrofinancieros del BCRP (enero de 1999 a noviembre/diciembre de 2020, 263 observaciones), con el objetivo de identificar el ciclo financiero peruano. Es la continuación directa de la tesis de maestría de Atoche Murrieta (2022, PUCP), realizada bajo supervisión de Camiz como profesor visitante en Lima.</p>
-<p>El procedimiento aplicado, en orden, es:</p>
-<ol type="1">
-<li><strong>PCA sobre las 17 series completas.</strong> El primer componente concentra 72.06% de la inercia; el segundo y tercero, 12.87% y 7.12% adicionales. Dos series —tipo de cambio interbancario (<em>avexr</em>) y apalancamiento global bancario (<em>glevb</em>)— muestran correlación baja con el primer componente y alta con el segundo/tercero, y se excluyen del análisis principal.</li>
-<li><strong>PCA reducido sobre 15 series</strong> (sin <em>avexr</em> ni <em>glevb</em>): tres componentes explican 79.70%, 90.15% y 95.11% de la inercia acumulada.</li>
-<li><strong>HFC sobre las 17 series</strong>, que identifica tres grupos homogéneos, excluyendo naturalmente <em>avexr</em> y <em>glevb</em> como series aisladas de baja correlación con el resto:
-<ul>
-<li><strong>Grupo <em>24</em> — Salud económica y financiera:</strong> activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez, reservas internacionales netas. El grupo más homogéneo (segundo autovalor de la jerarquía = 0.052; primer factor explica ~94% de la inercia del grupo).</li>
-<li><strong>Grupo <em>27</em> — Tasas de interés:</strong> tasas activas y pasivas, en moneda nacional y extranjera. Segundo autovalor = 0.209; primer factor explica 92.8%.</li>
-<li><strong>Grupo <em>29</em> — Riesgo de mercado financiero:</strong> reservas, índice bursátil de Lima, EMBIG, coeficiente de dolarización. El grupo menos homogéneo (dipolo, segundo autovalor = 0.423; primer factor explica 84%).</li>
-</ul></li>
-<li><strong>EPCA sobre el conjunto completo y sobre cada grupo por separado</strong>, con ventana móvil gaussiana de 48 meses (4 años, parámetro de forma s=3), particionando el período en subperíodos de estabilidad estructural mediante el algoritmo de Fisher (1958) sobre la serie del primer autovalor, seleccionando el número de cortes con el criterio de Calinski-Harabász (1974).</li>
-</ol>
-<p>Los resultados muestran que el grupo <em>24</em> (salud financiera) es el más estable en el tiempo; el grupo <em>27</em> (tasas) funciona como indicador de alerta temprana, perdiendo estabilidad antes de episodios de crisis; y el grupo <em>29</em> (riesgo de mercado) es el menos unidimensional y el más afectado por shocks puntuales (burbuja punto-com 2002, crisis financiera 2008, guerra comercial EE.UU.-China 2018-2019).</p>
+<section id="clasificación-temática" class="level2">
+<h2 class="anchored" data-anchor-id="clasificación-temática">3. Clasificación temática</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Área principal</strong></td>
+<td>Redes neuronales recurrentes; arquitectura LSTM</td>
+</tr>
+<tr class="even">
+<td><strong>Área secundaria</strong></td>
+<td>Predicción continua en secuencias no segmentadas</td>
+</tr>
+<tr class="odd">
+<td><strong>Relevancia para la tesis</strong></td>
+<td><strong>ALTA.</strong> Introduce la <strong>compuerta de olvido</strong>, presente en toda implementación actual de LSTM (incluida la de PyTorch usada en 09). La ficha de Hochreiter &amp; Schmidhuber (1997) describe la versión sin esa compuerta.</td>
+</tr>
+<tr class="even">
+<td><strong>Frente de la tesis al que aporta</strong></td>
+<td>Frente 3 (Marco matemático)</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="aporte-a-la-tesis" class="level2">
-<h2 class="anchored" data-anchor-id="aporte-a-la-tesis">3. Aporte a la tesis</h2>
-<p>Este es el antecedente metodológico más directo de toda la revisión bibliográfica, y aporta cuatro elementos concretos y verificables:</p>
+<section id="resumen-analítico" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-analítico">4. Resumen analítico</h2>
+<section id="problema-abordado" class="level3">
+<h3 class="anchored" data-anchor-id="problema-abordado">Problema abordado</h3>
+<p>La LSTM original no tiene un mecanismo para reiniciar su memoria; ante secuencias continuas, sin cortes predefinidos, los estados de la celda pueden crecer sin control.</p>
+</section>
+<section id="propuesta-metodológica" class="level3">
+<h3 class="anchored" data-anchor-id="propuesta-metodológica">Propuesta metodológica</h3>
+<p>Agrega una compuerta multiplicativa <span class="math inline">\(f_t\)</span> sobre la celda: <span class="math inline">\(c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t\)</span>. Así la red aprende cuándo descartar información pasada. <em>[Completar con experimentos y resultados tras la lectura.]</em></p>
+</section>
+</section>
+<section id="conceptos-clave-equivalencia-de-dominio" class="level2">
+<h2 class="anchored" data-anchor-id="conceptos-clave-equivalencia-de-dominio">5. Conceptos clave (equivalencia de dominio)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concepto del paper</th>
+<th>Equivalente/aplicación en la tesis (series BCRP)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Compuerta de olvido</td>
+<td>Permite que el LSTM-AE “reinicie” su memoria al cruzar un cambio de régimen: interpretable como mecanismo de transición</td>
+</tr>
+<tr class="even">
+<td>Secuencias continuas no segmentadas</td>
+<td>Las series del BCRP no tienen cortes naturales; las ventanas de L = 12 meses son una segmentación impuesta, a discutir</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aporte-a-la-tesis-limitaciones-y-diferenciación" class="level2">
+<h2 class="anchored" data-anchor-id="aporte-a-la-tesis-limitaciones-y-diferenciación">6. Aporte a la tesis, limitaciones y diferenciación</h2>
+<section id="aporte" class="level3">
+<h3 class="anchored" data-anchor-id="aporte">Aporte</h3>
 <ul>
-<li><strong>Confirma textualmente que HFC y EPCA se aplican de forma secuencial, no fusionada.</strong> El propio artículo (sección 5, conclusión) propone como procedimiento recomendado: “(1) aplicar HFC al conjunto de series para identificar grupos suficientemente unidimensionales; (2) aplicar EPCA evolutivo a cada grupo para verificar unidimensionalidad y estabilidad de interpretación en el tiempo.” No existe, ni aquí ni en los antecedentes previos, una fusión formal en un único algoritmo evolutivo (EHFC). Esto valida directamente el vacío metodológico identificado en la sección 2.4 del informe de avance.</li>
-<li><strong>Confirma que la ventana de EPCA (48 meses) se elige por experimentación informal, no por un criterio objetivo.</strong> El texto dice literalmente que la elección de una ventana de cuatro años y el parámetro de la distribución gaussiana (s=3) resultan de “cierta experimentación” (<em>“some experimentation showed that a kind of Gaussian distribution may be chosen…”</em>), sin un procedimiento de selección formal. Es la tercera fuente que confirma este mismo vacío (junto con Camiz, Maulucci &amp; Roig, 2010 y la práctica ya observada en Camiz et al., 2020), y refuerza directamente el objetivo específico de formalizar dicho criterio.</li>
-<li><strong>Proporciona el precedente metodológico exacto para la datación de regímenes</strong>: Fisher (1958) sobre la serie del primer autovalor + criterio de Calinski-Harabász (1974) para el número de cortes. Es la misma combinación que la tesis planea usar (objetivo específico de datación de regímenes), ahora con precedente aplicado a datos BCRP reales, no solo a series dendrocronológicas.</li>
-<li><strong>Ofrece fechas de transición estructural específicas para Perú</strong>, más allá de las genéricas 2008/2013/2020: burbuja punto-com (2002), renuncia de Fujimori (2000), crisis financiera global (2008), renuncia de Kuczynski (2018), guerra comercial EE.UU.-China (2018-2019). Estas fechas son directamente utilizables como puntos de validación adicionales para calibrar el umbral de transición de régimen, tanto en la parte clásica como en Autoencoder/LSTM.</li>
+<li>Obligatoria al escribir las ecuaciones de la LSTM implementada (sección 4.1 del marco matemático): debe citarse junto con Hochreiter &amp; Schmidhuber (1997).</li>
+<li>Evita una contradicción con la ficha de 1997, cuyas ecuaciones no incluyen <span class="math inline">\(f_t\)</span>.</li>
 </ul>
 </section>
-<section id="conceptos-clave" class="level2">
-<h2 class="anchored" data-anchor-id="conceptos-clave">4. Conceptos clave</h2>
+<section id="limitaciones-relevantes-para-la-adaptación" class="level3">
+<h3 class="anchored" data-anchor-id="limitaciones-relevantes-para-la-adaptación">Limitaciones (relevantes para la adaptación)</h3>
 <ul>
-<li><strong>Selección de series</strong>: de 17 indicadores iniciales, 2 se excluyen (<em>avexr</em>, <em>glevb</em>) por baja correlación con la estructura principal — precedente directo para el propio proceso de selección/depuración de variables de Roberto.</li>
-<li><strong>Convención de nombres de grupo</strong>: los grupos se identifican por el número de nodo de la jerarquía HFC (<em>24</em>, <em>27</em>, <em>29</em>), no por nombre temático — útil tenerlo presente si se comparan resultados de Roberto con los de este paper.</li>
-<li><strong>Los mismos 17 códigos BCRP están listados con etiqueta corta y estadística descriptiva</strong> (Tabla 1 del paper): activos internos, circulante, ahorro total, reservas, crédito total, índice bursátil Lima, fondos de pensiones, tipo de cambio interbancario, liquidez, dolarización, RIN, apalancamiento global, tasas activa/pasiva en moneda nacional y extranjera, EMBIG. Es una referencia útil para contrastar contra el diccionario de datos ya construido en el pipeline propio.</li>
+<li>Ficha preliminar.</li>
+<li>Experimentos con secuencias sintéticas o simbólicas, ajenos a series macroeconómicas.</li>
 </ul>
 </section>
-<section id="metodología-transferible" class="level2">
-<h2 class="anchored" data-anchor-id="metodología-transferible">5. Metodología transferible</h2>
-<ul>
-<li>El criterio de corte del dendrograma HFC usado aquí es el mismo que en Camiz et al.&nbsp;(2020): segundo autovalor de la jerarquía por debajo de 0.7 (umbral de Jolliffe, 2002).</li>
-<li>La ponderación gaussiana de la ventana móvil EPCA (mayor peso al centro de la ventana, menor en los extremos) sigue el esquema propuesto por Camiz y Diblasi (2013), no discutido con este nivel de detalle en Camiz, Maulucci &amp; Roig (2010).</li>
-<li>El artículo aplica el procedimiento completo tanto al conjunto total de series como a cada grupo HFC por separado, lo que da un patrón replicable para estructurar los propios notebooks <code>06_epca</code> (ventana global) y una futura extensión por grupo.</li>
-</ul>
-</section>
-<section id="limitaciones-y-advertencias-metodológicas" class="level2">
-<h2 class="anchored" data-anchor-id="limitaciones-y-advertencias-metodológicas">6. Limitaciones y advertencias metodológicas</h2>
-<ul>
-<li><strong>Estado de publicación no verificado</strong> (ver nota en sección 1) — no citar como fuente publicada en el informe final sin confirmación.</li>
-<li>La muestra termina en noviembre/diciembre de 2020: no cubre dinámica pos-pandemia, exactamente la misma limitación que ya se documentó para Atoche Murrieta (2022) en la sección 2.4 del informe.</li>
-<li>El propio artículo reconoce (sección 4, Discusión) que la interpretación de los componentes 2 y 3 del PCA global es compleja y solo parcialmente comparable con factores de estudios previos (Menden &amp; Proaño, 2017) — no tomar la interpretación económica de los componentes como definitiva sin contraste propio.</li>
-<li>Datos y código en R están disponibles “a solicitud” (<em>on demand</em>), no en repositorio público al momento de escritura del paper — no asumir acceso directo sin solicitarlo a los autores.</li>
-</ul>
 </section>
 <section id="referencias-internas-relevantes" class="level2">
 <h2 class="anchored" data-anchor-id="referencias-internas-relevantes">7. Referencias internas relevantes</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Referencia citada en el paper</th>
+<th>Referencia citada</th>
 <th>Prioridad</th>
 <th>Estado en el proyecto</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Camiz, S. (2021) — Exploratory classification of time-series (capítulo en Handbook of Research on Emerging Theories…)</td>
-<td>Alta — HFC aplicado a mercados bursátiles, precedente directo del enfoque de este paper</td>
-<td>Identificado en Anexo C (Camiz 2021, dos documentos), pendiente de fichar</td>
-</tr>
-<tr class="even">
-<td>Camiz, S. &amp; Diblasi, A. (2013) — Evolutionary principal component analysis (Actas Coloquio Argentino de Estadística)</td>
-<td>Alta — fuente original del esquema de ponderación gaussiana de la ventana EPCA usado en este paper</td>
-<td>Identificado en Anexo C, pendiente de fichar</td>
-</tr>
-<tr class="odd">
-<td>Denimal, J.-J. (2001, 2007) — Hierarchical factorial analysis / Classification factorielle hiérarchique optimisée</td>
-<td>Alta — definición original de HFC, antecedente teórico de Camiz et al.&nbsp;(2020)</td>
-<td>No identificado aún en la carpeta de literatura; pendiente de localizar</td>
-</tr>
-<tr class="even">
-<td>Fisher, W. D. (1958) — On grouping for maximum homogeneity</td>
-<td>Alta — algoritmo de datación de regímenes, ya usado en Camiz &amp; Roig (2011) y aquí</td>
-<td>Identificado en Anexo C (Grupo 2), pendiente de fichar</td>
-</tr>
-<tr class="odd">
-<td>Calinski, T. &amp; Harabász, J. (1974) — A dendrite method for cluster analysis</td>
-<td>Alta — criterio de selección del número de cortes en EPCA</td>
-<td>No identificado en la carpeta de literatura; pendiente de localizar</td>
-</tr>
-<tr class="even">
-<td>Menden, C. &amp; Proaño, C. R. (2017) — Dissecting the financial cycle with dynamic factor models</td>
-<td>Media — usado como referencia comparativa de interpretación de factores</td>
-<td>No identificado en la carpeta de literatura</td>
-</tr>
-<tr class="odd">
-<td>Atoche Murrieta, L. K. (2022) — tesis de maestría, PUCP</td>
-<td>Ya revisada</td>
-<td>Ya fichada en el proyecto (con nota de discrepancia de rango de años, ver informe)</td>
+<td>Hochreiter &amp; Schmidhuber (1997)</td>
+<td>Alta</td>
+<td>Ficha existente</td>
 </tr>
 </tbody>
 </table>

@@ -139,6 +139,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Marco conceptual</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../marco_matematico_ae_lstm.html"> 
+<span class="menu-text">Marco matemático AE/LSTM</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../glosario.html"> 
 <span class="menu-text">Glosario</span></a>
   </li>  
@@ -184,6 +188,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../papers/vincent_et_al_2008.html">
+ <span class="dropdown-text">Vincent et al.&nbsp;(2008)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/srivastava_mansimov_salakhutdinov_2015.html">
+ <span class="dropdown-text">Srivastava, Mansimov &amp; Salakhutdinov (2015)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Fichas preliminares</li>
+        <li>
+    <a class="dropdown-item" href="../papers/baldi_hornik_1989.html">
+ <span class="dropdown-text">Baldi &amp; Hornik (1989)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/bourlard_kamp_1988.html">
+ <span class="dropdown-text">Bourlard &amp; Kamp (1988)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gers_schmidhuber_cummins_2000.html">
+ <span class="dropdown-text">Gers, Schmidhuber &amp; Cummins (2000)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gal_ghahramani_2016.html">
+ <span class="dropdown-text">Gal &amp; Ghahramani (2016)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/fisher_1958.html">
+ <span class="dropdown-text">Fisher (1958)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/robert_escoufier_1976.html">
+ <span class="dropdown-text">Robert &amp; Escoufier (1976)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/plaut_2018.html">
+ <span class="dropdown-text">Plaut (2018) — exploración</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
     <a class="dropdown-item" href="../papers/ciclo_economico.html">
  <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
@@ -197,6 +240,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
  <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/01b_extraccion_extendida_1985.html">
+ <span class="dropdown-text">01b · Extracción extendida (desde 1985)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
@@ -213,6 +260,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
  <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04c_preprocesamiento_extendido.html">
+ <span class="dropdown-text">04c · Preprocesamiento extendido (1985+)</span></a>
   </li>  
     </ul>
   </li>
@@ -236,6 +287,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../notebooks/06_epca.html">
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/08_autoencoder.html">
+ <span class="dropdown-text">08 · Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/09_lstm_autoencoder.html">
+ <span class="dropdown-text">09 · LSTM-Autoencoder y regímenes</span></a>
   </li>  
     </ul>
   </li>
@@ -293,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>No modifica ningún archivo de <code>data/processed/</code> – solo lee.</strong></p>
 <section id="librerías-y-carga-de-datos" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos">1. Librerías y carga de datos</h2>
-<div id="71093aa1" class="cell" data-execution_count="1">
+<div id="71093aa1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:09.969080Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:09.968574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.458113Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.457832Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -324,8 +383,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    cubierto <span class="op">=</span> (pd.Timestamp(ini) <span class="op">&gt;=</span> df_transf.index.<span class="bu">min</span>()) <span class="kw">and</span> (pd.Timestamp(ini) <span class="op">&lt;=</span> df_transf.index.<span class="bu">max</span>())</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">"SI"</span> <span class="cf">if</span> cubierto <span class="cf">else</span> <span class="st">"NO"</span><span class="sc">}</span><span class="ss"> cubierto'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Transformado: 208 meses x 17 variables
-Niveles:      209 meses x 19 variables
+<pre><code>Transformado: 227 meses x 17 variables
+Niveles:      228 meses x 19 variables
 Periodo: 2007-02 a 2025-12
 
 Cobertura de episodios dentro del rango de datos:
@@ -339,7 +398,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="función-de-análisis-de-sensibilidad-idéntica-lógica-que-en-06a-ajustada-a-meses" class="level2">
 <h2 class="anchored" data-anchor-id="función-de-análisis-de-sensibilidad-idéntica-lógica-que-en-06a-ajustada-a-meses">2. Función de análisis de sensibilidad (idéntica lógica que en 06a, ajustada a meses)</h2>
-<div id="a608505b" class="cell" data-execution_count="2">
+<div id="a608505b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.460344Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.460207Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.463463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.463188Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analizar_ventanas(df, tamanos_ventana, paso, componente_interes<span class="op">=</span><span class="dv">0</span>, n_componentes<span class="op">=</span><span class="dv">3</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    resultados <span class="op">=</span> {}</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> tamanos_ventana:</span>
@@ -375,7 +434,7 @@ Cobertura de episodios dentro del rango de datos:
 <li><strong>Máximo:</strong> 96 meses (8 años) – razón n/p ≈ 5.6, ya dentro de la regla práctica, y todavía por debajo de la duración típica de un ciclo financiero completo (Drehmann et al., 2012: 8-20 años).</li>
 <li><strong>Paso:</strong> 3 meses (trimestral), para mantener el costo computacional razonable sin perder demasiada resolución. Ajustable.</li>
 </ul>
-<div id="85869809" class="cell" data-execution_count="3">
+<div id="85869809" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.465017Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.464903Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.878577Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.878266Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>TAMANOS_VENTANA_MESES <span class="op">=</span> [<span class="dv">24</span>, <span class="dv">36</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">72</span>, <span class="dv">96</span>]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>PASO_MESES <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -422,9 +481,9 @@ Cobertura de episodios dentro del rango de datos:
 <td>24</td>
 <td>2.0</td>
 <td>1.4</td>
-<td>62</td>
-<td>0.871</td>
-<td>0.184</td>
+<td>68</td>
+<td>0.894</td>
+<td>0.158</td>
 <td>8</td>
 </tr>
 <tr class="even">
@@ -432,39 +491,39 @@ Cobertura de episodios dentro del rango de datos:
 <td>36</td>
 <td>3.0</td>
 <td>2.1</td>
-<td>58</td>
-<td>0.939</td>
-<td>0.114</td>
-<td>5</td>
+<td>64</td>
+<td>0.930</td>
+<td>0.149</td>
+<td>4</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
 <td>48</td>
 <td>4.0</td>
 <td>2.8</td>
-<td>54</td>
-<td>0.934</td>
-<td>0.178</td>
-<td>3</td>
+<td>60</td>
+<td>0.939</td>
+<td>0.157</td>
+<td>4</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
 <td>60</td>
 <td>5.0</td>
 <td>3.5</td>
-<td>50</td>
-<td>0.972</td>
-<td>0.070</td>
-<td>4</td>
+<td>56</td>
+<td>0.942</td>
+<td>0.188</td>
+<td>3</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
 <td>72</td>
 <td>6.0</td>
 <td>4.2</td>
-<td>46</td>
-<td>0.976</td>
-<td>0.068</td>
+<td>52</td>
+<td>0.948</td>
+<td>0.182</td>
 <td>3</td>
 </tr>
 <tr class="even">
@@ -472,10 +531,10 @@ Cobertura de episodios dentro del rango de datos:
 <td>96</td>
 <td>8.0</td>
 <td>5.6</td>
-<td>38</td>
-<td>0.980</td>
-<td>0.055</td>
-<td>3</td>
+<td>44</td>
+<td>0.949</td>
+<td>0.195</td>
+<td>2</td>
 </tr>
 </tbody>
 </table>
@@ -486,7 +545,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="trade-off-estabilidad-vs.-sensibilidad-mensual" class="level2">
 <h2 class="anchored" data-anchor-id="trade-off-estabilidad-vs.-sensibilidad-mensual">4. Trade-off estabilidad vs.&nbsp;sensibilidad (mensual)</h2>
-<div id="c40e07f3" class="cell" data-execution_count="4">
+<div id="c40e07f3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.880362Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.880184Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.174260Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.173875Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">5.5</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>color1 <span class="op">=</span> <span class="st">'#486581'</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(df_resumen[<span class="st">'ventana_meses'</span>], df_resumen[<span class="st">'estabilidad_promedio'</span>], marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span>color1)</span>
@@ -517,7 +576,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="validación-externa-mensual-con-los-5-episodios-incluyendo-2008-2009" class="level2">
 <h2 class="anchored" data-anchor-id="validación-externa-mensual-con-los-5-episodios-incluyendo-2008-2009">5. Validación externa (mensual) — con los 5 episodios, incluyendo 2008-2009</h2>
-<div id="cead09a8" class="cell" data-execution_count="5">
+<div id="cead09a8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.176255Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.176117Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.940882Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.940559Z&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tamanos_a_graficar <span class="op">=</span> [TAMANOS_VENTANA_MESES[<span class="dv">0</span>], TAMANOS_VENTANA_MESES[<span class="bu">len</span>(TAMANOS_VENTANA_MESES)<span class="op">//</span><span class="dv">2</span>], TAMANOS_VENTANA_MESES[<span class="op">-</span><span class="dv">1</span>]]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(tamanos_a_graficar), <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.4</span> <span class="op">*</span> <span class="bu">len</span>(tamanos_a_graficar)), sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -557,7 +616,7 @@ Cobertura de episodios dentro del rango de datos:
 <section id="comparación-directa-trimestral-vs.-mensual" class="level2">
 <h2 class="anchored" data-anchor-id="comparación-directa-trimestral-vs.-mensual">6. Comparación directa trimestral vs.&nbsp;mensual</h2>
 <p>Resumen lado a lado para decidir con qué frecuencia continuar en <code>06_epca.ipynb</code>.</p>
-<div id="4caa322b" class="cell" data-execution_count="6">
+<div id="4caa322b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.942785Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.942635Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.950072Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.949805Z&quot;}}" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df_resumen_trimestral <span class="op">=</span> pd.read_csv(<span class="st">'data/results/06a_seleccion_ventana_resumen.csv'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    df_resumen_trimestral <span class="op">=</span> df_resumen_trimestral[df_resumen_trimestral[<span class="st">'dataset'</span>] <span class="op">==</span> <span class="st">'transformado_estandarizado'</span>]</span>
@@ -581,26 +640,26 @@ Cobertura de episodios dentro del rango de datos:
 
 --- Mensual (transformado) ---
    ventana_meses  ventana_anios  n_p_ratio  estabilidad_promedio  \
-0             24            2.0        1.4                 0.871   
-1             36            3.0        2.1                 0.939   
-2             48            4.0        2.8                 0.934   
-3             60            5.0        3.5                 0.972   
-4             72            6.0        4.2                 0.976   
-5             96            8.0        5.6                 0.980   
+0             24            2.0        1.4                 0.894   
+1             36            3.0        2.1                 0.930   
+2             48            4.0        2.8                 0.939   
+3             60            5.0        3.5                 0.942   
+4             72            6.0        4.2                 0.948   
+5             96            8.0        5.6                 0.949   
 
    estabilidad_std  
-0            0.184  
-1            0.114  
-2            0.178  
-3            0.070  
-4            0.068  
-5            0.055  </code></pre>
+0            0.158  
+1            0.149  
+2            0.157  
+3            0.188  
+4            0.182  
+5            0.195  </code></pre>
 </div>
 </div>
 </section>
 <section id="guardar-resultados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-resultados">7. Guardar resultados</h2>
-<div id="b8160a29" class="cell" data-execution_count="7">
+<div id="b8160a29" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.951661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.951557Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.955127Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.954902Z&quot;}}" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/results'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_resumen[<span class="st">'dataset'</span>] <span class="op">=</span> <span class="st">'transformado_estandarizado_mensual'</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_resumen.to_csv(<span class="st">'data/results/06b_seleccion_ventana_resumen_mensual.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>

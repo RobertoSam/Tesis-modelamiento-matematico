@@ -101,6 +101,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Marco conceptual</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./marco_matematico_ae_lstm.html"> 
+<span class="menu-text">Marco matemático AE/LSTM</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./glosario.html"> 
 <span class="menu-text">Glosario</span></a>
   </li>  
@@ -146,6 +150,45 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./papers/vincent_et_al_2008.html">
+ <span class="dropdown-text">Vincent et al.&nbsp;(2008)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/srivastava_mansimov_salakhutdinov_2015.html">
+ <span class="dropdown-text">Srivastava, Mansimov &amp; Salakhutdinov (2015)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Fichas preliminares</li>
+        <li>
+    <a class="dropdown-item" href="./papers/baldi_hornik_1989.html">
+ <span class="dropdown-text">Baldi &amp; Hornik (1989)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/bourlard_kamp_1988.html">
+ <span class="dropdown-text">Bourlard &amp; Kamp (1988)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/gers_schmidhuber_cummins_2000.html">
+ <span class="dropdown-text">Gers, Schmidhuber &amp; Cummins (2000)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/gal_ghahramani_2016.html">
+ <span class="dropdown-text">Gal &amp; Ghahramani (2016)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/fisher_1958.html">
+ <span class="dropdown-text">Fisher (1958)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/robert_escoufier_1976.html">
+ <span class="dropdown-text">Robert &amp; Escoufier (1976)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./papers/plaut_2018.html">
+ <span class="dropdown-text">Plaut (2018) — exploración</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
     <a class="dropdown-item" href="./papers/ciclo_economico.html">
  <span class="dropdown-text">Ciclo económico</span></a>
   </li>  
@@ -159,6 +202,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="./notebooks/01_extraccion_bcrp.html">
  <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/01b_extraccion_extendida_1985.html">
+ <span class="dropdown-text">01b · Extracción extendida (desde 1985)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./notebooks/02_carga_y_verificacion.html">
@@ -175,6 +222,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="./notebooks/04b_preprocesamiento_mensual.html">
  <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04c_preprocesamiento_extendido.html">
+ <span class="dropdown-text">04c · Preprocesamiento extendido (1985+)</span></a>
   </li>  
     </ul>
   </li>
@@ -198,6 +249,14 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="./notebooks/06_epca.html">
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/08_autoencoder.html">
+ <span class="dropdown-text">08 · Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/09_lstm_autoencoder.html">
+ <span class="dropdown-text">09 · LSTM-Autoencoder y regímenes</span></a>
   </li>  
     </ul>
   </li>
@@ -263,51 +322,67 @@ cuantificables (bibliografía, pipeline de datos, modelamiento).
 Para actualizar: cambia los numeradores/denominadores de cada frente
 más abajo y recalcula el promedio a mano antes de publicar.
 
-Última actualización de cifras: 30 de julio de 2026.
+Última actualización de cifras: 4 de octubre de 2026.
+Bibliografía: 10 completas / 15 núcleo (las 6 preliminares no cuentan).
+Pipeline: 4 de 6 etapas (01b y 04c, extensión desde 1985, pendientes de ejecución local).
+Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos corregidos = 0,5 → 1,5 de 4.
 -->
-<div class="callout callout-style-default callout-important callout-titled" title="Avance global aproximado: 59%">
+<div class="callout callout-style-default callout-important callout-titled" title="Avance global aproximado: 57%">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Avance global aproximado: 59%
+<span class="screen-reader-only">Important</span>Avance global aproximado: 57%
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (53%), pipeline de datos (100%) y modelamiento (25%). El marco conceptual y la validación de resultados se muestran aparte porque no tienen todavía una unidad de conteo definida.</p>
+<p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (67%), pipeline de datos (67%) y modelamiento (38%). El porcentaje baja respecto de julio porque el pipeline ganó dos etapas nuevas (extensión desde 1985), no porque se haya perdido avance.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Datos corregidos (5 de octubre de 2026)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Datos corregidos (5 de octubre de 2026)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Se recuperaron los <strong>19 meses de septiembre (2007–2025)</strong> que faltaban en el dataset mensual: las fechas “Set” del EMBI diario no se parseaban y el <code>dropna()</code> de <code>04b</code> eliminaba esos meses. El EMBI se reparó sin re-descargar (la API del BCRP está protegida por Incapsula desde octubre de 2026) y se re-ejecutaron <code>04b</code>, <code>06b</code>, <code>06</code>, <code>08</code> y <code>09</code>. Dataset mensual vigente: <strong>227 × 17</strong>, sin huecos.</p>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
-<p><strong>Marco conceptual</strong><br> <span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor</span></p>
+<p><strong>Marco conceptual</strong><br> <span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor · <a href="./marco_matematico_ae_lstm.html">marco matemático AE/LSTM</a> v0.1</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Bibliografía</strong><br>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 53%; height: 10px; border-radius: 999px;">
+<div style="background: #486581; width: 67%; height: 10px; border-radius: 999px;">
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">8 de 15 fichas núcleo completas</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">10 de 15 fichas núcleo completas · 6 preliminares · 1 de exploración</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Pipeline de datos BCRP</strong><br>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 100%; height: 10px; border-radius: 999px;">
+<div style="background: #486581; width: 67%; height: 10px; border-radius: 999px;">
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">4 de 4 etapas completas · versiones trimestral (72×18) y mensual (208×17)</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · re-ejecución pendiente por septiembres faltantes</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Modelamiento</strong><br>
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
-<div style="background: #486581; width: 25%; height: 10px; border-radius: 999px;">
+<div style="background: #486581; width: 38%; height: 10px; border-radius: 999px;">
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">1 de 4 técnicas completas (PCA estático)</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados y validados con datos corregidos</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <p><strong>Validación de resultados</strong><br> <span style="color: #6b7280; font-size: 14px;">No iniciado</span></p>
@@ -317,7 +392,7 @@ más abajo y recalcula el promedio a mano antes de publicar.
 <section id="literatura-revisada" class="level2">
 <h2 class="anchored" data-anchor-id="literatura-revisada">Literatura revisada</h2>
 <p>Fichas bibliográficas completas siguiendo la Ficha Estándar del proyecto. Ver el detalle de cada una en la sección <a href="./papers/camiz_et_al_2020.html">Papers</a>.</p>
-<ul class="task-list">
+<ul>
 <li><label><input type="checkbox" checked=""><strong>Camiz et al.&nbsp;(2020)</strong> — Hierarchical Factor Classification of Dendrochronological Time Series. Referencia metodológica central para HFC.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Camiz, Maulucci &amp; Roig (2010)</strong> — EPCA / Statis dual. Fundamento metodológico de la extensión evolutiva del PCA.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Camiz &amp; Roig (2011)</strong> — HFC + EPCA + clustering de Fisher para regímenes. Eslabón directo entre HFC y el enfoque evolutivo.</label></li>
@@ -326,7 +401,11 @@ más abajo y recalcula el promedio a mano antes de publicar.
 <li><label><input type="checkbox" checked=""><strong>Hochreiter &amp; Schmidhuber (1997)</strong> — Long Short-Term Memory. Arquitectura fundacional de LSTM.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Hinton &amp; Salakhutdinov (2006)</strong> — Reducing the dimensionality of data with neural networks. Autoencoder profundo fundacional.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Tuhin, Nobi, Rakib &amp; Lee (2025)</strong> — LSTM Autoencoder para detección de crisis financieras. Puente metodológico directo entre Autoencoder/LSTM y un indicador cuantitativo de régimen.</label></li>
-<li><label><input type="checkbox">Referencias adicionales del núcleo (7 pendientes) — ver <a href="./marco_conceptual.html#bibliografia">Marco conceptual, sección 7</a> para el listado completo de la bibliografía inicial identificada.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Vincent et al.&nbsp;(2008)</strong> — Autoencoders <em>denoising</em>. Base del ruido de entrada como regularización.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Srivastava, Mansimov &amp; Salakhutdinov (2015)</strong> — LSTM-Autoencoder. Arquitectura del notebook 09.</label></li>
+<li>[~] <strong>Fichas preliminares</strong> (referencia localizada, lectura pendiente): Baldi &amp; Hornik (1989), Bourlard &amp; Kamp (1988), Gers, Schmidhuber &amp; Cummins (2000), Gal &amp; Ghahramani (2016), Fisher (1958), Robert &amp; Escoufier (1976).</li>
+<li>[~] <strong>Exploración (<em>preprint</em>)</strong>: Plaut (2018).</li>
+<li><label><input type="checkbox">Referencias adicionales del núcleo (5 pendientes) — ver <a href="./marco_conceptual.html#bibliografia">Marco conceptual, sección 7</a> para el listado completo de la bibliografía inicial identificada.</label></li>
 </ul>
 </section>
 <section id="pipeline-de-datos-bcrp" class="level2">
@@ -336,7 +415,8 @@ más abajo y recalcula el promedio a mano antes de publicar.
 <li><label><input type="checkbox" checked=""><strong>Extracción</strong> — conexión a la API del BCRP, descarga de series. Ampliado recientemente de 13 a <strong>18 variables</strong> (se agregaron liquidez M1/M2/M3, tasa interbancaria, IPC subyacente y el spread EMBI Perú). Ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a> para el detalle completo de cada serie y su código BCRP verificado.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Carga y verificación</strong> — corrección de códigos de series mal etiquetados (tipo de cambio vs.&nbsp;crédito), verificación de integridad.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Análisis exploratorio</strong> — documentación de la colinealidad entre crédito total y sus componentes (empresarial, consumo, hipotecario).</label></li>
-<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>208 × 17 variables transformadas</strong>. Ambos listos para PCA/HFC/EPCA.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>227 × 17 variables transformadas</strong> (corregido el 5-oct-2026; antes 208 por la pérdida de los septiembres). <code>04b</code> ahora se detiene si hay huecos en el calendario.</label></li>
+<li><label><input type="checkbox"><strong>Extensión desde 1985</strong> — <code>01b</code> (descarga y diagnóstico de cobertura y resolución numérica) y <code>04c</code> (frontera n–p, paneles largo/estabilización/metas, regímenes monetarios, familias nominal y real). Pendientes de ejecución local.</label></li>
 </ul>
 </section>
 <section id="modelamiento-en-curso" class="level2">
@@ -345,7 +425,7 @@ más abajo y recalcula el promedio a mano antes de publicar.
 <li><label><input type="checkbox" checked=""><strong>PCA estático</strong> — completado. Confirma contaminación por tendencia en niveles (r≈0.994 con el tiempo) frente a estructura de régimen en datos transformados (r≈0.089); validado en R (Rcamiz) contra scikit-learn con equivalencia confirmada (|r|=1).</label></li>
 <li><label><input type="checkbox"><strong>HFC</strong> — pendiente de implementar sobre los datos BCRP.</label></li>
 <li>[~] <strong>EPCA / EHFC</strong> — parcial: selección de ventana en exploración empírica (notebooks 06a/06b); pendiente adoptar la regla de alineación de signo determinista de Rcamiz.</li>
-<li><label><input type="checkbox"><strong>Autoencoder / LSTM</strong> — no iniciado.</label></li>
+<li>[~] <strong>Autoencoder / LSTM</strong> — implementados y re-ejecutados con el dataset corregido (notebooks 08 y 09, <a href="./marco_matematico_ae_lstm.html">marco matemático</a>). El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la reconstrucción fuera de muestra; el valor del AE está en detectar anomalías (oct-2008). La datación de regímenes con LSTM <strong>no es robusta</strong> (7 → 2 regímenes tras la corrección); la del PCA suavizado sí (8 regímenes estables) y se adopta como referencia. EPCA ahora detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión pendiente con el asesor.</li>
 </ul>
 <hr>
 <p><em>Este resumen se actualiza manualmente conforme avanza la tesis. Última actualización: ver historial de commits de <code>index.qmd</code> en GitHub.</em></p>

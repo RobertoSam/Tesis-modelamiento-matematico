@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>09 · LSTM-Autoencoder — dinámica temporal, validación walk-forward y datación de regímenes – Tesis — Ciclo Financiero Perú</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Tesis — Ciclo Financiero Perú</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_conceptual.html"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_matematico_ae_lstm.html"> 
+<span class="menu-text">Marco matemático AE/LSTM</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../papers/diccionario_datos.html"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Papers</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
+ <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_roig_2011.html">
+ <span class="dropdown-text">Camiz &amp; Roig (2011)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_cerda_atoche_2026.html">
+ <span class="dropdown-text">Camiz, Cerda Hernández &amp; Atoche Murrieta (2026)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/drehmann_borio_tsatsaronis_2012.html">
+ <span class="dropdown-text">Drehmann, Borio &amp; Tsatsaronis (2012)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/hochreiter_schmidhuber_1997.html">
+ <span class="dropdown-text">Hochreiter &amp; Schmidhuber (1997)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/hinton_salakhutdinov_2006.html">
+ <span class="dropdown-text">Hinton &amp; Salakhutdinov (2006)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/tuhin_et_al_2025.html">
+ <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/vincent_et_al_2008.html">
+ <span class="dropdown-text">Vincent et al.&nbsp;(2008)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/srivastava_mansimov_salakhutdinov_2015.html">
+ <span class="dropdown-text">Srivastava, Mansimov &amp; Salakhutdinov (2015)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Fichas preliminares</li>
+        <li>
+    <a class="dropdown-item" href="../papers/baldi_hornik_1989.html">
+ <span class="dropdown-text">Baldi &amp; Hornik (1989)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/bourlard_kamp_1988.html">
+ <span class="dropdown-text">Bourlard &amp; Kamp (1988)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gers_schmidhuber_cummins_2000.html">
+ <span class="dropdown-text">Gers, Schmidhuber &amp; Cummins (2000)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gal_ghahramani_2016.html">
+ <span class="dropdown-text">Gal &amp; Ghahramani (2016)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/fisher_1958.html">
+ <span class="dropdown-text">Fisher (1958)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/robert_escoufier_1976.html">
+ <span class="dropdown-text">Robert &amp; Escoufier (1976)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/plaut_2018.html">
+ <span class="dropdown-text">Plaut (2018) — exploración</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-bcrp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data BCRP</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/01b_extraccion_extendida_1985.html">
+ <span class="dropdown-text">01b · Extracción extendida (desde 1985)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04c_preprocesamiento_extendido.html">
+ <span class="dropdown-text">04c · Preprocesamiento extendido (1985+)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/08_autoencoder.html">
+ <span class="dropdown-text">08 · Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/09_lstm_autoencoder.html">
+ <span class="dropdown-text">09 · LSTM-Autoencoder y regímenes</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#librerías-y-datos" id="toc-librerías-y-datos" class="nav-link active" data-scroll-target="#librerías-y-datos">1. Librerías y datos</a></li>
+  <li><a href="#validación-walk-forward" id="toc-validación-walk-forward" class="nav-link" data-scroll-target="#validación-walk-forward">2. Validación walk-forward</a>
+  <ul class="collapse">
+  <li><a href="#qué-método-separa-mejor-los-episodios-de-referencia" id="toc-qué-método-separa-mejor-los-episodios-de-referencia" class="nav-link" data-scroll-target="#qué-método-separa-mejor-los-episodios-de-referencia">2.1 ¿Qué método separa mejor los episodios de referencia?</a></li>
+  </ul></li>
+  <li><a href="#modelo-de-muestra-completa-y-trayectoria-latente" id="toc-modelo-de-muestra-completa-y-trayectoria-latente" class="nav-link" data-scroll-target="#modelo-de-muestra-completa-y-trayectoria-latente">3. Modelo de muestra completa y trayectoria latente</a></li>
+  <li><a href="#datación-de-regímenes-partición-óptima-de-fisher" id="toc-datación-de-regímenes-partición-óptima-de-fisher" class="nav-link" data-scroll-target="#datación-de-regímenes-partición-óptima-de-fisher">4. Datación de regímenes: partición óptima de Fisher</a>
+  <ul class="collapse">
+  <li><a href="#control-la-persistencia-viene-del-modelo-o-de-la-ventana" id="toc-control-la-persistencia-viene-del-modelo-o-de-la-ventana" class="nav-link" data-scroll-target="#control-la-persistencia-viene-del-modelo-o-de-la-ventana">4.1 Control: ¿la persistencia viene del modelo o de la ventana?</a></li>
+  </ul></li>
+  <li><a href="#clasificación-preliminar-de-fases" id="toc-clasificación-preliminar-de-fases" class="nav-link" data-scroll-target="#clasificación-preliminar-de-fases">5. Clasificación preliminar de fases</a></li>
+  <li><a href="#guardar-resultados" id="toc-guardar-resultados" class="nav-link" data-scroll-target="#guardar-resultados">6. Guardar resultados</a></li>
+  <li><a href="#conclusiones-dataset-corregido-227-meses-5-oct-2026" id="toc-conclusiones-dataset-corregido-227-meses-5-oct-2026" class="nav-link" data-scroll-target="#conclusiones-dataset-corregido-227-meses-5-oct-2026">7. Conclusiones (dataset corregido: 227 meses, 5-oct-2026)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">09 · LSTM-Autoencoder — dinámica temporal, validación walk-forward y datación de regímenes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Tesis:</strong> Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning <strong>Autor:</strong> Roberto Samaniego Salcedo · <strong>Asesor:</strong> Dr.&nbsp;Sergio Camiz</p>
+<hr>
+<p><strong>Qué agrega frente a <code>08_autoencoder</code>:</strong> el autoencoder del notebook 08 trata cada mes como una observación independiente (igual que el PCA). El LSTM-Autoencoder codifica <strong>ventanas de L meses</strong>: su código latente z_t resume la <em>trayectoria reciente</em> del sistema financiero, que es lo que define una fase del ciclo.</p>
+<p><strong>Diseño (definiciones formales en <code>marco_matematico_ae_lstm.qmd</code>, secciones 4–6):</strong></p>
+<ol type="1">
+<li><strong>Modelo:</strong> LSTM codificador → código z_t ∈ R³ → LSTM decodificador no condicionado que reconstruye la ventana en orden inverso (Srivastava, Mansimov &amp; Salakhutdinov, 2015). Ventana L = 12 meses; z_t se fecha al último mes de la ventana (sin mirar al futuro).</li>
+<li><strong>Validación walk-forward (expanding window):</strong> para cada año de evaluación se reentrena con todos los meses anteriores, estandarizando solo con esos datos, y se mide el error de reconstrucción del año siguiente. Es la única forma honesta de afirmar que el indicador “detecta” un episodio. Referencias de comparación: PCA y AE estático evaluados con el mismo esquema.</li>
+<li><strong>Incertidumbre:</strong> Monte Carlo Dropout (Gal &amp; Ghahramani, 2016).</li>
+<li><strong>Datación de regímenes:</strong> partición óptima de Fisher (1958) sobre la trayectoria latente: segmentos contiguos de varianza intra mínima.</li>
+<li><strong>Clasificación preliminar de fases</strong> (expansión / contracción / transición) con una regla operativa explícita, contrastada ex post con episodios conocidos.</li>
+</ol>
+<p><strong>Entrada:</strong> <code>data/processed/dataset_transformado_mensual.csv</code> · <strong>Salidas:</strong> <code>data/results/09_*</code>.</p>
+<section id="librerías-y-datos" class="level2">
+<h2 class="anchored" data-anchor-id="librerías-y-datos">1. Librerías y datos</h2>
+<div id="5d52d74a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:13.613861Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:13.613408Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:17.258465Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:17.258180Z&quot;}}" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, sys, time, warnings</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, <span class="st">'notebooks'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">!=</span> <span class="st">'notebooks'</span> <span class="cf">else</span> sys.path.insert(<span class="dv">0</span>, <span class="st">'.'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modelos_dl <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ir_a_raiz_del_repo()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, <span class="st">'notebooks'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({<span class="st">'figure.dpi'</span>: <span class="dv">110</span>, <span class="st">'axes.grid'</span>: <span class="va">True</span>, <span class="st">'grid.alpha'</span>: <span class="fl">0.3</span>})</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>torch.set_num_threads(<span class="bu">max</span>(<span class="dv">1</span>, os.cpu_count() <span class="op">//</span> <span class="dv">2</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_transformado_mensual.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>nombres <span class="op">=</span> [c.replace(<span class="st">'_log_diff'</span>, <span class="st">''</span>).replace(<span class="st">'_diff'</span>, <span class="st">''</span>) <span class="cf">for</span> c <span class="kw">in</span> df.columns]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>n, p <span class="op">=</span> df.shape</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="dv">12</span>          <span class="co"># longitud de ventana (meses)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="dv">3</span>           <span class="co"># dimensión latente (comparabilidad con PCA y con el AE de 08)</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>p<span class="sc">}</span><span class="ss"> variables | ventana L = </span><span class="sc">{</span>L<span class="sc">}</span><span class="ss"> | d = </span><span class="sc">{</span>D<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sombrear_episodios(ax):</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> nombre, (ini, fin) <span class="kw">in</span> EPISODIOS_REFERENCIA.items():</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        ax.axvspan(pd.Timestamp(ini), pd.Timestamp(fin), color<span class="op">=</span><span class="st">'grey'</span>, alpha<span class="op">=</span><span class="fl">0.18</span>, lw<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        ax.text(pd.Timestamp(ini), ax.get_ylim()[<span class="dv">1</span>], nombre, fontsize<span class="op">=</span><span class="dv">7</span>, va<span class="op">=</span><span class="st">'top'</span>, rotation<span class="op">=</span><span class="dv">90</span>, color<span class="op">=</span><span class="st">'dimgrey'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Hiperparámetros comunes (fijados a priori; no se optimizan sobre el periodo de evaluación)</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>HP_LSTM <span class="op">=</span> <span class="bu">dict</span>(epocas<span class="op">=</span><span class="dv">1500</span>, lr<span class="op">=</span><span class="fl">5e-3</span>, weight_decay<span class="op">=</span><span class="fl">1e-3</span>, ruido<span class="op">=</span><span class="fl">0.05</span>, paciencia<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>HP_AE <span class="op">=</span> <span class="bu">dict</span>(epocas<span class="op">=</span><span class="dv">3000</span>, lr<span class="op">=</span><span class="fl">5e-3</span>, weight_decay<span class="op">=</span><span class="fl">1e-3</span>, ruido<span class="op">=</span><span class="fl">0.10</span>, paciencia<span class="op">=</span><span class="dv">200</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>227 meses x 17 variables | ventana L = 12 | d = 3</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Continuidad mensual verificada">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Continuidad mensual verificada
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La versión preliminar de este notebook (4-oct-2026) usó un dataset sin los 19 meses de septiembre: las fechas “Set” del EMBI diario no se parseaban y el <code>dropna()</code> de <code>04b</code> eliminaba esos meses. El EMBI se reparó con <code>notebooks/reparar_embi_septiembre.py</code> (sin re-descargar: la API del BCRP está protegida por Incapsula desde oct-2026) y el pipeline se re-ejecutó el 5-oct-2026. La celda siguiente confirma 227 meses sin huecos.</p>
+</div>
+</div>
+<div id="5adaa20e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:17.260623Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:17.260505Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:17.268481Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:17.268256Z&quot;}}" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificación de continuidad mensual (control agregado tras detectar el problema de septiembre)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>calendario <span class="op">=</span> pd.date_range(df.index.<span class="bu">min</span>(), df.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>faltantes <span class="op">=</span> calendario.difference(df.index)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Meses esperados: </span><span class="sc">{</span><span class="bu">len</span>(calendario)<span class="sc">}</span><span class="ss"> | presentes: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> | faltantes: </span><span class="sc">{</span><span class="bu">len</span>(faltantes)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(faltantes):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Meses faltantes:'</span>, <span class="st">', '</span>.join(f.strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> f <span class="kw">in</span> faltantes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Meses esperados: 227 | presentes: 227 | faltantes: 0</code></pre>
+</div>
+</div>
+</section>
+<section id="validación-walk-forward" class="level2">
+<h2 class="anchored" data-anchor-id="validación-walk-forward">2. Validación walk-forward</h2>
+<p>Esquema de ventana expansiva: para cada año de evaluación <em>a</em> = 2011, …, 2025 se entrena con los meses hasta diciembre de <em>a</em> − 1 y se evalúan los meses de <em>a</em>. El primer año de evaluación es 2011 para disponer de al menos 36 ventanas de entrenamiento; en consecuencia <strong>la crisis financiera global (2008–2009) no puede evaluarse fuera de muestra</strong> con esta base. Esto es una motivación empírica directa para extender la muestra hacia atrás (ver <code>01b</code> y <code>04c</code>).</p>
+<p>Para hacer comparables los errores de distintos reentrenamientos, cada error se expresa como <strong>razón respecto del percentil 95 del error en entrenamiento</strong> de ese mismo modelo: valores &gt; 1 indican un mes más anómalo que el 95 % de lo que el modelo conocía.</p>
+<div id="1dae6fd8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:17.270173Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:17.270038Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:36.001344Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:36.000955Z&quot;}}" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>anios <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2011</span>, <span class="dv">2026</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>registros <span class="op">=</span> []</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> anios:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ent_mask <span class="op">=</span> df.index <span class="op">&lt;</span> <span class="ss">f'</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">-01-01'</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    eval_mask <span class="op">=</span> (df.index <span class="op">&gt;=</span> <span class="ss">f'</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">-01-01'</span>) <span class="op">&amp;</span> (df.index <span class="op">&lt;</span> <span class="ss">f'</span><span class="sc">{</span>a<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">-01-01'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> eval_mask.<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    sc <span class="op">=</span> StandardScaler().fit(df.values[ent_mask])</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    Xs <span class="op">=</span> sc.transform(df.values)                       <span class="co"># se aplica la escala del entrenamiento a todo</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    i_fin_ent <span class="op">=</span> ent_mask.<span class="bu">sum</span>()                          <span class="co"># nº de meses de entrenamiento</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- LSTM-AE ---</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    W_ent <span class="op">=</span> crear_ventanas(Xs[:i_fin_ent], L)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    corte <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(W_ent) <span class="op">*</span> <span class="fl">0.85</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    fijar_semillas(a)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    lstm <span class="op">=</span> LSTMAutoencoder(p, <span class="dv">16</span>, D, dropout<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    entrenar(lstm, W_ent[:corte], W_ent[corte:], semilla<span class="op">=</span>a, <span class="op">**</span>HP_LSTM)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    ref_lstm <span class="op">=</span> np.percentile(error_reconstruccion(lstm, W_ent), <span class="dv">95</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    idx_eval <span class="op">=</span> np.where(eval_mask)[<span class="dv">0</span>]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    W_eval <span class="op">=</span> np.stack([Xs[i <span class="op">-</span> L <span class="op">+</span> <span class="dv">1</span>:i <span class="op">+</span> <span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> idx_eval])</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    e_lstm <span class="op">=</span> error_reconstruccion(lstm, W_eval)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    mc <span class="op">=</span> mc_dropout(lstm, W_eval, T<span class="op">=</span><span class="dv">100</span>, funcion<span class="op">=</span><span class="st">'error'</span>, semilla<span class="op">=</span>a)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- AE estático (misma arquitectura que 08) ---</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    fijar_semillas(a)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    ae <span class="op">=</span> AutoencoderAtado([p, <span class="dv">8</span>, D], activacion<span class="op">=</span><span class="st">'tanh'</span>, dropout<span class="op">=</span><span class="fl">0.10</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    c2 <span class="op">=</span> <span class="bu">int</span>(i_fin_ent <span class="op">*</span> <span class="fl">0.85</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    entrenar(ae, Xs[:c2], Xs[c2:i_fin_ent], semilla<span class="op">=</span>a, <span class="op">**</span>HP_AE)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    ref_ae <span class="op">=</span> np.percentile(error_reconstruccion(ae, Xs[:i_fin_ent]), <span class="dv">95</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    e_ae <span class="op">=</span> error_reconstruccion(ae, Xs[idx_eval])</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- PCA ---</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    pca <span class="op">=</span> PCA(D).fit(Xs[:i_fin_ent])</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    rec <span class="op">=</span> <span class="kw">lambda</span> Z: pca.inverse_transform(pca.transform(Z))</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    ref_pca <span class="op">=</span> np.percentile(np.mean((Xs[:i_fin_ent] <span class="op">-</span> rec(Xs[:i_fin_ent])) <span class="op">**</span> <span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>), <span class="dv">95</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    e_pca <span class="op">=</span> np.mean((Xs[idx_eval] <span class="op">-</span> rec(Xs[idx_eval])) <span class="op">**</span> <span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, i <span class="kw">in</span> <span class="bu">enumerate</span>(idx_eval):</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        registros.append({<span class="st">'fecha'</span>: df.index[i], <span class="st">'anio_modelo'</span>: a,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'lstm'</span>: e_lstm[k] <span class="op">/</span> ref_lstm,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'lstm_p05'</span>: np.percentile(mc[:, k], <span class="dv">5</span>) <span class="op">/</span> ref_lstm,</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'lstm_p95'</span>: np.percentile(mc[:, k], <span class="dv">95</span>) <span class="op">/</span> ref_lstm,</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'ae'</span>: e_ae[k] <span class="op">/</span> ref_ae, <span class="st">'pca'</span>: e_pca[k] <span class="op">/</span> ref_pca})</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">: entrenamiento </span><span class="sc">{</span>i_fin_ent<span class="sc">}</span><span class="ss"> meses (</span><span class="sc">{</span><span class="bu">len</span>(W_ent)<span class="sc">}</span><span class="ss"> ventanas) — </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s'</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>wf <span class="op">=</span> pd.DataFrame(registros).set_index(<span class="st">'fecha'</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>wf.to_csv(<span class="st">'data/results/09_walkforward_errores.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2011: entrenamiento 47 meses (36 ventanas) — 1 s
+  2012: entrenamiento 59 meses (48 ventanas) — 2 s
+  2013: entrenamiento 71 meses (60 ventanas) — 2 s
+  2014: entrenamiento 83 meses (72 ventanas) — 3 s
+  2015: entrenamiento 95 meses (84 ventanas) — 4 s
+  2016: entrenamiento 107 meses (96 ventanas) — 5 s
+  2017: entrenamiento 119 meses (108 ventanas) — 6 s
+  2018: entrenamiento 131 meses (120 ventanas) — 8 s
+  2019: entrenamiento 143 meses (132 ventanas) — 9 s
+  2020: entrenamiento 155 meses (144 ventanas) — 11 s
+  2021: entrenamiento 167 meses (156 ventanas) — 13 s
+  2022: entrenamiento 179 meses (168 ventanas) — 15 s
+  2023: entrenamiento 191 meses (180 ventanas) — 16 s
+  2024: entrenamiento 203 meses (192 ventanas) — 17 s
+  2025: entrenamiento 215 meses (204 ventanas) — 19 s</code></pre>
+</div>
+</div>
+<div id="f8fa7ad1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:36.003450Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:36.003312Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:36.762766Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:36.762405Z&quot;}}" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">6.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax.fill_between(wf.index, wf[<span class="st">'lstm_p05'</span>], wf[<span class="st">'lstm_p95'</span>], color<span class="op">=</span><span class="st">'tab:red'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">'LSTM-AE: MC Dropout p5–p95'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ax.plot(wf.index, wf[<span class="st">'lstm'</span>], color<span class="op">=</span><span class="st">'tab:red'</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span><span class="st">'LSTM-AE'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">1</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">'log'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Error / p95 entrenamiento'</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>sombrear_episodios(ax)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Error de reconstrucción FUERA DE MUESTRA (walk-forward anual)'</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.plot(wf.index, wf[<span class="st">'pca'</span>], color<span class="op">=</span><span class="st">'tab:blue'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'PCA'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ax.plot(wf.index, wf[<span class="st">'ae'</span>], color<span class="op">=</span><span class="st">'tab:green'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'AE estático'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ax.plot(wf.index, wf[<span class="st">'lstm'</span>], color<span class="op">=</span><span class="st">'tab:red'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'LSTM-AE'</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">1</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">'log'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Error / p95 entrenamiento'</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>sombrear_episodios(ax)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/09_walkforward.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09_lstm_autoencoder_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="qué-método-separa-mejor-los-episodios-de-referencia" class="level3">
+<h3 class="anchored" data-anchor-id="qué-método-separa-mejor-los-episodios-de-referencia">2.1 ¿Qué método separa mejor los episodios de referencia?</h3>
+<p>Se compara la razón de error <strong>dentro</strong> de los episodios evaluables fuera de muestra (taper tantrum 2013 y COVID-19 2020) contra el resto de meses. Un buen indicador debe tener mediana alta en episodios y baja fuera de ellos; se reporta además la proporción de meses del episodio que superan el umbral 1 (sensibilidad) y la proporción de meses fuera de episodios que lo superan (tasa de falsas alarmas).</p>
+<div id="976abeec" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:36.764980Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:36.764853Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:36.778424Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:36.778150Z&quot;}}" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>en_episodio <span class="op">=</span> pd.Series(<span class="va">False</span>, index<span class="op">=</span>wf.index)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>etiqueta <span class="op">=</span> pd.Series(<span class="st">''</span>, index<span class="op">=</span>wf.index)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, (ini, fin) <span class="kw">in</span> EPISODIOS_REFERENCIA.items():</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> (wf.index <span class="op">&gt;=</span> ini) <span class="op">&amp;</span> (wf.index <span class="op">&lt;=</span> fin)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    en_episodio[m] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    etiqueta[m] <span class="op">=</span> nombre</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>filas <span class="op">=</span> []</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> metodo <span class="kw">in</span> [<span class="st">'pca'</span>, <span class="st">'ae'</span>, <span class="st">'lstm'</span>]:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    fila <span class="op">=</span> {<span class="st">'metodo'</span>: metodo,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">'mediana_fuera_de_episodios'</span>: wf.loc[<span class="op">~</span>en_episodio, metodo].median(),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">'falsas_alarmas_%'</span>: <span class="dv">100</span> <span class="op">*</span> (wf.loc[<span class="op">~</span>en_episodio, metodo] <span class="op">&gt;</span> <span class="dv">1</span>).mean()}</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> nombre <span class="kw">in</span> [<span class="st">'Taper tantrum'</span>, <span class="st">'COVID-19'</span>]:</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> wf.loc[etiqueta <span class="op">==</span> nombre, metodo]</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        fila[<span class="ss">f'mediana_</span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> v.median()</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        fila[<span class="ss">f'sensibilidad_</span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">_%'</span>] <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> (v <span class="op">&gt;</span> <span class="dv">1</span>).mean()</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    filas.append(fila)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>discrim <span class="op">=</span> pd.DataFrame(filas).set_index(<span class="st">'metodo'</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>discrim.to_csv(<span class="st">'data/results/09_discriminacion_episodios.csv'</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>discrim.T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">metodo</th>
+<th data-quarto-table-cell-role="th">pca</th>
+<th data-quarto-table-cell-role="th">ae</th>
+<th data-quarto-table-cell-role="th">lstm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mediana_fuera_de_episodios</th>
+<td>0.26</td>
+<td>0.24</td>
+<td>0.18</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">falsas_alarmas_%</th>
+<td>1.85</td>
+<td>1.85</td>
+<td>0.62</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mediana_Taper tantrum</th>
+<td>0.37</td>
+<td>0.27</td>
+<td>0.13</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">sensibilidad_Taper tantrum_%</th>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mediana_COVID-19</th>
+<td>1.76</td>
+<td>1.71</td>
+<td>1.59</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">sensibilidad_COVID-19_%</th>
+<td>50.00</td>
+<td>50.00</td>
+<td>50.00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="modelo-de-muestra-completa-y-trayectoria-latente" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-de-muestra-completa-y-trayectoria-latente">3. Modelo de muestra completa y trayectoria latente</h2>
+<p>Para describir (no para validar) la trayectoria del sistema en todo el periodo se entrena el LSTM-AE con la muestra completa. Como en el notebook 08, el código latente solo está identificado salvo rotaciones: se rota por Procrustes contra los scores del PCA del mismo mes para que los ejes sean comparables. Se entrenan 5 réplicas y se toma la central (máximo RV promedio) para no depender de la semilla.</p>
+<div id="934b15a2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:36.780149Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:36.780017Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:41.889282Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:41.888922Z&quot;}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> StandardScaler().fit_transform(df.values)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> crear_ventanas(Xs, L)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>fechas_z <span class="op">=</span> df.index[L <span class="op">-</span> <span class="dv">1</span>:]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>corte <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(W) <span class="op">*</span> <span class="fl">0.85</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>modelos, codigos <span class="op">=</span> [], []</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    fijar_semillas(<span class="dv">500</span> <span class="op">+</span> s)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LSTMAutoencoder(p, <span class="dv">16</span>, D, dropout<span class="op">=</span><span class="fl">0.20</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    entrenar(m, W[:corte], W[corte:], semilla<span class="op">=</span><span class="dv">500</span> <span class="op">+</span> s, <span class="op">**</span>HP_LSTM)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    m.<span class="bu">eval</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        codigos.append(m.codificar(a_tensor(W)).numpy())</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    modelos.append(m)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>rv <span class="op">=</span> np.array([[coeficiente_rv(a, b) <span class="cf">for</span> b <span class="kw">in</span> codigos] <span class="cf">for</span> a <span class="kw">in</span> codigos])</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>central <span class="op">=</span> <span class="bu">int</span>(np.argmax(rv.mean(axis<span class="op">=</span><span class="dv">1</span>)))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>lstm_final <span class="op">=</span> modelos[central]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>scores_pca <span class="op">=</span> PCA(D).fit_transform(Xs)[L <span class="op">-</span> <span class="dv">1</span>:]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>Z_rot, _ <span class="op">=</span> rotar_procrustes(codigos[central], scores_pca)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>ae08 <span class="op">=</span> pd.read_csv(<span class="st">'data/results/08_ae_factores_y_error.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'RV entre réplicas LSTM (mediana): </span><span class="sc">{</span>np<span class="sc">.</span>median(rv[np.triu_indices(<span class="dv">5</span>, <span class="dv">1</span>)])<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'RV LSTM-AE vs PCA:               </span><span class="sc">{</span>coeficiente_rv(codigos[central], scores_pca)<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'RV LSTM-AE vs AE estático (08):  </span><span class="sc">{</span>coeficiente_rv(codigos[central], ae08.loc[fechas_z].iloc[:, :D].values)<span class="sc">:.3f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>RV entre réplicas LSTM (mediana): 0.931
+RV LSTM-AE vs PCA:               0.216
+RV LSTM-AE vs AE estático (08):  0.270</code></pre>
+</div>
+</div>
+<div id="d56e2dde" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:41.891798Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:41.891612Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:41.898629Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:41.898268Z&quot;}}" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>corr_var <span class="op">=</span> pd.DataFrame(np.corrcoef(Xs[L <span class="op">-</span> <span class="dv">1</span>:].T, Z_rot.T)[:p, p:], index<span class="op">=</span>nombres,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                        columns<span class="op">=</span>[<span class="ss">f'LSTM</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D)]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>corr_var.sort_values(<span class="st">'LSTM1'</span>, key<span class="op">=</span>np.<span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LSTM1</th>
+<th data-quarto-table-cell-role="th">LSTM2</th>
+<th data-quarto-table-cell-role="th">LSTM3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN</th>
+<td>-0.66</td>
+<td>0.45</td>
+<td>-0.09</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Tasa interbancaria</th>
+<td>-0.39</td>
+<td>0.27</td>
+<td>-0.04</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Tasa referencia BCRP</th>
+<td>-0.37</td>
+<td>0.25</td>
+<td>-0.04</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">IPC Lima</th>
+<td>-0.37</td>
+<td>0.24</td>
+<td>-0.08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Tasa activa TAMN</th>
+<td>-0.35</td>
+<td>0.19</td>
+<td>-0.12</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Liquidez M3</th>
+<td>0.25</td>
+<td>-0.04</td>
+<td>0.21</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Crédito consumo</th>
+<td>-0.25</td>
+<td>0.38</td>
+<td>0.24</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Liquidez M2</th>
+<td>0.23</td>
+<td>-0.05</td>
+<td>0.17</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Liquidez M1</th>
+<td>0.20</td>
+<td>-0.02</td>
+<td>0.19</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Reservas internacionales</th>
+<td>0.13</td>
+<td>0.10</td>
+<td>0.27</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">embi_peru</th>
+<td>-0.11</td>
+<td>0.15</td>
+<td>0.10</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Crédito empresarial</th>
+<td>0.10</td>
+<td>0.23</td>
+<td>0.41</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Crédito hipotecario</th>
+<td>-0.09</td>
+<td>0.50</td>
+<td>0.56</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">PBI desestacionalizado</th>
+<td>0.08</td>
+<td>-0.03</td>
+<td>0.04</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Índice BVL</th>
+<td>0.08</td>
+<td>-0.17</td>
+<td>-0.15</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Demanda interna</th>
+<td>0.05</td>
+<td>-0.01</td>
+<td>0.03</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Tipo de cambio</th>
+<td>0.01</td>
+<td>-0.03</td>
+<td>-0.01</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="1289d9a4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:41.900616Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:41.900486Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:42.555999Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:42.555579Z&quot;}}" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(D, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ax <span class="kw">in</span> <span class="bu">enumerate</span>(axes):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    ax.plot(fechas_z, scores_pca[:, i], color<span class="op">=</span><span class="st">'tab:blue'</span>, lw<span class="op">=</span><span class="fl">0.9</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (mes)'</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(fechas_z, Z_rot[:, i], color<span class="op">=</span><span class="st">'tab:red'</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span><span class="ss">f'LSTM</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (ventana 12m, rotado)'</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'lower left'</span>)<span class="op">;</span> sombrear_episodios(ax)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Trayectoria latente del LSTM-AE vs. scores del PCA'</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/09_trayectoria_latente.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09_lstm_autoencoder_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="datación-de-regímenes-partición-óptima-de-fisher" class="level2">
+<h2 class="anchored" data-anchor-id="datación-de-regímenes-partición-óptima-de-fisher">4. Datación de regímenes: partición óptima de Fisher</h2>
+<p>Sobre la trayectoria latente estandarizada (n − L + 1 = 216 meses × 3 ejes) se buscan las particiones en k segmentos contiguos que minimizan la suma de cuadrados intra-segmento (programación dinámica exacta), con longitud mínima de 12 meses por régimen. El número de regímenes se elige con una regla de codo explícita: el menor k a partir del cual pasar a k + 1 reduce la suma de cuadrados intra en menos de 10 %.</p>
+<p>Como contraste, se aplica el mismo procedimiento a los scores del PCA.</p>
+<div id="47f23f03" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:42.558654Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:42.558517Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:42.998153Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:42.997837Z&quot;}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> datar(Y, k_max<span class="op">=</span><span class="dv">10</span>, tam_min<span class="op">=</span><span class="dv">12</span>, umbral<span class="op">=</span><span class="fl">0.10</span>):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    Ys <span class="op">=</span> StandardScaler().fit_transform(Y)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> particion_fisher(Ys, k_max<span class="op">=</span>k_max, tam_min<span class="op">=</span>tam_min)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    sce <span class="op">=</span> pd.Series({k: v[<span class="st">'sce'</span>] <span class="cf">for</span> k, v <span class="kw">in</span> res.items()})</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    reduccion <span class="op">=</span> <span class="op">-</span>sce.pct_change().shift(<span class="op">-</span><span class="dv">1</span>)        <span class="co"># reducción relativa al pasar de k a k+1</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    k_opt <span class="op">=</span> <span class="bu">int</span>(reduccion[reduccion <span class="op">&lt;</span> umbral].index.<span class="bu">min</span>())</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res, sce, reduccion, k_opt</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>res_l, sce_l, red_l, k_l <span class="op">=</span> datar(Z_rot)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>res_p, sce_p, red_p, k_p <span class="op">=</span> datar(scores_pca)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Regímenes elegidos — LSTM-AE: k = </span><span class="sc">{</span>k_l<span class="sc">}</span><span class="ss"> | PCA: k = </span><span class="sc">{</span>k_p<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'SCE_LSTM'</span>: sce_l, <span class="st">'reduccion_LSTM'</span>: red_l, <span class="st">'SCE_PCA'</span>: sce_p, <span class="st">'reduccion_PCA'</span>: red_p}).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Regímenes elegidos — LSTM-AE: k = 2 | PCA: k = 1</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">SCE_LSTM</th>
+<th data-quarto-table-cell-role="th">reduccion_LSTM</th>
+<th data-quarto-table-cell-role="th">SCE_PCA</th>
+<th data-quarto-table-cell-role="th">reduccion_PCA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1</th>
+<td>648.000</td>
+<td>0.367</td>
+<td>648.000</td>
+<td>0.050</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2</th>
+<td>410.182</td>
+<td>0.094</td>
+<td>615.450</td>
+<td>0.085</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">3</th>
+<td>371.716</td>
+<td>0.340</td>
+<td>563.428</td>
+<td>0.054</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">4</th>
+<td>245.172</td>
+<td>0.158</td>
+<td>533.119</td>
+<td>0.066</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5</th>
+<td>206.432</td>
+<td>0.332</td>
+<td>497.923</td>
+<td>0.047</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">6</th>
+<td>137.997</td>
+<td>0.099</td>
+<td>474.416</td>
+<td>0.028</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7</th>
+<td>124.283</td>
+<td>0.096</td>
+<td>461.197</td>
+<td>0.014</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">8</th>
+<td>112.314</td>
+<td>0.109</td>
+<td>454.561</td>
+<td>0.012</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">9</th>
+<td>100.115</td>
+<td>0.052</td>
+<td>449.203</td>
+<td>0.009</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">10</th>
+<td>94.874</td>
+<td>NaN</td>
+<td>444.990</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="control-la-persistencia-viene-del-modelo-o-de-la-ventana" class="level3">
+<h3 class="anchored" data-anchor-id="control-la-persistencia-viene-del-modelo-o-de-la-ventana">4.1 Control: ¿la persistencia viene del modelo o de la ventana?</h3>
+<p>El código del LSTM resume 12 meses, por lo que es mecánicamente más suave que un score mensual de PCA. Para no atribuir al LSTM una persistencia que solo proviene del promediado, se repite la datación sobre la <strong>media móvil de 12 meses</strong> de los scores del PCA (misma información temporal, sin no linealidad ni memoria aprendida).</p>
+<div id="235693fb" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:42.999836Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:42.999704Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:43.218190Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:43.217788Z&quot;}}" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>scores_pca_mm <span class="op">=</span> pd.DataFrame(PCA(D).fit_transform(Xs), index<span class="op">=</span>df.index).rolling(L).mean().iloc[L <span class="op">-</span> <span class="dv">1</span>:].values</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>res_m, sce_m, red_m, k_m <span class="op">=</span> datar(scores_pca_mm)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'PCA suavizado (MM12): k = </span><span class="sc">{</span>k_m<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Cortes PCA-MM12:'</span>, [fechas_z[c].strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> c <span class="kw">in</span> res_m[k_m][<span class="st">'cortes'</span>]])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'RV LSTM-AE vs PCA-MM12: </span><span class="sc">{</span>coeficiente_rv(codigos[central], scores_pca_mm)<span class="sc">:.3f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PCA suavizado (MM12): k = 8
+Cortes PCA-MM12: ['2009-06', '2010-07', '2013-03', '2016-04', '2020-03', '2021-12', '2023-11']
+RV LSTM-AE vs PCA-MM12: 0.844</code></pre>
+</div>
+</div>
+<div id="2a249dfd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:43.220312Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:43.220178Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:43.223382Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:43.222959Z&quot;}}" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tabla_segmentos(cortes, fechas):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    bordes <span class="op">=</span> [<span class="dv">0</span>] <span class="op">+</span> <span class="bu">list</span>(cortes) <span class="op">+</span> [<span class="bu">len</span>(fechas)]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(fechas[a], fechas[b <span class="op">-</span> <span class="dv">1</span>]) <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(bordes[:<span class="op">-</span><span class="dv">1</span>], bordes[<span class="dv">1</span>:])]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>seg_l <span class="op">=</span> tabla_segmentos(res_l[k_l][<span class="st">'cortes'</span>], fechas_z)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>seg_p <span class="op">=</span> tabla_segmentos(res_p[k_p][<span class="st">'cortes'</span>], fechas_z)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Cortes LSTM-AE:'</span>, [fechas_z[c].strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> c <span class="kw">in</span> res_l[k_l][<span class="st">'cortes'</span>]])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Cortes PCA:    '</span>, [fechas_z[c].strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> c <span class="kw">in</span> res_p[k_p][<span class="st">'cortes'</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cortes LSTM-AE: ['2013-09']
+Cortes PCA:     []</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="clasificación-preliminar-de-fases" class="level2">
+<h2 class="anchored" data-anchor-id="clasificación-preliminar-de-fases">5. Clasificación preliminar de fases</h2>
+<p><strong>Regla operativa (propuesta para discusión con el asesor, no definitiva):</strong> cada régimen de Fisher se caracteriza por el promedio, dentro del segmento, de un <strong>componente de crédito</strong> = media de las tasas de crecimiento estandarizadas del crédito empresarial, de consumo e hipotecario (variables núcleo del ciclo financiero en Drehmann, Borio &amp; Tsatsaronis, 2012).</p>
+<ul>
+<li><strong>Expansión:</strong> promedio &gt; +0,25 desviaciones estándar</li>
+<li><strong>Contracción:</strong> promedio &lt; −0,25 desviaciones estándar</li>
+<li><strong>Transición:</strong> |promedio| ≤ 0,25, o segmento de menos de 18 meses</li>
+</ul>
+<p>El umbral de 0,25 y la duración mínima son parámetros arbitrarios y deben someterse a análisis de sensibilidad antes de cualquier conclusión. La clasificación solo usa el crecimiento del crédito para <strong>etiquetar</strong> segmentos que fueron definidos por toda la estructura latente; no participa en la segmentación.</p>
+<div id="c2a5e00e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:43.225343Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:43.225216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:43.239298Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:43.238954Z&quot;}}" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>cols_credito <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> c.startswith(<span class="st">'Crédito'</span>)]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>comp_credito <span class="op">=</span> pd.Series(StandardScaler().fit_transform(df[cols_credito]).mean(axis<span class="op">=</span><span class="dv">1</span>), index<span class="op">=</span>df.index)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clasificar(segmentos, umbral<span class="op">=</span><span class="fl">0.25</span>, dur_min<span class="op">=</span><span class="dv">18</span>):</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    filas <span class="op">=</span> []</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ini, fin <span class="kw">in</span> segmentos:</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> comp_credito.loc[ini:fin]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        dur <span class="op">=</span> <span class="bu">len</span>(v)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> v.mean()</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> dur <span class="op">&lt;</span> dur_min <span class="kw">or</span> <span class="bu">abs</span>(m) <span class="op">&lt;=</span> umbral:</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>            fase <span class="op">=</span> <span class="st">'Transición'</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>            fase <span class="op">=</span> <span class="st">'Expansión'</span> <span class="cf">if</span> m <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">'Contracción'</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        episodios <span class="op">=</span> [e <span class="cf">for</span> e, (a, b) <span class="kw">in</span> EPISODIOS_REFERENCIA.items()</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">if</span> pd.Timestamp(a) <span class="op">&lt;=</span> fin <span class="kw">and</span> pd.Timestamp(b) <span class="op">&gt;=</span> ini]</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        filas.append({<span class="st">'inicio'</span>: ini.strftime(<span class="st">'%Y-%m'</span>), <span class="st">'fin'</span>: fin.strftime(<span class="st">'%Y-%m'</span>), <span class="st">'meses'</span>: dur,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'componente_credito_medio'</span>: <span class="bu">round</span>(m, <span class="dv">2</span>), <span class="st">'fase'</span>: fase,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'episodios_contenidos'</span>: <span class="st">', '</span>.join(episodios)})</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(filas)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>fases_lstm <span class="op">=</span> clasificar(seg_l)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>fases_pca <span class="op">=</span> clasificar(tabla_segmentos(res_m[k_m][<span class="st">'cortes'</span>], fechas_z))  <span class="co"># se usa el PCA suavizado (control justo)</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>fases_lstm.to_csv(<span class="st">'data/results/09_regimenes_lstm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>fases_pca.to_csv(<span class="st">'data/results/09_regimenes_pca.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Regímenes LSTM-AE'</span>)<span class="op">;</span> display(fases_lstm)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Regímenes PCA suavizado (MM12)'</span>)<span class="op">;</span> display(fases_pca)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Regímenes LSTM-AE</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">inicio</th>
+<th data-quarto-table-cell-role="th">fin</th>
+<th data-quarto-table-cell-role="th">meses</th>
+<th data-quarto-table-cell-role="th">componente_credito_medio</th>
+<th data-quarto-table-cell-role="th">fase</th>
+<th data-quarto-table-cell-role="th">episodios_contenidos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2008-01</td>
+<td>2013-08</td>
+<td>68</td>
+<td>0.49</td>
+<td>Expansión</td>
+<td>Crisis financiera global, Taper tantrum</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2013-09</td>
+<td>2025-12</td>
+<td>148</td>
+<td>-0.31</td>
+<td>Contracción</td>
+<td>Taper tantrum, COVID-19</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Regímenes PCA suavizado (MM12)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">inicio</th>
+<th data-quarto-table-cell-role="th">fin</th>
+<th data-quarto-table-cell-role="th">meses</th>
+<th data-quarto-table-cell-role="th">componente_credito_medio</th>
+<th data-quarto-table-cell-role="th">fase</th>
+<th data-quarto-table-cell-role="th">episodios_contenidos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2008-01</td>
+<td>2009-05</td>
+<td>17</td>
+<td>0.66</td>
+<td>Transición</td>
+<td>Crisis financiera global</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2009-06</td>
+<td>2010-06</td>
+<td>13</td>
+<td>0.22</td>
+<td>Transición</td>
+<td>Crisis financiera global</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2010-07</td>
+<td>2013-02</td>
+<td>32</td>
+<td>0.57</td>
+<td>Expansión</td>
+<td></td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2013-03</td>
+<td>2016-03</td>
+<td>37</td>
+<td>-0.07</td>
+<td>Transición</td>
+<td>Taper tantrum</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2016-04</td>
+<td>2020-02</td>
+<td>47</td>
+<td>-0.24</td>
+<td>Transición</td>
+<td></td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>2020-03</td>
+<td>2021-11</td>
+<td>21</td>
+<td>-0.49</td>
+<td>Contracción</td>
+<td>COVID-19</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>2021-12</td>
+<td>2023-10</td>
+<td>23</td>
+<td>-0.31</td>
+<td>Contracción</td>
+<td></td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>2023-11</td>
+<td>2025-12</td>
+<td>26</td>
+<td>-0.52</td>
+<td>Contracción</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="e922354d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:43.241270Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:43.241134Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:43.705969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:43.705649Z&quot;}}" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>colores <span class="op">=</span> {<span class="st">'Expansión'</span>: <span class="st">'tab:green'</span>, <span class="st">'Contracción'</span>: <span class="st">'tab:red'</span>, <span class="st">'Transición'</span>: <span class="st">'gold'</span>}</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">5.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, fases, titulo <span class="kw">in</span> [(axes[<span class="dv">0</span>], fases_lstm, <span class="st">'LSTM-AE'</span>), (axes[<span class="dv">1</span>], fases_pca, <span class="st">'PCA-MM12'</span>)]:</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(comp_credito.index, comp_credito.rolling(<span class="dv">3</span>).mean(), color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Componente de crédito (MM3)'</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, f <span class="kw">in</span> fases.iterrows():</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        ax.axvspan(pd.Timestamp(f[<span class="st">'inicio'</span>]), pd.Timestamp(f[<span class="st">'fin'</span>]) <span class="op">+</span> pd.offsets.MonthEnd(<span class="dv">0</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                   color<span class="op">=</span>colores[f[<span class="st">'fase'</span>]], alpha<span class="op">=</span><span class="fl">0.25</span>, lw<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(titulo)<span class="op">;</span> ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'grey'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(handles<span class="op">=</span>[Patch(color<span class="op">=</span>c, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span>f) <span class="cf">for</span> f, c <span class="kw">in</span> colores.items()], fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'lower left'</span>, ncol<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Regímenes de Fisher y clasificación preliminar de fases'</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/09_regimenes.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09_lstm_autoencoder_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="guardar-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="guardar-resultados">6. Guardar resultados</h2>
+<div id="0bdd9d0e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:40:43.707776Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:40:43.707653Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:40:43.714779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:40:43.714461Z&quot;}}" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(Z_rot, index<span class="op">=</span>fechas_z, columns<span class="op">=</span>[<span class="ss">f'LSTM</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">_rotado'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D)]).to_csv(<span class="st">'data/results/09_lstm_trayectoria_latente.csv'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>corr_var.to_csv(<span class="st">'data/results/09_lstm_correlaciones_variables.csv'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>torch.save(lstm_final.state_dict(), <span class="st">'data/results/09_lstm_modelo_final.pt'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Resultados guardados en data/results/09_*'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Resultados guardados en data/results/09_*</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusiones-dataset-corregido-227-meses-5-oct-2026" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-dataset-corregido-227-meses-5-oct-2026">7. Conclusiones (dataset corregido: 227 meses, 5-oct-2026)</h2>
+<ol type="1">
+<li><strong>Fuera de muestra, la ventaja del LSTM-AE es modesta.</strong> Los tres métodos detectan el COVID-19 en el 50 % de sus meses; ninguno detecta el taper tantrum. El LSTM-AE tiene la menor tasa de falsas alarmas (0,6 % frente a 1,9 % del PCA y del AE), pero también la menor magnitud de señal en los episodios.</li>
+<li><strong>Estable, pero distinto del PCA mensual.</strong> RV entre réplicas 0,93; RV con los scores mensuales del PCA 0,22 y con su media móvil de 12 meses 0,84: lo que el LSTM agrega es, sobre todo, integración temporal.</li>
+<li><strong>La datación de regímenes con LSTM no es robusta.</strong> Con el dataset preliminar, Fisher sobre el LSTM-AE daba 7 regímenes; con el corregido da <strong>2</strong> (corte único en 2013-09, al cierre del taper tantrum). La regla de codo es frágil: las reducciones de la SCE no son monótonas (9 % de k = 2 a 3, 34 % de k = 3 a 4). En cambio, el <strong>PCA suavizado (MM12) conservó sus 8 regímenes</strong> con cortes prácticamente iguales: 2009-06, 2010-07, 2013-03, 2016-04, 2020-03, 2021-12 y 2023-11. <strong>La datación de referencia de la tesis debe ser la del PCA suavizado</strong>; el LSTM aporta evidencia complementaria (su único corte coincide con el taper tantrum).</li>
+<li><strong>Fases preliminares (PCA-MM12; regla δ = 0,25, duración mínima de 18 meses):</strong> expansión 2010-07 a 2013-02; transición 2013-03 a 2020-02; contracción desde 2020-03. El tramo 2008–2010, con crédito alto, queda como transición solo por la duración de sus segmentos. La regla requiere análisis de sensibilidad.</li>
+<li><strong>Pendientes metodológicos:</strong> (i) reemplazar la regla de codo por un criterio más estable (p.&nbsp;ej. estabilidad bootstrap de los cortes); (ii) la crisis de 2008–2009 sigue sin ser evaluable fuera de muestra con la base 2007–2025, lo que motiva la extensión hacia 1985 (<code>01b</code>, <code>04c</code>).</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
