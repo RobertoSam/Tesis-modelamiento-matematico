@@ -1,0 +1,488 @@
+---
+title: "Marco matemático: Autoencoders y LSTM"
+subtitle: "Definiciones formales, vínculo con el PCA de la cadena Camiz y procedimiento de validación"
+author: "Roberto Samaniego Salcedo"
+date: "2026-10-04"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    html-math-method: mathjax
+---
+
+::: {.callout-note title="Lectura rápida"}
+Este documento formaliza los dos modelos de aprendizaje profundo de la tesis y los
+conecta matemáticamente con el PCA. La idea central es que **un autoencoder lineal
+con pérdida cuadrática genera exactamente el subespacio del PCA**: el autoencoder es una
+generalización del PCA, no un método ajeno a la cadena PCA → HFC → EPCA. Sobre esa base
+se definen el autoencoder no lineal, la red LSTM, el LSTM-Autoencoder, el esquema de
+validación walk-forward, la cuantificación de incertidumbre por Monte Carlo Dropout y la
+datación de regímenes con la partición óptima de Fisher.
+
+Implementación: `notebooks/modelos_dl.py`, `08_autoencoder.ipynb`, `09_lstm_autoencoder.ipynb`.
+:::
+
+::: {.callout-warning title="Estado de las referencias"}
+Todas las referencias de la sección final fueron localizadas en fuentes bibliográficas
+(editorial, actas o repositorio). Las marcadas **[verificar]** no se han leído en texto
+completo y deben contrastarse antes de citarse en el informe final.
+:::
+
+# Notación
+
+Se mantiene la notación de `marco_conceptual.qmd`.
+
+| Símbolo | Significado |
+|---|---|
+| $X_t = (x_{1t},\dots,x_{pt})^\top \in \mathbb{R}^p$ | Vector de indicadores macrofinancieros del mes $t$ (aquí $p = 17$, transformados a log-diferencias o diferencias y estandarizados) |
+| $\mathbf{X} \in \mathbb{R}^{n\times p}$ | Matriz de datos centrada, filas $X_t^\top$, $t = 1,\dots,n$ ($n = 208$) |
+| $d$ | Dimensión del espacio de representación (número de componentes o dimensión latente), $d < p$ |
+| $f_\theta:\mathbb{R}^p\to\mathbb{R}^d$ | Codificador |
+| $g_\phi:\mathbb{R}^d\to\mathbb{R}^p$ | Decodificador |
+| $z_t = f_\theta(X_t)$ | Código latente del mes $t$ |
+| $\hat X_t = g_\phi(z_t)$ | Reconstrucción de $X_t$ |
+| $L$ | Longitud de ventana temporal (meses) en el LSTM |
+| $\mathcal{W}_t = (X_{t-L+1},\dots,X_t)$ | Ventana que termina en el mes $t$ |
+| $I_k = [t_a, t_b]$ | Régimen: intervalo de meses con estructura estable |
+
+# El PCA como problema de reconstrucción
+
+El PCA admite dos formulaciones equivalentes: maximización de la varianza proyectada y
+minimización del error de reconstrucción. La segunda es la que lo conecta con los
+autoencoders.
+
+**Problema.** Hallar una matriz $V \in \mathbb{R}^{p\times d}$ con columnas ortonormales que minimice
+
+$$
+J(V) = \frac{1}{n}\sum_{t=1}^{n} \bigl\lVert X_t - V V^\top X_t \bigr\rVert^2
+     = \frac{1}{n}\bigl\lVert \mathbf{X} - \mathbf{X} V V^\top \bigr\rVert_F^2 .
+$$
+
+**Solución.** Sea $\mathbf{X} = U\Sigma W^\top$ la descomposición en valores singulares. Por el
+teorema de Eckart–Young [verificar], la mejor aproximación de rango $d$ de $\mathbf{X}$ en norma de
+Frobenius es $\mathbf{X} W_d W_d^\top$, con $W_d$ las $d$ primeras columnas de $W$. Por tanto el mínimo
+se alcanza en $V = W_d$ (los vectores propios de $\mathbf{R} = \mathbf{X}^\top\mathbf{X}/n$, la matriz de correlaciones
+si los datos están estandarizados) y
+
+$$
+J(W_d) = \frac{1}{n}\sum_{j=d+1}^{p}\sigma_j^2 = \sum_{j=d+1}^{p}\lambda_j ,
+\qquad
+\frac{J(W_d)}{p} = 1 - \frac{\sum_{j=1}^{d}\lambda_j}{p}.
+$$
+
+Es decir, con datos estandarizados **el error cuadrático medio por celda es uno menos la
+inercia retenida**. Con $d = 3$ en el dataset mensual transformado, la inercia es 52,16 % y el
+MSE es 0,4784, valor que se usa como ancla numérica en la sección 3.3.
+
+**Observación (identificación).** $J$ depende de $V$ solo a través del proyector $VV^\top$, es
+decir, del *subespacio* generado. Cualquier $V Q$ con $Q$ ortogonal $d\times d$ tiene el mismo
+error. El PCA fija la base eligiendo los vectores propios ordenados por varianza, y el signo
+de cada uno queda indeterminado. Esta es la misma indeterminación de signos que obliga a
+alinear cargas entre ventanas en EPCA. En los autoencoders la indeterminación es mayor: se
+extiende a rotaciones completas (sección 3.4).
+
+# Autoencoders
+
+## Definición general
+
+Un **autoencoder** es un par $(f_\theta, g_\phi)$ entrenado para que $g_\phi\circ f_\theta$ aproxime la
+identidad sobre los datos, pasando por un espacio de dimensión $d < p$ (autoencoder
+*subcompleto*):
+
+$$
+(\hat\theta,\hat\phi) = \arg\min_{\theta,\phi}\; \frac{1}{n}\sum_{t=1}^{n}
+\bigl\lVert X_t - g_\phi\bigl(f_\theta(X_t)\bigr)\bigr\rVert^2 + \Omega(\theta,\phi),
+$$
+
+donde $\Omega$ es un término de regularización. El cuello de botella $d < p$ impide que la red
+aprenda la identidad trivial y la obliga a retener la estructura dominante de covariación.
+
+**Arquitectura usada en la tesis.** Perceptrón multicapa simétrico con **pesos atados**
+(el decodificador reutiliza las transpuestas de las matrices del codificador):
+
+$$
+\begin{aligned}
+h_t &= \tanh(W_1 X_t + b_1), & W_1 &\in \mathbb{R}^{m\times p},\\
+z_t &= W_2 h_t + b_2, & W_2 &\in \mathbb{R}^{d\times m},\\
+\tilde h_t &= \tanh(W_2^\top z_t + c_2), &&\\
+\hat X_t &= W_1^\top \tilde h_t + c_1, &&
+\end{aligned}
+$$
+
+con $p = 17$, $m = 8$, $d = 3$. El cuello de botella y la salida son lineales: los datos están
+estandarizados y no acotados, y un código lineal hace que el caso $\tanh \to$ identidad
+recupere exactamente el modelo de la sección 3.2. Atar los pesos reduce los parámetros
+libres a la mitad, de $2(pm + md)$ a $pm + md$ más los sesgos. Con $n = 208$ esto es un
+argumento de parsimonia, no solo de conveniencia.
+
+## Autoencoder lineal y PCA
+
+Sea el autoencoder lineal de una capa, sin sesgos y con pesos atados:
+$f(X) = A X$, $g(z) = A^\top z$, con $A\in\mathbb{R}^{d\times p}$.
+
+::: {.callout-tip title="Proposición 1 (Bourlard & Kamp, 1988; Baldi & Hornik, 1989)"}
+Si $\mathbf{R} = \mathbf{X}^\top\mathbf{X}/n$ tiene autovalores $\lambda_1 > \dots > \lambda_p$, todo mínimo global de
+
+$$
+E(A) = \frac{1}{n}\sum_t \lVert X_t - A^\top A X_t\rVert^2
+$$
+
+satisface $A^\top A = W_d W_d^\top$: el autoencoder proyecta ortogonalmente sobre el **subespacio
+de los $d$ primeros componentes principales**, y $E$ alcanza el valor $J(W_d)$ de la sección 2.
+Además, Baldi & Hornik (1989) muestran que en el caso lineal la superficie de error no
+tiene mínimos locales distintos del global, sino puntos de silla.
+:::
+
+*Esbozo.* $A^\top A$ tiene rango a lo sumo $d$, de modo que $\mathbf{X}A^\top A$ es una aproximación de rango
+$\le d$ de $\mathbf{X}$. Por Eckart–Young, el error es $\ge \sum_{j>d}\lambda_j$, con igualdad si y solo si
+$A^\top A$ es el proyector sobre el subespacio principal. Ese proyector se alcanza con
+$A = Q\,W_d^\top$ para cualquier $Q$ ortogonal. $\square$
+
+**Consecuencias para la tesis.**
+
+1. **Continuidad metodológica.** El PCA es el caso particular "activación identidad" del
+   autoencoder. Todo lo que el autoencoder no lineal encuentre de más es atribuible a la no
+   linealidad y no a una definición distinta del problema.
+2. **No identificación de las coordenadas.** Las filas de $A$ forman una base ortonormal del
+   subespacio principal, pero **no** son los vectores propios: son una rotación arbitraria
+   $Q$ de ellos. Plaut (2018, *preprint*) muestra que las direcciones principales se recuperan
+   con una SVD dentro del subespacio aprendido. Así se procede en `modelos_dl.componentes_desde_decodificador`.
+
+## Verificación numérica
+
+En `08_autoencoder.ipynb` (sección 3) se entrena el autoencoder lineal atado con
+$d = 1,\dots,5$ sobre el dataset mensual transformado:
+
+| $d$ | MSE AE lineal | MSE PCA | Inercia PCA (%) | Ángulo principal máximo (°) |
+|---|---|---|---|---|
+| 1 | 0,75746 | 0,75746 | 24,25 | 0,015 |
+| 2 | 0,59592 | 0,59592 | 40,41 | 0,018 |
+| 3 | 0,47840 | 0,47840 | 52,16 | 0,043 |
+| 4 | 0,39198 | 0,39198 | 60,80 | 0,049 |
+| 5 | 0,33080 | 0,33080 | 66,92 | 0,058 |
+
+Los ángulos principales entre el subespacio del decodificador y el del PCA son de
+centésimas de grado, atribuibles a la tolerancia de optimización. Tras la SVD interna, las
+direcciones recuperadas tienen $|\cos| = 1{,}000$ con las del PCA. La inercia para $d = 3$
+coincide con la verificada entre Rcamiz y scikit-learn (52,16 %). Con esto, la cadena
+Rcamiz → scikit-learn → autoencoder lineal queda cerrada numéricamente.
+
+## Identificación y comparación de configuraciones
+
+Como los códigos latentes solo están definidos salvo transformaciones (rotaciones en el caso
+lineal, difeomorfismos en el no lineal), las comparaciones se hacen sobre la **geometría de
+la nube de puntos** y no sobre coordenadas individuales.
+
+**Coeficiente RV** (Robert & Escoufier, 1976). Para dos configuraciones centradas
+$\mathbf{Y}\in\mathbb{R}^{n\times q}$, $\mathbf{Z}\in\mathbb{R}^{n\times r}$ de las mismas $n$ observaciones:
+
+$$
+\mathrm{RV}(\mathbf{Y},\mathbf{Z}) = \frac{\operatorname{tr}(\mathbf{Y}\mathbf{Y}^\top\mathbf{Z}\mathbf{Z}^\top)}
+{\sqrt{\operatorname{tr}\bigl((\mathbf{Y}\mathbf{Y}^\top)^2\bigr)\,\operatorname{tr}\bigl((\mathbf{Z}\mathbf{Z}^\top)^2\bigr)}} \in [0,1].
+$$
+
+Es invariante a rotaciones y a homotecias. Se usa en la tesis para tres fines: medir la
+estabilidad del autoencoder frente a la semilla aleatoria (RV entre réplicas), medir su
+concordancia con el PCA y, como objetivo firme ya planteado, seleccionar la ventana de EPCA.
+Es también el coeficiente que subyace a STATIS.
+
+**Rotación de Procrustes ortogonal.** Para hacer interpretables los ejes latentes se resuelve
+
+$$
+\hat R = \arg\min_{R^\top R = I}\;\lVert \mathbf{Z}R - \mathbf{F}\rVert_F ,
+\qquad \hat R = U V^\top \text{ donde } \mathbf{Z}^\top\mathbf{F} = U\Sigma V^\top ,
+$$
+
+con $\mathbf{F}$ los scores del PCA. Los ejes $\mathbf{Z}\hat R$ se leen como "la versión no lineal de PC1, PC2,
+PC3". Como sustituto de las cargas, que no existen como constantes en un modelo no lineal,
+se reporta la correlación entre cada variable original y cada eje rotado, igual que en el
+círculo de correlaciones del PCA.
+
+## Regularización
+
+Con $n = 208$ y $pm + md = 160$ pesos, el riesgo dominante es el sobreajuste. Se usan cuatro
+mecanismos, todos explícitos en el código:
+
+| Mecanismo | Definición | Referencia |
+|---|---|---|
+| *Weight decay* | $\Omega = \lambda\sum_l\lVert W_l\rVert_F^2$, con $\lambda = 10^{-3}$ | — |
+| *Dropout* | Cada unidad oculta se anula con probabilidad $\pi$ durante el entrenamiento ($\pi = 0{,}10$ en AE, $0{,}20$ en LSTM) | Gal & Ghahramani (2016) para su lectura bayesiana |
+| *Denoising* | Se reconstruye $X_t$ a partir de $\tilde X_t = X_t + \varepsilon_t$, $\varepsilon_t\sim\mathcal{N}(0,\sigma^2 I)$; la pérdida se mide contra la entrada limpia | Vincent et al. (2008), que usan enmascaramiento; aquí ruido gaussiano |
+| *Parada temprana* | Se detiene cuando el error en el 15 % final (cronológico) del entrenamiento deja de mejorar | — |
+
+**Pre-entrenamiento por capas.** Siguiendo la lógica de Hinton & Salakhutdinov (2006) y el
+objetivo firme de la tesis, cada par $(W_l, W_l^\top)$ se entrena primero como autoencoder
+superficial sobre los códigos de la capa anterior, y luego se ajusta toda la red. Aquí se
+usan autoencoders atados en lugar de RBM, dado que las RBM requieren más datos.
+
+# Redes LSTM
+
+## Ecuaciones
+
+Una LSTM procesa la secuencia $X_1,\dots,X_T$ manteniendo un estado oculto $h_t\in\mathbb{R}^m$ y
+una celda de memoria $c_t\in\mathbb{R}^m$. En la forma con compuerta de olvido (Gers, Schmidhuber &
+Cummins, 2000), que es la implementada en PyTorch:
+
+$$
+\begin{aligned}
+i_t &= \sigma(W_i X_t + U_i h_{t-1} + b_i) && \text{(compuerta de entrada)}\\
+f_t &= \sigma(W_f X_t + U_f h_{t-1} + b_f) && \text{(compuerta de olvido)}\\
+o_t &= \sigma(W_o X_t + U_o h_{t-1} + b_o) && \text{(compuerta de salida)}\\
+\tilde c_t &= \tanh(W_c X_t + U_c h_{t-1} + b_c) && \text{(memoria candidata)}\\
+c_t &= f_t \odot c_{t-1} + i_t \odot \tilde c_t\\
+h_t &= o_t \odot \tanh(c_t)
+\end{aligned}
+$$
+
+donde $\sigma$ es la función logística y $\odot$ el producto elemento a elemento.
+
+**Por qué importa la forma aditiva de $c_t$.** En una red recurrente simple,
+$\partial h_t/\partial h_{t-k}$ es un producto de $k$ jacobianos y tiende a anularse o a explotar.
+En la LSTM, $\partial c_t/\partial c_{t-1} = \operatorname{diag}(f_t)$ cuando se ignoran las
+dependencias indirectas. Si $f_t\approx 1$, el error se propaga sin atenuarse. Este es el
+"carrusel de error constante" de Hochreiter & Schmidhuber (1997). La compuerta $f_t$ permite
+además *reiniciar* la memoria, lo cual es relevante cuando la serie cruza un cambio de régimen.
+
+**Nota de coherencia bibliográfica.** La formulación original de 1997 no tiene compuerta de
+olvido; esta fue introducida por Gers et al. (2000). Al describir la LSTM implementada debe
+citarse a ambos.
+
+## LSTM-Autoencoder
+
+Siguiendo a Srivastava, Mansimov & Salakhutdinov (2015), el LSTM-Autoencoder codifica una
+**ventana** y no un mes aislado:
+
+$$
+\begin{aligned}
+(h^{e}_L, c^{e}_L) &= \mathrm{LSTM}_{enc}\bigl(X_{t-L+1},\dots,X_t\bigr)\\
+z_t &= W_z h^{e}_L + b_z \in \mathbb{R}^d\\
+s_0 &= \tanh(W_s z_t + b_s)\\
+(y_1,\dots,y_L) &= \mathrm{LSTM}_{dec}(s_0, s_0, \dots, s_0)\\
+(\hat X_t, \hat X_{t-1},\dots,\hat X_{t-L+1}) &= (W_o y_1,\dots, W_o y_L)
+\end{aligned}
+$$
+
+El decodificador es **no condicionado**: no recibe sus propias salidas previas. Además
+reconstruye la ventana **en orden inverso**, de modo que el primer mes reconstruido es el más
+reciente. Los autores justifican el orden inverso porque facilita el aprendizaje de
+correlaciones de corto alcance al inicio del entrenamiento.
+
+**Interpretación para el ciclo financiero.** El código $z_t$ resume la trayectoria de los últimos
+$L$ meses. Dos meses con el mismo vector $X_t$ pero historias distintas (por ejemplo, crédito
+desacelerándose frente a crédito acelerándose) tendrán códigos distintos. Esa es precisamente
+la información que distingue una fase de expansión de una de contracción y que el PCA y el
+autoencoder estático no ven.
+
+**Causalidad.** $z_t$ se fecha al último mes de la ventana y solo usa información hasta $t$. Es
+un requisito para cualquier uso como indicador en tiempo real.
+
+Configuración usada: $L = 12$, $m = 16$, $d = 3$. Parámetros libres $\approx 3{.}100$, frente a
+197 ventanas de entrenamiento muy solapadas. Esta desproporción hace imprescindibles la
+regularización y, sobre todo, la validación fuera de muestra.
+
+# Validación y cuantificación de incertidumbre
+
+## Validación cruzada por bloques temporales
+
+Para comparar la capacidad de generalización del AE no lineal frente al PCA, la muestra se
+divide en $K = 5$ bloques **contiguos**. Cada bloque se reconstruye con modelos entrenados en
+los otros cuatro, y la estandarización se recalcula solo con los datos de entrenamiento. Un
+barajado aleatorio de meses sobreestimaría el desempeño por la autocorrelación de las series.
+
+## Walk-forward con ventana expansiva
+
+Para el indicador temporal se usa un esquema estrictamente causal. Para cada año de
+evaluación $a$:
+
+1. se entrena con $\{X_t: t < \text{enero de } a\}$, estandarizando con media y desviación de
+   ese conjunto;
+2. se calcula el error de reconstrucción $e_t = \lVert X_t - \hat X_t\rVert^2/p$ para los meses de $a$,
+   tomando para el LSTM el último paso de cada ventana;
+3. se normaliza por el percentil 95 del error en entrenamiento del mismo modelo:
+
+$$
+\tilde e_t = \frac{e_t}{q_{0.95}\bigl(\{e_s\}_{s\in\text{ent}(a)}\bigr)} .
+$$
+
+$\tilde e_t > 1$ indica un mes más anómalo que el 95 % de los meses conocidos por el modelo.
+La normalización hace comparables los errores de modelos reentrenados con muestras de
+distinto tamaño.
+
+## Monte Carlo Dropout
+
+Gal & Ghahramani (2016) muestran que entrenar una red con dropout equivale a una inferencia
+variacional aproximada en un proceso gaussiano profundo. En la práctica, se mantiene el
+dropout **activo en inferencia** y se realizan $T$ pasadas estocásticas $\hat y^{(1)},\dots,\hat y^{(T)}$:
+
+$$
+\mathbb{E}[\hat y] \approx \frac{1}{T}\sum_{\tau=1}^{T}\hat y^{(\tau)},
+\qquad
+\operatorname{Var}[\hat y] \approx \tau_0^{-1}I + \frac{1}{T}\sum_{\tau=1}^{T}\hat y^{(\tau)}\hat y^{(\tau)\top}
+- \mathbb{E}[\hat y]\,\mathbb{E}[\hat y]^\top ,
+$$
+
+donde $\tau_0$ es la precisión del modelo [verificar la expresión exacta en el texto del paper].
+En la tesis se reportan los percentiles 5–95 de la distribución empírica del error de
+reconstrucción sobre $T$ pasadas. Es una banda de incertidumbre epistémica del indicador,
+no un intervalo de confianza frecuentista.
+
+# Selección de la dimensión latente
+
+**Análisis paralelo de Horn** [verificar referencia: Horn, 1965]. Se retienen los
+componentes cuyo autovalor observado supera el percentil 95 de los autovalores de matrices
+de correlación de datos gaussianos independientes de tamaño $n\times p$:
+
+$$
+d^\ast = \max\{k : \lambda_j > q_{0.95}(\lambda_j^{\text{aleat}})\ \ \forall j\le k\}.
+$$
+
+Se aplica al PCA y se hereda como dimensión latente de referencia para los autoencoders,
+de modo que ambos se comparen con igual número de grados de libertad en la representación.
+
+# Datación de regímenes: partición óptima de Fisher
+
+La definición de régimen de `marco_conceptual.qmd` (§2.1) es un intervalo
+$I_k = [t_a,t_b]$ con estructura estable. Sobre una trayectoria de representaciones
+$Y_1,\dots,Y_n\in\mathbb{R}^q$ (códigos latentes o scores) se busca la partición en $k$ intervalos
+**contiguos** que minimice la suma de cuadrados intra:
+
+$$
+\min_{0=\tau_0<\tau_1<\dots<\tau_k=n}\;\sum_{j=1}^{k}\;\sum_{t=\tau_{j-1}+1}^{\tau_j}\bigl\lVert Y_t - \bar Y_{(\tau_{j-1},\tau_j]}\bigr\rVert^2 ,
+\qquad \tau_j - \tau_{j-1}\ \ge\ \ell_{\min}.
+$$
+
+Fisher (1958) muestra que, a diferencia de la clasificación no restringida, este problema se
+resuelve **exactamente** por programación dinámica. Si $D_k(j)$ es el costo óptimo de partir
+$Y_1,\dots,Y_j$ en $k$ segmentos y $S(i,j)$ el costo de un segmento:
+
+$$
+D_1(j) = S(0,j), \qquad D_k(j) = \min_{i}\;\bigl[D_{k-1}(i) + S(i,j)\bigr],
+$$
+
+con complejidad $O(k\,n^2)$. Con sumas acumuladas, $S(i,j)$ se evalúa en $O(q)$.
+
+**Elección de $k$.** Se toma el menor $k$ tal que pasar a $k+1$ reduce la suma de cuadrados
+intra en menos de 10 %. Es una regla de codo explícita y reproducible, pero arbitraria en su
+umbral: requiere análisis de sensibilidad.
+
+**Relación con HFC.** La partición de Fisher es una clasificación con restricción de
+contigüidad temporal. La HFC de Camiz clasifica variables o unidades sin esa restricción.
+Ambas pueden contrastarse: si los grupos temporales de HFC coinciden con los segmentos de
+Fisher, la evidencia de régimen es más fuerte (§2.4 del marco conceptual, familia
+"clasificatoria").
+
+## Clasificación de fases (propuesta preliminar)
+
+Cada régimen $I_k$ se etiqueta con el promedio, dentro del intervalo, de un **componente de
+crédito** $\kappa_t$ = media de las tasas de crecimiento estandarizadas del crédito empresarial,
+de consumo e hipotecario:
+
+$$
+\text{fase}(I_k)=
+\begin{cases}
+\text{Expansión} & \bar\kappa_{I_k} > \delta \text{ y } |I_k|\ge \ell_f\\
+\text{Contracción} & \bar\kappa_{I_k} < -\delta \text{ y } |I_k|\ge \ell_f\\
+\text{Transición} & \text{en otro caso}
+\end{cases}
+\qquad \delta = 0{,}25,\ \ell_f = 18 \text{ meses}.
+$$
+
+La segmentación usa toda la estructura latente; el crédito solo **etiqueta**. Esta separación
+evita que la clasificación sea una simple relectura del crecimiento del crédito. Es una
+propuesta para discutir con el asesor, coherente con la contribución diferencial 2 de la
+tesis: la clasificación explícita de fases que los trabajos previos evitan.
+
+# Discusión epistemológica: ¿rompen los autoencoders con el análisis de datos?
+
+*Propuesta de redacción para el marco teórico, a revisar con el asesor.*
+
+La tradición de la *analyse des données* (Benzécri, 1973) privilegia que la estructura emerja
+de los datos con el mínimo de supuestos: el PCA solo exige elegir la métrica. Un autoencoder
+introduce **priors arquitectónicos**: número de capas, ancho, función de activación, dimensión
+latente, longitud de ventana, regularización. Cada uno es una decisión del analista, no de
+los datos. La tesis puede sostener cuatro argumentos:
+
+1. **Anidamiento.** La Proposición 1 muestra que el PCA es un caso particular del
+   autoencoder. El autoencoder no sustituye el principio de reconstrucción del análisis de
+   datos, lo generaliza. La ruptura no está en el criterio sino en la clase de funciones admitida.
+2. **Anclaje empírico.** Cada modelo no lineal se reporta *junto* a su versión lineal (el
+   PCA), con la misma $d$ y en la misma escala de error. La no linealidad se acepta solo si
+   mejora fuera de muestra.
+3. **Estabilidad como criterio de validez.** Una estructura que cambia con la semilla aleatoria
+   no "emerge de los datos". Por eso se exige estabilidad entre réplicas (RV) y se reporta la
+   réplica central, no la de mejor ajuste.
+4. **Parsimonia condicionada a la evidencia.** Los primeros resultados (sección 9) indican que,
+   con 208 meses, el autoencoder no lineal **no** reconstruye mejor que el PCA fuera de muestra.
+   Bajo ese resultado, el PCA y la HFC siguen siendo las herramientas descriptivas primarias. El
+   aprendizaje profundo se justifica por lo que el PCA estructuralmente no puede hacer: modelar
+   la **dinámica** (LSTM) y servir de **detector de anomalías** sensible a observaciones que no
+   comparten la estructura típica.
+
+Esta posición es coherente con el enfoque "datos primero" del asesor: el aprendizaje profundo
+se subordina a la evidencia que producen los propios datos.
+
+# Resultados empíricos preliminares
+
+::: {.callout-warning title="Resultados provisionales"}
+El dataset mensual vigente omite los **19 meses de septiembre (2007–2025)**. Las fechas de
+septiembre de la serie diaria del EMBI no se parseaban (`"Set"`), quedaban vacías al agregar
+a mensual y el `dropna()` de `04b` eliminaba esos meses del panel completo. Cada log-diferencia
+de octubre mide en realidad dos meses. Las cifras de esta sección deben recalcularse tras
+re-ejecutar `01 → 04b → 05/06 → 08 → 09` con la corrección ya incorporada en `01`.
+:::
+
+| Pregunta | Evidencia (notebook) | Resultado preliminar |
+|---|---|---|
+| ¿El AE lineal reproduce el PCA? | 08 §3 | Sí: MSE idéntico, ángulos < 0,06°, direcciones recuperadas con \|cos\| = 1 |
+| ¿Cuántas dimensiones retener? | 08 §2 (Horn) | **4**: PC4 = 1,469 > 1,315. Difiere de las 3 dimensiones usadas hasta ahora (ver nota 1) |
+| ¿La no linealidad mejora la reconstrucción fuera de muestra? | 08 §4 | **No.** El AE no lineal es peor que el PCA para todo d (−5 % con d = 1, −19 % con d = 3, −44 % con d = 5); el pre-entrenamiento no cambia la conclusión |
+| ¿Es estable el AE frente a la semilla? | 08 §5 | Razonablemente: RV mediano entre réplicas 0,89 (mínimo 0,77); RV con PCA 0,78 |
+| ¿Detecta el AE episodios que el PCA no? | 08 §6 | En muestra, oct-2008 tiene error 11,8 (AE) frente a 0,75 (PCA), dominado por el EMBI. EPCA no pudo validar la crisis de 2008 por efecto de borde, así que el AE aporta aquí una señal complementaria |
+| ¿Coinciden AE y EPCA? | 08 §7 | Las transiciones EPCA de 2013-08 y 2017-10 coinciden con errores del AE por encima del p90; las de 2012 no |
+| ¿Detecta el LSTM-AE episodios fuera de muestra? | 09 §2 | COVID-19 sí (67 % de sus meses sobre el umbral, igual que PCA y AE). Taper tantrum no, con ningún método. El LSTM tiene menos falsas alarmas (0,7 % frente a 2,7 % del PCA) |
+| ¿La datación de regímenes se debe al LSTM? | 09 §4.1 | **Mayormente no.** La media móvil de 12 meses del PCA reproduce casi los mismos cortes (2009, 2010-08, 2013, 2020, 2022, 2023); RV LSTM vs. PCA-MM12 = 0,80 |
+| Fases preliminares | 09 §5 | Expansión 2010-08 a 2013-04; transición 2013-05 a 2020-05; contracción desde mediados de 2020. El segmento 2008–2009 queda como "transición" por duración (< 18 meses) pese a crédito alto: el resultado depende de la regla |
+
+**Nota 1 (contradicción con avances previos).** El PCA verificado con Rcamiz retiene
+3 dimensiones (52,16 %). El análisis paralelo de Horn, que es objetivo firme de la tesis,
+indica 4 (60,80 %). Hay que decidir con el asesor qué criterio prevalece y, si es Horn,
+actualizar `05`, `06` y `07_pca_rcamiz`. Conviene repetir el análisis con el dataset corregido
+antes de decidir.
+
+**Nota 2 (no estacionariedad estructural).** En la validación por bloques, el PCA con d = 3
+tiene un error fuera de muestra de 1,06, mayor que la varianza total por variable (1,0). La
+estructura de covariación de un bloque de ~3,5 años no se transfiere a otro. Es evidencia
+directa, e independiente de EPCA, de que la estructura del sistema cambia en el tiempo: la
+premisa de la tesis.
+
+**Implicaciones para el diseño.**
+
+1. Con la muestra actual, el autoencoder no lineal no se justifica como *mejor compresor*. Se
+   justifica como **detector de anomalías estructurales** complementario al PCA y a EPCA.
+2. Toda datación de regímenes con LSTM debe reportarse **junto a su control suavizado**
+   (PCA-MM12). Si la contribución diferencial se atribuye al LSTM, debe mostrarse una
+   diferencia sustantiva frente a ese control.
+3. La validación walk-forward no puede evaluar la crisis de 2008–2009 fuera de muestra. La
+   extensión hacia 1985 (`01b`, `04c`) es por tanto una necesidad metodológica, no solo una
+   mejora de tamaño muestral.
+
+# Referencias
+
+| Referencia (APA 7) | Estado |
+|---|---|
+| Baldi, P., & Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. *Neural Networks, 2*(1), 53–58. https://doi.org/10.1016/0893-6080(89)90014-2 | Localizada [verificar texto] |
+| Benzécri, J.-P. (1973). *L'analyse des données* (Vols. 1–2). Dunod. | Ya en el proyecto |
+| Bourlard, H., & Kamp, Y. (1988). Auto-association by multilayer perceptrons and singular value decomposition. *Biological Cybernetics, 59*(4–5), 291–294. https://doi.org/10.1007/BF00332918 | Localizada [verificar texto] |
+| Drehmann, M., Borio, C., & Tsatsaronis, K. (2012). *Characterising the financial cycle: Don't lose sight of the medium term!* (BIS Working Papers No. 380). Bank for International Settlements. | Ficha en el proyecto |
+| Eckart, C., & Young, G. (1936). The approximation of one matrix by another of lower rank. *Psychometrika, 1*(3), 211–218. | [verificar] |
+| Fisher, W. D. (1958). On grouping for maximum homogeneity. *Journal of the American Statistical Association, 53*(284), 789–798. | Localizada [verificar texto y número] |
+| Gal, Y., & Ghahramani, Z. (2016). Dropout as a Bayesian approximation: Representing model uncertainty in deep learning. In *Proceedings of the 33rd International Conference on Machine Learning* (PMLR Vol. 48, pp. 1050–1059). | Localizada; resumen leído |
+| Gers, F. A., Schmidhuber, J., & Cummins, F. (2000). Learning to forget: Continual prediction with LSTM. *Neural Computation, 12*(10), 2451–2471. | Localizada [verificar texto] |
+| Hinton, G. E., & Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. *Science, 313*(5786), 504–507. | Ficha en el proyecto |
+| Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory. *Neural Computation, 9*(8), 1735–1780. | Ficha en el proyecto |
+| Horn, J. L. (1965). A rationale and test for the number of factors in factor analysis. *Psychometrika, 30*(2), 179–185. | [verificar] |
+| Plaut, E. (2018). *From principal subspaces to principal components with linear autoencoders* (arXiv:1804.10253). arXiv. | *Preprint* — solo exploración |
+| Robert, P., & Escoufier, Y. (1976). A unifying tool for linear multivariate statistical methods: The RV-coefficient. *Journal of the Royal Statistical Society: Series C (Applied Statistics), 25*(3), 257–265. | Localizada [verificar texto] |
+| Srivastava, N., Mansimov, E., & Salakhutdinov, R. (2015). Unsupervised learning of video representations using LSTMs. In *Proceedings of the 32nd International Conference on Machine Learning* (PMLR Vol. 37, pp. 843–852). | Localizada; texto leído [verificar páginas] |
+| Vincent, P., Larochelle, H., Bengio, Y., & Manzagol, P.-A. (2008). Extracting and composing robust features with denoising autoencoders. In *Proceedings of the 25th International Conference on Machine Learning* (pp. 1096–1103). ACM. | Localizada; texto leído |

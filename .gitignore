@@ -22,3 +22,11 @@ Thumbs.db
 *.bak
 .ipynb_checkpoints/
 ~$*
+
+# Salidas de render de Quarto (se publican con `quarto publish gh-pages`, no se versionan en main)
+_site/
+# Notebooks temporales y metadatos de Anaconda
+Untitled*.ipynb
+anaconda_projects/
+# Pesos de modelos entrenados (regenerables ejecutando 08 y 09)
+data/results/*.pt

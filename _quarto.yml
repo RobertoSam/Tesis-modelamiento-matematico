@@ -8,6 +8,8 @@ website:
         text: Inicio
       - href: marco_conceptual.qmd
         text: "Marco conceptual"
+      - href: marco_matematico_ae_lstm.qmd
+        text: "Marco matemático AE/LSTM"
       - href: glosario.qmd
         text: "Glosario"
       - href: papers/diccionario_datos.qmd
@@ -30,12 +32,35 @@ website:
             text: "Hinton & Salakhutdinov (2006)"
           - href: papers/tuhin_et_al_2025.qmd
             text: "Tuhin et al. (2025)"
+          - href: papers/vincent_et_al_2008.qmd
+            text: "Vincent et al. (2008)"
+          - href: papers/srivastava_mansimov_salakhutdinov_2015.qmd
+            text: "Srivastava, Mansimov & Salakhutdinov (2015)"
+          - text: "---"
+          - text: "Fichas preliminares"
+          - href: papers/baldi_hornik_1989.qmd
+            text: "Baldi & Hornik (1989)"
+          - href: papers/bourlard_kamp_1988.qmd
+            text: "Bourlard & Kamp (1988)"
+          - href: papers/gers_schmidhuber_cummins_2000.qmd
+            text: "Gers, Schmidhuber & Cummins (2000)"
+          - href: papers/gal_ghahramani_2016.qmd
+            text: "Gal & Ghahramani (2016)"
+          - href: papers/fisher_1958.qmd
+            text: "Fisher (1958)"
+          - href: papers/robert_escoufier_1976.qmd
+            text: "Robert & Escoufier (1976)"
+          - href: papers/plaut_2018.qmd
+            text: "Plaut (2018) — exploración"
+          - text: "---"
           - href: papers/ciclo_economico.qmd
             text: "Ciclo económico"
       - text: Data BCRP
         menu:
           - href: notebooks/01_extraccion_bcrp.ipynb
             text: "01 · Extracción"
+          - href: notebooks/01b_extraccion_extendida_1985.ipynb
+            text: "01b · Extracción extendida (desde 1985)"
           - href: notebooks/02_carga_y_verificacion.ipynb
             text: "02 · Carga y verificación"
           - href: notebooks/03_analisis_exploratorio.ipynb
@@ -44,6 +69,8 @@ website:
             text: "04 · Preprocesamiento (trimestral)"
           - href: notebooks/04b_preprocesamiento_mensual.ipynb
             text: "04b · Preprocesamiento (mensual)"
+          - href: notebooks/04c_preprocesamiento_extendido.ipynb
+            text: "04c · Preprocesamiento extendido (1985+)"
       - text: Modelamiento
         menu:
           - href: notebooks/05_pca.ipynb
@@ -54,6 +81,10 @@ website:
             text: "06b · Selección de ventana (mensual)"
           - href: notebooks/06_epca.ipynb
             text: "06 · EPCA (mensual)"
+          - href: notebooks/08_autoencoder.ipynb
+            text: "08 · Autoencoders"
+          - href: notebooks/09_lstm_autoencoder.ipynb
+            text: "09 · LSTM-Autoencoder y regímenes"
 
 format:
   html:

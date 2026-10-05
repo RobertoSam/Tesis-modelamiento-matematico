@@ -1,0 +1,62 @@
+---
+title: "Plaut (2018) — From principal subspaces to principal components with linear autoencoders"
+---
+
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-016 (exploración) *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto leído (versión HTML de arXiv) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Plaut, E. (2018). *From principal subspaces to principal components with linear autoencoders* (arXiv:1804.10253). arXiv. https://doi.org/10.48550/arXiv.1804.10253
+
+> **Verificación:** **Preprint sin revisión por pares** según lo consultado (ar5iv y dblp, 2026-10-04). Por la convención del proyecto se clasifica como **fuente de exploración**, no como referencia de tesis. Si se cita, debe ser solo como apoyo técnico secundario de Baldi & Hornik (1989).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Autoencoders lineales |
+| **Área secundaria** | Recuperación de componentes principales |
+| **Relevancia para la tesis** | **MEDIA (exploración).** Sustenta el procedimiento técnico `componentes_desde_decodificador` de 08. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Un autoencoder lineal genera el subespacio principal, pero sus pesos **no** son los vectores de carga del PCA: cualquier rotación ortogonal resuelve el problema igual de bien.
+
+### Propuesta metodológica
+
+Propone recuperar las direcciones principales mediante una SVD de los pesos del decodificador aprendido. Así se obtiene una solución única, con coordenadas no correlacionadas, ordenadas por varianza y anidadas entre dimensiones. Destaca la utilidad para datos masivos o en flujo, y reconoce que para conjuntos pequeños es menos eficiente que la SVD directa.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| W = P_m Q con Q ortogonal (no unicidad) | Misma indeterminación que los signos en EPCA, pero ampliada a rotaciones completas |
+| SVD sobre los pesos aprendidos | Recuperación verificada en 08: |cos| = 1,000 con las direcciones del PCA |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Útil como verificación técnica. En la tesis no aporta eficiencia (n = 208), sino una **prueba de consistencia** entre el autoencoder y el PCA.
+
+### Limitaciones (relevantes para la adaptación)
+
+- No revisado por pares.
+- Los propios argumentos de eficiencia no aplican a la escala de la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Baldi & Hornik (1989) | Alta | Ficha preliminar FB-010 |

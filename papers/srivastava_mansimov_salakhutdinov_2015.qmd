@@ -1,0 +1,66 @@
+---
+title: "Srivastava, Mansimov & Salakhutdinov (2015) — LSTM Autoencoders"
+---
+
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-014 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto completo leído |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Srivastava, N., Mansimov, E., & Salakhutdinov, R. (2015). Unsupervised learning of video representations using LSTMs. In F. Bach & D. Blei (Eds.), *Proceedings of the 32nd International Conference on Machine Learning* (Proceedings of Machine Learning Research, Vol. 37, pp. 843–852). PMLR.
+
+> **Verificación:** Texto completo consultado (PMLR, vol. 37) el 2026-10-04. Verificar las páginas 843–852 y los editores del volumen en proceedings.mlr.press.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Aprendizaje no supervisado de representaciones secuenciales |
+| **Área secundaria** | Modelos codificador–decodificador recurrentes |
+| **Relevancia para la tesis** | **ALTA. Arquitectura base del notebook 09.** Define el LSTM-Autoencoder que comprime una ventana temporal en un código de dimensión fija. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y modelamiento (09) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Aprender representaciones de secuencias de alta dimensión (video) sin etiquetas, aprovechando su regularidad temporal.
+
+### Propuesta metodológica
+
+Un **LSTM codificador** lee la secuencia y su estado final es la representación. Un **LSTM decodificador** reconstruye la secuencia **en orden inverso**: según los autores, esto facilita el aprendizaje inicial vía correlaciones de corto alcance y obliga a aplicar la misma dinámica de forma recursiva. Se comparan decodificadores *condicionados*, que reciben su salida previa, y *no condicionados*. Se propone además un **modelo compuesto** que reconstruye el pasado y predice el futuro a la vez: la predicción contrarresta la tendencia a memorizar y la reconstrucción contrarresta el sesgo hacia lo reciente. El preentrenamiento mejora la clasificación de acciones en UCF-101 y HMDB-51, con ganancias mayores cuando hay pocos datos etiquetados.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estado final del codificador como representación | Código $z_t$ de 09: resume los últimos L = 12 meses |
+| Reconstrucción en orden inverso | Implementada en `modelos_dl.LSTMAutoencoder` (`torch.flip`) |
+| Decodificador no condicionado | Elegido en 09 porque evita que la red copie la salida previa; con series cortas se prioriza que el código cargue toda la información |
+| Modelo compuesto (reconstrucción + predicción) | Extensión natural para el objetivo exploratorio de capacidad predictiva del LSTM |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Da precedente citable a cada decisión de la arquitectura de 09.
+- El modelo compuesto abre una vía concreta para el objetivo exploratorio de predicción sin abandonar el enfoque no supervisado.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Contexto de video, con miles de secuencias y alta dimensión: la escala es opuesta a la de la tesis.
+- Los propios autores reportan predicciones futuras que se difuminan rápidamente: hay que ser cautos con cualquier uso predictivo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Sutskever, Vinyals & Le (2014), Sequence to sequence learning with neural networks | Media — origen del esquema codificador–decodificador | Pendiente de localizar y verificar |
+| Hochreiter & Schmidhuber (1997) | Alta | Ficha existente |

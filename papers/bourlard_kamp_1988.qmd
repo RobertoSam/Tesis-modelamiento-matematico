@@ -1,0 +1,67 @@
+---
+title: "Bourlard & Kamp (1988) — Auto-association by multilayer perceptrons and singular value decomposition"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
+documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
+final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-011 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bourlard, H., & Kamp, Y. (1988). Auto-association by multilayer perceptrons and singular value decomposition. *Biological Cybernetics, 59*(4–5), 291–294. https://doi.org/10.1007/BF00332918
+
+> **Verificación:** Referencia localizada en SpringerLink (DOI 10.1007/BF00332918) y en ACM Digital Library (2026-10-04). Texto completo no consultado. Verificar el número del fascículo (4–5).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Perceptrones multicapa autoasociativos |
+| **Área secundaria** | Descomposición en valores singulares |
+| **Relevancia para la tesis** | **ALTA.** Antecedente directo de Baldi & Hornik (1989) en la equivalencia autoencoder ↔ SVD/PCA. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Determinar qué representación aprende un perceptrón multicapa entrenado para reproducir su entrada a través de una capa oculta más estrecha.
+
+### Propuesta metodológica
+
+Muestra que la solución óptima en sentido de mínimos cuadrados puede obtenerse directamente por SVD de la matriz de datos y que, en ese problema, las no linealidades de la capa oculta no aportan ventaja. *[Verificar el alcance exacto del resultado sobre las no linealidades: es relevante para la discusión de los resultados de 08.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Solución autoasociativa óptima vía SVD | Mismo resultado que el PCA por Eckart–Young (sección 2 del marco matemático) |
+| Las no linealidades no mejoran la autoasociación de una capa | Coherente con el hallazgo de 08: el AE no lineal no supera al PCA fuera de muestra |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Junto con Baldi & Hornik (1989), sostiene la Proposición 1.
+- Si se confirma el resultado sobre las no linealidades, da un **precedente teórico** al hallazgo empírico de 08: la ventaja de la no linealidad requiere redes profundas y suficientes datos.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar: no se ha confirmado el enunciado exacto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Baldi & Hornik (1989) | Alta | Ficha preliminar FB-010 |

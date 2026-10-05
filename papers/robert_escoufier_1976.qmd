@@ -1,0 +1,66 @@
+---
+title: "Robert & Escoufier (1976) — The RV-coefficient"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
+documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
+final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-018 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Robert, P., & Escoufier, Y. (1976). A unifying tool for linear multivariate statistical methods: The RV-coefficient. *Journal of the Royal Statistical Society: Series C (Applied Statistics), 25*(3), 257–265. https://doi.org/10.2307/2347233
+
+> **Verificación:** Referencia localizada en Semantic Scholar y en la documentación de varios paquetes de R (2026-10-04). **Verificar volumen, número, páginas y DOI en JSTOR**; texto no consultado.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Medidas de similitud entre configuraciones multivariadas |
+| **Área secundaria** | Unificación de métodos lineales (PCA, análisis canónico, regresión multivariada) |
+| **Relevancia para la tesis** | **ALTA.** Objetivo firme: criterio RV/Procrustes para seleccionar la ventana de EPCA. Usado en 08 y 09 para estabilidad y concordancia. Base de STATIS (Lavit, 1988), ya identificado en las fichas de Camiz. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático); EPCA, AE, LSTM |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Comparar dos tablas de datos sobre los mismos individuos con distintas variables, y mostrar que varios métodos lineales clásicos optimizan una misma medida.
+
+### Propuesta metodológica
+
+Define el coeficiente RV como una correlación entre las matrices de productos escalares de ambas configuraciones, invariante a rotaciones y homotecias. Los métodos lineales clásicos se presentan como maximizadores del RV bajo distintas restricciones. *[Verificar la presentación exacta.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| RV entre configuraciones | RV entre réplicas del AE (estabilidad), AE vs. PCA (concordancia) y ventanas sucesivas de EPCA (transición) |
+| Invariancia a rotaciones | Clave porque los códigos latentes solo están identificados salvo rotación |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Une en una sola métrica la evaluación de EPCA, autoencoders y LSTM, en línea con la escuela de Camiz (STATIS).
+
+### Limitaciones (relevantes para la adaptación)
+
+- El RV tiende a valores altos cuando n es pequeño respecto a p; conviene complementarlo con su versión ajustada o con pruebas de permutación. *[Identificar la fuente para esta advertencia antes de afirmarla en la tesis.]*
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Lavit (1988), Analyse conjointe de tableaux quantitatifs | Alta — STATIS | Pendiente (identificado en fichas previas) |
