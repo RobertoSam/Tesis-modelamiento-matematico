@@ -1,0 +1,70 @@
+---
+title: "Baldi & Hornik (1989) — Neural networks and principal component analysis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
+documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
+final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-010 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Baldi, P., & Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. *Neural Networks, 2*(1), 53–58. https://doi.org/10.1016/0893-6080(89)90014-2
+
+> **Verificación:** Referencia localizada en ScienceDirect, ACM Digital Library y Semantic Scholar (2026-10-04). No se accedió al texto completo, que requiere suscripción.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Teoría de redes neuronales lineales; superficie de error del autoencoder lineal |
+| **Área secundaria** | Equivalencia formal entre autoencoder lineal y PCA |
+| **Relevancia para la tesis** | **FUNDACIONAL para el puente PCA ↔ Autoencoder.** Es la base de la Proposición 1 de `marco_matematico_ae_lstm.qmd`. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Caracterizar el aprendizaje de una red lineal de una capa oculta entrenada para minimizar el error cuadrático. El caso autoasociativo (salida = entrada) es el autoencoder lineal.
+
+### Propuesta metodológica
+
+Análisis de los puntos críticos de la función de error. Se muestra que el mínimo global corresponde a la proyección sobre el subespacio de los primeros componentes principales y que los demás puntos críticos son puntos de silla, sin mínimos locales espurios. *[Confirmar enunciados exactos y supuestos, como autovalores distintos y matriz de covarianza invertible, contra el texto.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Mínimo global = proyector sobre el subespacio principal | El AE lineal atado del notebook 08 reproduce el MSE y el subespacio del PCA con d = 1…5 (ángulos < 0,06°) |
+| Ausencia de mínimos locales (caso lineal) | Justifica que el AE lineal converja de forma fiable; la garantía **no** se extiende al AE no lineal (tanh), de ahí las 10 réplicas con distinta semilla |
+| No unicidad de la base | El código latente es una rotación arbitraria de los scores del PCA → rotación de Procrustes en 08/09 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite afirmar que el autoencoder **generaliza** el PCA de la cadena Camiz. Es la respuesta formal a la objeción epistemológica sobre la ruptura con el análisis de datos.
+- Fundamenta el "anclaje lineal" del diseño: toda mejora del AE no lineal se mide contra su caso lineal.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Resultado limitado al caso lineal; no dice nada sobre redes con activaciones no lineales.
+- Con n = 208, las garantías asintóticas sobre la superficie de error no sustituyen la verificación numérica, ya realizada en 08.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Bourlard & Kamp (1988) | Alta — resultado paralelo vía SVD | Ficha preliminar FB-011 |
+| Eckart & Young (1936) | Alta — aproximación de rango bajo | Pendiente de verificar y fichar |

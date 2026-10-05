@@ -1,0 +1,69 @@
+---
+title: "Fisher (1958) — On grouping for maximum homogeneity"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
+documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
+final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-017 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Fisher, W. D. (1958). On grouping for maximum homogeneity. *Journal of the American Statistical Association, 53*(284), 789–798. https://doi.org/10.1080/01621459.1958.10501479
+
+> **Verificación:** Referencia (volumen 53, páginas 789–798) confirmada en registros bibliográficos secundarios el 2026-10-04. **Verificar el número (284) y el DOI en JSTOR o en Taylor & Francis**; texto no consultado.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Clasificación con restricción de orden (segmentación óptima) |
+| **Área secundaria** | Programación dinámica |
+| **Relevancia para la tesis** | **ALTA. Objetivo firme de la tesis:** datación de regímenes calibrada contra crisis conocidas. Implementado en `modelos_dl.particion_fisher` y aplicado en 09. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y modelamiento (09) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Agrupar observaciones de forma que los grupos sean lo más homogéneos posible, medido por la suma de cuadrados intra-grupo. En el caso de datos ordenados, los grupos deben ser intervalos contiguos.
+
+### Propuesta metodológica
+
+Para datos ordenados en una dimensión, la partición óptima en k grupos contiguos puede hallarse **exactamente** porque el problema tiene estructura de subproblemas óptimos. *[Confirmar si el paper trata el caso multivariado o solo el unidimensional: la tesis lo aplica a trayectorias de 3 dimensiones, y la extensión es directa pero debe declararse.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Grupos contiguos en una variable ordenada | Regímenes = intervalos de meses $I_k = [t_a, t_b]$ (definición del marco conceptual §2.1) |
+| Suma de cuadrados intra mínima | Aplicada a la trayectoria latente del LSTM-AE y a los scores del PCA |
+| Solución exacta | A diferencia de k-medias o de Ward sin restricción, no depende de la inicialización: es reproducible |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Da una datación de regímenes **exacta y reproducible**, coherente con el principio de estabilidad.
+- Al ser una clasificación con contigüidad, se puede contrastar directamente con la HFC (clasificación sin restricción temporal).
+
+### Limitaciones (relevantes para la adaptación)
+
+- El número de grupos k no lo determina el método: requiere un criterio adicional (en 09, una regla de codo explícita).
+- Ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Lebart (1978) u otros trabajos de clasificación con contigüidad de la escuela francesa | Media — enlace con la tradición del asesor | Pendiente de identificar con el asesor |

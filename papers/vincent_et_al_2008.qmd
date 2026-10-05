@@ -1,0 +1,65 @@
+---
+title: "Vincent, Larochelle, Bengio & Manzagol (2008) — Denoising autoencoders"
+---
+
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-013 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto completo leído |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Vincent, P., Larochelle, H., Bengio, Y., & Manzagol, P.-A. (2008). Extracting and composing robust features with denoising autoencoders. In *Proceedings of the 25th International Conference on Machine Learning* (pp. 1096–1103). Association for Computing Machinery. https://doi.org/10.1145/1390156.1390294
+
+> **Verificación:** Texto completo consultado (versión de los autores, ICML 2008, pp. 1096–1103) el 2026-10-04. Verificar el DOI en ACM Digital Library.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Autoencoders regularizados (*denoising*) |
+| **Área secundaria** | Preentrenamiento no supervisado de redes profundas |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Fundamenta el ruido de entrada usado como regularización en 08 y 09. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y Frente de modelamiento (08, 09) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Las redes profundas con inicialización aleatoria caen en malos óptimos. Se busca un criterio no supervisado que produzca representaciones intermedias útiles y **robustas** a perturbaciones de la entrada.
+
+### Propuesta metodológica
+
+Se corrompe la entrada con un proceso estocástico $q_D$ (en el paper, anular al azar una fracción $\nu$ de componentes) y se entrena al autoencoder a reconstruir la entrada **limpia** a partir de la corrompida. El paper ofrece dos lecturas: (i) de variedades, donde la red aprende a proyectar puntos corrompidos de vuelta hacia la variedad de los datos; y (ii) de teoría de la información, donde minimizar el error de reconstrucción maximiza una cota inferior de la información mutua entre la entrada y la representación. Las capas se apilan y se entrenan de forma codiciosa, con ajuste supervisado posterior. En variantes de MNIST, el modelo apilado de 3 capas iguala o supera a SVM, DBN y autoencoders apilados en 7 de 8 tareas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Corrupción por enmascaramiento | En la tesis se usa ruido gaussiano aditivo ($\sigma$ = 0,05–0,10 sobre datos estandarizados), una variante que el paper menciona como línea por explorar |
+| Proyección hacia la variedad de los datos | Un mes de crisis queda lejos de la "variedad" de meses normales → error de reconstrucción alto → indicador de anomalía en 08/09 |
+| Representaciones sobrecompletas | No aplicable: con n = 208 la tesis usa cuello de botella (d = 3) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Justifica el ruido de entrada como regularizador cuando n es pequeño.
+- La lectura de variedades da sustento teórico a usar el error de reconstrucción como medida de "distancia a la estructura típica", es decir, como indicador de transición de régimen (§2.4 del marco conceptual, familia latente-computacional).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Diseñado para clasificación supervisada de imágenes con decenas de miles de ejemplos.
+- El ruido gaussiano de la tesis no es el enmascaramiento del paper: debe declararse como adaptación.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Hinton & Salakhutdinov (2006) | Alta | Ficha existente |
+| Bengio et al. (2007), Greedy layer-wise training of deep networks | Media — preentrenamiento | No localizado; verificar si se necesita |

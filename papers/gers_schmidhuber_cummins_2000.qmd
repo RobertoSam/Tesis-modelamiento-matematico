@@ -1,0 +1,68 @@
+---
+title: "Gers, Schmidhuber & Cummins (2000) — Learning to forget: Continual prediction with LSTM"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
+documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
+final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-012 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Gers, F. A., Schmidhuber, J., & Cummins, F. (2000). Learning to forget: Continual prediction with LSTM. *Neural Computation, 12*(10), 2451–2471. https://doi.org/10.1162/089976600300015015
+
+> **Verificación:** Referencia localizada en ACM Digital Library, PubMed (PMID 11032042) y Semantic Scholar (2026-10-04). Verificar el DOI contra el registro de MIT Press.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Redes neuronales recurrentes; arquitectura LSTM |
+| **Área secundaria** | Predicción continua en secuencias no segmentadas |
+| **Relevancia para la tesis** | **ALTA.** Introduce la **compuerta de olvido**, presente en toda implementación actual de LSTM (incluida la de PyTorch usada en 09). La ficha de Hochreiter & Schmidhuber (1997) describe la versión sin esa compuerta. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+La LSTM original no tiene un mecanismo para reiniciar su memoria; ante secuencias continuas, sin cortes predefinidos, los estados de la celda pueden crecer sin control.
+
+### Propuesta metodológica
+
+Agrega una compuerta multiplicativa $f_t$ sobre la celda: $c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t$. Así la red aprende cuándo descartar información pasada. *[Completar con experimentos y resultados tras la lectura.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Compuerta de olvido | Permite que el LSTM-AE "reinicie" su memoria al cruzar un cambio de régimen: interpretable como mecanismo de transición |
+| Secuencias continuas no segmentadas | Las series del BCRP no tienen cortes naturales; las ventanas de L = 12 meses son una segmentación impuesta, a discutir |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Obligatoria al escribir las ecuaciones de la LSTM implementada (sección 4.1 del marco matemático): debe citarse junto con Hochreiter & Schmidhuber (1997).
+- Evita una contradicción con la ficha de 1997, cuyas ecuaciones no incluyen $f_t$.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar.
+- Experimentos con secuencias sintéticas o simbólicas, ajenos a series macroeconómicas.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Hochreiter & Schmidhuber (1997) | Alta | Ficha existente |

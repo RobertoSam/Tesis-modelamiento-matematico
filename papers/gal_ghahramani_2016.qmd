@@ -1,0 +1,62 @@
+---
+title: "Gal & Ghahramani (2016) — Dropout as a Bayesian approximation"
+---
+
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-015 *(verificar numeración contra las fichas existentes)* |
+| **Fecha de procesamiento** | 4 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Resumen oficial leído; PDF pendiente |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Gal, Y., & Ghahramani, Z. (2016). Dropout as a Bayesian approximation: Representing model uncertainty in deep learning. In M. F. Balcan & K. Q. Weinberger (Eds.), *Proceedings of the 33rd International Conference on Machine Learning* (Proceedings of Machine Learning Research, Vol. 48, pp. 1050–1059). PMLR.
+
+> **Verificación:** Página oficial PMLR consultada el 2026-10-04 (título, autores, volumen, páginas y resumen). El PDF no pudo abrirse por una redirección. Verificar los editores del volumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Cuantificación de incertidumbre en aprendizaje profundo |
+| **Área secundaria** | Inferencia variacional aproximada; procesos gaussianos profundos |
+| **Relevancia para la tesis** | **ALTA.** Objetivo firme de la tesis: Monte Carlo Dropout. Fundamenta las bandas de incertidumbre de 08 y 09. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y modelamiento (08, 09) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Las redes profundas entregan predicciones puntuales sin medida de incertidumbre del modelo. Los métodos bayesianos completos son costosos.
+
+### Propuesta metodológica
+
+Muestran que entrenar una red con dropout puede interpretarse como **inferencia variacional aproximada en un proceso gaussiano profundo**. Así se obtiene incertidumbre "gratis": basta mantener el dropout activo en inferencia y promediar varias pasadas estocásticas. Reportan mejoras en log-verosimilitud predictiva y en RMSE en regresión y clasificación, con aplicación a aprendizaje por refuerzo. *[Leer el PDF para transcribir con exactitud la fórmula de la varianza predictiva, que incluye la precisión $\tau$, usada en el marco matemático §5.3.]*
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del paper | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Dropout activo en inferencia (MC Dropout) | `modelos_dl.mc_dropout`: T = 100–300 pasadas |
+| Incertidumbre epistémica | Bandas p5–p95 del error de reconstrucción: separan meses anómalos "con seguridad" de anomalías atribuibles a la variabilidad del modelo |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite reportar el indicador de anomalía con incertidumbre y no como cifra puntual, coherente con el criterio de robustez del marco conceptual (§6.4).
+
+### Limitaciones (relevantes para la adaptación)
+
+- La calidad de la aproximación depende de la tasa de dropout y de la arquitectura. Con redes pequeñas como las de la tesis, la banda es indicativa y no un intervalo calibrado.
+- Ficha basada en el resumen: completar tras leer el PDF.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Srivastava et al. (2014), Dropout: A simple way to prevent neural networks from overfitting (JMLR) | Media | Pendiente de localizar y verificar |
