@@ -31,7 +31,7 @@ más abajo y recalcula el promedio a mano antes de publicar.
 Última actualización de cifras: 4 de octubre de 2026.
 Bibliografía: 10 completas / 15 núcleo (las 6 preliminares no cuentan).
 Pipeline: 4 de 6 etapas (01b y 04c, extensión desde 1985, pendientes de ejecución local).
-Modelamiento: PCA = 1; Autoencoder/LSTM implementado pero provisional = 0,5 → 1,5 de 4.
+Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos corregidos = 0,5 → 1,5 de 4.
 -->
 
 ::: {.callout-important title="Avance global aproximado: 57%"}
@@ -42,12 +42,13 @@ respecto de julio porque el pipeline ganó dos etapas nuevas (extensión
 desde 1985), no porque se haya perdido avance.
 :::
 
-::: {.callout-warning title="Alerta de datos (4 de octubre de 2026)"}
-El dataset mensual vigente omite los **19 meses de septiembre
-(2007–2025)**. Las fechas de septiembre del EMBI diario ("Set") no se
-parseaban y el `dropna()` de `04b` eliminaba esos meses de todo el
-panel. La corrección ya está en `01` y `04b`. Los resultados de `06`,
-`06b`, `08` y `09` son **provisionales** hasta re-ejecutar el pipeline.
+::: {.callout-note title="Datos corregidos (5 de octubre de 2026)"}
+Se recuperaron los **19 meses de septiembre (2007–2025)** que faltaban en
+el dataset mensual: las fechas "Set" del EMBI diario no se parseaban y el
+`dropna()` de `04b` eliminaba esos meses. El EMBI se reparó sin
+re-descargar (la API del BCRP está protegida por Incapsula desde
+octubre de 2026) y se re-ejecutaron `04b`, `06b`, `06`, `08` y `09`.
+Dataset mensual vigente: **227 × 17**, sin huecos.
 :::
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
@@ -78,7 +79,7 @@ panel. La corrección ya está en `01` y `04b`. Los resultados de `06`,
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
   <div style="background: #486581; width: 38%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados (provisionales)</span>
+<span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados y validados con datos corregidos</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -143,8 +144,9 @@ Organizado por etapa metodológica, no por notebook individual:
 - [x] **Preprocesamiento** — transformaciones (log-diferencia para
   niveles, diferencia simple para tasas y spreads), estandarización.
   Dataset trimestral: **72 × 18 variables transformadas**; dataset
-  mensual: **208 × 17 variables transformadas**. ⚠ El mensual omite los
-  19 septiembres (ver alerta); `04b` ahora se detiene si hay huecos.
+  mensual: **227 × 17 variables transformadas** (corregido el 5-oct-2026;
+  antes 208 por la pérdida de los septiembres). `04b` ahora se detiene si
+  hay huecos en el calendario.
 - [ ] **Extensión desde 1985** — `01b` (descarga y diagnóstico de
   cobertura y resolución numérica) y `04c` (frontera n–p, paneles
   largo/estabilización/metas, regímenes monetarios, familias nominal y
@@ -160,14 +162,15 @@ Organizado por etapa metodológica, no por notebook individual:
 - [~] **EPCA / EHFC** — parcial: selección de ventana en exploración
   empírica (notebooks 06a/06b); pendiente adoptar la regla de
   alineación de signo determinista de Rcamiz.
-- [~] **Autoencoder / LSTM** — implementados y ejecutados (notebooks 08
-  y 09, [marco matemático](marco_matematico_ae_lstm.qmd)). Resultados
-  provisionales: el AE lineal reproduce el PCA exactamente; la no
-  linealidad no mejora la reconstrucción fuera de muestra; el valor del
-  AE está en detectar anomalías (oct-2008); la datación de regímenes con
-  LSTM se explica en gran parte por el suavizado temporal (control
-  PCA-MM12). Horn sugiere 4 dimensiones, no 3: decisión pendiente con
-  el asesor.
+- [~] **Autoencoder / LSTM** — implementados y re-ejecutados con el dataset
+  corregido (notebooks 08 y 09, [marco matemático](marco_matematico_ae_lstm.qmd)).
+  El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la
+  reconstrucción fuera de muestra; el valor del AE está en detectar
+  anomalías (oct-2008). La datación de regímenes con LSTM **no es robusta**
+  (7 → 2 regímenes tras la corrección); la del PCA suavizado sí (8 regímenes
+  estables) y se adopta como referencia. EPCA ahora detecta el inicio del
+  taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión
+  pendiente con el asesor.
 
 ---
 

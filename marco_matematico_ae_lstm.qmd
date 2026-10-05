@@ -36,7 +36,7 @@ Se mantiene la notación de `marco_conceptual.qmd`.
 | Símbolo | Significado |
 |---|---|
 | $X_t = (x_{1t},\dots,x_{pt})^\top \in \mathbb{R}^p$ | Vector de indicadores macrofinancieros del mes $t$ (aquí $p = 17$, transformados a log-diferencias o diferencias y estandarizados) |
-| $\mathbf{X} \in \mathbb{R}^{n\times p}$ | Matriz de datos centrada, filas $X_t^\top$, $t = 1,\dots,n$ ($n = 208$) |
+| $\mathbf{X} \in \mathbb{R}^{n\times p}$ | Matriz de datos centrada, filas $X_t^\top$, $t = 1,\dots,n$ ($n = 227$) |
 | $d$ | Dimensión del espacio de representación (número de componentes o dimensión latente), $d < p$ |
 | $f_\theta:\mathbb{R}^p\to\mathbb{R}^d$ | Codificador |
 | $g_\phi:\mathbb{R}^d\to\mathbb{R}^p$ | Decodificador |
@@ -72,8 +72,8 @@ J(W_d) = \frac{1}{n}\sum_{j=d+1}^{p}\sigma_j^2 = \sum_{j=d+1}^{p}\lambda_j ,
 $$
 
 Es decir, con datos estandarizados **el error cuadrático medio por celda es uno menos la
-inercia retenida**. Con $d = 3$ en el dataset mensual transformado, la inercia es 52,16 % y el
-MSE es 0,4784, valor que se usa como ancla numérica en la sección 3.3.
+inercia retenida**. Con $d = 3$ en el dataset mensual transformado, la inercia es 50,37 % y el
+MSE es 0,4963, valor que se usa como ancla numérica en la sección 3.3.
 
 **Observación (identificación).** $J$ depende de $V$ solo a través del proyector $VV^\top$, es
 decir, del *subespacio* generado. Cualquier $V Q$ con $Q$ ortogonal $d\times d$ tiene el mismo
@@ -113,7 +113,7 @@ $$
 con $p = 17$, $m = 8$, $d = 3$. El cuello de botella y la salida son lineales: los datos están
 estandarizados y no acotados, y un código lineal hace que el caso $\tanh \to$ identidad
 recupere exactamente el modelo de la sección 3.2. Atar los pesos reduce los parámetros
-libres a la mitad, de $2(pm + md)$ a $pm + md$ más los sesgos. Con $n = 208$ esto es un
+libres a la mitad, de $2(pm + md)$ a $pm + md$ más los sesgos. Con $n = 227$ esto es un
 argumento de parsimonia, no solo de conveniencia.
 
 ## Autoencoder lineal y PCA
@@ -156,17 +156,18 @@ $d = 1,\dots,5$ sobre el dataset mensual transformado:
 
 | $d$ | MSE AE lineal | MSE PCA | Inercia PCA (%) | Ángulo principal máximo (°) |
 |---|---|---|---|---|
-| 1 | 0,75746 | 0,75746 | 24,25 | 0,015 |
-| 2 | 0,59592 | 0,59592 | 40,41 | 0,018 |
-| 3 | 0,47840 | 0,47840 | 52,16 | 0,043 |
-| 4 | 0,39198 | 0,39198 | 60,80 | 0,049 |
-| 5 | 0,33080 | 0,33080 | 66,92 | 0,058 |
+| 1 | 0,76727 | 0,76727 | 23,27 | 0,016 |
+| 2 | 0,60777 | 0,60777 | 39,22 | 0,058 |
+| 3 | 0,49625 | 0,49625 | 50,37 | 0,040 |
+| 4 | 0,41000 | 0,41000 | 59,00 | 0,038 |
+| 5 | 0,34923 | 0,34923 | 65,08 | 0,211 |
 
-Los ángulos principales entre el subespacio del decodificador y el del PCA son de
-centésimas de grado, atribuibles a la tolerancia de optimización. Tras la SVD interna, las
-direcciones recuperadas tienen $|\cos| = 1{,}000$ con las del PCA. La inercia para $d = 3$
-coincide con la verificada entre Rcamiz y scikit-learn (52,16 %). Con esto, la cadena
-Rcamiz → scikit-learn → autoencoder lineal queda cerrada numéricamente.
+Los ángulos principales entre el subespacio del decodificador y el del PCA son a lo sumo
+de 0,21°, atribuibles a la tolerancia de optimización. Tras la SVD interna, las direcciones
+recuperadas tienen $|\cos| \geq 0{,}99999$ con las del PCA. La inercia para $d = 3$ es 50,37 %
+con el dataset corregido; la verificación Rcamiz ↔ scikit-learn (52,16 %) se hizo con el
+dataset sin septiembres y debe repetirse para cerrar numéricamente la cadena
+Rcamiz → scikit-learn → autoencoder lineal.
 
 ## Identificación y comparación de configuraciones
 
@@ -201,7 +202,7 @@ círculo de correlaciones del PCA.
 
 ## Regularización
 
-Con $n = 208$ y $pm + md = 160$ pesos, el riesgo dominante es el sobreajuste. Se usan cuatro
+Con $n = 227$ y $pm + md = 160$ pesos, el riesgo dominante es el sobreajuste. Se usan cuatro
 mecanismos, todos explícitos en el código:
 
 | Mecanismo | Definición | Referencia |
@@ -278,7 +279,7 @@ autoencoder estático no ven.
 un requisito para cualquier uso como indicador en tiempo real.
 
 Configuración usada: $L = 12$, $m = 16$, $d = 3$. Parámetros libres $\approx 3{.}100$, frente a
-197 ventanas de entrenamiento muy solapadas. Esta desproporción hace imprescindibles la
+216 ventanas de entrenamiento muy solapadas. Esta desproporción hace imprescindibles la
 regularización y, sobre todo, la validación fuera de muestra.
 
 # Validación y cuantificación de incertidumbre
@@ -413,7 +414,7 @@ los datos. La tesis puede sostener cuatro argumentos:
    no "emerge de los datos". Por eso se exige estabilidad entre réplicas (RV) y se reporta la
    réplica central, no la de mejor ajuste.
 4. **Parsimonia condicionada a la evidencia.** Los primeros resultados (sección 9) indican que,
-   con 208 meses, el autoencoder no lineal **no** reconstruye mejor que el PCA fuera de muestra.
+   con 227 meses, el autoencoder no lineal **no** reconstruye mejor que el PCA fuera de muestra.
    Bajo ese resultado, el PCA y la HFC siguen siendo las herramientas descriptivas primarias. El
    aprendizaje profundo se justifica por lo que el PCA estructuralmente no puede hacer: modelar
    la **dinámica** (LSTM) y servir de **detector de anomalías** sensible a observaciones que no
@@ -424,45 +425,48 @@ se subordina a la evidencia que producen los propios datos.
 
 # Resultados empíricos preliminares
 
-::: {.callout-warning title="Resultados provisionales"}
-El dataset mensual vigente omite los **19 meses de septiembre (2007–2025)**. Las fechas de
-septiembre de la serie diaria del EMBI no se parseaban (`"Set"`), quedaban vacías al agregar
-a mensual y el `dropna()` de `04b` eliminaba esos meses del panel completo. Cada log-diferencia
-de octubre mide en realidad dos meses. Las cifras de esta sección deben recalcularse tras
-re-ejecutar `01 → 04b → 05/06 → 08 → 09` con la corrección ya incorporada en `01`.
+::: {.callout-note title="Dataset corregido (5 de octubre de 2026)"}
+La versión preliminar de esta sección (4-oct) usó un dataset sin los 19 meses de septiembre
+(fechas "Set" del EMBI diario no parseadas). El EMBI se reparó sin re-descargar y el pipeline
+se re-ejecutó: 227 meses × 17 variables, 2007-02 a 2025-12, sin huecos. Las cifras siguientes
+corresponden al dataset corregido; se indican entre paréntesis los cambios relevantes.
 :::
 
-| Pregunta | Evidencia (notebook) | Resultado preliminar |
+| Pregunta | Evidencia (notebook) | Resultado |
 |---|---|---|
-| ¿El AE lineal reproduce el PCA? | 08 §3 | Sí: MSE idéntico, ángulos < 0,06°, direcciones recuperadas con \|cos\| = 1 |
-| ¿Cuántas dimensiones retener? | 08 §2 (Horn) | **4**: PC4 = 1,469 > 1,315. Difiere de las 3 dimensiones usadas hasta ahora (ver nota 1) |
-| ¿La no linealidad mejora la reconstrucción fuera de muestra? | 08 §4 | **No.** El AE no lineal es peor que el PCA para todo d (−5 % con d = 1, −19 % con d = 3, −44 % con d = 5); el pre-entrenamiento no cambia la conclusión |
-| ¿Es estable el AE frente a la semilla? | 08 §5 | Razonablemente: RV mediano entre réplicas 0,89 (mínimo 0,77); RV con PCA 0,78 |
-| ¿Detecta el AE episodios que el PCA no? | 08 §6 | En muestra, oct-2008 tiene error 11,8 (AE) frente a 0,75 (PCA), dominado por el EMBI. EPCA no pudo validar la crisis de 2008 por efecto de borde, así que el AE aporta aquí una señal complementaria |
-| ¿Coinciden AE y EPCA? | 08 §7 | Las transiciones EPCA de 2013-08 y 2017-10 coinciden con errores del AE por encima del p90; las de 2012 no |
-| ¿Detecta el LSTM-AE episodios fuera de muestra? | 09 §2 | COVID-19 sí (67 % de sus meses sobre el umbral, igual que PCA y AE). Taper tantrum no, con ningún método. El LSTM tiene menos falsas alarmas (0,7 % frente a 2,7 % del PCA) |
-| ¿La datación de regímenes se debe al LSTM? | 09 §4.1 | **Mayormente no.** La media móvil de 12 meses del PCA reproduce casi los mismos cortes (2009, 2010-08, 2013, 2020, 2022, 2023); RV LSTM vs. PCA-MM12 = 0,80 |
-| Fases preliminares | 09 §5 | Expansión 2010-08 a 2013-04; transición 2013-05 a 2020-05; contracción desde mediados de 2020. El segmento 2008–2009 queda como "transición" por duración (< 18 meses) pese a crédito alto: el resultado depende de la regla |
+| ¿El AE lineal reproduce el PCA? | 08 §3 | Sí: MSE idéntico, ángulos ≤ 0,21°, direcciones recuperadas con \|cos\| ≥ 0,99999 |
+| ¿Cuántas dimensiones retener? | 08 §2 (Horn) | **4**: PC4 = 1,466 > 1,304 (inercia 59,0 %). Se mantiene tras la corrección (ver nota 1) |
+| ¿La no linealidad mejora la reconstrucción fuera de muestra? | 08 §4 | **No.** El AE no lineal es peor que el PCA para todo d (−4 % con d = 1, −14 % con d = 3, −41 % con d = 5); el pre-entrenamiento no cambia la conclusión |
+| ¿Es estable el AE frente a la semilla? | 08 §5 | Sí: RV mediano entre réplicas 0,94 (mínimo 0,87); RV con PCA 0,82 (antes 0,89 y 0,78) |
+| ¿Detecta el AE episodios que el PCA no? | 08 §6 | En muestra, oct-2008 tiene error 7,0 (AE) frente a 1,0 (PCA), dominado por el EMBI: señal complementaria para la crisis global, que EPCA no valida por efecto de borde |
+| ¿Qué transiciones detecta EPCA? | 06 §3.3 | **2013-05** (inicio del taper tantrum), 2017-11 y 2018-02. Las transiciones de 2012 de la versión preliminar desaparecieron |
+| ¿Coinciden AE y EPCA? | 08 §7 | 2017-11 y 2018-02 coinciden con el pico de error del AE en abr-2018 (crédito hipotecario); 2013-05 no: EPCA mide reconfiguración, el AE atipicidad |
+| ¿Detecta el LSTM-AE episodios fuera de muestra? | 09 §2 | COVID-19 en el 50 % de sus meses, igual que PCA y AE (antes 67 %). Taper tantrum no, con ningún método. El LSTM tiene menos falsas alarmas (0,6 % frente a 1,9 %) |
+| ¿Es robusta la datación de regímenes con LSTM? | 09 §4 | **No.** Pasó de 7 regímenes (dataset preliminar) a 2 (corte único en 2013-09). El PCA suavizado (MM12) conservó 8 regímenes con cortes casi idénticos: 2009-06, 2010-07, 2013-03, 2016-04, 2020-03, 2021-12, 2023-11. RV LSTM vs. PCA-MM12 = 0,84 |
+| Fases preliminares (PCA-MM12) | 09 §5 | Expansión 2010-07 a 2013-02; transición 2013-03 a 2020-02; contracción desde 2020-03. El tramo 2008–2010 queda como transición por la duración de sus segmentos: el resultado depende de la regla |
 
 **Nota 1 (contradicción con avances previos).** El PCA verificado con Rcamiz retiene
-3 dimensiones (52,16 %). El análisis paralelo de Horn, que es objetivo firme de la tesis,
-indica 4 (60,80 %). Hay que decidir con el asesor qué criterio prevalece y, si es Horn,
-actualizar `05`, `06` y `07_pca_rcamiz`. Conviene repetir el análisis con el dataset corregido
-antes de decidir.
+3 dimensiones (52,16 % con el dataset sin septiembres; 50,37 % con el corregido). El análisis
+paralelo de Horn, que es objetivo firme de la tesis, indica 4 (59,0 %). Hay que decidir con el
+asesor qué criterio prevalece y, si es Horn, actualizar `05`, `06` y `07_pca_rcamiz`.
 
 **Nota 2 (no estacionariedad estructural).** En la validación por bloques, el PCA con d = 3
-tiene un error fuera de muestra de 1,06, mayor que la varianza total por variable (1,0). La
-estructura de covariación de un bloque de ~3,5 años no se transfiere a otro. Es evidencia
-directa, e independiente de EPCA, de que la estructura del sistema cambia en el tiempo: la
-premisa de la tesis.
+tiene un error fuera de muestra de 1,08, mayor que la varianza total por variable (1,0). La
+estructura de covariación de un bloque de ~3,8 años no se transfiere a otro: evidencia directa,
+independiente de EPCA, de que la estructura del sistema cambia en el tiempo.
+
+**Nota 3 (fragilidad de la regla de codo).** Con el LSTM, las reducciones relativas de la SCE
+al pasar de k a k + 1 no son monótonas (9 % de 2 a 3; 34 % de 3 a 4), por lo que un cambio pequeño
+en los datos altera el k elegido. Conviene sustituir la regla por un criterio de estabilidad
+de los cortes (p. ej. bootstrap por bloques) antes de fijar regímenes.
 
 **Implicaciones para el diseño.**
 
 1. Con la muestra actual, el autoencoder no lineal no se justifica como *mejor compresor*. Se
    justifica como **detector de anomalías estructurales** complementario al PCA y a EPCA.
-2. Toda datación de regímenes con LSTM debe reportarse **junto a su control suavizado**
-   (PCA-MM12). Si la contribución diferencial se atribuye al LSTM, debe mostrarse una
-   diferencia sustantiva frente a ese control.
+2. La **datación de referencia** de regímenes debe ser la del PCA suavizado (MM12), que fue
+   estable ante la corrección de datos. El LSTM se reporta como evidencia complementaria; su
+   único corte robusto (2013-09) coincide con el taper tantrum.
 3. La validación walk-forward no puede evaluar la crisis de 2008–2009 fuera de muestra. La
    extensión hacia 1985 (`01b`, `04c`) es por tanto una necesidad metodológica, no solo una
    mejora de tamaño muestral.
