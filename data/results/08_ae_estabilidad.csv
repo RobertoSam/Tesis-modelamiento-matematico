@@ -1,0 +1,6 @@
+,valor
+RV entre réplicas (mediana),0.8926947712898254
+RV entre réplicas (mínimo),0.7667237520217896
+RV réplica vs PCA (mediana),0.775543719515057
+MSE en muestra AE (mediana),0.5956581830978394
+MSE en muestra PCA,0.4784030833993362
