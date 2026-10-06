@@ -77,6 +77,8 @@ website:
         menu:
           - href: notebooks/05_pca.ipynb
             text: "05 · PCA (trimestral)"
+          - href: notebooks/05b_pca_componentes_suavizadas.ipynb
+            text: "05b · Componentes en el tiempo y suavizado (mensual)"
           - href: notebooks/06a_seleccion_ventana_epca.ipynb
             text: "06a · Selección de ventana (trimestral)"
           - href: notebooks/06b_seleccion_ventana_epca_mensual.ipynb
