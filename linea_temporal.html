@@ -287,7 +287,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">4–5 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">7 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">4–5 de octubre de 2026</a></li>
   </ul>
 </nav>
     </div>
@@ -328,7 +329,28 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <section id="de-octubre-de-2026" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026">4–5 de octubre de 2026</h2>
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026">7 de octubre de 2026</h2>
+<p><strong>Datos</strong></p>
+<ul>
+<li>Se retiraron del sitio, el README, las fichas y los notebooks todas las referencias a la corrida previa con datos incompletos. Todas las cifras quedan referidas al dataset mensual vigente: 227 meses × 17 variables (2007-02 a 2025-12).</li>
+<li>Validación contra la fuente: la media mensual del EMBI (serie diaria PD04709XD) de septiembre de 2008, 2015 y 2022 coincide exactamente con la consulta directa a la API del BCRP.</li>
+<li>El dataset trimestral (<code>04</code>) tiene incompleto el EMBI del tercer trimestre. Se agregó a <code>04</code> un control de cobertura mensual que detiene el pipeline si algún mes no tiene datos diarios. <code>02</code>, <code>04</code>, <code>05</code> y <code>06a</code> quedan marcados como pendientes de re-ejecución.</li>
+</ul>
+<p><strong>Modelos</strong></p>
+<ul>
+<li>La datación de regímenes con PCA suavizado (MM12) pasa a ser <strong>referencia provisional</strong>: la estabilidad de esta datación y la del LSTM se evaluará por bootstrap por bloques.</li>
+<li>La equivalencia Rcamiz ↔︎ scikit-learn se reporta como pendiente sobre el dataset de 227 meses.</li>
+</ul>
+<p><strong>Pendientes</strong></p>
+<ul>
+<li>Re-ejecutar localmente <code>04 → 02 → 05 → 06a</code> con la serie diaria del EMBI completa.</li>
+<li>Evaluar la estabilidad de los cortes de régimen (PCA-MM12 y LSTM) por bootstrap por bloques.</li>
+<li>Ejecutar la verificación Rcamiz ↔︎ scikit-learn sobre el dataset mensual.</li>
+<li>Comentar con el asesor el carácter provisional de la datación de referencia.</li>
+</ul>
+</section>
+<section id="de-octubre-de-2026-1" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">4–5 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li><strong>Dataset mensual:</strong> 227 meses × 17 variables (2007-02 a 2025-12), con calendario continuo verificado; <code>04b</code> detiene la ejecución si falta cualquier mes.</li>
