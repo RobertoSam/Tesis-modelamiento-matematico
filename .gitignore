@@ -30,3 +30,7 @@ Untitled*.ipynb
 anaconda_projects/
 # Pesos de modelos entrenados (regenerables ejecutando 08 y 09)
 data/results/*.pt
+
+# Salidas renderizadas del documento en R (se generan localmente)
+R/*.html
+R/*_files/

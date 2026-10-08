@@ -1,26 +1,22 @@
 ---
-title: "Ciclo financiero del Perú — versión en R"
-subtitle: "Réplica de la pipeline en Python y variante con las herramientas del asesor"
+title: "Ciclo financiero del Perú"
+subtitle: "Análisis en R: de las series base a la síntesis de métodos"
 author: "Roberto Samaniego Salcedo · Asesor: Dr. Sergio Camiz"
 date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
   html_document:
     toc: true
     toc_float: true
-    toc_depth: 2
+    toc_depth: 3
     number_sections: true
-    code_folding: show
+    code_folding: hide
     df_print: kable
 params:
-  ejecutar_dl: "auto"        # "auto" = ejecuta AE/LSTM solo si torch para R está instalado
-  dl_walkforward: false      # validación walk-forward del LSTM (lenta)
-  semilla: 42
-  raiz_repo: ""              # ruta del repositorio; vacío = se detecta automáticamente
+  raiz_repo: ""          # ruta del repositorio; vacío = se detecta automáticamente
 ---
 
 ```{r configuracion, include = FALSE}
-# Raíz del repositorio. Se usa params$raiz_repo si se indica; si no, se sube desde la
-# carpeta del Rmd (y desde el directorio de trabajo) hasta encontrar _quarto.yml
+# Raíz del repositorio: params$raiz_repo o se sube desde la carpeta del Rmd hasta _quarto.yml
 buscar_raiz <- function(desde) {
   actual <- normalizePath(desde, mustWork = FALSE)
   repeat {
@@ -32,735 +28,70 @@ buscar_raiz <- function(desde) {
 }
 candidatos <- c(params$raiz_repo, knitr::current_input(dir = TRUE), getwd())
 candidatos <- candidatos[nzchar(candidatos) & !is.na(candidatos)]
-raices <- vapply(candidatos, function(d) buscar_raiz(if (dir.exists(d)) d else dirname(d)),
-                 character(1))
+raices <- vapply(candidatos, function(d) buscar_raiz(if (dir.exists(d)) d else dirname(d)), character(1))
 raiz <- raices[!is.na(raices)][1]
 if (is.na(raiz)) {
-  stop("No se encontró el repositorio de la tesis (archivo _quarto.yml). ",
-       "Abre el Rmd desde la carpeta R/ del repositorio clonado, o indica la ruta con ",
-       "rmarkdown::render('tesis_ciclo_financiero.Rmd', params = list(raiz_repo = '/ruta/al/repo'))")
+  stop("No se encontró el repositorio de la tesis (archivo _quarto.yml). Abre el Rmd desde ",
+       "la carpeta R/ del repositorio clonado, o usa params = list(raiz_repo = '/ruta/al/repo').")
 }
 knitr::opts_knit$set(root.dir = raiz)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
-                      fig.width = 10, fig.height = 4.5, dpi = 110)
+                      fig.width = 10, fig.height = 5, dpi = 110, fig.align = "center")
 ```
-
-# Propósito y alcance
-
-Este documento reproduce en R la pipeline de la tesis que está en los notebooks de Python, sobre
-**los mismos datos procesados** (`data/processed/`), y agrega una variante con las herramientas
-del asesor (paquetes `Rcamiz` y `AedeClahfac`). Tiene dos objetivos:
-
-1. **Paridad.** Verificar que R y Python producen los mismos resultados cuando se usan las
-   mismas decisiones metodológicas. Cada sección termina con una comparación contra los
-   archivos de `data/results/` generados por Python.
-2. **Variante del asesor.** Aplicar los métodos tal como los implementa el Dr. Camiz: HFC con
-   `clahfac()`, EPCA con `aede()` (pesos gaussianos, reglas de signo y partición de Fisher con
-   el índice de Calinski-Harabász) y una HFC evolutiva por ventanas.
-
-| Sección | Python | R (réplica) | R (variante del asesor) |
-|---|---|---|---|
-| PCA y análisis paralelo de Horn | `07`, `08` | `pca()` de Rcamiz | — |
-| Componentes en el tiempo (MM12) | `05b` | sí | — |
-| HFC | — | — | `clahfac()` |
-| EPCA | `06` | sí | `aede()` |
-| HFC evolutiva | — | — | `clahfac()` por ventanas |
-| Datación de regímenes | `09` | Fisher + regla de codo | Fisher + Calinski-Harabász |
-| Autoencoders y LSTM | `08`, `09` | `torch` para R | — |
-
-**Requisitos.** R ≥ 4.0 con `Rcamiz`, `AedeClahfac`, `dendextend` y `knitr`/`rmarkdown`. Los
-paquetes del asesor no se distribuyen en el repositorio. `AedeClahfac` incluye una rutina
-Fortran compilada para Linux (`x86_64-pc-linux-gnu`): en otro sistema operativo las secciones
-que la usan se omiten automáticamente. Las secciones de aprendizaje profundo requieren `torch`
-para R (`install.packages("torch"); torch::install_torch()`).
-
-```{r paquetes}
-suppressMessages({
-  library(Rcamiz)
-  library(dendextend)
-})
-
-# AedeClahfac contiene código compilado para Linux: se verifica que cargue
-tiene_aede <- suppressWarnings(tryCatch({
-  suppressMessages(library(AedeClahfac))
-  TRUE
-}, error = function(e) FALSE))
-
-# torch para R: solo si está instalado y con libtorch disponible
-tiene_torch <- requireNamespace("torch", quietly = TRUE) &&
-  tryCatch(torch::torch_is_installed(), error = function(e) FALSE)
-ejecutar_dl <- if (identical(params$ejecutar_dl, "auto")) tiene_torch else isTRUE(params$ejecutar_dl)
-
-data.frame(
-  componente = c("R", "Rcamiz", "AedeClahfac", "torch (AE/LSTM)"),
-  estado = c(R.version.string,
-             as.character(packageVersion("Rcamiz")),
-             if (tiene_aede) as.character(packageVersion("AedeClahfac")) else "no disponible",
-             if (ejecutar_dl) as.character(packageVersion("torch")) else "no disponible: se omite")
-)
-```
-
-# Datos y funciones comunes
-
-```{r datos}
-# Dataset mensual transformado: el mismo que usan 05b, 07, 08 y 09 en Python
-df <- read.csv("data/processed/dataset_transformado_mensual.csv", row.names = 1,
-               check.names = FALSE)
-fechas <- as.Date(rownames(df))
-nombres <- sub("_log_diff$|_diff$", "", colnames(df))
-n <- nrow(df); p <- ncol(df)
-
-# Controles: no se trabaja con datos incompletos
-stopifnot(!anyNA(df))
-calendario <- seq(min(fechas), max(fechas), by = "month")
-if (length(calendario) != n || any(calendario != fechas)) {
-  stop("El calendario mensual tiene huecos: revisar 04b antes de continuar")
-}
-cat(sprintf("%d meses x %d variables, %s a %s; calendario completo y sin faltantes\n",
-            n, p, format(min(fechas), "%Y-%m"), format(max(fechas), "%Y-%m")))
-
-# Episodios de referencia: solo para validación ex post (mismas fechas que modelos_dl.py)
-episodios <- data.frame(
-  nombre = c("Crisis financiera global", "Taper tantrum", "COVID-19"),
-  inicio = as.Date(c("2008-09-01", "2013-05-01", "2020-03-01")),
-  fin    = as.Date(c("2009-06-01", "2013-12-01", "2020-12-01"))
-)
-```
-
-Las funciones siguientes son traducciones directas de `notebooks/modelos_dl.py`, para que las
-comparaciones con Python usen exactamente el mismo cálculo.
 
 ```{r funciones}
-# Estandarización con desviación poblacional (divisor n), igual que StandardScaler
-estandarizar <- function(X) {
-  X <- as.matrix(X)
-  m <- colMeans(X)
-  s <- sqrt(colMeans(sweep(X, 2, m)^2))
-  sweep(sweep(X, 2, m), 2, s, "/")
+source("R/funciones_comunes.R")
+source("R/camiz_port.R")      # HFC y EPCA del asesor en R puro (validado contra AedeClahfac 1.2)
+```
+
+```{css, echo = FALSE}
+.main-container { max-width: 1200px; }
+table { font-size: 12px; }
+table td, table th { padding: 4px 6px !important; vertical-align: top; }
+.lectura, .pregunta, .hallazgo {
+  border-left: 4px solid; border-radius: 4px; padding: 10px 14px; margin: 14px 0;
 }
-
-# PCA por descomposición espectral de la matriz de correlación (divisor n)
-# con la regla de signo de Rcamiz: domina la suma de cuadrados de los coeficientes positivos
-pca_basico <- function(Z, d = ncol(Z)) {
-  e <- eigen(crossprod(Z) / nrow(Z), symmetric = TRUE)
-  V <- e$vectors[, 1:d, drop = FALSE]
-  for (k in seq_len(d)) {
-    if (sum(V[V[, k] < 0, k]^2) > sum(V[V[, k] > 0, k]^2)) V[, k] <- -V[, k]
-  }
-  list(valores = e$values, vectores = V, scores = Z %*% V)
-}
-
-# Análisis paralelo de Horn (1965): percentil 95 de autovalores con datos gaussianos
-horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
-  set.seed(semilla)
-  obs <- eigen(cor(X), symmetric = TRUE, only.values = TRUE)$values
-  sims <- t(replicate(n_sim, eigen(cor(matrix(rnorm(nrow(X) * ncol(X)), nrow(X))),
-                                   symmetric = TRUE, only.values = TRUE)$values))
-  umbral <- apply(sims, 2, quantile, probs = percentil)
-  retener <- 0
-  for (j in seq_along(obs)) if (obs[j] > umbral[j]) retener <- retener + 1 else break
-  list(observados = obs, umbral = umbral, retener = retener)
-}
-
-# Coeficiente RV de Robert & Escoufier (1976) entre dos configuraciones de las mismas filas
-coef_rv <- function(X, Y) {
-  X <- scale(as.matrix(X), scale = FALSE); Y <- scale(as.matrix(Y), scale = FALSE)
-  Sx <- tcrossprod(X); Sy <- tcrossprod(Y)
-  sum(Sx * Sy) / sqrt(sum(Sx * Sx) * sum(Sy * Sy))
-}
-
-# Rotación ortogonal de Procrustes de Z hacia la referencia
-procrustes <- function(Z, referencia) {
-  Zc <- scale(Z, scale = FALSE); Rc <- scale(referencia, scale = FALSE)
-  s <- svd(crossprod(Zc, Rc))
-  Zc %*% (s$u %*% t(s$v))
-}
-
-# Partición óptima de Fisher (1958) de una serie ordenada en k segmentos contiguos,
-# por programación dinámica exacta (traducción de particion_fisher)
-particion_fisher <- function(Y, k_max = 8, tam_min = 6) {
-  Y <- as.matrix(Y); n <- nrow(Y)
-  S1 <- rbind(0, apply(Y, 2, cumsum))
-  S2 <- c(0, cumsum(rowSums(Y^2)))
-  sce <- function(i, j) {               # segmento de las filas i+1..j
-    s <- S1[j + 1, ] - S1[i + 1, ]
-    S2[j + 1] - S2[i + 1] - sum(s * s) / (j - i)
-  }
-  D <- matrix(Inf, k_max, n); B <- matrix(0L, k_max, n)
-  for (j in tam_min:n) D[1, j] <- sce(0, j)
-  for (k in 2:k_max) {
-    if (k * tam_min > n) break
-    for (j in (k * tam_min):n) {
-      ini <- ((k - 1) * tam_min):(j - tam_min)
-      costos <- vapply(ini, function(i) D[k - 1, i] + sce(i, j), numeric(1))
-      D[k, j] <- min(costos); B[k, j] <- ini[which.min(costos)]
-    }
-  }
-  res <- list()
-  for (k in 1:k_max) {
-    if (!is.finite(D[k, n])) next
-    cortes <- integer(0); j <- n
-    if (k > 1) for (kk in k:2) { i <- B[kk, j]; cortes <- c(i, cortes); j <- i }
-    res[[as.character(k)]] <- list(sce = D[k, n], cortes = cortes)  # cortes: índice 0-based del inicio de segmento
-  }
-  res
-}
-
-# Datación como en 09: estandarizar, Fisher (k <= 10, segmentos >= 12 meses) y regla de codo
-datar <- function(Y, k_max = 10, tam_min = 12, umbral = 0.10) {
-  res <- particion_fisher(estandarizar(Y), k_max, tam_min)
-  sce <- sapply(res, `[[`, "sce")
-  reduccion <- c(-diff(sce) / head(sce, -1), NA)   # reducción relativa al pasar de k a k+1
-  k_codo <- min(as.integer(names(sce))[which(reduccion < umbral)])
-  # Variante del asesor: Calinski-Harabász con la misma fórmula de aede()
-  # (grados de libertad k y n - k, como en el código del asesor)
-  nk <- nrow(Y); ks <- as.integer(names(sce))
-  ch <- ((sce[1] - sce) / ks) / (sce / (nk - ks)); ch[1] <- NA
-  list(res = res, tabla = data.frame(k = ks, sce = sce, reduccion = reduccion, ch = ch),
-       k_codo = k_codo, k_ch = ks[which.max(ch)])
-}
-
-# Segmentos (inicio, fin) a partir de los cortes de Fisher
-segmentos <- function(cortes, fechas_serie) {
-  bordes <- c(0, cortes, length(fechas_serie))
-  data.frame(inicio = fechas_serie[head(bordes, -1) + 1], fin = fechas_serie[tail(bordes, -1)])
-}
-
-# Fecha del primer mes de cada régimen nuevo (como en las tablas de Python)
-fechas_corte <- function(cortes, fechas_serie) format(fechas_serie[cortes + 1], "%Y-%m")
+.lectura  { border-color: #2a78d6; background: #eef4fc; }
+.pregunta { border-color: #eb6834; background: #fdf1eb; }
+.hallazgo { border-color: #4a3aa7; background: #f1effa; }
+.lectura::before  { content: "Lectura"; font-weight: bold; display: block; margin-bottom: 4px; }
+.pregunta::before { content: "Para Roberto"; font-weight: bold; display: block; margin-bottom: 4px; }
+.hallazgo::before { content: "Hallazgo"; font-weight: bold; display: block; margin-bottom: 4px; }
 ```
 
-# PCA con Rcamiz y análisis paralelo de Horn
+# Cómo leer este documento {-}
 
-```{r pca}
-res_pca <- pca(df, st = TRUE, nd = p, r = 10)
-vp <- res_pca$eigenvalues
-round(head(vp, 6), 3)
+El documento sigue el orden del análisis de la tesis. Cada bloque parte de lo que dejó el
+anterior:
+
+1. **Series base**: qué mide cada serie y cómo se comportó entre 2007 y 2025.
+2. **Exploración conjunta**: transformaciones, estacionariedad y relaciones entre series.
+3. **PCA**: qué componentes resumen la variabilidad conjunta y qué significan.
+4. **EPCA**: si esa estructura cambia en el tiempo (supuesto de ventanas).
+5. **HFC**: cómo se agrupan las variables y si esa jerarquía cambia.
+6. **Autoencoders y LSTM**: si los métodos no lineales aportan algo que los anteriores no.
+7. **Síntesis**: todos los métodos frente al objetivo de la tesis.
+
+En cada resultado hay tres tipos de recuadro:
+
+::: {.lectura}
+Una línea que pone el número en contexto. Las cifras del texto se calculan en el propio
+documento: si cambian los datos, cambian solas.
+:::
+
+::: {.pregunta}
+Una duda o pregunta abierta para que continúes la interpretación.
+:::
+
+::: {.hallazgo}
+Algo que contradice o matiza lo establecido en avances previos y que conviene resolver.
+:::
+
+```{r bloque-01, child = file.path(raiz, "R", "bloques", "01_series_base.Rmd")}
 ```
 
-```{r horn}
-Z <- estandarizar(df)
-h <- horn(Z, n_sim = 1000)
-tabla_horn <- data.frame(componente = paste0("PC", 1:6), autovalor = round(h$observados[1:6], 3),
-                         umbral_p95 = round(h$umbral[1:6], 3))
-tabla_horn
-cat("Componentes retenidos por Horn:", h$retener, "\n")
-```
+# Bloques siguientes {-}
 
-```{r paridad-pca}
-# Paridad con Python: inercia de 08 (anclaje lineal) y Horn de 08
-anclaje_py <- read.csv("data/results/08_ae_anclaje_lineal.csv")
-horn_py <- read.csv("data/results/08_ae_horn.csv", row.names = 1)
-d_horn_py <- sum(cumprod(horn_py$autovalor_observado > horn_py$umbral_aleatorio_p95))
-paridad <- data.frame(
-  seccion = c("PCA: inercia acumulada d=1..5 (dif. máx., puntos %)",
-              "Horn: componentes retenidos (R / Python)"),
-  resultado = c(signif(max(abs(vp[1:5, "cum.in"] - anclaje_py$inercia_pca_.)), 3),
-                paste(h$retener, "/", d_horn_py))
-)
-paridad
-```
-
-# Componentes principales en el tiempo (réplica de 05b)
-
-```{r scores-tiempo}
-N_COMP <- 3
-pc <- pca_basico(Z, N_COMP)
-scores <- pc$scores
-colnames(scores) <- paste0("PC", 1:N_COMP)
-
-# Medias móviles centradas y causales, como pandas rolling(w, center=True) y rolling(w)
-mm_centrada <- function(x, w) {
-  r <- stats::filter(x, rep(1 / w, w), sides = 2)
-  # Con ventana par, pandas ubica la media una posición más tarde que stats::filter
-  if (w %% 2 == 0) r <- c(NA, r[-length(r)])
-  as.numeric(r)
-}
-mm_causal <- function(x, w) as.numeric(stats::filter(x, rep(1 / w, w), sides = 1))
-
-s05b <- read.csv("data/results/05b_scores_suavizados.csv", row.names = 1)
-dif <- sapply(1:N_COMP, function(k) c(
-  scores = max(abs(scores[, k] - s05b[[paste0("PC", k)]])),
-  mm12_centrada = max(abs(mm_centrada(scores[, k], 12) - s05b[[paste0("PC", k, "_mm12_centrada")]]), na.rm = TRUE),
-  mm12_causal = max(abs(mm_causal(scores[, k], 12) - s05b[[paste0("PC", k, "_mm12_causal")]]), na.rm = TRUE)))
-colnames(dif) <- colnames(scores)
-signif(dif, 3)
-```
-
-```{r grafico-scores, fig.height = 6.5}
-sombrear <- function() {
-  for (i in seq_len(nrow(episodios))) {
-    rect(episodios$inicio[i], par("usr")[3], episodios$fin[i], par("usr")[4],
-         col = adjustcolor("grey70", 0.4), border = NA)
-  }
-}
-op <- par(mfrow = c(N_COMP, 1), mar = c(2, 4, 1.5, 1))
-for (k in 1:N_COMP) {
-  plot(fechas, scores[, k], type = "n", ylab = colnames(scores)[k], xlab = "")
-  sombrear()
-  lines(fechas, scores[, k], col = "grey60")
-  lines(fechas, mm_centrada(scores[, k], 12), col = "#1c5cab", lwd = 2)
-  abline(h = 0, lty = 3)
-  if (k == 1) legend("topleft", c("Mensual", "Media móvil centrada 12 m"),
-                     col = c("grey60", "#1c5cab"), lwd = c(1, 2), bty = "n", cex = 0.8)
-}
-par(op)
-```
-
-# Clasificación Factorial Jerárquica (variante del asesor)
-
-La HFC (`clahfac()`) agrupa las **variables** de forma jerárquica: en cada nodo se unen los dos
-grupos cuya fusión conserva la mayor parte de la inercia en el primer factor del grupo
-resultante. El índice del nodo mide la inercia que se pierde al representar el grupo por un
-solo factor.
-
-```{r hfc, eval = tiene_aede, fig.height = 5.5}
-df_hfc <- df
-colnames(df_hfc) <- nombres
-# clahfac imprime los cambios de signo de los factores de cada nodo: se silencia esa salida
-invisible(capture.output(hfc <- clahfac(df_hfc, out = TRUE)))
-plot(as.dendrogram(hfc$hier), main = "HFC de las 17 variables (dataset mensual)",
-     ylab = "Índice del nodo")
-```
-
-```{r hfc-tabla, eval = tiene_aede}
-jerarquia <- as.data.frame(hfc$hierar[, c("ngr", "N1", "N2", "Num", "Eigenv", "Index",
-                                          "Glob_%1", "Cum_%2")])
-round(jerarquia, 3)
-round(hfc$inertia, 2)
-```
-
-El número de grupos es una decisión de interpretación. Se muestran las particiones que resultan
-de cortar los 1, 2 y 3 nodos superiores (`clahpart()`), junto con el índice de esos nodos: un
-salto grande del índice indica que esa fusión une grupos poco afines.
-
-```{r hfc-grupos, eval = tiene_aede}
-indices_superiores <- rev(tail(hfc$hierar[, "Index"], 4))
-data.frame(nodo = paste0("Nodo superior ", 1:4), indice = round(indices_superiores, 3))
-
-particiones <- lapply(1:3, function(k) {
-  invisible(capture.output(pc <- clahpart(hfc, noeud = k)))
-  grupos <- tapply(pc$itemclas$label, pc$itemclas$class, paste, collapse = ", ")
-  data.frame(corte = paste(k, "nodo(s) superior(es)"), grupo = names(grupos),
-             variables = as.character(grupos))
-})
-do.call(rbind, particiones)
-```
-
-# EPCA
-
-## Réplica de `06` (ventana de 60 meses, paso de 3 meses)
-
-```{r epca-replica}
-df_std <- read.csv("data/processed/dataset_estandarizado_mensual.csv", row.names = 1,
-                   check.names = FALSE)
-fechas_std <- as.Date(rownames(df_std))
-VENTANA <- 60; PASO <- 3
-
-inicios <- seq(1, nrow(df_std) - VENTANA + 1, by = PASO)
-epca <- lapply(inicios, function(i) {
-  Zv <- estandarizar(df_std[i:(i + VENTANA - 1), ])
-  e <- eigen(crossprod(Zv) / VENTANA, symmetric = TRUE)
-  list(fecha = fechas_std[i + VENTANA %/% 2], var = e$values / sum(e$values),
-       carga1 = e$vectors[, 1])
-})
-fechas_epca <- do.call(c, lapply(epca, `[[`, "fecha"))
-cargas_pc1 <- t(sapply(epca, `[[`, "carga1"))
-
-# Alineación de signo con la ventana anterior (como en 06)
-for (i in 2:nrow(cargas_pc1)) {
-  if (cor(cargas_pc1[i, ], cargas_pc1[i - 1, ]) < 0) cargas_pc1[i, ] <- -cargas_pc1[i, ]
-}
-estabilidad <- sapply(2:nrow(cargas_pc1), function(i) cor(cargas_pc1[i, ], cargas_pc1[i - 1, ]))
-umbral_estab <- mean(estabilidad) - sqrt(mean((estabilidad - mean(estabilidad))^2))
-transiciones_r <- format(fechas_epca[-1][estabilidad < umbral_estab], "%Y-%m")
-
-trans_py <- format(as.Date(read.csv("data/results/06_epca_transiciones_detectadas.csv")[[1]]), "%Y-%m")
-var_py <- read.csv("data/results/06_epca_varianza_explicada.csv")
-data.frame(
-  control = c("Ventanas (R / Python)", "Varianza PC1: dif. máx. (puntos %)",
-              "Transiciones R", "Transiciones Python"),
-  resultado = c(paste(length(epca), "/", nrow(var_py)),
-                signif(max(abs(100 * sapply(epca, function(e) e$var[1]) - var_py$var_pc1)), 3),
-                paste(transiciones_r, collapse = ", "), paste(trans_py, collapse = ", "))
-)
-```
-
-```{r grafico-epca}
-plot(fechas_epca[-1], estabilidad, type = "n", xlab = "", ylab = "Correlación con ventana previa",
-     main = "EPCA (réplica de 06): estabilidad de las cargas de PC1")
-sombrear()
-lines(fechas_epca[-1], estabilidad, col = "#1c5cab", lwd = 1.5)
-abline(h = umbral_estab, col = "#eb6834", lty = 2)
-```
-
-## Variante del asesor: `aede()`
-
-`aede()` usa todas las ventanas (paso de un mes), dos reglas de signo (la determinística de
-Rcamiz y la de continuidad con la ventana anterior) y segmenta la serie del **primer valor
-propio** con el algoritmo de Fisher, informando el índice de Calinski-Harabász para cada número
-de clases. Se corre con pesos uniformes (`nsd = 0`, comparable con la réplica) y con pesos
-gaussianos (`nsd = 3`, valor por defecto de `claede`).
-
-```{r aede, eval = tiene_aede}
-correr_aede <- function(nsd) {
-  a <- aede(serie = as.matrix(df), ndim = 3, nw = VENTANA, nsd = nsd, maxcl = 10)
-  part <- a$cutpoints$part
-  fechas_v <- as.Date(rownames(a$eigenvalues))
-  k_ch <- which.max(part[, 3])                 # columna Calinski-Harabász
-  limites <- part[k_ch, grep("^v_", colnames(part))]
-  limites <- limites[limites > 0 & limites < nrow(a$eigenvalues)]
-  list(a = a, part = part, fechas = fechas_v, k_ch = k_ch,
-       cortes = format(fechas_v[limites + 1], "%Y-%m"))
-}
-aede_unif <- correr_aede(0)
-aede_gaus <- correr_aede(3)
-
-round(aede_unif$part[, 1:3], 2)
-data.frame(pesos = c("uniformes (nsd = 0)", "gaussianos (nsd = 3)"),
-           k_calinski_harabasz = c(aede_unif$k_ch, aede_gaus$k_ch),
-           inicio_de_cada_clase = c(paste(aede_unif$cortes, collapse = ", "),
-                                    paste(aede_gaus$cortes, collapse = ", ")))
-```
-
-```{r grafico-aede, eval = tiene_aede}
-plot(aede_unif$fechas, aede_unif$a$eigenvalues[, 1], type = "n", xlab = "",
-     ylab = "Primer valor propio", main = "aede(): primer valor propio por ventana (60 meses)")
-sombrear()
-lines(aede_unif$fechas, aede_unif$a$eigenvalues[, 1], col = "#1c5cab", lwd = 1.5)
-lines(aede_gaus$fechas, aede_gaus$a$eigenvalues[, 1], col = "#eb6834", lwd = 1.5)
-legend("topright", c("Pesos uniformes", "Pesos gaussianos (nsd = 3)"),
-       col = c("#1c5cab", "#eb6834"), lwd = 1.5, bty = "n", cex = 0.8)
-```
-
-# HFC evolutiva (exploratoria)
-
-Se aplica `clahfac()` en cada ventana de la EPCA (60 meses, paso 3) y se mide cuánto cambia la
-jerarquía de variables entre ventanas consecutivas con la **correlación cofenética** entre
-dendrogramas. Una caída indica que la estructura de agrupamiento de las variables se
-reconfigura. Sigue la lógica de `claede` (Camiz, 2025), aplicada aquí con la función del paquete.
-
-```{r ehfc, eval = tiene_aede}
-inicios_h <- seq(1, n - VENTANA + 1, by = PASO)
-dendros <- lapply(inicios_h, function(i) {
-  v <- df_hfc[i:(i + VENTANA - 1), ]
-  invisible(capture.output(r <- clahfac(v, out = TRUE)))
-  r$hier
-})
-fechas_ehfc <- fechas[inicios_h + VENTANA %/% 2]
-cofen <- sapply(2:length(dendros), function(i)
-  cor_cophenetic(as.dendrogram(dendros[[i]]), as.dendrogram(dendros[[i - 1]])))
-umbral_cof <- mean(cofen) - sd(cofen)
-cambios_ehfc <- format(fechas_ehfc[-1][cofen < umbral_cof], "%Y-%m")
-cat("Reconfiguraciones de la jerarquía (correlación cofenética < media - 1 d.e.):\n",
-    paste(cambios_ehfc, collapse = ", "), "\n")
-```
-
-```{r grafico-ehfc, eval = tiene_aede}
-plot(fechas_ehfc[-1], cofen, type = "n", xlab = "", ylab = "Correlación cofenética",
-     main = "HFC evolutiva: semejanza de la jerarquía con la ventana anterior")
-sombrear()
-lines(fechas_ehfc[-1], cofen, col = "#1c5cab", lwd = 1.5)
-abline(h = umbral_cof, col = "#eb6834", lty = 2)
-```
-
-# Datación de regímenes (réplica de 09 y variante del asesor)
-
-Como en `09`, se segmentan los scores del PCA (d = 3) suavizados con media móvil causal de 12
-meses, con la partición de Fisher (segmentos de al menos 12 meses, hasta 10 regímenes). El
-número de regímenes se elige con la **regla de codo** de Python y, como variante, con el
-**índice de Calinski-Harabász** que usa `aede()`.
-
-```{r regimenes}
-L <- 12
-mm12 <- apply(scores, 2, mm_causal, w = L)[L:n, ]
-fechas_z <- fechas[L:n]
-dat <- datar(mm12)
-dat$tabla$sce <- round(dat$tabla$sce, 2)
-dat$tabla$reduccion <- round(dat$tabla$reduccion, 3)
-dat$tabla$ch <- round(dat$tabla$ch, 1)
-dat$tabla
-cat("k por regla de codo:", dat$k_codo, "| k por Calinski-Harabász:", dat$k_ch, "\n")
-```
-
-```{r regimenes-paridad}
-cortes_codo <- fechas_corte(dat$res[[as.character(dat$k_codo)]]$cortes, fechas_z)
-cortes_ch <- fechas_corte(dat$res[[as.character(dat$k_ch)]]$cortes, fechas_z)
-reg_py <- read.csv("data/results/09_regimenes_pca.csv")
-data.frame(
-  datacion = c("R: regla de codo", "Python (09): regla de codo", "R: Calinski-Harabász"),
-  k = c(dat$k_codo, nrow(reg_py), dat$k_ch),
-  inicio_de_cada_regimen = c(paste(cortes_codo, collapse = ", "),
-                             paste(reg_py$inicio[-1], collapse = ", "),
-                             paste(cortes_ch, collapse = ", "))
-)
-```
-
-```{r fases}
-# Clasificación de fases como en 09: componente de crédito y regla (umbral 0.25, 18 meses)
-cols_credito <- grep("^Cr.*dito", colnames(df))   # Crédito empresarial, consumo e hipotecario
-stopifnot(length(cols_credito) == 3)
-comp_credito <- rowMeans(estandarizar(df[, cols_credito]))
-clasificar <- function(seg, umbral = 0.25, dur_min = 18) {
-  do.call(rbind, lapply(seq_len(nrow(seg)), function(i) {
-    sel <- fechas >= seg$inicio[i] & fechas <= seg$fin[i]
-    m <- mean(comp_credito[sel]); dur <- sum(sel)
-    fase <- if (dur < dur_min || abs(m) <= umbral) "Transición" else if (m > 0) "Expansión" else "Contracción"
-    epi <- episodios$nombre[episodios$inicio <= seg$fin[i] & episodios$fin >= seg$inicio[i]]
-    data.frame(inicio = format(seg$inicio[i], "%Y-%m"), fin = format(seg$fin[i], "%Y-%m"),
-               meses = dur, componente_credito_medio = round(m, 2), fase = fase,
-               episodios = paste(epi, collapse = ", "))
-  }))
-}
-fases_codo <- clasificar(segmentos(dat$res[[as.character(dat$k_codo)]]$cortes, fechas_z))
-fases_codo
-```
-
-# Autoencoders y LSTM con `torch` para R
-
-```{r dl-aviso, echo = FALSE, results = "asis", eval = !ejecutar_dl}
-cat("> **Sección omitida en esta ejecución:** `torch` para R no está instalado en este equipo.",
-    "Para ejecutarla: `install.packages(\"torch\")` y luego `torch::install_torch()`.\n")
-```
-
-Traducción a `torch` para R de `notebooks/modelos_dl.py`: autoencoder de pesos atados (lineal y
-no lineal) y LSTM-Autoencoder secuencia a secuencia con reconstrucción en orden inverso. Se
-replican el anclaje lineal (Proposición 1), la validación por bloques y la datación con el
-LSTM-AE. Los resultados de redes neuronales no coinciden número a número con Python, porque los
-generadores aleatorios de ambos lenguajes difieren: la paridad se evalúa sobre las conclusiones
-(MSE, RV y cortes), no sobre los pesos.
-
-```{r dl-modelos, eval = ejecutar_dl}
-library(torch)
-
-fijar_semillas <- function(s) { set.seed(s); torch_manual_seed(s) }
-a_tensor <- function(X) torch_tensor(X, dtype = torch_float())
-
-# Autoencoder de pesos atados: dims = c(p, d) (una capa) o c(p, h, d) (dos capas)
-autoencoder_atado <- nn_module(
-  "AutoencoderAtado",
-  initialize = function(dims, activacion = "tanh", dropout = 0) {
-    self$n_capas <- length(dims) - 1
-    self$activacion <- activacion
-    self$W1 <- nn_parameter(nn_init_xavier_uniform_(torch_empty(dims[2], dims[1])))
-    self$b_enc1 <- nn_parameter(torch_zeros(dims[2]))
-    self$b_dec1 <- nn_parameter(torch_zeros(dims[1]))
-    if (self$n_capas == 2) {
-      self$W2 <- nn_parameter(nn_init_xavier_uniform_(torch_empty(dims[3], dims[2])))
-      self$b_enc2 <- nn_parameter(torch_zeros(dims[3]))
-      self$b_dec2 <- nn_parameter(torch_zeros(dims[2]))
-    }
-    self$drop <- nn_dropout(dropout)
-  },
-  act = function(h) if (self$activacion == "tanh") torch_tanh(h) else h,
-  codificar = function(x) {
-    h <- torch_matmul(x, self$W1$t()) + self$b_enc1
-    if (self$n_capas == 2) {
-      h <- self$drop(self$act(h))
-      h <- torch_matmul(h, self$W2$t()) + self$b_enc2   # cuello de botella lineal
-    }
-    h
-  },
-  decodificar = function(z) {
-    h <- z
-    if (self$n_capas == 2) {
-      h <- self$drop(self$act(torch_matmul(h, self$W2) + self$b_dec2))
-    }
-    torch_matmul(h, self$W1) + self$b_dec1
-  },
-  forward = function(x) self$decodificar(self$codificar(x))
-)
-
-# LSTM-Autoencoder (Srivastava, Mansimov & Salakhutdinov, 2015)
-lstm_autoencoder <- nn_module(
-  "LSTMAutoencoder",
-  initialize = function(n_vars, dim_oculta = 16, dim_latente = 3, dropout = 0) {
-    self$enc <- nn_lstm(n_vars, dim_oculta, batch_first = TRUE)
-    self$a_latente <- nn_linear(dim_oculta, dim_latente)
-    self$desde_latente <- nn_linear(dim_latente, dim_oculta)
-    self$dec <- nn_lstm(dim_oculta, dim_oculta, batch_first = TRUE)
-    self$salida <- nn_linear(dim_oculta, n_vars)
-    self$drop <- nn_dropout(dropout)
-  },
-  codificar = function(x) {
-    h <- self$enc(x)[[2]][[1]]                 # estado oculto final: (capas, lote, oculta)
-    self$a_latente(self$drop(h[h$size(1), , ]))
-  },
-  decodificar = function(z, L) {
-    h0 <- torch_tanh(self$desde_latente(z))
-    entrada <- h0$unsqueeze(2)$expand(c(-1, L, -1))   # decodificador no condicionado
-    self$salida(self$drop(self$dec(entrada)[[1]]))
-  },
-  forward = function(x) {
-    rec_invertida <- self$decodificar(self$codificar(x), x$size(2))
-    torch_flip(rec_invertida, dims = 2)       # se devuelve en orden cronológico
-  }
-)
-
-# Ventanas deslizantes (n - L + 1, L, p); la ventana k se fecha en su último mes
-crear_ventanas <- function(X, L) {
-  m <- nrow(X) - L + 1
-  W <- array(0, dim = c(m, L, ncol(X)))
-  for (i in seq_len(m)) W[i, , ] <- X[i:(i + L - 1), ]
-  W
-}
-
-# Índices de la primera dimensión de un tensor 2D o 3D
-filas <- function(t, idx) if (t$dim() == 2) t[idx, ] else t[idx, , ]
-
-# Entrenamiento con Adam, ruido de entrada (denoising) y parada temprana
-entrenar <- function(modelo, X_ent, X_val = NULL, epocas = 2000, lr = 1e-2,
-                     weight_decay = 1e-4, ruido = 0, paciencia = 150, semilla = 42) {
-  fijar_semillas(semilla)
-  X_ent <- a_tensor(X_ent); if (!is.null(X_val)) X_val <- a_tensor(X_val)
-  opt <- optim_adam(modelo$parameters, lr = lr, weight_decay = weight_decay)
-  mejor <- Inf; mejor_estado <- NULL; sin_mejora <- 0
-  for (epoca in seq_len(epocas)) {
-    modelo$train()
-    lote <- filas(X_ent, sample(X_ent$size(1)))
-    entrada <- if (ruido > 0) lote + ruido * torch_randn_like(lote) else lote
-    opt$zero_grad()
-    perdida <- nnf_mse_loss(modelo(entrada), lote)
-    perdida$backward(); opt$step()
-    modelo$eval()
-    monitor <- with_no_grad({
-      ref <- if (is.null(X_val)) X_ent else X_val
-      nnf_mse_loss(modelo(ref), ref)$item()
-    })
-    if (monitor < mejor - 1e-7) {
-      mejor <- monitor; sin_mejora <- 0
-      mejor_estado <- lapply(modelo$state_dict(), function(t) t$clone())
-    } else {
-      sin_mejora <- sin_mejora + 1
-      if (sin_mejora >= paciencia) break
-    }
-  }
-  modelo$load_state_dict(mejor_estado); modelo$eval()
-  invisible(mejor)
-}
-
-# Error de reconstrucción por observación (último paso de la ventana en el LSTM-AE)
-error_reconstruccion <- function(modelo, X) {
-  modelo$eval()
-  with_no_grad({
-    Xt <- a_tensor(X)
-    E <- (modelo(Xt) - Xt)^2
-    if (E$dim() == 3) E <- E[, E$size(2), ]
-    as.numeric(as_array(E$mean(dim = 2)))
-  })
-}
-
-codigos <- function(modelo, X) {
-  modelo$eval(); with_no_grad(as_array(modelo$codificar(a_tensor(X))))
-}
-```
-
-## Anclaje lineal (Proposición 1)
-
-```{r dl-anclaje, eval = ejecutar_dl}
-anclaje_r <- do.call(rbind, lapply(1:5, function(d) {
-  ae <- autoencoder_atado(c(p, d), activacion = "lineal")
-  mse_ae <- entrenar(ae, Z, epocas = 6000, lr = 1e-2, weight_decay = 0, paciencia = 400, semilla = d)
-  pc_d <- pca_basico(Z, d)
-  mse_pca <- mean((Z - pc_d$scores %*% t(pc_d$vectores))^2)
-  W <- t(as_array(ae$W1$detach()))
-  qa <- qr.Q(qr(W)); qb <- qr.Q(qr(pc_d$vectores))
-  angulo <- max(acos(pmin(1, svd(crossprod(qa, qb))$d)) * 180 / pi)
-  data.frame(d = d, mse_ae_lineal = mse_ae, mse_pca = mse_pca, angulo_max_grados = angulo)
-}))
-anclaje_r$mse_pca_python <- anclaje_py$mse_pca
-signif(anclaje_r, 5)
-```
-
-## Validación por bloques: PCA frente al AE no lineal
-
-```{r dl-cv, eval = ejecutar_dl}
-cv_bloques <- function(Xcrudo, d, n_bloques = 5, semillas = 0:2) {
-  bloques <- split(seq_len(nrow(Xcrudo)), cut(seq_len(nrow(Xcrudo)), n_bloques, labels = FALSE))
-  r <- sapply(bloques, function(prueba) {
-    ent <- setdiff(seq_len(nrow(Xcrudo)), prueba)
-    m <- colMeans(Xcrudo[ent, ]); s <- sqrt(colMeans(sweep(Xcrudo[ent, ], 2, m)^2))
-    Xe <- sweep(sweep(Xcrudo[ent, ], 2, m), 2, s, "/")
-    Xp <- sweep(sweep(Xcrudo[prueba, ], 2, m), 2, s, "/")
-    V <- pca_basico(Xe, d)$vectores
-    mse_pca <- mean((Xp - Xp %*% V %*% t(V))^2)
-    mse_ae <- mean(sapply(semillas, function(sm) {
-      fijar_semillas(sm)
-      ae <- autoencoder_atado(c(p, 8, d), activacion = "tanh", dropout = 0.10)
-      corte <- floor(nrow(Xe) * 0.85)
-      entrenar(ae, Xe[1:corte, ], Xe[(corte + 1):nrow(Xe), ], epocas = 3000, lr = 5e-3,
-               weight_decay = 1e-3, ruido = 0.10, paciencia = 200, semilla = sm)
-      mean(error_reconstruccion(ae, Xp))
-    }))
-    c(mse_pca, mse_ae)
-  })
-  rowMeans(r)
-}
-cv_r <- t(sapply(1:5, function(d) cv_bloques(as.matrix(df), d)))
-cv_r <- data.frame(d = 1:5, mse_pca = cv_r[, 1], mse_ae_tanh = cv_r[, 2])
-cv_r$mejora_ae_vs_pca_pct <- 100 * (cv_r$mse_pca - cv_r$mse_ae_tanh) / cv_r$mse_pca
-cv_py <- read.csv("data/results/08_ae_cv_bloques.csv")
-cv_r$mejora_python_pct <- cv_py$mejora_ae_vs_pca_.
-round(cv_r, 3)
-```
-
-## LSTM-Autoencoder y datación de regímenes
-
-```{r dl-lstm, eval = ejecutar_dl}
-D <- 3
-HP_LSTM <- list(epocas = 1500, lr = 5e-3, weight_decay = 1e-3, ruido = 0.05, paciencia = 100)
-W <- crear_ventanas(Z, L)
-corte <- floor(dim(W)[1] * 0.85)
-replicas <- lapply(0:4, function(s) {
-  fijar_semillas(500 + s)
-  m <- lstm_autoencoder(p, 16, D, dropout = 0.20)
-  do.call(entrenar, c(list(m, W[1:corte, , ], W[(corte + 1):dim(W)[1], , ], semilla = 500 + s), HP_LSTM))
-  codigos(m, W)
-})
-rv <- outer(1:5, 1:5, Vectorize(function(i, j) coef_rv(replicas[[i]], replicas[[j]])))
-central <- which.max(rowMeans(rv))
-Z_lstm <- procrustes(replicas[[central]], scores[L:n, ])
-dat_lstm <- datar(Z_lstm)
-data.frame(
-  indicador = c("RV entre réplicas (mediana)", "RV LSTM-AE vs PCA-MM12",
-                "k LSTM (regla de codo)", "k LSTM (Calinski-Harabász)",
-                "Cortes LSTM (regla de codo)"),
-  valor = c(round(median(rv[upper.tri(rv)]), 3), round(coef_rv(replicas[[central]], mm12), 3),
-            dat_lstm$k_codo, dat_lstm$k_ch,
-            paste(fechas_corte(dat_lstm$res[[as.character(dat_lstm$k_codo)]]$cortes, fechas_z),
-                  collapse = ", "))
-)
-```
-
-# Resumen de paridad Python ↔ R
-
-```{r resumen}
-resumen <- data.frame(
-  seccion = c("PCA (Rcamiz vs 08)", "Horn", "Scores y MM12 (05b)", "EPCA réplica (06)",
-              "Datación PCA-MM12 (09)"),
-  criterio = c("Inercia acumulada d=1..5", "Componentes retenidos", "Dif. máx. scores y MM12",
-               "Transiciones detectadas", "k y fechas de corte"),
-  resultado = c(
-    sprintf("dif. máx. %.1e puntos %%", max(abs(vp[1:5, "cum.in"] - anclaje_py$inercia_pca_.))),
-    sprintf("R %d / Python %d", h$retener, d_horn_py),
-    sprintf("dif. máx. %.1e", max(dif)),
-    if (identical(transiciones_r, trans_py)) "idénticas" else "difieren",
-    if (dat$k_codo == nrow(reg_py) && identical(cortes_codo, reg_py$inicio[-1])) "idénticos" else "difieren"
-  )
-)
-resumen
-write.csv(resumen, "data/results/R_paridad_python.csv", row.names = FALSE)
-```
-
-```{r guardar, eval = tiene_aede}
-# Resultados nuevos de la variante del asesor
-write.csv(jerarquia, "data/results/R_hfc_jerarquia.csv")
-write.csv(data.frame(fecha = format(fechas_ehfc[-1], "%Y-%m"), cofenetica = cofen),
-          "data/results/R_ehfc_cofenetica.csv", row.names = FALSE)
-write.csv(data.frame(pesos = c("uniformes", "gaussianos_nsd3"),
-                     k_ch = c(aede_unif$k_ch, aede_gaus$k_ch),
-                     cortes = c(paste(aede_unif$cortes, collapse = " "),
-                                paste(aede_gaus$cortes, collapse = " "))),
-          "data/results/R_aede_cortes.csv", row.names = FALSE)
-write.csv(dat$tabla, "data/results/R_regimenes_criterios.csv", row.names = FALSE)
-```
+En construcción, en este orden: exploración conjunta, PCA, EPCA, HFC, autoencoders y LSTM, y
+síntesis. El código de la versión anterior del documento está en
+`R/anteriores/tesis_ciclo_financiero_v1.Rmd` y se reutilizará en los bloques 3 a 7.
