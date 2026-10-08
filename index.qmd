@@ -157,8 +157,8 @@ Organizado por etapa metodológica, no por notebook individual:
 - [~] **PCA estático** — trimestral (`05`): contaminación por tendencia en
   niveles (r≈0,994 entre PC1 y el tiempo) frente a estructura de régimen
   en datos transformados (r≈0,087). Mensual (227 meses): inercia 50,37 %
-  con d = 3 (notebooks 05b y 08). Pendiente: verificación Rcamiz ↔
-  scikit-learn sobre el dataset mensual.
+  con d = 3 (notebooks 05b y 08). Verificado: scikit-learn reproduce el
+  PCA de Rcamiz en las 17 dimensiones (notebook 07).
 - [ ] **HFC** — pendiente de implementar sobre los datos BCRP.
 - [~] **EPCA / EHFC** — parcial: selección de ventana en exploración
   empírica (notebooks 06a/06b); pendiente adoptar la regla de

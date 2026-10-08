@@ -40,7 +40,6 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
 **Pendientes**
 
 - Evaluar la estabilidad de los cortes de régimen (PCA-MM12 y LSTM) por bootstrap por bloques.
-- Ejecutar la verificación Rcamiz ↔ scikit-learn sobre el dataset mensual.
 - Consolidar la interpretación de todos los resultados antes de presentarlos al asesor.
 
 ## 4–5 de octubre de 2026

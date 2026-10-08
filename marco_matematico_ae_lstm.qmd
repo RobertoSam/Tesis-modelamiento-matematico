@@ -165,8 +165,9 @@ $d = 1,\dots,5$ sobre el dataset mensual transformado:
 Los ángulos principales entre el subespacio del decodificador y el del PCA son a lo sumo
 de 0,21°, atribuibles a la tolerancia de optimización. Tras la SVD interna, las direcciones
 recuperadas tienen $|\cos| \geq 0{,}99999$ con las del PCA. La inercia para $d = 3$ es 50,37 %.
-Falta ejecutar la verificación Rcamiz ↔ scikit-learn sobre este mismo dataset para cerrar
-numéricamente la cadena Rcamiz → scikit-learn → autoencoder lineal.
+El notebook `07` verifica que scikit-learn reproduce el PCA de Rcamiz sobre este mismo dataset
+(valores propios, cargas y scores idénticos hasta el redondeo de punto flotante), con lo que
+la cadena Rcamiz → scikit-learn → autoencoder lineal queda cerrada numéricamente.
 
 ## Identificación y comparación de configuraciones
 

@@ -85,6 +85,8 @@ website:
             text: "06b · Selección de ventana (mensual)"
           - href: notebooks/06_epca.ipynb
             text: "06 · EPCA (mensual)"
+          - href: notebooks/07_verificacion_rcamiz.ipynb
+            text: "07 · Verificación Rcamiz ↔ scikit-learn"
           - href: notebooks/08_autoencoder.ipynb
             text: "08 · Autoencoders"
           - href: notebooks/09_lstm_autoencoder.ipynb
