@@ -1,0 +1,4 @@
+metodo,mediana_fuera_de_episodios,falsas_alarmas_%,mediana_Taper tantrum,sensibilidad_Taper tantrum_%,mediana_COVID-19,sensibilidad_COVID-19_%
+pca,1.06,55.56,2.09,100.0,1.76,100.0
+ae,1.85,90.12,2.77,100.0,5.66,100.0
+lstm,1.49,80.86,2.11,100.0,4.4,100.0
