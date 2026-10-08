@@ -1,5 +1,10 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "papers/*.qmd"
+    - "notebooks/*.ipynb"
+    - "!R/"
 website:
   title: "Tesis — Ciclo Financiero Perú"
   navbar:

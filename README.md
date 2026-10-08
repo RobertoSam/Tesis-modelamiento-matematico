@@ -31,6 +31,18 @@ pip install torch
 
 Basta la versión CPU. Las funciones comunes están en `notebooks/modelos_dl.py`.
 
+## Versión en R
+
+`R/tesis_ciclo_financiero.Rmd` reproduce la pipeline en R sobre los mismos datos procesados y
+agrega la variante con las herramientas del asesor (HFC con `clahfac()`, EPCA con `aede()`,
+HFC evolutiva y selección de regímenes con Calinski-Harabász). Requiere los paquetes `Rcamiz` y
+`AedeClahfac`, que no se distribuyen en este repositorio; las secciones de autoencoders y LSTM
+requieren `torch` para R. No forma parte del sitio web.
+
+```
+Rscript -e "rmarkdown::render('R/tesis_ciclo_financiero.Rmd')"
+```
+
 ## Orden de ejecución del pipeline
 
 ```

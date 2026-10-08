@@ -1,0 +1,6 @@
+"seccion","criterio","resultado"
+"PCA (Rcamiz vs 08)","Inercia acumulada d=1..5","dif. máx. 4.0e-11 puntos %"
+"Horn","Componentes retenidos","R 4 / Python 4"
+"Scores y MM12 (05b)","Dif. máx. scores y MM12","dif. máx. 1.8e-14"
+"EPCA réplica (06)","Transiciones detectadas","idénticas"
+"Datación PCA-MM12 (09)","k y fechas de corte","idénticos"
