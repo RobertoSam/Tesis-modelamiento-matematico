@@ -15,15 +15,30 @@ params:
   ejecutar_dl: "auto"        # "auto" = ejecuta AE/LSTM solo si torch para R está instalado
   dl_walkforward: false      # validación walk-forward del LSTM (lenta)
   semilla: 42
+  raiz_repo: ""              # ruta del repositorio; vacío = se detecta automáticamente
 ---
 
 ```{r configuracion, include = FALSE}
-# Raíz del repositorio: se sube desde la carpeta del Rmd hasta encontrar _quarto.yml
-raiz <- normalizePath(getwd())
-while (!file.exists(file.path(raiz, "_quarto.yml"))) {
-  padre <- dirname(raiz)
-  if (padre == raiz) stop("No se encontró _quarto.yml: ejecutar dentro del repositorio")
-  raiz <- padre
+# Raíz del repositorio. Se usa params$raiz_repo si se indica; si no, se sube desde la
+# carpeta del Rmd (y desde el directorio de trabajo) hasta encontrar _quarto.yml
+buscar_raiz <- function(desde) {
+  actual <- normalizePath(desde, mustWork = FALSE)
+  repeat {
+    if (file.exists(file.path(actual, "_quarto.yml"))) return(actual)
+    padre <- dirname(actual)
+    if (padre == actual) return(NA_character_)
+    actual <- padre
+  }
+}
+candidatos <- c(params$raiz_repo, knitr::current_input(dir = TRUE), getwd())
+candidatos <- candidatos[nzchar(candidatos) & !is.na(candidatos)]
+raices <- vapply(candidatos, function(d) buscar_raiz(if (dir.exists(d)) d else dirname(d)),
+                 character(1))
+raiz <- raices[!is.na(raices)][1]
+if (is.na(raiz)) {
+  stop("No se encontró el repositorio de la tesis (archivo _quarto.yml). ",
+       "Abre el Rmd desde la carpeta R/ del repositorio clonado, o indica la ruta con ",
+       "rmarkdown::render('tesis_ciclo_financiero.Rmd', params = list(raiz_repo = '/ruta/al/repo'))")
 }
 knitr::opts_knit$set(root.dir = raiz)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
