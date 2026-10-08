@@ -14,11 +14,12 @@ BCRP en un solo lugar de consulta. El informe de avance completo está
 disponible como descarga en la carpeta `docs/` del repositorio.
 :::
 
-::: {.callout-tip title="Última sesión: 4–5 de octubre de 2026"}
-Se implementaron Autoencoders y LSTM con su marco matemático sobre el dataset mensual
-(227 meses × 17 variables) y se agregaron 9 fichas. EPCA detecta el inicio del taper tantrum
-(2013-05); la datación con LSTM depende de una regla de codo frágil y se usa el PCA suavizado
-como referencia provisional. Ver la [línea temporal](linea_temporal.qmd).
+::: {.callout-tip title="Última sesión: 7 de octubre de 2026"}
+Se depuraron el sitio y el repositorio para que todas las cifras correspondan al dataset
+mensual vigente (227 × 17), validado contra la API del BCRP. El dataset trimestral queda en
+re-ejecución con un nuevo control de cobertura, y la datación de regímenes con PCA suavizado
+pasa a ser referencia provisional hasta evaluar su estabilidad. Ver la
+[línea temporal](linea_temporal.qmd).
 :::
 
 ## Resumen del avance

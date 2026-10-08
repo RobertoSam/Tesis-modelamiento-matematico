@@ -13,6 +13,32 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 7 de octubre de 2026
+
+**Datos**
+
+- Se retiraron del sitio, el README, las fichas y los notebooks todas las referencias a la
+  corrida previa con datos incompletos. Todas las cifras quedan referidas al dataset mensual
+  vigente: 227 meses × 17 variables (2007-02 a 2025-12).
+- Validación contra la fuente: la media mensual del EMBI (serie diaria PD04709XD) de
+  septiembre de 2008, 2015 y 2022 coincide exactamente con la consulta directa a la API del BCRP.
+- El dataset trimestral (`04`) tiene incompleto el EMBI del tercer trimestre. Se agregó a `04`
+  un control de cobertura mensual que detiene el pipeline si algún mes no tiene datos
+  diarios. `02`, `04`, `05` y `06a` quedan marcados como pendientes de re-ejecución.
+
+**Modelos**
+
+- La datación de regímenes con PCA suavizado (MM12) pasa a ser **referencia provisional**:
+  la estabilidad de esta datación y la del LSTM se evaluará por bootstrap por bloques.
+- La equivalencia Rcamiz ↔ scikit-learn se reporta como pendiente sobre el dataset de 227 meses.
+
+**Pendientes**
+
+- Re-ejecutar localmente `04 → 02 → 05 → 06a` con la serie diaria del EMBI completa.
+- Evaluar la estabilidad de los cortes de régimen (PCA-MM12 y LSTM) por bootstrap por bloques.
+- Ejecutar la verificación Rcamiz ↔ scikit-learn sobre el dataset mensual.
+- Comentar con el asesor el carácter provisional de la datación de referencia.
+
 ## 4–5 de octubre de 2026
 
 **Datos**
