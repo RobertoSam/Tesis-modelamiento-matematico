@@ -22,9 +22,14 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
   vigente: 227 meses × 17 variables (2007-02 a 2025-12).
 - Validación contra la fuente: la media mensual del EMBI (serie diaria PD04709XD) de
   septiembre de 2008, 2015 y 2022 coincide exactamente con la consulta directa a la API del BCRP.
-- El dataset trimestral (`04`) tiene incompleto el EMBI del tercer trimestre. Se agregó a `04`
-  un control de cobertura mensual que detiene el pipeline si algún mes no tiene datos
-  diarios. `02`, `04`, `05` y `06a` quedan marcados como pendientes de re-ejecución.
+- El dataset trimestral (`04`) tenía incompleto el EMBI del tercer trimestre. Se agregó a `04`
+  un control de cobertura mensual que detiene el pipeline si algún mes no tiene datos diarios
+  (verificado: 276 meses, 2003-01 a 2025-12). Se regeneró el trimestral (EMBI 2008-T3: 216,2)
+  y se re-ejecutaron `02`, `04`, `05` y `06a`, sin errores.
+- Efecto en resultados: solo cambia la columna del EMBI. PCA trimestral transformado: PC1
+  30,5 %, 3 PCs 61,8 %, r(PC1, tiempo) = 0,087; niveles: r = 0,994. La selección de ventana
+  (`06a`) varía en milésimas y conserva el mismo número de caídas por ventana: las
+  conclusiones no cambian.
 
 **Modelos**
 
@@ -34,7 +39,6 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
 
 **Pendientes**
 
-- Re-ejecutar localmente `04 → 02 → 05 → 06a` con la serie diaria del EMBI completa.
 - Evaluar la estabilidad de los cortes de régimen (PCA-MM12 y LSTM) por bootstrap por bloques.
 - Ejecutar la verificación Rcamiz ↔ scikit-learn sobre el dataset mensual.
 - Comentar con el asesor el carácter provisional de la datación de referencia.
