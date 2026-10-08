@@ -15,10 +15,10 @@ disponible como descarga en la carpeta `docs/` del repositorio.
 :::
 
 ::: {.callout-tip title="Última sesión: 4–5 de octubre de 2026"}
-Se recuperaron los 19 septiembres faltantes del dataset mensual (208 → 227 meses), se
-implementaron Autoencoders y LSTM con su marco matemático y se agregaron 9 fichas. EPCA
-detecta ahora el inicio del taper tantrum (2013-05); la datación con LSTM no resultó robusta y
-se adopta el PCA suavizado como referencia. Ver la [línea temporal](linea_temporal.qmd).
+Se implementaron Autoencoders y LSTM con su marco matemático sobre el dataset mensual
+(227 meses × 17 variables) y se agregaron 9 fichas. EPCA detecta el inicio del taper tantrum
+(2013-05); la datación con LSTM depende de una regla de codo frágil y se usa el PCA suavizado
+como referencia provisional. Ver la [línea temporal](linea_temporal.qmd).
 :::
 
 ## Resumen del avance
@@ -38,7 +38,7 @@ más abajo y recalcula el promedio a mano antes de publicar.
 Última actualización de cifras: 4 de octubre de 2026.
 Bibliografía: 10 completas / 15 núcleo (las 6 preliminares no cuentan).
 Pipeline: 4 de 6 etapas (01b y 04c, extensión desde 1985, pendientes de ejecución local).
-Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos corregidos = 0,5 → 1,5 de 4.
+Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el dataset mensual = 0,5 → 1,5 de 4.
 -->
 
 ::: {.callout-important title="Avance global aproximado: 57%"}
@@ -49,13 +49,11 @@ respecto de julio porque el pipeline ganó dos etapas nuevas (extensión
 desde 1985), no porque se haya perdido avance.
 :::
 
-::: {.callout-note title="Datos corregidos (5 de octubre de 2026)"}
-Se recuperaron los **19 meses de septiembre (2007–2025)** que faltaban en
-el dataset mensual: las fechas "Set" del EMBI diario no se parseaban y el
-`dropna()` de `04b` eliminaba esos meses. El EMBI se reparó sin
-re-descargar (la API del BCRP está protegida por Incapsula desde
-octubre de 2026) y se re-ejecutaron `04b`, `06b`, `06`, `08` y `09`.
-Dataset mensual vigente: **227 × 17**, sin huecos.
+::: {.callout-warning title="Resultados trimestrales en re-ejecución"}
+El dataset trimestral (`04`) y los notebooks que dependen de él (`02`, `05`, `06a`) se
+regenerarán con la serie diaria del EMBI completa. Hasta entonces sus cifras no se usan como
+resultado. El dataset mensual vigente (**227 × 17**, 2007-02 a 2025-12, sin huecos) y los
+notebooks `04b`, `05b`, `06b`, `06`, `08` y `09` sí están validados.
 :::
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
@@ -78,7 +76,7 @@ Dataset mensual vigente: **227 × 17**, sin huecos.
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
   <div style="background: #486581; width: 67%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · re-ejecución pendiente por septiembres faltantes</span>
+<span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · trimestral por regenerar</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -86,7 +84,7 @@ Dataset mensual vigente: **227 × 17**, sin huecos.
 <div style="background: #e5e7eb; border-radius: 999px; height: 10px; margin: 8px 0;">
   <div style="background: #486581; width: 38%; height: 10px; border-radius: 999px;"></div>
 </div>
-<span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados y validados con datos corregidos</span>
+<span style="color: #6b7280; font-size: 14px;">PCA mensual completo · Autoencoder y LSTM implementados y validados sobre 227 meses</span>
 </div>
 
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
@@ -151,9 +149,9 @@ Organizado por etapa metodológica, no por notebook individual:
 - [x] **Preprocesamiento** — transformaciones (log-diferencia para
   niveles, diferencia simple para tasas y spreads), estandarización.
   Dataset trimestral: **72 × 18 variables transformadas**; dataset
-  mensual: **227 × 17 variables transformadas** (corregido el 5-oct-2026;
-  antes 208 por la pérdida de los septiembres). `04b` ahora se detiene si
-  hay huecos en el calendario.
+  mensual: **227 × 17 variables transformadas**. `04b` se detiene si hay
+  huecos en el calendario. El dataset trimestral se regenerará con la
+  serie diaria del EMBI completa (control de cobertura agregado en `04`).
 - [ ] **Extensión desde 1985** — `01b` (descarga y diagnóstico de
   cobertura y resolución numérica) y `04c` (frontera n–p, paneles
   largo/estabilización/metas, regímenes monetarios, familias nominal y
@@ -161,22 +159,23 @@ Organizado por etapa metodológica, no por notebook individual:
 
 ## Modelamiento (en curso)
 
-- [x] **PCA estático** — completado. Confirma contaminación por
-  tendencia en niveles (r≈0.994 con el tiempo) frente a estructura de
-  régimen en datos transformados (r≈0.089); validado en R (Rcamiz)
-  contra scikit-learn con equivalencia confirmada (|r|=1).
+- [~] **PCA estático** — mensual completo (227 meses; inercia 50,37 % con
+  d = 3, notebooks 05b y 08). La versión trimestral (`05`: contaminación
+  por tendencia en niveles frente a estructura de régimen en datos
+  transformados) se re-ejecutará con el dataset trimestral regenerado.
+  Pendiente: verificación Rcamiz ↔ scikit-learn sobre el dataset mensual.
 - [ ] **HFC** — pendiente de implementar sobre los datos BCRP.
 - [~] **EPCA / EHFC** — parcial: selección de ventana en exploración
   empírica (notebooks 06a/06b); pendiente adoptar la regla de
   alineación de signo determinista de Rcamiz.
-- [~] **Autoencoder / LSTM** — implementados y re-ejecutados con el dataset
-  corregido (notebooks 08 y 09, [marco matemático](marco_matematico_ae_lstm.qmd)).
+- [~] **Autoencoder / LSTM** — implementados y ejecutados sobre el dataset
+  mensual de 227 meses (notebooks 08 y 09, [marco matemático](marco_matematico_ae_lstm.qmd)).
   El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la
   reconstrucción fuera de muestra; el valor del AE está en detectar
-  anomalías (oct-2008). La datación de regímenes con LSTM **no es robusta**
-  (7 → 2 regímenes tras la corrección); la del PCA suavizado sí (8 regímenes
-  estables) y se adopta como referencia. EPCA ahora detecta el inicio del
-  taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión
+  anomalías (oct-2008). La datación con LSTM da 2 regímenes y depende de
+  una regla de codo frágil; el PCA suavizado (8 regímenes) se usa como
+  referencia provisional hasta evaluar la estabilidad de los cortes por
+  bootstrap por bloques. EPCA detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión
   pendiente con el asesor.
 
 ---

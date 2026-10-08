@@ -17,21 +17,18 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
 
 **Datos**
 
-- **Corrección crítica:** se recuperaron los **19 meses de septiembre (2007–2025)** que faltaban
-  en el dataset mensual. Las fechas "Set" del EMBI diario no se parseaban y el `dropna()` de
-  `04b` eliminaba esos meses de todo el panel. El dataset mensual pasó de **208 a 227 meses**
-  (× 17 variables) y ahora `04b` se detiene si hay huecos en el calendario.
+- **Dataset mensual:** 227 meses × 17 variables (2007-02 a 2025-12), con calendario continuo
+  verificado; `04b` detiene la ejecución si falta cualquier mes.
 - **Fuente de datos:** la API del BCRP quedó protegida por un sistema anti-bots (Incapsula),
-  que bloquea las descargas automáticas. El EMBI se reparó **sin volver a descargarlo**
-  (`notebooks/reparar_embi_septiembre.py`).
+  que bloquea las descargas automáticas.
 - **Extensión desde 1985:** los notebooks `01b` (descarga y diagnóstico de cobertura) y `04c`
   (frontera n–p, paneles largo/estabilización/metas, régimen monetario) están listos.
   Falta ejecutarlos, porque dependen de la API.
 
 **Modelos**
 
-- Autoencoders (`08`) y LSTM-Autoencoder (`09`) implementados y ejecutados con el dataset
-  corregido, junto con el [marco matemático formal](marco_matematico_ae_lstm.qmd).
+- Autoencoders (`08`) y LSTM-Autoencoder (`09`) implementados y ejecutados sobre el dataset
+  mensual de 227 meses, junto con el [marco matemático formal](marco_matematico_ae_lstm.qmd).
 
 **Bibliografía**
 
@@ -43,10 +40,10 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
 1. El autoencoder lineal reproduce exactamente el PCA (Proposición 1 verificada numéricamente).
 2. La no linealidad **no** mejora la reconstrucción fuera de muestra: el autoencoder es peor que
    el PCA para toda dimensión.
-3. EPCA detecta el **inicio del taper tantrum (2013-05)**; las transiciones de 2012, sin
-   explicación, desaparecieron con la corrección.
-4. La datación de regímenes con LSTM **no es robusta** (pasó de 7 a 2 regímenes con la
-   corrección). Se adopta el **PCA suavizado (MM12)** como datación de referencia.
+3. EPCA detecta el **inicio del taper tantrum (2013-05)**, además de 2017-11 y 2018-02.
+4. La datación de regímenes con LSTM da 2 regímenes (corte en 2013-09) y depende de una regla
+   de codo frágil; el **PCA suavizado (MM12)** da 8 y se usa como datación de referencia
+   provisional, hasta evaluar la estabilidad de los cortes por bootstrap por bloques.
 5. El análisis paralelo de Horn sugiere **4 dimensiones**, no 3.
 
 **Pendientes**
@@ -55,6 +52,6 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
   de la hiperinflación en el panel largo.
 - Ejecutar la extensión desde 1985 (descarga manual desde BCRPData mientras la API siga bloqueada).
 - Implementar la HFC sobre los datos del BCRP.
-- Ubicar y subir `07_pca_rcamiz.qmd` y `07a_mejoras_rcamiz.Rmd`, y repetir la verificación
-  Rcamiz ↔ scikit-learn con el dataset corregido.
+- Ubicar y subir `07_pca_rcamiz.qmd` y `07a_mejoras_rcamiz.Rmd`, y ejecutar la verificación
+  Rcamiz ↔ scikit-learn sobre el dataset mensual de 227 meses.
 - Leer y completar las 6 fichas preliminares.

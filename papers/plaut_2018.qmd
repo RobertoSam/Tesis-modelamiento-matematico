@@ -48,7 +48,7 @@ Propone recuperar las direcciones principales mediante una SVD de los pesos del 
 
 ### Aporte
 
-- Útil como verificación técnica. En la tesis no aporta eficiencia (n = 208), sino una **prueba de consistencia** entre el autoencoder y el PCA.
+- Útil como verificación técnica. En la tesis no aporta eficiencia (n = 227), sino una **prueba de consistencia** entre el autoencoder y el PCA.
 
 ### Limitaciones (relevantes para la adaptación)
 

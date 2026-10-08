@@ -31,9 +31,10 @@ pip install torch
 
 Basta la versión CPU. Las funciones comunes están en `notebooks/modelos_dl.py`.
 
-## Orden de ejecución tras la corrección de septiembre (oct-2026)
+## Orden de ejecución del pipeline
 
 ```
-01_extraccion_bcrp → 04b_preprocesamiento_mensual → 06b → 06_epca → 08_autoencoder → 09_lstm_autoencoder
+01_extraccion_bcrp → 04_preprocesamiento → 02_carga_y_verificacion → 05_pca → 06a
+01_extraccion_bcrp → 04b_preprocesamiento_mensual → 05b → 06b → 06_epca → 08_autoencoder → 09_lstm_autoencoder
 01b_extraccion_extendida_1985 → 04c_preprocesamiento_extendido
 ```

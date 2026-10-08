@@ -60,7 +60,7 @@ Análisis de los puntos críticos de la función de error. Se muestra que el mí
 ### Limitaciones (relevantes para la adaptación)
 
 - Resultado limitado al caso lineal; no dice nada sobre redes con activaciones no lineales.
-- Con n = 208, las garantías asintóticas sobre la superficie de error no sustituyen la verificación numérica, ya realizada en 08.
+- Con n = 227, las garantías asintóticas sobre la superficie de error no sustituyen la verificación numérica, ya realizada en 08.
 
 ## 7. Referencias internas relevantes
 
