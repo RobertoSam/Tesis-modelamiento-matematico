@@ -293,6 +293,10 @@ window.Quarto = {
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./notebooks/07_verificacion_rcamiz.html">
+ <span class="dropdown-text">07 · Verificación Rcamiz ↔︎ scikit-learn</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./notebooks/08_autoencoder.html">
  <span class="dropdown-text">08 · Autoencoders</span></a>
   </li>  
@@ -593,7 +597,7 @@ E(A) = \frac{1}{n}\sum_t \lVert X_t - A^\top A X_t\rVert^2
 </tr>
 </tbody>
 </table>
-<p>Los ángulos principales entre el subespacio del decodificador y el del PCA son a lo sumo de 0,21°, atribuibles a la tolerancia de optimización. Tras la SVD interna, las direcciones recuperadas tienen <span class="math inline">\(|\cos| \geq 0{,}99999\)</span> con las del PCA. La inercia para <span class="math inline">\(d = 3\)</span> es 50,37 %. Falta ejecutar la verificación Rcamiz ↔︎ scikit-learn sobre este mismo dataset para cerrar numéricamente la cadena Rcamiz → scikit-learn → autoencoder lineal.</p>
+<p>Los ángulos principales entre el subespacio del decodificador y el del PCA son a lo sumo de 0,21°, atribuibles a la tolerancia de optimización. Tras la SVD interna, las direcciones recuperadas tienen <span class="math inline">\(|\cos| \geq 0{,}99999\)</span> con las del PCA. La inercia para <span class="math inline">\(d = 3\)</span> es 50,37 %. El notebook <code>07</code> verifica que scikit-learn reproduce el PCA de Rcamiz sobre este mismo dataset (valores propios, cargas y scores idénticos hasta el redondeo de punto flotante), con lo que la cadena Rcamiz → scikit-learn → autoencoder lineal queda cerrada numéricamente.</p>
 </section>
 <section id="identificación-y-comparación-de-configuraciones" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="identificación-y-comparación-de-configuraciones"><span class="header-section-number">3.4</span> Identificación y comparación de configuraciones</h2>

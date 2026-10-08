@@ -300,6 +300,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../notebooks/07_verificacion_rcamiz.html">
+ <span class="dropdown-text">07 · Verificación Rcamiz ↔︎ scikit-learn</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../notebooks/08_autoencoder.html">
  <span class="dropdown-text">08 · Autoencoders</span></a>
   </li>  
@@ -624,7 +628,7 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong> Con d = 3 la inercia retenida es 50,37 % (la verificación Rcamiz ↔︎ scikit-learn de <code>07_pca_rcamiz</code> está pendiente de ejecutarse sobre este mismo dataset). El AE lineal alcanza el mismo error y el mismo subespacio (ángulos de centésimas de grado, atribuibles a la tolerancia de optimización), y la SVD interna recupera las direcciones del PCA con |cos| ≈ 1. El autoencoder es, por tanto, una <strong>generalización estricta</strong> del PCA de la cadena metodológica, no un método ajeno a ella.</p>
+<p><strong>Lectura.</strong> Con d = 3 la inercia retenida es 50,37 % (idéntica a la de Rcamiz sobre este mismo dataset; ver <code>07_verificacion_rcamiz</code>). El AE lineal alcanza el mismo error y el mismo subespacio (ángulos de centésimas de grado, atribuibles a la tolerancia de optimización), y la SVD interna recupera las direcciones del PCA con |cos| ≈ 1. El autoencoder es, por tanto, una <strong>generalización estricta</strong> del PCA de la cadena metodológica, no un método ajeno a ella.</p>
 </section>
 <section id="aporta-la-no-linealidad-validación-cruzada-por-bloques-temporales" class="level2">
 <h2 class="anchored" data-anchor-id="aporta-la-no-linealidad-validación-cruzada-por-bloques-temporales">4. ¿Aporta la no linealidad? Validación cruzada por bloques temporales</h2>
@@ -1287,7 +1291,7 @@ dtype: float64</code></pre>
 <section id="conclusiones-dataset-mensual-227-meses" class="level2">
 <h2 class="anchored" data-anchor-id="conclusiones-dataset-mensual-227-meses">9. Conclusiones (dataset mensual: 227 meses)</h2>
 <ol type="1">
-<li><strong>Anclaje confirmado.</strong> El autoencoder lineal atado reproduce el PCA: MSE idéntico para d = 1…5, ángulos principales ≤ 0,21° y direcciones recuperadas con |cos| ≥ 0,99999. Con d = 3 la inercia es <strong>50,37 %</strong>; falta la verificación Rcamiz ↔︎ scikit-learn sobre este mismo dataset.</li>
+<li><strong>Anclaje confirmado.</strong> El autoencoder lineal atado reproduce el PCA: MSE idéntico para d = 1…5, ángulos principales ≤ 0,21° y direcciones recuperadas con |cos| ≥ 0,99999. Con d = 3 la inercia es <strong>50,37 %</strong>, idéntica a la de Rcamiz (<code>07</code>): la cadena Rcamiz → scikit-learn → autoencoder lineal queda cerrada.</li>
 <li><strong>Contradicción a resolver: Horn retiene 4 dimensiones</strong>, no 3 (PC4: 1,466 &gt; 1,304; inercia 59,0 %). Decidir con el asesor el criterio de retención antes de fijar d en <code>05</code>, <code>06</code> y <code>07</code>.</li>
 <li><strong>La no linealidad no mejora la reconstrucción fuera de muestra.</strong> El AE no lineal es peor que el PCA para todo d (−4 % con d = 1, −14 % con d = 3, −41 % con d = 5); el pre-entrenamiento no lo corrige. Con 227 meses, la parsimonia favorece al PCA como compresor.</li>
 <li><strong>No estacionariedad estructural.</strong> El MSE fuera de muestra del PCA con d = 3 (1,08) supera la varianza total por variable: la estructura de un bloque temporal no se transfiere a otro.</li>

@@ -262,6 +262,10 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">06 · EPCA (mensual)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./notebooks/07_verificacion_rcamiz.html">
+ <span class="dropdown-text">07 · Verificación Rcamiz ↔︎ scikit-learn</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./notebooks/08_autoencoder.html">
  <span class="dropdown-text">08 · Autoencoders</span></a>
   </li>  
@@ -433,7 +437,7 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el datase
 <section id="modelamiento-en-curso" class="level2">
 <h2 class="anchored" data-anchor-id="modelamiento-en-curso">Modelamiento (en curso)</h2>
 <ul>
-<li>[~] <strong>PCA estático</strong> — trimestral (<code>05</code>): contaminación por tendencia en niveles (r≈0,994 entre PC1 y el tiempo) frente a estructura de régimen en datos transformados (r≈0,087). Mensual (227 meses): inercia 50,37 % con d = 3 (notebooks 05b y 08). Pendiente: verificación Rcamiz ↔︎ scikit-learn sobre el dataset mensual.</li>
+<li>[~] <strong>PCA estático</strong> — trimestral (<code>05</code>): contaminación por tendencia en niveles (r≈0,994 entre PC1 y el tiempo) frente a estructura de régimen en datos transformados (r≈0,087). Mensual (227 meses): inercia 50,37 % con d = 3 (notebooks 05b y 08). Verificado: scikit-learn reproduce el PCA de Rcamiz en las 17 dimensiones (notebook 07).</li>
 <li><label><input type="checkbox"><strong>HFC</strong> — pendiente de implementar sobre los datos BCRP.</label></li>
 <li>[~] <strong>EPCA / EHFC</strong> — parcial: selección de ventana en exploración empírica (notebooks 06a/06b); pendiente adoptar la regla de alineación de signo determinista de Rcamiz.</li>
 <li>[~] <strong>Autoencoder / LSTM</strong> — implementados y ejecutados sobre el dataset mensual de 227 meses (notebooks 08 y 09, <a href="./marco_matematico_ae_lstm.html">marco matemático</a>). El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la reconstrucción fuera de muestra; el valor del AE está en detectar anomalías (oct-2008). La datación con LSTM da 2 regímenes y depende de una regla de codo frágil; el PCA suavizado (8 regímenes) se usa como referencia provisional hasta evaluar la estabilidad de los cortes por bootstrap por bloques. EPCA detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión pendiente con el asesor.</li>
