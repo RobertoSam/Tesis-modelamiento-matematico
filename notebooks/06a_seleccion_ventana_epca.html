@@ -362,22 +362,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Criterio operacionalizado directamente desde el marco conceptual (sección 2.4 y 6.4):</strong> - <em>Estabilidad temporal:</em> correlación entre cargas factoriales de ventanas sucesivas (familia de evidencia “factorial”). - <em>Sensibilidad:</em> número de caídas de estabilidad (posibles transiciones) detectadas a lo largo de la serie. - <em>Validación externa:</em> si las caídas de estabilidad coinciden con episodios financieros documentados (crisis 2008-2009, taper tantrum 2013, pandemia 2020) – ver criterio de interpretabilidad, sección 6.1.</p>
 <p><strong>No modifica ningún archivo de <code>data/processed/</code> – solo lee.</strong></p>
 <p><strong>Salidas:</strong> - <code>reports/figures/06a_*.png</code> - <code>data/results/06a_seleccion_ventana_resumen.csv</code></p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Pendiente de re-ejecución">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Pendiente de re-ejecución
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Este notebook depende del dataset trimestral de <code>04_preprocesamiento</code>, que se regenerará con la serie diaria del EMBI completa (control de cobertura agregado en <code>04</code>). Las salidas mostradas abajo no deben usarse como resultado hasta la re-ejecución.</p>
-</div>
-</div>
 <section id="librerías-y-carga-de-datos" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos">1. Librerías y carga de datos</h2>
-<div id="049ae791" class="cell" data-execution_count="1">
+<div id="049ae791" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:07.770033Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:07.769726Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:09.459668Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:09.459369Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -410,7 +397,7 @@ Niveles:      73 trimestres x 20 variables</code></pre>
 <section id="función-de-análisis-de-sensibilidad-por-tamaño-de-ventana" class="level2">
 <h2 class="anchored" data-anchor-id="función-de-análisis-de-sensibilidad-por-tamaño-de-ventana">2. Función de análisis de sensibilidad por tamaño de ventana</h2>
 <p>Para cada tamaño de ventana <code>w</code>: 1. Se generan sub-ventanas con paso fijo de 2 trimestres (semestral). 2. En cada ventana se re-estandariza localmente y se ajusta PCA (equivalente a un PCA sobre la matriz de correlación de esa ventana, consistente con el enfoque de Camiz, Maulucci &amp; Roig, 2010). 3. Se compara la carga factorial del componente de interés entre ventanas sucesivas (alineando el signo, ya que el signo de un componente principal es arbitrario). 4. La correlación entre cargas sucesivas es la métrica de estabilidad.</p>
-<div id="517e2735" class="cell" data-execution_count="2">
+<div id="517e2735" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:09.461394Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:09.461270Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:09.464706Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:09.464389Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analizar_ventanas(df, tamanos_ventana, paso<span class="op">=</span><span class="dv">2</span>, componente_interes<span class="op">=</span><span class="dv">0</span>, n_componentes<span class="op">=</span><span class="dv">3</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    componente_interes: indice del componente a rastrear (0 = PC1, 1 = PC2, ...)</span></span>
@@ -461,7 +448,7 @@ Niveles:      73 trimestres x 20 variables</code></pre>
 </section>
 <section id="ejecutar-la-grilla-de-tamaños-de-ventana-datos-transformados" class="level2">
 <h2 class="anchored" data-anchor-id="ejecutar-la-grilla-de-tamaños-de-ventana-datos-transformados">3. Ejecutar la grilla de tamaños de ventana (datos transformados)</h2>
-<div id="f83b963c" class="cell" data-execution_count="3">
+<div id="f83b963c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:09.466241Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:09.466146Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:09.609515Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:09.609181Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grilla acotada por dos limites:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - MINIMO: debe cumplir n &gt; p (p = numero de variables, ~16 en el dataset</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   transformado) para que la matriz de correlacion no sea singular. Se usa</span></span>
@@ -482,11 +469,11 @@ Niveles:      73 trimestres x 20 variables</code></pre>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Ventana </span><span class="sc">{</span>w<span class="sc">}</span><span class="ss"> trimestres: </span><span class="sc">{</span>r[<span class="st">"n_ventanas"</span>]<span class="sc">}</span><span class="ss"> ventanas generadas, '</span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f'estabilidad promedio = </span><span class="sc">{</span>np<span class="sc">.</span>mean(r[<span class="st">"estabilidad"</span>])<span class="sc">:.3f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Ventana 20 trimestres: 27 ventanas generadas, estabilidad promedio = 0.885
-Ventana 24 trimestres: 25 ventanas generadas, estabilidad promedio = 0.921
-Ventana 28 trimestres: 23 ventanas generadas, estabilidad promedio = 0.913
-Ventana 32 trimestres: 21 ventanas generadas, estabilidad promedio = 0.895
-Ventana 36 trimestres: 19 ventanas generadas, estabilidad promedio = 0.898
+<pre><code>Ventana 20 trimestres: 27 ventanas generadas, estabilidad promedio = 0.884
+Ventana 24 trimestres: 25 ventanas generadas, estabilidad promedio = 0.923
+Ventana 28 trimestres: 23 ventanas generadas, estabilidad promedio = 0.914
+Ventana 32 trimestres: 21 ventanas generadas, estabilidad promedio = 0.897
+Ventana 36 trimestres: 19 ventanas generadas, estabilidad promedio = 0.899
 Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code></pre>
 </div>
 </div>
@@ -497,7 +484,7 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <li><strong>Estabilidad promedio:</strong> más alta = ventanas más consistentes entre sí (menos sensible a cambios reales, riesgo de “aplanar” transiciones).</li>
 <li><strong>Sensibilidad:</strong> número de caídas de estabilidad por debajo de un umbral (promedio - 1 desviación estándar) = posibles transiciones detectadas. Más caídas no es necesariamente mejor – puede ser ruido.</li>
 </ul>
-<div id="c4dbcc63" class="cell" data-execution_count="4">
+<div id="c4dbcc63" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:09.611305Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:09.611122Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:09.619384Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:09.619111Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resumen <span class="op">=</span> []</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w, r <span class="kw">in</span> resultados_transf.items():</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    estab <span class="op">=</span> np.array(r[<span class="st">'estabilidad'</span>])</span>
@@ -536,8 +523,8 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <td>20</td>
 <td>5.0</td>
 <td>27</td>
-<td>0.885</td>
-<td>0.228</td>
+<td>0.884</td>
+<td>0.229</td>
 <td>3</td>
 </tr>
 <tr class="even">
@@ -545,8 +532,8 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <td>24</td>
 <td>6.0</td>
 <td>25</td>
-<td>0.921</td>
-<td>0.149</td>
+<td>0.923</td>
+<td>0.146</td>
 <td>4</td>
 </tr>
 <tr class="odd">
@@ -554,8 +541,8 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <td>28</td>
 <td>7.0</td>
 <td>23</td>
-<td>0.913</td>
-<td>0.179</td>
+<td>0.914</td>
+<td>0.176</td>
 <td>3</td>
 </tr>
 <tr class="even">
@@ -563,8 +550,8 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <td>32</td>
 <td>8.0</td>
 <td>21</td>
-<td>0.895</td>
-<td>0.214</td>
+<td>0.897</td>
+<td>0.209</td>
 <td>2</td>
 </tr>
 <tr class="odd">
@@ -572,8 +559,8 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <td>36</td>
 <td>9.0</td>
 <td>19</td>
-<td>0.898</td>
-<td>0.224</td>
+<td>0.899</td>
+<td>0.221</td>
 <td>2</td>
 </tr>
 <tr class="even">
@@ -591,7 +578,7 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 </div>
 </div>
 </div>
-<div id="97c7b580" class="cell" data-execution_count="5">
+<div id="97c7b580" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:09.620885Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:09.620762Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:09.884750Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:09.884410Z&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">5.5</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>color1 <span class="op">=</span> <span class="st">'#486581'</span></span>
@@ -626,7 +613,7 @@ Ventana 40 trimestres: 17 ventanas generadas, estabilidad promedio = 0.922</code
 <section id="validación-externa-las-caídas-de-estabilidad-coinciden-con-episodios-conocidos" class="level2">
 <h2 class="anchored" data-anchor-id="validación-externa-las-caídas-de-estabilidad-coinciden-con-episodios-conocidos">5. Validación externa: ¿las caídas de estabilidad coinciden con episodios conocidos?</h2>
 <p>Se grafica la serie de estabilidad para un subconjunto representativo de tamaños de ventana (menor, intermedio, mayor), marcando los episodios financieros documentados como referencia visual.</p>
-<div id="c07067fa" class="cell" data-execution_count="6">
+<div id="c07067fa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:09.886641Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:09.886520Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:10.606724Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:10.606442Z&quot;}}" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tamanos_a_graficar <span class="op">=</span> [TAMANOS_VENTANA[<span class="dv">0</span>], TAMANOS_VENTANA[<span class="bu">len</span>(TAMANOS_VENTANA)<span class="op">//</span><span class="dv">2</span>], TAMANOS_VENTANA[<span class="op">-</span><span class="dv">1</span>]]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(tamanos_a_graficar), <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.2</span> <span class="op">*</span> <span class="bu">len</span>(tamanos_a_graficar)), sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -675,7 +662,7 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <section id="repetir-el-análisis-para-niveles-estandarizados-excluyendo-pc1" class="level2">
 <h2 class="anchored" data-anchor-id="repetir-el-análisis-para-niveles-estandarizados-excluyendo-pc1">6. Repetir el análisis para niveles estandarizados (excluyendo PC1)</h2>
 <p>Dado que PC1 en niveles está dominado por tendencia (correlación 0.994 con el tiempo, ver <code>05_pca.ipynb</code>), aquí se rastrea <strong>PC2</strong> en lugar de PC1 (<code>componente_interes=1</code>).</p>
-<div id="d585c01e" class="cell" data-execution_count="7">
+<div id="d585c01e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:10.608992Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:10.608764Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:10.760356Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:10.760005Z&quot;}}" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>resultados_niveles <span class="op">=</span> analizar_ventanas(df_niveles, TAMANOS_VENTANA, paso<span class="op">=</span>PASO, componente_interes<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>resumen_niveles <span class="op">=</span> []</span>
@@ -716,8 +703,8 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>20</td>
 <td>5.0</td>
 <td>27</td>
-<td>0.827</td>
-<td>0.228</td>
+<td>0.828</td>
+<td>0.219</td>
 <td>4</td>
 </tr>
 <tr class="even">
@@ -726,7 +713,7 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>6.0</td>
 <td>25</td>
 <td>0.869</td>
-<td>0.226</td>
+<td>0.225</td>
 <td>3</td>
 </tr>
 <tr class="odd">
@@ -734,8 +721,8 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>28</td>
 <td>7.0</td>
 <td>23</td>
-<td>0.872</td>
-<td>0.223</td>
+<td>0.871</td>
+<td>0.222</td>
 <td>3</td>
 </tr>
 <tr class="even">
@@ -743,8 +730,8 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>32</td>
 <td>8.0</td>
 <td>21</td>
-<td>0.873</td>
-<td>0.218</td>
+<td>0.872</td>
+<td>0.220</td>
 <td>2</td>
 </tr>
 <tr class="odd">
@@ -752,8 +739,8 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>36</td>
 <td>9.0</td>
 <td>19</td>
-<td>0.853</td>
-<td>0.244</td>
+<td>0.855</td>
+<td>0.241</td>
 <td>2</td>
 </tr>
 <tr class="even">
@@ -761,7 +748,7 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <td>40</td>
 <td>10.0</td>
 <td>17</td>
-<td>0.875</td>
+<td>0.876</td>
 <td>0.203</td>
 <td>2</td>
 </tr>
@@ -775,7 +762,7 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 <section id="decisión-final-y-guardado" class="level2">
 <h2 class="anchored" data-anchor-id="decisión-final-y-guardado">7. Decisión final y guardado</h2>
 <p>Con base en las tablas y gráficos anteriores, define aquí el tamaño de ventana elegido para <code>06_epca.ipynb</code>, con una justificación de una línea que puedas copiar directamente al capítulo metodológico.</p>
-<div id="1c057e15" class="cell" data-execution_count="8">
+<div id="1c057e15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:10.762043Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:10.761910Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:10.763962Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:10.763725Z&quot;}}" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AJUSTAR manualmente despues de revisar las secciones 4-6:</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>VENTANA_ELEGIDA <span class="op">=</span> <span class="va">None</span>  <span class="co"># ej. 24</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>JUSTIFICACION <span class="op">=</span> (</span>
@@ -790,7 +777,7 @@ es señal de que ese tamaño está capturando ruido, no transiciones reales.</co
 Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y la coincidencia con episodios conocidos (secciones 4-5).</code></pre>
 </div>
 </div>
-<div id="4ad71964" class="cell" data-execution_count="9">
+<div id="4ad71964" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:10.765372Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:10.765268Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:10.772738Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:10.772492Z&quot;}}" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/results'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df_resumen[<span class="st">'dataset'</span>] <span class="op">=</span> <span class="st">'transformado_estandarizado'</span></span>
@@ -827,8 +814,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>20</td>
 <td>5.0</td>
 <td>27</td>
-<td>0.885</td>
-<td>0.228</td>
+<td>0.884</td>
+<td>0.229</td>
 <td>3</td>
 <td>transformado_estandarizado</td>
 </tr>
@@ -837,8 +824,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>24</td>
 <td>6.0</td>
 <td>25</td>
-<td>0.921</td>
-<td>0.149</td>
+<td>0.923</td>
+<td>0.146</td>
 <td>4</td>
 <td>transformado_estandarizado</td>
 </tr>
@@ -847,8 +834,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>28</td>
 <td>7.0</td>
 <td>23</td>
-<td>0.913</td>
-<td>0.179</td>
+<td>0.914</td>
+<td>0.176</td>
 <td>3</td>
 <td>transformado_estandarizado</td>
 </tr>
@@ -857,8 +844,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>32</td>
 <td>8.0</td>
 <td>21</td>
-<td>0.895</td>
-<td>0.214</td>
+<td>0.897</td>
+<td>0.209</td>
 <td>2</td>
 <td>transformado_estandarizado</td>
 </tr>
@@ -867,8 +854,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>36</td>
 <td>9.0</td>
 <td>19</td>
-<td>0.898</td>
-<td>0.224</td>
+<td>0.899</td>
+<td>0.221</td>
 <td>2</td>
 <td>transformado_estandarizado</td>
 </tr>
@@ -887,8 +874,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>20</td>
 <td>5.0</td>
 <td>27</td>
-<td>0.827</td>
-<td>0.228</td>
+<td>0.828</td>
+<td>0.219</td>
 <td>4</td>
 <td>niveles_estandarizado (PC2)</td>
 </tr>
@@ -898,7 +885,7 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>6.0</td>
 <td>25</td>
 <td>0.869</td>
-<td>0.226</td>
+<td>0.225</td>
 <td>3</td>
 <td>niveles_estandarizado (PC2)</td>
 </tr>
@@ -907,8 +894,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>28</td>
 <td>7.0</td>
 <td>23</td>
-<td>0.872</td>
-<td>0.223</td>
+<td>0.871</td>
+<td>0.222</td>
 <td>3</td>
 <td>niveles_estandarizado (PC2)</td>
 </tr>
@@ -917,8 +904,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>32</td>
 <td>8.0</td>
 <td>21</td>
-<td>0.873</td>
-<td>0.218</td>
+<td>0.872</td>
+<td>0.220</td>
 <td>2</td>
 <td>niveles_estandarizado (PC2)</td>
 </tr>
@@ -927,8 +914,8 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>36</td>
 <td>9.0</td>
 <td>19</td>
-<td>0.853</td>
-<td>0.244</td>
+<td>0.855</td>
+<td>0.241</td>
 <td>2</td>
 <td>niveles_estandarizado (PC2)</td>
 </tr>
@@ -937,7 +924,7 @@ Justificación: Completar tras revisar el trade-off estabilidad/sensibilidad y l
 <td>40</td>
 <td>10.0</td>
 <td>17</td>
-<td>0.875</td>
+<td>0.876</td>
 <td>0.203</td>
 <td>2</td>
 <td>niveles_estandarizado (PC2)</td>

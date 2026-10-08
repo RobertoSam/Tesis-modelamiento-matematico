@@ -372,22 +372,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Responsabilidad única de este notebook:</strong> ajustar PCA sobre las dos versiones estandarizadas del dataset (niveles vs.&nbsp;transformado) y comparar resultados. No modifica ningún archivo de <code>data/processed/</code> – solo lee.</p>
 <p><strong>Entradas (solo lectura):</strong> - <code>data/processed/dataset_niveles_estandarizado_trimestral.csv</code> - <code>data/processed/dataset_estandarizado_trimestral.csv</code></p>
 <p><strong>Salidas:</strong> - <code>reports/figures/05_pca_*.png</code> – scree plots, biplots, cargas factoriales - <code>data/results/05_pca_scores_niveles.csv</code>, <code>05_pca_scores_transformado.csv</code> - <code>data/results/05_pca_cargas_niveles.csv</code>, <code>05_pca_cargas_transformado.csv</code> - <code>data/results/05_pca_comparacion.csv</code> – tabla resumen para el marco de validación (sección 6 del marco conceptual: interpretabilidad, capacidad descriptiva).</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Pendiente de re-ejecución">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Pendiente de re-ejecución
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Este notebook depende del dataset trimestral de <code>04_preprocesamiento</code>, que se regenerará con la serie diaria del EMBI completa (control de cobertura agregado en <code>04</code>). Las salidas mostradas abajo no deben usarse como resultado hasta la re-ejecución.</p>
-</div>
-</div>
 <section id="librerías-y-carga-de-datos-solo-lectura" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos-solo-lectura">1. Librerías y carga de datos (solo lectura)</h2>
-<div id="35481836" class="cell" data-execution_count="1">
+<div id="35481836" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:02.323026Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:02.322644Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.289644Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.289374Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -411,7 +398,7 @@ Transformado estandarizado: 72 trimestres x 18 variables</code></pre>
 <section id="función-auxiliar" class="level2">
 <h2 class="anchored" data-anchor-id="función-auxiliar">2. Función auxiliar</h2>
 <p>Se define una función que ajusta PCA y produce las tres salidas estándar (varianza explicada, cargas factoriales, scores), para aplicarla de forma idéntica a ambos datasets y evitar diferencias accidentales de código entre un análisis y otro.</p>
-<div id="3424fe52" class="cell" data-execution_count="2">
+<div id="3424fe52" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.291361Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.291221Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.294128Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.293864Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ajustar_pca(df, etiqueta, n_componentes<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Ajusta PCA sobre un dataframe ya estandarizado.</span></span>
@@ -440,19 +427,19 @@ Transformado estandarizado: 72 trimestres x 18 variables</code></pre>
 </section>
 <section id="pca-sobre-niveles-estandarizados-sin-transformar" class="level2">
 <h2 class="anchored" data-anchor-id="pca-sobre-niveles-estandarizados-sin-transformar">3. PCA sobre niveles estandarizados (SIN transformar)</h2>
-<div id="60ac89bb" class="cell" data-execution_count="3">
+<div id="60ac89bb" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.295624Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.295508Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.299819Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.299610Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pca_niveles, scores_niveles, cargas_niveles <span class="op">=</span> ajustar_pca(df_niveles, <span class="st">'niveles estandarizados'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- PCA sobre niveles estandarizados ---
 Componentes retenidos: 20
-Varianza explicada (primeros 5): [71.1 16.   5.9  3.3  1.4]%
-Varianza acumulada (primeros 5): [71.1 87.1 93.  96.3 97.8]%</code></pre>
+Varianza explicada (primeros 5): [71.1 16.1  5.9  3.3  1.4]%
+Varianza acumulada (primeros 5): [71.1 87.2 93.1 96.4 97.8]%</code></pre>
 </div>
 </div>
 <section id="scree-plot-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="scree-plot-niveles">3.1 Scree plot (niveles)</h3>
 <p>Muestra cuánta varianza explica cada componente. Se usa para decidir cuántos componentes retener (criterio de codo, o varianza acumulada objetivo).</p>
-<div id="f2b48f5f" class="cell" data-execution_count="4">
+<div id="f2b48f5f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.301267Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.301161Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.576282Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.575955Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">4.5</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>n_mostrar <span class="op">=</span> <span class="bu">min</span>(<span class="dv">10</span>, <span class="bu">len</span>(pca_niveles.explained_variance_ratio_))</span>
@@ -490,7 +477,7 @@ Varianza acumulada (primeros 5): [71.1 87.1 93.  96.3 97.8]%</code></pre>
 <section id="cargas-factoriales-primeros-3-componentes-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="cargas-factoriales-primeros-3-componentes-niveles">3.2 Cargas factoriales — primeros 3 componentes (niveles)</h3>
 <p>Las variables con mayor carga (en valor absoluto) en cada componente son las que ese componente resume. Sirve para la lectura económica de cada PC.</p>
-<div id="3c832364" class="cell" data-execution_count="5">
+<div id="3c832364" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.578274Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.578136Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.582346Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.582059Z&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pc <span class="kw">in</span> [<span class="st">'PC1'</span>, <span class="st">'PC2'</span>, <span class="st">'PC3'</span>]:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'--- </span><span class="sc">{</span>pc<span class="sc">}</span><span class="ss"> (niveles) — variables con mayor carga ---'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cargas_niveles[pc].<span class="bu">abs</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">6</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span>
@@ -509,18 +496,18 @@ Name: PC1, dtype: float64
 Tasa interbancaria      0.983
 Tasa referencia BCRP    0.980
 Tasa pasiva TIPMN       0.921
-Tasa activa TAMN        0.400
-embi_peru               0.382
+Tasa activa TAMN        0.399
+embi_peru               0.391
 IPC Lima                0.222
 Name: PC2, dtype: float64
 
 --- PC3 (niveles) — variables con mayor carga ---
-embi_peru                   0.768
-Índice BVL                  0.531
+embi_peru                   0.761
+Índice BVL                  0.536
 Tipo de cambio              0.439
-Tasa activa TAMN            0.167
-Reservas internacionales    0.138
-Crédito empresarial         0.120
+Tasa activa TAMN            0.169
+Reservas internacionales    0.137
+Crédito empresarial         0.122
 Name: PC3, dtype: float64
 </code></pre>
 </div>
@@ -528,7 +515,7 @@ Name: PC3, dtype: float64
 </section>
 <section id="biplot-pc1-vs-pc2-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="biplot-pc1-vs-pc2-niveles">3.3 Biplot (PC1 vs PC2) — niveles</h3>
-<div id="8000669b" class="cell" data-execution_count="6">
+<div id="8000669b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.584015Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.583898Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.766176Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.765846Z&quot;}}" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(scores_niveles[<span class="st">'PC1'</span>], scores_niveles[<span class="st">'PC2'</span>], alpha<span class="op">=</span><span class="fl">0.6</span>, s<span class="op">=</span><span class="dv">25</span>, color<span class="op">=</span><span class="st">'#486581'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -558,7 +545,7 @@ Name: PC3, dtype: float64
 <section id="diagnóstico-de-tendencia-común-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="diagnóstico-de-tendencia-común-niveles">3.4 Diagnóstico de tendencia común (niveles)</h3>
 <p>Verificación explícita del riesgo señalado en la discusión metodológica: si PC1 correlaciona fuertemente con el simple paso del tiempo, es señal de que el componente está capturando tendencia común, no estructura económica.</p>
-<div id="d42b78b9" class="cell" data-execution_count="7">
+<div id="d42b78b9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.768088Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.767963Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.770546Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.770287Z&quot;}}" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>indice_temporal <span class="op">=</span> np.arange(<span class="bu">len</span>(scores_niveles))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>corr_pc1_tiempo <span class="op">=</span> np.corrcoef(scores_niveles[<span class="st">'PC1'</span>], indice_temporal)[<span class="dv">0</span>, <span class="dv">1</span>]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Correlación entre PC1 y el paso del tiempo (niveles): </span><span class="sc">{</span>corr_pc1_tiempo<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
@@ -577,18 +564,18 @@ Name: PC3, dtype: float64
 </section>
 <section id="pca-sobre-datos-transformados-y-estandarizados-log-diff-diff" class="level2">
 <h2 class="anchored" data-anchor-id="pca-sobre-datos-transformados-y-estandarizados-log-diff-diff">4. PCA sobre datos transformados y estandarizados (log-diff / diff)</h2>
-<div id="55311cad" class="cell" data-execution_count="8">
+<div id="55311cad" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.772267Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.772154Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:04.775542Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:04.775257Z&quot;}}" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pca_transf, scores_transf, cargas_transf <span class="op">=</span> ajustar_pca(df_transf, <span class="st">'transformado estandarizado'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- PCA sobre transformado estandarizado ---
 Componentes retenidos: 18
-Varianza explicada (primeros 5): [30.4 16.7 14.5  9.7  6.1]%
-Varianza acumulada (primeros 5): [30.4 47.2 61.6 71.4 77.5]%</code></pre>
+Varianza explicada (primeros 5): [30.5 16.7 14.5  9.7  6.2]%
+Varianza acumulada (primeros 5): [30.5 47.2 61.8 71.5 77.7]%</code></pre>
 </div>
 </div>
 <section id="scree-plot-transformado" class="level3">
 <h3 class="anchored" data-anchor-id="scree-plot-transformado">4.1 Scree plot (transformado)</h3>
-<div id="5765e2d8" class="cell" data-execution_count="9">
+<div id="5765e2d8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:04.777068Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:04.776951Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.023852Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.023524Z&quot;}}" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">4.5</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>n_mostrar <span class="op">=</span> <span class="bu">min</span>(<span class="dv">10</span>, <span class="bu">len</span>(pca_transf.explained_variance_ratio_))</span>
@@ -624,37 +611,37 @@ Varianza acumulada (primeros 5): [30.4 47.2 61.6 71.4 77.5]%</code></pre>
 </section>
 <section id="cargas-factoriales-primeros-3-componentes-transformado" class="level3">
 <h3 class="anchored" data-anchor-id="cargas-factoriales-primeros-3-componentes-transformado">4.2 Cargas factoriales — primeros 3 componentes (transformado)</h3>
-<div id="8f6b8a3c" class="cell" data-execution_count="10">
+<div id="8f6b8a3c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.025684Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.025545Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.029117Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.028812Z&quot;}}" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pc <span class="kw">in</span> [<span class="st">'PC1'</span>, <span class="st">'PC2'</span>, <span class="st">'PC3'</span>]:</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'--- </span><span class="sc">{</span>pc<span class="sc">}</span><span class="ss"> (transformado) — variables con mayor carga ---'</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cargas_transf[pc].<span class="bu">abs</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">6</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- PC1 (transformado) — variables con mayor carga ---
-Tasa pasiva TIPMN_diff       0.831
-Liquidez M2_log_diff         0.822
-Tasa interbancaria_diff      0.820
+Tasa pasiva TIPMN_diff       0.829
+Liquidez M2_log_diff         0.823
+Tasa interbancaria_diff      0.819
 Tasa referencia BCRP_diff    0.804
 IPC Lima_log_diff            0.788
 Liquidez M3_log_diff         0.773
 Name: PC1, dtype: float64
 
 --- PC2 (transformado) — variables con mayor carga ---
-Crédito consumo_log_diff             0.683
-Reservas internacionales_log_diff    0.627
-Tipo de cambio_log_diff              0.535
-indice_precios_inmuebles_log_diff    0.517
+Crédito consumo_log_diff             0.685
+Reservas internacionales_log_diff    0.626
+Tipo de cambio_log_diff              0.534
+indice_precios_inmuebles_log_diff    0.516
 Liquidez M2_log_diff                 0.492
-Crédito hipotecario_log_diff         0.452
+Crédito hipotecario_log_diff         0.456
 Name: PC2, dtype: float64
 
 --- PC3 (transformado) — variables con mayor carga ---
 Crédito empresarial_log_diff         0.858
-Índice BVL_log_diff                  0.598
-Crédito hipotecario_log_diff         0.577
-Liquidez M1_log_diff                 0.567
-embi_peru_diff                       0.542
-indice_precios_inmuebles_log_diff    0.512
+Índice BVL_log_diff                  0.596
+Liquidez M1_log_diff                 0.573
+Crédito hipotecario_log_diff         0.570
+embi_peru_diff                       0.547
+indice_precios_inmuebles_log_diff    0.514
 Name: PC3, dtype: float64
 </code></pre>
 </div>
@@ -662,7 +649,7 @@ Name: PC3, dtype: float64
 </section>
 <section id="biplot-pc1-vs-pc2-transformado" class="level3">
 <h3 class="anchored" data-anchor-id="biplot-pc1-vs-pc2-transformado">4.3 Biplot (PC1 vs PC2) — transformado</h3>
-<div id="f972fef9" class="cell" data-execution_count="11">
+<div id="f972fef9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.030879Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.030754Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.188698Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.188363Z&quot;}}" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">7</span>))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(scores_transf[<span class="st">'PC1'</span>], scores_transf[<span class="st">'PC2'</span>], alpha<span class="op">=</span><span class="fl">0.6</span>, s<span class="op">=</span><span class="dv">25</span>, color<span class="op">=</span><span class="st">'#9c4221'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -691,7 +678,7 @@ Name: PC3, dtype: float64
 </section>
 <section id="diagnóstico-de-tendencia-común-transformado" class="level3">
 <h3 class="anchored" data-anchor-id="diagnóstico-de-tendencia-común-transformado">4.4 Diagnóstico de tendencia común (transformado)</h3>
-<div id="da99b3bc" class="cell" data-execution_count="12">
+<div id="da99b3bc" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.190486Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.190349Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.192919Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.192622Z&quot;}}" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>indice_temporal <span class="op">=</span> np.arange(<span class="bu">len</span>(scores_transf))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>corr_pc1_tiempo <span class="op">=</span> np.corrcoef(scores_transf[<span class="st">'PC1'</span>], indice_temporal)[<span class="dv">0</span>, <span class="dv">1</span>]</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Correlación entre PC1 y el paso del tiempo (transformado): </span><span class="sc">{</span>corr_pc1_tiempo<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
@@ -700,7 +687,7 @@ Name: PC3, dtype: float64
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple.'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Correlación entre PC1 y el paso del tiempo (transformado): 0.089
+<pre><code>Correlación entre PC1 y el paso del tiempo (transformado): 0.087
 Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple.</code></pre>
 </div>
 </div>
@@ -709,7 +696,7 @@ Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple
 <section id="comparación-directa-niveles-vs.-transformado" class="level2">
 <h2 class="anchored" data-anchor-id="comparación-directa-niveles-vs.-transformado">5. Comparación directa: niveles vs.&nbsp;transformado</h2>
 <p>Tabla resumen para el capítulo de validación (sección 6 del marco conceptual): capacidad descriptiva (varianza explicada) e indicio de contaminación por tendencia (correlación PC1-tiempo).</p>
-<div id="a6a7d5f6" class="cell" data-execution_count="13">
+<div id="a6a7d5f6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.194565Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.194441Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.201165Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.200840Z&quot;}}" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>comparacion <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Métrica'</span>: [</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Varianza explicada PC1 (%)'</span>,</span>
@@ -752,19 +739,19 @@ Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple
 <th data-quarto-table-cell-role="th">0</th>
 <td>Varianza explicada PC1 (%)</td>
 <td>71.100</td>
-<td>30.400</td>
+<td>30.500</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
 <td>Varianza explicada PC2 (%)</td>
-<td>16.000</td>
+<td>16.100</td>
 <td>16.700</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
 <td>Varianza acumulada 3 PCs (%)</td>
-<td>93.000</td>
-<td>61.600</td>
+<td>93.100</td>
+<td>61.800</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
@@ -776,7 +763,7 @@ Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple
 <th data-quarto-table-cell-role="th">4</th>
 <td>Correlación PC1 vs. tiempo</td>
 <td>0.994</td>
-<td>0.089</td>
+<td>0.087</td>
 </tr>
 </tbody>
 </table>
@@ -788,7 +775,7 @@ Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple
 <section id="guardar-resultados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-resultados">6. Guardar resultados</h2>
 <p>Se guardan scores, cargas y la tabla comparativa. Ninguno de estos archivos sobrescribe <code>data/processed/</code> – son resultados derivados, en <code>data/results/</code>.</p>
-<div id="89455d7b" class="cell" data-execution_count="14">
+<div id="89455d7b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.202809Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.202680Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.211161Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.210931Z&quot;}}" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/results'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>scores_niveles.to_csv(<span class="st">'data/results/05_pca_scores_niveles.csv'</span>)</span>
@@ -808,14 +795,14 @@ Correlación moderada/baja: PC1 no parece dominado por tendencia temporal simple
   - 05_pca_comparacion.csv</code></pre>
 </div>
 </div>
-<div id="cbbd031a-5b21-43aa-97be-80441b1f0684" class="cell" data-execution_count="15">
+<div id="cbbd031a-5b21-43aa-97be-80441b1f0684" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:54:05.212636Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:54:05.212523Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:54:05.214993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:54:05.214740Z&quot;}}" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pc <span class="kw">in</span> [<span class="st">'PC1'</span>, <span class="st">'PC2'</span>, <span class="st">'PC3'</span>]:</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    corr <span class="op">=</span> np.corrcoef(scores_niveles[pc], np.arange(<span class="bu">len</span>(scores_niveles)))[<span class="dv">0</span>, <span class="dv">1</span>]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Correlación </span><span class="sc">{</span>pc<span class="sc">}</span><span class="ss"> vs. tiempo (niveles): </span><span class="sc">{</span>corr<span class="sc">:.3f}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlación PC1 vs. tiempo (niveles): 0.994
-Correlación PC2 vs. tiempo (niveles): 0.068
-Correlación PC3 vs. tiempo (niveles): 0.036</code></pre>
+Correlación PC2 vs. tiempo (niveles): 0.069
+Correlación PC3 vs. tiempo (niveles): 0.035</code></pre>
 </div>
 </div>
 

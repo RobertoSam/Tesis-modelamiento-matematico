@@ -368,22 +368,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Entrada:</strong> <code>data/raw/series_bcrp_raw.csv</code> (inmutable, generado en <code>01_extraccion_bcrp.ipynb</code>) <strong>Salida:</strong> cuatro versiones en <code>data/processed/</code>, cada una con su propósito documentado: 1. <code>dataset_niveles_trimestral.csv</code> — niveles, solo sincronizado a trimestral 2. <code>dataset_niveles_estandarizado_trimestral.csv</code> — niveles + estandarización (SIN log-diff/diff) 3. <code>dataset_transformado_trimestral.csv</code> — estacionario (log-diff / diff), sin estandarizar 4. <code>dataset_estandarizado_trimestral.csv</code> — transformado + estandarizado, listo para PCA/HFC</p>
 <p>Las versiones (2) y (4) permiten correr PCA/HFC en ambos enfoques bajo igualdad de condiciones (ambas estandarizadas), difiriendo solo en si las series están o no diferenciadas – ver la discusión metodológica sobre niveles vs.&nbsp;diferencias vs.&nbsp;brechas antes de interpretar resultados.</p>
 <p>Guardar las cuatro versiones (y no solo la última) permite auditar cada paso por separado y comparar resultados de PCA/HFC entre enfoques.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Pendiente de re-ejecución">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Pendiente de re-ejecución
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Las salidas de este notebook (dataset trimestral) deben regenerarse con la serie diaria del EMBI completa (ver el control de cobertura de la sección 2.1). Las salidas mostradas abajo no deben usarse como resultado hasta la re-ejecución.</p>
-</div>
-</div>
 <section id="librerías-y-carga-del-dato-crudo-solo-lectura" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-del-dato-crudo-solo-lectura">1. Librerías y carga del dato crudo (solo lectura)</h2>
-<div id="053788b9" class="cell" data-execution_count="1">
+<div id="053788b9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:16.245584Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:16.245205Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:23.370217Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:23.369925Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -403,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="carga-de-series-con-frecuencia-distinta-a-la-mensual-trimestraldiaria" class="level2">
 <h2 class="anchored" data-anchor-id="carga-de-series-con-frecuencia-distinta-a-la-mensual-trimestraldiaria">2. Carga de series con frecuencia distinta a la mensual (trimestral/diaria)</h2>
 <p>Estas series ya vienen en otra frecuencia y se cargan desde su propio archivo crudo en <code>data/raw/</code>, sin modificar esos archivos tampoco: - Índice de precios de inmuebles: trimestral. - EMBI Perú: diario (se sincroniza a trimestral en este mismo notebook, igual criterio de promedio del periodo que el resto de series).</p>
-<div id="a0db7d99" class="cell" data-execution_count="2">
+<div id="a0db7d99" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:23.372141Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:23.371935Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:23.393103Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:23.392730Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ruta_inmuebles <span class="op">=</span> <span class="st">'data/raw/indice_precios_inmuebles_bcrp.csv'</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(ruta_inmuebles):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    df_inmuebles <span class="op">=</span> pd.read_csv(ruta_inmuebles, parse_dates<span class="op">=</span>[<span class="st">'fecha'</span>]).set_index(<span class="st">'fecha'</span>)</span>
@@ -432,7 +419,7 @@ EMBI Perú (resampleado a trimestral): 92 observaciones</code></pre>
 <section id="control-de-cobertura-de-la-serie-diaria-del-embi" class="level3">
 <h3 class="anchored" data-anchor-id="control-de-cobertura-de-la-serie-diaria-del-embi">2.1 Control de cobertura de la serie diaria del EMBI</h3>
 <p>El promedio trimestral del EMBI solo es válido si los tres meses del trimestre tienen observaciones diarias. Si falta un mes completo, el promedio del trimestre se calcularía con dos meses sin aviso. Esta celda verifica la cobertura mes a mes y detiene el pipeline si algún mes no tiene datos: no se trabaja con datos incompletos.</p>
-<div id="d48fced4" class="cell">
+<div id="d48fced4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:23.394931Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:23.394783Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:23.405830Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:23.405512Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Control de cobertura: cada mes del periodo debe tener al menos una observación diaria</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> df_embi <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    obs_por_mes <span class="op">=</span> df_embi_diario.iloc[:, <span class="dv">0</span>].resample(<span class="st">'MS'</span>).count()</span>
@@ -448,31 +435,47 @@ EMBI Perú (resampleado a trimestral): 92 observaciones</code></pre>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Mínimo de días con dato por mes calendario (1 = enero ... 12 = diciembre):'</span>)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(minimo_por_mes.to_string())</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cobertura verificada: </span><span class="sc">{</span><span class="bu">len</span>(calendario)<span class="sc">}</span><span class="ss"> meses con datos diarios del EMBI'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mínimo de días con dato por mes calendario (1 = enero ... 12 = diciembre):
+1     21
+2     20
+3     21
+4     20
+5     21
+6     20
+7     21
+8     21
+9     20
+10    21
+11    20
+12    21
+Cobertura verificada: 276 meses con datos diarios del EMBI</code></pre>
+</div>
 </div>
 </section>
 </section>
 <section id="sincronización-a-frecuencia-trimestral" class="level2">
 <h2 class="anchored" data-anchor-id="sincronización-a-frecuencia-trimestral">3. Sincronización a frecuencia trimestral</h2>
 <p>Convertimos las series mensuales a trimestrales usando el promedio del periodo (estándar en la literatura de ciclo financiero — Drehmann et al., 2012). Esta es la primera transformación explícita del pipeline.</p>
-<div id="1ef9f87d" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_trimestral <span class="op">=</span> df_raw.resample(<span class="st">'QE'</span>).mean()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_trimestral.index <span class="op">=</span> df_trimestral.index.to_period(<span class="st">'Q'</span>).to_timestamp(<span class="st">'Q'</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df_completo <span class="op">=</span> df_trimestral</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> df_inmuebles <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    df_inmuebles.index <span class="op">=</span> df_inmuebles.index.to_period(<span class="st">'Q'</span>).to_timestamp(<span class="st">'Q'</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    df_completo <span class="op">=</span> df_completo.join(df_inmuebles, how<span class="op">=</span><span class="st">'inner'</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> df_embi <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    df_completo <span class="op">=</span> df_completo.join(df_embi, how<span class="op">=</span><span class="st">'inner'</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset trimestral sincronizado: </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>df_completo.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="1ef9f87d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:23.407515Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:23.407375Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:23.425136Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:23.424880Z&quot;}}" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_trimestral <span class="op">=</span> df_raw.resample(<span class="st">'QE'</span>).mean()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_trimestral.index <span class="op">=</span> df_trimestral.index.to_period(<span class="st">'Q'</span>).to_timestamp(<span class="st">'Q'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df_completo <span class="op">=</span> df_trimestral</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> df_inmuebles <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    df_inmuebles.index <span class="op">=</span> df_inmuebles.index.to_period(<span class="st">'Q'</span>).to_timestamp(<span class="st">'Q'</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    df_completo <span class="op">=</span> df_completo.join(df_inmuebles, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> df_embi <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    df_completo <span class="op">=</span> df_completo.join(df_embi, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset trimestral sincronizado: </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_completo<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_completo<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>df_completo.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dataset trimestral sincronizado: 73 filas x 20 columnas
 Periodo: 2007-Q a 2025-Q</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
@@ -616,7 +619,7 @@ Periodo: 2007-Q a 2025-Q</code></pre>
 <td>4.458800</td>
 <td>116.014400</td>
 <td>113.9</td>
-<td>137.181818</td>
+<td>132.803030</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2025-12-31</th>
@@ -650,17 +653,17 @@ Periodo: 2007-Q a 2025-Q</code></pre>
 </section>
 <section id="revisión-y-tratamiento-de-valores-faltantes" class="level2">
 <h2 class="anchored" data-anchor-id="revisión-y-tratamiento-de-valores-faltantes">4. Revisión y tratamiento de valores faltantes</h2>
-<div id="f7daf14c" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nulos <span class="op">=</span> df_completo.isna().<span class="bu">sum</span>()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pct_nulos <span class="op">=</span> (nulos <span class="op">/</span> <span class="bu">len</span>(df_completo) <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">'Nulos'</span>: nulos, <span class="st">'Nulos %'</span>: pct_nulos}))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se eliminan filas con cualquier nulo para el análisis multivariado (PCA/HFC</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># requieren matriz completa). Esta decisión queda documentada aquí, no oculta</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># en el notebook de extracción.</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df_limpio <span class="op">=</span> df_completo.dropna()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Dataset limpio (sin nulos): </span><span class="sc">{</span>df_limpio<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_limpio<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo final: </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f7daf14c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:23.426964Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:23.426831Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:23.431487Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:23.431198Z&quot;}}" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nulos <span class="op">=</span> df_completo.isna().<span class="bu">sum</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pct_nulos <span class="op">=</span> (nulos <span class="op">/</span> <span class="bu">len</span>(df_completo) <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">'Nulos'</span>: nulos, <span class="st">'Nulos %'</span>: pct_nulos}))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se eliminan filas con cualquier nulo para el análisis multivariado (PCA/HFC</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># requieren matriz completa). Esta decisión queda documentada aquí, no oculta</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># en el notebook de extracción.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df_limpio <span class="op">=</span> df_completo.dropna()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Dataset limpio (sin nulos): </span><span class="sc">{</span>df_limpio<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_limpio<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo final: </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_limpio<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-Q"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           Nulos  Nulos %
 Crédito SF sector privado      0      0.0
@@ -694,36 +697,36 @@ Periodo final: 2007-Q a 2025-Q</code></pre>
 <p>Se genera una segunda versión estandarizada, pero a partir de los <strong>niveles originales</strong> (<code>df_limpio</code>), sin logaritmo ni diferenciación.</p>
 <p><strong>Propósito:</strong> permitir correr PCA/HFC sobre niveles y sobre la versión transformada bajo condiciones comparables (ambas estandarizadas), y contrastar los resultados de ambos enfoques – ver la discusión metodológica sobre niveles vs.&nbsp;diferencias en el marco conceptual.</p>
 <p><strong>Advertencia reconocida (no oculta):</strong> si las variables de nivel comparten una tendencia de crecimiento común en 2003-2025, el primer componente del PCA sobre esta versión puede capturar en buena parte esa tendencia compartida, en lugar de una estructura de co-movimiento más fina. Esto debe evaluarse explícitamente al interpretar los resultados (por ejemplo, revisando si PC1 correlaciona fuertemente con una tendencia temporal simple).</p>
-<div id="53826030" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>scaler_niveles <span class="op">=</span> StandardScaler()</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    scaler_niveles.fit_transform(df_limpio),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_limpio.index,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_limpio.columns</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, sin transformar):'</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>n_vars <span class="op">=</span> <span class="bu">len</span>(df_niveles_estandarizado.columns)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>n_rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n_vars <span class="op">/</span> n_cols))</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(n_rows, n_cols, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="fl">3.2</span> <span class="op">*</span> n_rows))</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(df_niveles_estandarizado.columns):</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(df_niveles_estandarizado.index, df_niveles_estandarizado[col], linewidth<span class="op">=</span><span class="fl">1.1</span>)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(col, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    axes[i].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    axes[i].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n_vars, <span class="bu">len</span>(axes)):</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    axes[j].set_visible(<span class="va">False</span>)</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Series en niveles, estandarizadas (SIN transformar)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'reports/figures'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'reports/figures/04_niveles_estandarizados.png'</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Gráfico guardado'</span>)</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="53826030" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:23.433117Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:23.433003Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:26.453097Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:26.452798Z&quot;}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>scaler_niveles <span class="op">=</span> StandardScaler()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    scaler_niveles.fit_transform(df_limpio),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_limpio.index,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_limpio.columns</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, sin transformar):'</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>n_vars <span class="op">=</span> <span class="bu">len</span>(df_niveles_estandarizado.columns)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>n_rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n_vars <span class="op">/</span> n_cols))</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(n_rows, n_cols, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="fl">3.2</span> <span class="op">*</span> n_rows))</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(df_niveles_estandarizado.columns):</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(df_niveles_estandarizado.index, df_niveles_estandarizado[col], linewidth<span class="op">=</span><span class="fl">1.1</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(col, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    axes[i].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    axes[i].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n_vars, <span class="bu">len</span>(axes)):</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    axes[j].set_visible(<span class="va">False</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Series en niveles, estandarizadas (SIN transformar)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'reports/figures'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'reports/figures/04_niveles_estandarizados.png'</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Gráfico guardado'</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Verificación — media ≈ 0, varianza ≈ 1 (niveles estandarizados, sin transformar):
 Gráfico guardado</code></pre>
@@ -743,43 +746,43 @@ Gráfico guardado</code></pre>
 <li><strong>Niveles (créditos, PBI, demanda, reservas, inmuebles, BVL, IPC, tipo de cambio):</strong> logaritmo + primera diferencia</li>
 <li><strong>Tasas y porcentajes (TAMN, TIPMN, referencia):</strong> primera diferencia simple</li>
 </ul>
-<div id="45c8dbee" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NOTA: 'IPC Subyacente' (nueva) NO se incluye aqui a proposito. Se usa</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># normalmente como serie de contraste/validacion frente al IPC general,</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># no como insumo directo del PCA/HFC. Si tu diseño la quiere incluir en el</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># modelo, agregala a VARS_LOG_DIFF y documenta el motivo en esta celda.</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>VARS_LOG_DIFF <span class="op">=</span> [</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'Crédito SF sector privado',  # Total -- excluir si se usan los 3 componentes</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crédito empresarial'</span>, <span class="st">'Crédito consumo'</span>, <span class="st">'Crédito hipotecario'</span>,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tipo de cambio'</span>, <span class="st">'Índice BVL'</span>, <span class="st">'IPC Lima'</span>,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PBI desestacionalizado'</span>, <span class="st">'Demanda interna'</span>, <span class="st">'Reservas internacionales'</span>,</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'indice_precios_inmuebles'</span>,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Liquidez M1'</span>, <span class="st">'Liquidez M2'</span>, <span class="st">'Liquidez M3'</span>,  <span class="co"># NUEVO</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>VARS_DIFF_SIMPLE <span class="op">=</span> [</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa activa TAMN'</span>, <span class="st">'Tasa pasiva TIPMN'</span>, <span class="st">'Tasa referencia BCRP'</span>,</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa interbancaria'</span>,  <span class="co"># NUEVO</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'embi_peru'</span>,           <span class="co"># NUEVO</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>df_limpio.index)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_LOG_DIFF:</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_log_diff'</span>] <span class="op">=</span> np.log(df_limpio[col]).diff()</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_DIFF_SIMPLE:</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_diff'</span>] <span class="op">=</span> df_limpio[col].diff()</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> df_transformado.dropna()</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset transformado (estacionario): </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>df_transformado.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="45c8dbee" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:26.455678Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:26.455467Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:26.468257Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:26.467987Z&quot;}}" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NOTA: 'IPC Subyacente' (nueva) NO se incluye aqui a proposito. Se usa</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># normalmente como serie de contraste/validacion frente al IPC general,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># no como insumo directo del PCA/HFC. Si tu diseño la quiere incluir en el</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># modelo, agregala a VARS_LOG_DIFF y documenta el motivo en esta celda.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>VARS_LOG_DIFF <span class="op">=</span> [</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'Crédito SF sector privado',  # Total -- excluir si se usan los 3 componentes</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crédito empresarial'</span>, <span class="st">'Crédito consumo'</span>, <span class="st">'Crédito hipotecario'</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tipo de cambio'</span>, <span class="st">'Índice BVL'</span>, <span class="st">'IPC Lima'</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PBI desestacionalizado'</span>, <span class="st">'Demanda interna'</span>, <span class="st">'Reservas internacionales'</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'indice_precios_inmuebles'</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Liquidez M1'</span>, <span class="st">'Liquidez M2'</span>, <span class="st">'Liquidez M3'</span>,  <span class="co"># NUEVO</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>VARS_DIFF_SIMPLE <span class="op">=</span> [</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa activa TAMN'</span>, <span class="st">'Tasa pasiva TIPMN'</span>, <span class="st">'Tasa referencia BCRP'</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tasa interbancaria'</span>,  <span class="co"># NUEVO</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'embi_peru'</span>,           <span class="co"># NUEVO</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>df_limpio.index)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_LOG_DIFF:</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_log_diff'</span>] <span class="op">=</span> np.log(df_limpio[col]).diff()</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> VARS_DIFF_SIMPLE:</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_limpio.columns:</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        df_transformado[<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_diff'</span>] <span class="op">=</span> df_limpio[col].diff()</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>df_transformado <span class="op">=</span> df_transformado.dropna()</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dataset transformado (estacionario): </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> filas x </span><span class="sc">{</span>df_transformado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columnas'</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>df_transformado.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dataset transformado (estacionario): 72 filas x 18 columnas</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -848,7 +851,7 @@ Gráfico guardado</code></pre>
 <td>-0.176867</td>
 <td>-0.416667</td>
 <td>-0.441967</td>
-<td>-9.386869</td>
+<td>-9.121212</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">2025-03-31</th>
@@ -911,7 +914,7 @@ Gráfico guardado</code></pre>
 <td>-0.130800</td>
 <td>-0.166667</td>
 <td>-0.120998</td>
-<td>-26.187413</td>
+<td>-30.566200</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2025-12-31</th>
@@ -932,7 +935,7 @@ Gráfico guardado</code></pre>
 <td>-0.079433</td>
 <td>-0.166667</td>
 <td>-0.212500</td>
-<td>-11.863636</td>
+<td>-7.484848</td>
 </tr>
 </tbody>
 </table>
@@ -944,19 +947,19 @@ Gráfico guardado</code></pre>
 <section id="estandarización-media-0-varianza-1" class="level2">
 <h2 class="anchored" data-anchor-id="estandarización-media-0-varianza-1">6. Estandarización (media 0, varianza 1)</h2>
 <p>Paso requerido antes de aplicar PCA/HFC, siguiendo a Camiz et al.&nbsp;(2020).</p>
-<div id="3c87879e" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df_estandarizado <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    scaler.fit_transform(df_transformado),</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_transformado.index,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_transformado.columns</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1:'</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>df_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3c87879e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:26.469816Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:26.469691Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:26.486962Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:26.486680Z&quot;}}" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_estandarizado <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    scaler.fit_transform(df_transformado),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>df_transformado.index,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>df_transformado.columns</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Verificación — media ≈ 0, varianza ≈ 1:'</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>df_estandarizado.describe().loc[[<span class="st">'mean'</span>, <span class="st">'std'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Verificación — media ≈ 0, varianza ≈ 1:</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -1036,28 +1039,28 @@ Gráfico guardado</code></pre>
 </section>
 <section id="visualización-de-las-series-transformadas-para-validar-el-resultado-de-esta-etapa" class="level2">
 <h2 class="anchored" data-anchor-id="visualización-de-las-series-transformadas-para-validar-el-resultado-de-esta-etapa">7. Visualización de las series transformadas (para validar el resultado de esta etapa)</h2>
-<div id="ca405b3f" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n_vars <span class="op">=</span> <span class="bu">len</span>(df_estandarizado.columns)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>n_rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n_vars <span class="op">/</span> n_cols))</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(n_rows, n_cols, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="fl">3.2</span> <span class="op">*</span> n_rows))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(df_estandarizado.columns):</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(df_estandarizado.index, df_estandarizado[col], linewidth<span class="op">=</span><span class="fl">1.1</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(col, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    axes[i].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    axes[i].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n_vars, <span class="bu">len</span>(axes)):</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    axes[j].set_visible(<span class="va">False</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Series transformadas y estandarizadas'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'reports/figures'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'reports/figures/04_series_estandarizadas.png'</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Gráfico guardado'</span>)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ca405b3f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:26.488503Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:26.488376Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:29.142661Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:29.142345Z&quot;}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n_vars <span class="op">=</span> <span class="bu">len</span>(df_estandarizado.columns)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>n_rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n_vars <span class="op">/</span> n_cols))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(n_rows, n_cols, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="fl">3.2</span> <span class="op">*</span> n_rows))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(df_estandarizado.columns):</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(df_estandarizado.index, df_estandarizado[col], linewidth<span class="op">=</span><span class="fl">1.1</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(col, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    axes[i].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    axes[i].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n_vars, <span class="bu">len</span>(axes)):</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    axes[j].set_visible(<span class="va">False</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Series transformadas y estandarizadas'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'reports/figures'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'reports/figures/04_series_estandarizadas.png'</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Gráfico guardado'</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Gráfico guardado</code></pre>
 </div>
@@ -1073,24 +1076,24 @@ Gráfico guardado</code></pre>
 <section id="guardar-los-cuatro-datasets-derivados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-los-cuatro-datasets-derivados">8. Guardar los cuatro datasets derivados</h2>
 <p>Se guardan las cuatro versiones para trazabilidad y para poder comparar PCA/HFC sobre niveles vs.&nbsp;sobre la versión transformada; ninguna sobrescribe <code>data/raw/series_bcrp_raw.csv</code>.</p>
-<div id="f6fe44fb" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/processed'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df_limpio.to_csv(<span class="st">'data/processed/dataset_niveles_trimestral.csv'</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.to_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_trimestral.csv'</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>df_transformado.to_csv(<span class="st">'data/processed/dataset_transformado_trimestral.csv'</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>df_estandarizado.to_csv(<span class="st">'data/processed/dataset_estandarizado_trimestral.csv'</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Datasets guardados en data/processed/:'</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_trimestral.csv                (niveles, solo sincronizado)'</span>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_estandarizado_trimestral.csv   (niveles + estandarizado, SIN transformar)'</span>)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_transformado_trimestral.csv            (estacionario, sin estandarizar)'</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_estandarizado_trimestral.csv           (transformado + estandarizado, listo para PCA/HFC)'</span>)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Dimensiones niveles (estandarizado): </span><span class="sc">{</span>df_niveles_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> trimestres x </span><span class="sc">{</span>df_niveles_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dimensiones transformado (estandarizado): </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> trimestres x </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'El siguiente notebook (05_pca_hfc.ipynb) puede correr sobre ambas versiones'</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'estandarizadas para comparar resultados de niveles vs. transformado.'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f6fe44fb" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:52:29.145950Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:52:29.145807Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:52:29.158277Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:52:29.157984Z&quot;}}" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/processed'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>df_limpio.to_csv(<span class="st">'data/processed/dataset_niveles_trimestral.csv'</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>df_niveles_estandarizado.to_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_trimestral.csv'</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>df_transformado.to_csv(<span class="st">'data/processed/dataset_transformado_trimestral.csv'</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>df_estandarizado.to_csv(<span class="st">'data/processed/dataset_estandarizado_trimestral.csv'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Datasets guardados en data/processed/:'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_trimestral.csv                (niveles, solo sincronizado)'</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_niveles_estandarizado_trimestral.csv   (niveles + estandarizado, SIN transformar)'</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_transformado_trimestral.csv            (estacionario, sin estandarizar)'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'  - dataset_estandarizado_trimestral.csv           (transformado + estandarizado, listo para PCA/HFC)'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Dimensiones niveles (estandarizado): </span><span class="sc">{</span>df_niveles_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> trimestres x </span><span class="sc">{</span>df_niveles_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Dimensiones transformado (estandarizado): </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> trimestres x </span><span class="sc">{</span>df_estandarizado<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'El siguiente notebook (05_pca_hfc.ipynb) puede correr sobre ambas versiones'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'estandarizadas para comparar resultados de niveles vs. transformado.'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Datasets guardados en data/processed/:
   - dataset_niveles_trimestral.csv                (niveles, solo sincronizado)

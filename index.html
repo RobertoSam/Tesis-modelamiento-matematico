@@ -329,7 +329,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Se depuraron el sitio y el repositorio para que todas las cifras correspondan al dataset mensual vigente (227 × 17), validado contra la API del BCRP. El dataset trimestral queda en re-ejecución con un nuevo control de cobertura, y la datación de regímenes con PCA suavizado pasa a ser referencia provisional hasta evaluar su estabilidad. Ver la <a href="./linea_temporal.html">línea temporal</a>.</p>
+<p>Se depuraron el sitio y el repositorio para que todas las cifras correspondan al dataset mensual vigente (227 × 17), validado contra la API del BCRP. El dataset trimestral se regeneró con la serie diaria del EMBI completa y se re-ejecutaron <code>02</code>, <code>04</code>, <code>05</code> y <code>06a</code> (las cifras del PCA trimestral cambian en décimas). La datación de regímenes con PCA suavizado pasa a ser referencia provisional hasta evaluar su estabilidad. Ver la <a href="./linea_temporal.html">línea temporal</a>.</p>
 </div>
 </div>
 <section id="resumen-del-avance" class="level2">
@@ -364,19 +364,6 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el datase
 <p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (67%), pipeline de datos (67%) y modelamiento (38%). El porcentaje baja respecto de julio porque el pipeline ganó dos etapas nuevas (extensión desde 1985), no porque se haya perdido avance.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Resultados trimestrales en re-ejecución">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Resultados trimestrales en re-ejecución
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>El dataset trimestral (<code>04</code>) y los notebooks que dependen de él (<code>02</code>, <code>05</code>, <code>06a</code>) se regenerarán con la serie diaria del EMBI completa. Hasta entonces sus cifras no se usan como resultado. El dataset mensual vigente (<strong>227 × 17</strong>, 2007-02 a 2025-12, sin huecos) y los notebooks <code>04b</code>, <code>05b</code>, <code>06b</code>, <code>06</code>, <code>08</code> y <code>09</code> sí están validados.</p>
-</div>
-</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <p><strong>Marco conceptual</strong><br> <span style="color: #6b7280; font-size: 14px;">v0.2 — en revisión con el asesor · <a href="./marco_matematico_ae_lstm.html">marco matemático AE/LSTM</a> v0.1</span></p>
@@ -397,7 +384,7 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el datase
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · trimestral por regenerar</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Modelamiento</strong><br>
@@ -439,14 +426,14 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el datase
 <li><label><input type="checkbox" checked=""><strong>Extracción</strong> — conexión a la API del BCRP, descarga de series. Ampliado recientemente de 13 a <strong>18 variables</strong> (se agregaron liquidez M1/M2/M3, tasa interbancaria, IPC subyacente y el spread EMBI Perú). Ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a> para el detalle completo de cada serie y su código BCRP verificado.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Carga y verificación</strong> — corrección de códigos de series mal etiquetados (tipo de cambio vs.&nbsp;crédito), verificación de integridad.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Análisis exploratorio</strong> — documentación de la colinealidad entre crédito total y sus componentes (empresarial, consumo, hipotecario).</label></li>
-<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>227 × 17 variables transformadas</strong>. <code>04b</code> se detiene si hay huecos en el calendario. El dataset trimestral se regenerará con la serie diaria del EMBI completa (control de cobertura agregado en <code>04</code>).</label></li>
+<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>227 × 17 variables transformadas</strong>. <code>04b</code> se detiene si hay huecos en el calendario y <code>04</code> verifica que la serie diaria del EMBI tenga datos en todos los meses antes de agregar a trimestral.</label></li>
 <li><label><input type="checkbox"><strong>Extensión desde 1985</strong> — <code>01b</code> (descarga y diagnóstico de cobertura y resolución numérica) y <code>04c</code> (frontera n–p, paneles largo/estabilización/metas, regímenes monetarios, familias nominal y real). Pendientes de ejecución local.</label></li>
 </ul>
 </section>
 <section id="modelamiento-en-curso" class="level2">
 <h2 class="anchored" data-anchor-id="modelamiento-en-curso">Modelamiento (en curso)</h2>
 <ul>
-<li>[~] <strong>PCA estático</strong> — mensual completo (227 meses; inercia 50,37 % con d = 3, notebooks 05b y 08). La versión trimestral (<code>05</code>: contaminación por tendencia en niveles frente a estructura de régimen en datos transformados) se re-ejecutará con el dataset trimestral regenerado. Pendiente: verificación Rcamiz ↔︎ scikit-learn sobre el dataset mensual.</li>
+<li>[~] <strong>PCA estático</strong> — trimestral (<code>05</code>): contaminación por tendencia en niveles (r≈0,994 entre PC1 y el tiempo) frente a estructura de régimen en datos transformados (r≈0,087). Mensual (227 meses): inercia 50,37 % con d = 3 (notebooks 05b y 08). Pendiente: verificación Rcamiz ↔︎ scikit-learn sobre el dataset mensual.</li>
 <li><label><input type="checkbox"><strong>HFC</strong> — pendiente de implementar sobre los datos BCRP.</label></li>
 <li>[~] <strong>EPCA / EHFC</strong> — parcial: selección de ventana en exploración empírica (notebooks 06a/06b); pendiente adoptar la regla de alineación de signo determinista de Rcamiz.</li>
 <li>[~] <strong>Autoencoder / LSTM</strong> — implementados y ejecutados sobre el dataset mensual de 227 meses (notebooks 08 y 09, <a href="./marco_matematico_ae_lstm.html">marco matemático</a>). El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la reconstrucción fuera de muestra; el valor del AE está en detectar anomalías (oct-2008). La datación con LSTM da 2 regímenes y depende de una regla de codo frágil; el PCA suavizado (8 regímenes) se usa como referencia provisional hasta evaluar la estabilidad de los cortes por bootstrap por bloques. EPCA detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión pendiente con el asesor.</li>

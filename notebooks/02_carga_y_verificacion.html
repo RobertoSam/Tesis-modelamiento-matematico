@@ -359,22 +359,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 <p><strong>Responsabilidad única de este notebook:</strong> cargar <code>data/raw/series_bcrp_raw.csv</code> y verificar su integridad (cobertura, nulos, duplicados, consistencia del índice).</p>
 <p>Este notebook <strong>no modifica ningún valor</strong> del dataset crudo. No hay <code>dropna()</code>, <code>resample()</code>, ni transformaciones de ningún tipo sobre <code>df_raw</code>. El único archivo que se guarda es un <em>reporte</em> de verificación (metadatos sobre la calidad del dato), nunca una versión alterada de los datos mismos.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Pendiente de re-ejecución">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Pendiente de re-ejecución
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Este notebook depende del dataset trimestral de <code>04_preprocesamiento</code>, que se regenerará con la serie diaria del EMBI completa (control de cobertura agregado en <code>04</code>). Las salidas mostradas abajo no deben usarse como resultado hasta la re-ejecución.</p>
-</div>
-</div>
 <section id="librerías-y-carga" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga">1. Librerías y carga</h2>
-<div id="37e30cb1" class="cell" data-execution_count="1">
+<div id="37e30cb1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.322493Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.322139Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.848700Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.848401Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -551,7 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cobertura-temporal-por-serie" class="level2">
 <h2 class="anchored" data-anchor-id="cobertura-temporal-por-serie">2. Cobertura temporal por serie</h2>
-<div id="e48386d6" class="cell" data-execution_count="2">
+<div id="e48386d6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.850811Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.850678Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.860478Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.860207Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cobertura <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Inicio'</span>:  df_raw.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.dropna().index.<span class="bu">min</span>()),</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Fin'</span>:     df_raw.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.dropna().index.<span class="bu">max</span>()),</span>
@@ -733,7 +720,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="duplicados-y-consistencia-del-índice-temporal" class="level2">
 <h2 class="anchored" data-anchor-id="duplicados-y-consistencia-del-índice-temporal">3. Duplicados y consistencia del índice temporal</h2>
-<div id="e033f0e2" class="cell" data-execution_count="3">
+<div id="e033f0e2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.862337Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.862205Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.864667Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.864383Z&quot;}}" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_duplicados <span class="op">=</span> df_raw.index.duplicated().<span class="bu">sum</span>()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>es_monotono <span class="op">=</span> df_raw.index.is_monotonic_increasing</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -751,7 +738,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="estadísticos-descriptivos-en-niveles-originales-sin-transformar" class="level2">
 <h2 class="anchored" data-anchor-id="estadísticos-descriptivos-en-niveles-originales-sin-transformar">4. Estadísticos descriptivos en niveles originales (sin transformar)</h2>
-<div id="4b8f1656" class="cell" data-execution_count="4">
+<div id="4b8f1656" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.866266Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.866153Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.885451Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.885158Z&quot;}}" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estadísticos descriptivos — valores tal como los reporta el BCRP:'</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_raw.describe().<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -964,7 +951,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reporte-de-verificación" class="level2">
 <h2 class="anchored" data-anchor-id="reporte-de-verificación">5. Reporte de verificación</h2>
 <p>Se guarda un reporte de calidad de dato — esto <strong>no</strong> altera <code>data/raw/</code>, es un artefacto separado para trazabilidad y para mostrarle al asesor.</p>
-<div id="5fa659d4" class="cell" data-execution_count="5">
+<div id="5fa659d4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.887062Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.886950Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.890542Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.890282Z&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'reports/tables'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cobertura.to_csv(<span class="st">'reports/tables/02_reporte_verificacion_bcrp.csv'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Reporte guardado en reports/tables/02_reporte_verificacion_bcrp.csv'</span>)</span>
@@ -978,7 +965,7 @@ IMPORTANTE: data/raw/series_bcrp_raw.csv permanece sin modificar.
 La limpieza y transformación real ocurre en 04_preprocesamiento.ipynb</code></pre>
 </div>
 </div>
-<div id="1e542255-9a22-4c0f-8e69-1ab9afd749ad" class="cell" data-execution_count="6">
+<div id="1e542255-9a22-4c0f-8e69-1ab9afd749ad" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-08T04:53:59.891956Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-08T04:53:59.891850Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-08T04:53:59.898057Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-08T04:53:59.897794Z&quot;}}" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_estandarizado_trimestral.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
@@ -986,8 +973,8 @@ La limpieza y transformación real ocurre en 04_preprocesamiento.ipynb</code></p
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns.tolist())</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.tail())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(72, 13)
-['Crédito empresarial_log_diff', 'Crédito consumo_log_diff', 'Crédito hipotecario_log_diff', 'Tipo de cambio_log_diff', 'Índice BVL_log_diff', 'IPC Lima_log_diff', 'PBI desestacionalizado_log_diff', 'Demanda interna_log_diff', 'Reservas internacionales_log_diff', 'indice_precios_inmuebles_log_diff', 'Tasa activa TAMN_diff', 'Tasa pasiva TIPMN_diff', 'Tasa referencia BCRP_diff']
+<pre><code>(72, 18)
+['Crédito empresarial_log_diff', 'Crédito consumo_log_diff', 'Crédito hipotecario_log_diff', 'Tipo de cambio_log_diff', 'Índice BVL_log_diff', 'IPC Lima_log_diff', 'PBI desestacionalizado_log_diff', 'Demanda interna_log_diff', 'Reservas internacionales_log_diff', 'indice_precios_inmuebles_log_diff', 'Liquidez M1_log_diff', 'Liquidez M2_log_diff', 'Liquidez M3_log_diff', 'Tasa activa TAMN_diff', 'Tasa pasiva TIPMN_diff', 'Tasa referencia BCRP_diff', 'Tasa interbancaria_diff', 'embi_peru_diff']
             Crédito empresarial_log_diff  Crédito consumo_log_diff  \
 fecha                                                                
 2024-12-31                     -1.098938                 -0.576463   
@@ -1028,21 +1015,37 @@ fecha
 2025-09-30                           0.023855   
 2025-12-31                           0.528702   
 
-            indice_precios_inmuebles_log_diff  Tasa activa TAMN_diff  \
-fecha                                                                  
-2024-12-31                          -0.430600              -0.022382   
-2025-03-31                          -0.318512               0.320587   
-2025-06-30                           0.012923               0.302477   
-2025-09-30                           0.004960               0.551062   
-2025-12-31                           0.183515               1.138134   
+            indice_precios_inmuebles_log_diff  Liquidez M1_log_diff  \
+fecha                                                                 
+2024-12-31                          -0.430600              0.014276   
+2025-03-31                          -0.318512             -0.914393   
+2025-06-30                           0.012923             -0.906136   
+2025-09-30                           0.004960              0.297493   
+2025-12-31                           0.183515              1.026149   
 
-            Tasa pasiva TIPMN_diff  Tasa referencia BCRP_diff  
-fecha                                                          
-2024-12-31               -0.605315                  -0.634382  
-2025-03-31               -0.506280                  -0.504252  
-2025-06-30               -0.216674                  -0.243993  
-2025-09-30               -0.429620                  -0.243993  
-2025-12-31               -0.233710                  -0.243993  </code></pre>
+            Liquidez M2_log_diff  Liquidez M3_log_diff  Tasa activa TAMN_diff  \
+fecha                                                                           
+2024-12-31             -0.062321              0.229967              -0.022382   
+2025-03-31             -0.689858             -0.773953               0.320587   
+2025-06-30             -0.542202             -0.833988               0.302477   
+2025-09-30              0.517365              0.646194               0.551062   
+2025-12-31              0.529259              0.297804               1.138134   
+
+            Tasa pasiva TIPMN_diff  Tasa referencia BCRP_diff  \
+fecha                                                           
+2024-12-31               -0.605315                  -0.634382   
+2025-03-31               -0.506280                  -0.504252   
+2025-06-30               -0.216674                  -0.243993   
+2025-09-30               -0.429620                  -0.243993   
+2025-12-31               -0.233710                  -0.243993   
+
+            Tasa interbancaria_diff  embi_peru_diff  
+fecha                                                
+2024-12-31                -0.659420       -0.189815  
+2025-03-31                -0.509720        0.115038  
+2025-06-30                -0.234458        0.101068  
+2025-09-30                -0.169123       -0.662622  
+2025-12-31                -0.308898       -0.153738  </code></pre>
 </div>
 </div>
 
