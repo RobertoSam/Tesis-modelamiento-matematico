@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bb5ce4f09c3d713477d34b1921f208f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -281,6 +284,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">05 · PCA (trimestral)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../notebooks/05b_pca_componentes_suavizadas.html">
+ <span class="dropdown-text">05b · Componentes en el tiempo y suavizado (mensual)</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
  <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
   </li>  
@@ -329,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#error-de-reconstrucción-como-indicador-de-anomalía-estructural" id="toc-error-de-reconstrucción-como-indicador-de-anomalía-estructural" class="nav-link" data-scroll-target="#error-de-reconstrucción-como-indicador-de-anomalía-estructural">6. Error de reconstrucción como indicador de anomalía estructural</a></li>
   <li><a href="#contraste-con-las-transiciones-detectadas-por-epca" id="toc-contraste-con-las-transiciones-detectadas-por-epca" class="nav-link" data-scroll-target="#contraste-con-las-transiciones-detectadas-por-epca">7. Contraste con las transiciones detectadas por EPCA</a></li>
   <li><a href="#guardar-resultados" id="toc-guardar-resultados" class="nav-link" data-scroll-target="#guardar-resultados">8. Guardar resultados</a></li>
-  <li><a href="#conclusiones-dataset-corregido-227-meses-5-oct-2026" id="toc-conclusiones-dataset-corregido-227-meses-5-oct-2026" class="nav-link" data-scroll-target="#conclusiones-dataset-corregido-227-meses-5-oct-2026">9. Conclusiones (dataset corregido: 227 meses, 5-oct-2026)</a></li>
+  <li><a href="#conclusiones-dataset-mensual-227-meses" id="toc-conclusiones-dataset-mensual-227-meses" class="nav-link" data-scroll-target="#conclusiones-dataset-mensual-227-meses">9. Conclusiones (dataset mensual: 227 meses)</a></li>
   </ul>
 </nav>
     </div>
@@ -414,11 +421,11 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>La versión preliminar de este notebook (4-oct-2026) usó un dataset sin los 19 meses de septiembre: las fechas “Set” del EMBI diario no se parseaban y el <code>dropna()</code> de <code>04b</code> eliminaba esos meses. El EMBI se reparó con <code>notebooks/reparar_embi_septiembre.py</code> (sin re-descargar: la API del BCRP está protegida por Incapsula desde oct-2026) y el pipeline se re-ejecutó el 5-oct-2026. La celda siguiente confirma 227 meses sin huecos.</p>
+<p>El dataset mensual cubre 2007-02 a 2025-12 (227 meses × 17 variables). La celda siguiente verifica que el calendario esté completo y detiene la ejecución si falta cualquier mes.</p>
 </div>
 </div>
 <div id="ec199a79" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.154549Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.154428Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.160296Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.160074Z&quot;}}" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificación de continuidad mensual (control agregado tras detectar el problema de septiembre)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificación de continuidad mensual: no se trabaja con meses faltantes</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>calendario <span class="op">=</span> pd.date_range(df.index.<span class="bu">min</span>(), df.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>faltantes <span class="op">=</span> calendario.difference(df.index)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Meses esperados: </span><span class="sc">{</span><span class="bu">len</span>(calendario)<span class="sc">}</span><span class="ss"> | presentes: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> | faltantes: </span><span class="sc">{</span><span class="bu">len</span>(faltantes)<span class="sc">}</span><span class="ss">'</span>)</span>
@@ -617,7 +624,7 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong> Con d = 3 la inercia retenida es 50,37 % con el dataset corregido (la verificación Rcamiz/scikit-learn de <code>07_pca_rcamiz</code> reportó 52,16 % con el dataset sin septiembres; debe recalcularse). El AE lineal alcanza el mismo error y el mismo subespacio (ángulos de centésimas de grado, atribuibles a la tolerancia de optimización), y la SVD interna recupera las direcciones del PCA con |cos| ≈ 1. El autoencoder es, por tanto, una <strong>generalización estricta</strong> del PCA de la cadena metodológica, no un método ajeno a ella.</p>
+<p><strong>Lectura.</strong> Con d = 3 la inercia retenida es 50,37 % (la verificación Rcamiz ↔︎ scikit-learn de <code>07_pca_rcamiz</code> está pendiente de ejecutarse sobre este mismo dataset). El AE lineal alcanza el mismo error y el mismo subespacio (ángulos de centésimas de grado, atribuibles a la tolerancia de optimización), y la SVD interna recupera las direcciones del PCA con |cos| ≈ 1. El autoencoder es, por tanto, una <strong>generalización estricta</strong> del PCA de la cadena metodológica, no un método ajeno a ella.</p>
 </section>
 <section id="aporta-la-no-linealidad-validación-cruzada-por-bloques-temporales" class="level2">
 <h2 class="anchored" data-anchor-id="aporta-la-no-linealidad-validación-cruzada-por-bloques-temporales">4. ¿Aporta la no linealidad? Validación cruzada por bloques temporales</h2>
@@ -1277,14 +1284,14 @@ dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="conclusiones-dataset-corregido-227-meses-5-oct-2026" class="level2">
-<h2 class="anchored" data-anchor-id="conclusiones-dataset-corregido-227-meses-5-oct-2026">9. Conclusiones (dataset corregido: 227 meses, 5-oct-2026)</h2>
+<section id="conclusiones-dataset-mensual-227-meses" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-dataset-mensual-227-meses">9. Conclusiones (dataset mensual: 227 meses)</h2>
 <ol type="1">
-<li><strong>Anclaje confirmado.</strong> El autoencoder lineal atado reproduce el PCA: MSE idéntico para d = 1…5, ángulos principales ≤ 0,21° y direcciones recuperadas con |cos| ≥ 0,99999. Con d = 3 la inercia es <strong>50,37 %</strong> (52,16 % con el dataset sin septiembres): la cifra verificada con Rcamiz debe recalcularse con los datos corregidos.</li>
-<li><strong>Contradicción a resolver: Horn retiene 4 dimensiones</strong>, no 3 (PC4: 1,466 &gt; 1,304; inercia 59,0 %). El resultado se mantiene tras la corrección. Decidir con el asesor el criterio de retención antes de fijar d en <code>05</code>, <code>06</code> y <code>07</code>.</li>
+<li><strong>Anclaje confirmado.</strong> El autoencoder lineal atado reproduce el PCA: MSE idéntico para d = 1…5, ángulos principales ≤ 0,21° y direcciones recuperadas con |cos| ≥ 0,99999. Con d = 3 la inercia es <strong>50,37 %</strong>; falta la verificación Rcamiz ↔︎ scikit-learn sobre este mismo dataset.</li>
+<li><strong>Contradicción a resolver: Horn retiene 4 dimensiones</strong>, no 3 (PC4: 1,466 &gt; 1,304; inercia 59,0 %). Decidir con el asesor el criterio de retención antes de fijar d en <code>05</code>, <code>06</code> y <code>07</code>.</li>
 <li><strong>La no linealidad no mejora la reconstrucción fuera de muestra.</strong> El AE no lineal es peor que el PCA para todo d (−4 % con d = 1, −14 % con d = 3, −41 % con d = 5); el pre-entrenamiento no lo corrige. Con 227 meses, la parsimonia favorece al PCA como compresor.</li>
 <li><strong>No estacionariedad estructural.</strong> El MSE fuera de muestra del PCA con d = 3 (1,08) supera la varianza total por variable: la estructura de un bloque temporal no se transfiere a otro.</li>
-<li><strong>Mayor estabilidad que en la versión preliminar.</strong> RV mediano entre réplicas 0,94 (mínimo 0,87) y con el PCA 0,82. Los ejes rotados correlacionan entre 0,87 y 0,93 con PC1–PC3: el AE es una versión deformada del PCA, no una estructura distinta.</li>
+<li><strong>Estabilidad frente a la semilla.</strong> RV mediano entre réplicas 0,94 (mínimo 0,87) y con el PCA 0,82. Los ejes rotados correlacionan entre 0,87 y 0,93 con PC1–PC3: el AE es una versión deformada del PCA, no una estructura distinta.</li>
 <li><strong>El valor del AE está en la detección de anomalías.</strong> En muestra, oct-2008 tiene error 7,0 (AE) frente a 1,0 (PCA), dominado por el EMBI: el AE señala la crisis global que EPCA no puede validar por efecto de borde. Las transiciones EPCA de 2017-11 y 2018-02 coinciden con el pico de error del AE en abr-2018 (crédito hipotecario). La transición EPCA de 2013-05 (taper tantrum) <strong>no</strong> aparece en el error del AE: es un cambio de estructura que el AE reconstruye bien, coherente con que EPCA mide reconfiguración y el AE mide atipicidad.</li>
 </ol>
 <p>La validación estrictamente fuera de muestra del indicador está en <code>09_lstm_autoencoder</code>.</p>
@@ -1366,7 +1373,7 @@ dtype: float64</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

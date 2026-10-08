@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -39,10 +42,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-bb5ce4f09c3d713477d34b1921f208f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -243,6 +246,10 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">05 · PCA (trimestral)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./notebooks/05b_pca_componentes_suavizadas.html">
+ <span class="dropdown-text">05b · Componentes en el tiempo y suavizado (mensual)</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./notebooks/06a_seleccion_ventana_epca.html">
  <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
   </li>  
@@ -322,7 +329,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Se recuperaron los 19 septiembres faltantes del dataset mensual (208 → 227 meses), se implementaron Autoencoders y LSTM con su marco matemático y se agregaron 9 fichas. EPCA detecta ahora el inicio del taper tantrum (2013-05); la datación con LSTM no resultó robusta y se adopta el PCA suavizado como referencia. Ver la <a href="./linea_temporal.html">línea temporal</a>.</p>
+<p>Se implementaron Autoencoders y LSTM con su marco matemático sobre el dataset mensual (227 meses × 17 variables) y se agregaron 9 fichas. EPCA detecta el inicio del taper tantrum (2013-05); la datación con LSTM depende de una regla de codo frágil y se usa el PCA suavizado como referencia provisional. Ver la <a href="./linea_temporal.html">línea temporal</a>.</p>
 </div>
 </div>
 <section id="resumen-del-avance" class="level2">
@@ -342,7 +349,7 @@ más abajo y recalcula el promedio a mano antes de publicar.
 Última actualización de cifras: 4 de octubre de 2026.
 Bibliografía: 10 completas / 15 núcleo (las 6 preliminares no cuentan).
 Pipeline: 4 de 6 etapas (01b y 04c, extensión desde 1985, pendientes de ejecución local).
-Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos corregidos = 0,5 → 1,5 de 4.
+Modelamiento: PCA = 1; Autoencoder/LSTM implementado y ejecutado sobre el dataset mensual = 0,5 → 1,5 de 4.
 -->
 <div class="callout callout-style-default callout-important callout-titled" title="Avance global aproximado: 57%">
 <div class="callout-header d-flex align-content-center">
@@ -357,17 +364,17 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos co
 <p>Cálculo informal de trabajo (no es una evaluación del asesor), basado en el promedio de los tres frentes con conteo discreto: bibliografía (67%), pipeline de datos (67%) y modelamiento (38%). El porcentaje baja respecto de julio porque el pipeline ganó dos etapas nuevas (extensión desde 1985), no porque se haya perdido avance.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled" title="Datos corregidos (5 de octubre de 2026)">
+<div class="callout callout-style-default callout-warning callout-titled" title="Resultados trimestrales en re-ejecución">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Datos corregidos (5 de octubre de 2026)
+<span class="screen-reader-only">Warning</span>Resultados trimestrales en re-ejecución
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Se recuperaron los <strong>19 meses de septiembre (2007–2025)</strong> que faltaban en el dataset mensual: las fechas “Set” del EMBI diario no se parseaban y el <code>dropna()</code> de <code>04b</code> eliminaba esos meses. El EMBI se reparó sin re-descargar (la API del BCRP está protegida por Incapsula desde octubre de 2026) y se re-ejecutaron <code>04b</code>, <code>06b</code>, <code>06</code>, <code>08</code> y <code>09</code>. Dataset mensual vigente: <strong>227 × 17</strong>, sin huecos.</p>
+<p>El dataset trimestral (<code>04</code>) y los notebooks que dependen de él (<code>02</code>, <code>05</code>, <code>06a</code>) se regenerarán con la serie diaria del EMBI completa. Hasta entonces sus cifras no se usan como resultado. El dataset mensual vigente (<strong>227 × 17</strong>, 2007-02 a 2025-12, sin huecos) y los notebooks <code>04b</code>, <code>05b</code>, <code>06b</code>, <code>06</code>, <code>08</code> y <code>09</code> sí están validados.</p>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0;">
@@ -390,7 +397,7 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos co
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · re-ejecución pendiente por septiembres faltantes</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">4 de 6 etapas · extensión desde 1985 lista para ejecutar · trimestral por regenerar</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <strong>Modelamiento</strong><br>
@@ -399,7 +406,7 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos co
 
 </div>
 </div>
-<p><span style="color: #6b7280; font-size: 14px;">PCA completo · Autoencoder y LSTM implementados y validados con datos corregidos</span></p>
+<p><span style="color: #6b7280; font-size: 14px;">PCA mensual completo · Autoencoder y LSTM implementados y validados sobre 227 meses</span></p>
 </div>
 <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
 <p><strong>Validación de resultados</strong><br> <span style="color: #6b7280; font-size: 14px;">No iniciado</span></p>
@@ -432,17 +439,17 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos co
 <li><label><input type="checkbox" checked=""><strong>Extracción</strong> — conexión a la API del BCRP, descarga de series. Ampliado recientemente de 13 a <strong>18 variables</strong> (se agregaron liquidez M1/M2/M3, tasa interbancaria, IPC subyacente y el spread EMBI Perú). Ver el <a href="./papers/diccionario_datos.html">Diccionario de datos</a> para el detalle completo de cada serie y su código BCRP verificado.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Carga y verificación</strong> — corrección de códigos de series mal etiquetados (tipo de cambio vs.&nbsp;crédito), verificación de integridad.</label></li>
 <li><label><input type="checkbox" checked=""><strong>Análisis exploratorio</strong> — documentación de la colinealidad entre crédito total y sus componentes (empresarial, consumo, hipotecario).</label></li>
-<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>227 × 17 variables transformadas</strong> (corregido el 5-oct-2026; antes 208 por la pérdida de los septiembres). <code>04b</code> ahora se detiene si hay huecos en el calendario.</label></li>
+<li><label><input type="checkbox" checked=""><strong>Preprocesamiento</strong> — transformaciones (log-diferencia para niveles, diferencia simple para tasas y spreads), estandarización. Dataset trimestral: <strong>72 × 18 variables transformadas</strong>; dataset mensual: <strong>227 × 17 variables transformadas</strong>. <code>04b</code> se detiene si hay huecos en el calendario. El dataset trimestral se regenerará con la serie diaria del EMBI completa (control de cobertura agregado en <code>04</code>).</label></li>
 <li><label><input type="checkbox"><strong>Extensión desde 1985</strong> — <code>01b</code> (descarga y diagnóstico de cobertura y resolución numérica) y <code>04c</code> (frontera n–p, paneles largo/estabilización/metas, regímenes monetarios, familias nominal y real). Pendientes de ejecución local.</label></li>
 </ul>
 </section>
 <section id="modelamiento-en-curso" class="level2">
 <h2 class="anchored" data-anchor-id="modelamiento-en-curso">Modelamiento (en curso)</h2>
 <ul>
-<li><label><input type="checkbox" checked=""><strong>PCA estático</strong> — completado. Confirma contaminación por tendencia en niveles (r≈0.994 con el tiempo) frente a estructura de régimen en datos transformados (r≈0.089); validado en R (Rcamiz) contra scikit-learn con equivalencia confirmada (|r|=1).</label></li>
+<li>[~] <strong>PCA estático</strong> — mensual completo (227 meses; inercia 50,37 % con d = 3, notebooks 05b y 08). La versión trimestral (<code>05</code>: contaminación por tendencia en niveles frente a estructura de régimen en datos transformados) se re-ejecutará con el dataset trimestral regenerado. Pendiente: verificación Rcamiz ↔︎ scikit-learn sobre el dataset mensual.</li>
 <li><label><input type="checkbox"><strong>HFC</strong> — pendiente de implementar sobre los datos BCRP.</label></li>
 <li>[~] <strong>EPCA / EHFC</strong> — parcial: selección de ventana en exploración empírica (notebooks 06a/06b); pendiente adoptar la regla de alineación de signo determinista de Rcamiz.</li>
-<li>[~] <strong>Autoencoder / LSTM</strong> — implementados y re-ejecutados con el dataset corregido (notebooks 08 y 09, <a href="./marco_matematico_ae_lstm.html">marco matemático</a>). El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la reconstrucción fuera de muestra; el valor del AE está en detectar anomalías (oct-2008). La datación de regímenes con LSTM <strong>no es robusta</strong> (7 → 2 regímenes tras la corrección); la del PCA suavizado sí (8 regímenes estables) y se adopta como referencia. EPCA ahora detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión pendiente con el asesor.</li>
+<li>[~] <strong>Autoencoder / LSTM</strong> — implementados y ejecutados sobre el dataset mensual de 227 meses (notebooks 08 y 09, <a href="./marco_matematico_ae_lstm.html">marco matemático</a>). El AE lineal reproduce el PCA exactamente; la no linealidad no mejora la reconstrucción fuera de muestra; el valor del AE está en detectar anomalías (oct-2008). La datación con LSTM da 2 regímenes y depende de una regla de codo frágil; el PCA suavizado (8 regímenes) se usa como referencia provisional hasta evaluar la estabilidad de los cortes por bootstrap por bloques. EPCA detecta el inicio del taper tantrum (2013-05). Horn sugiere 4 dimensiones, no 3: decisión pendiente con el asesor.</li>
 </ul>
 <hr>
 <p><em>Este resumen se actualiza manualmente conforme avanza la tesis. Última actualización: ver historial de commits de <code>index.qmd</code> en GitHub.</em></p>
@@ -524,7 +531,7 @@ Modelamiento: PCA = 1; Autoencoder/LSTM implementado y re-ejecutado con datos co
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

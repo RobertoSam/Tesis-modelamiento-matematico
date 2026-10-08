@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bb5ce4f09c3d713477d34b1921f208f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -281,6 +284,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">05 · PCA (trimestral)</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../notebooks/05b_pca_componentes_suavizadas.html">
+ <span class="dropdown-text">05b · Componentes en el tiempo y suavizado (mensual)</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
  <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
   </li>  
@@ -452,38 +459,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>            valor <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        registros.append({<span class="st">'fecha'</span>: p[<span class="st">'name'</span>], <span class="st">'valor'</span>: valor})</span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(registros)</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># CORRECCIÓN 2026-10-04: el BCRP rotula septiembre como "Set" (abreviatura</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># peruana), que pd.to_datetime NO reconoce; con errors='coerce' se convertía en</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NaT sin aviso. En la serie DIARIA del EMBI esto eliminaba todos los días de</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># septiembre; al pasar a mensual en 04b, septiembre quedaba NaN y el dropna()</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># borraba los 19 septiembres 2007-2025 de </span><span class="al">TODO</span><span class="co"> el dataset mensual.</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se normalizan las abreviaturas en español (en cualquier posición de la</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># etiqueta, p. ej. "Set.2007" o "02Set07") y se exige que no quede ningún NaT.</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    equivalencias <span class="op">=</span> {<span class="st">'Ene'</span>: <span class="st">'Jan'</span>, <span class="st">'Abr'</span>: <span class="st">'Apr'</span>, <span class="st">'Ago'</span>: <span class="st">'Aug'</span>,</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Sept'</span>: <span class="st">'Sep'</span>, <span class="st">'Set'</span>: <span class="st">'Sep'</span>, <span class="st">'Dic'</span>: <span class="st">'Dec'</span>}</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    etiquetas <span class="op">=</span> df[<span class="st">'fecha'</span>].astype(<span class="bu">str</span>)</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> es, en <span class="kw">in</span> equivalencias.items():</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        etiquetas <span class="op">=</span> etiquetas.<span class="bu">str</span>.replace(<span class="vs">rf'</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">!</span><span class="pp">[A-Za-z]</span><span class="kw">)</span><span class="sc">{</span>es<span class="sc">}</span><span class="ex">(</span><span class="fu">?!</span><span class="pp">[a-z]</span><span class="ex">)</span><span class="vs">'</span>, en, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'fecha'</span>] <span class="op">=</span> pd.to_datetime(etiquetas, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df[<span class="st">'fecha'</span>].isna().<span class="bu">any</span>():</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        ejemplos <span class="op">=</span> etiquetas[df[<span class="st">'fecha'</span>].isna()].head(<span class="dv">3</span>).tolist()</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">: periodos sin parsear, p. ej. </span><span class="sc">{</span>ejemplos<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.set_index(<span class="st">'fecha'</span>)[<span class="st">'valor'</span>]</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Descarga de todas las series (sin resamplear, sin imputar) ---</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>series_descargadas <span class="op">=</span> {}</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>errores <span class="op">=</span> []</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, codigo <span class="kw">in</span> SERIES.items():</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        series_descargadas[nombre] <span class="op">=</span> descargar_serie(codigo)</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  OK  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span><span class="bu">len</span>(series_descargadas[nombre])<span class="sc">}</span><span class="ss"> obs.'</span>)</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        errores.append((nombre, codigo, <span class="bu">str</span>(e)))</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  ERROR  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> errores:</span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Series con error: </span><span class="sc">{</span><span class="bu">len</span>(errores)<span class="sc">}</span><span class="ss"> — revisar antes de continuar'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># El BCRP rotula los meses con abreviaturas en español (p. ej. "Set" para</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># septiembre, "Ene", "Abr", "Ago", "Dic"), que pd.to_datetime no reconoce.</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se normalizan en cualquier posición de la etiqueta (p. ej. "Set.2007" o</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># "02Set07") y se exige que no quede ninguna fecha sin parsear.</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    equivalencias <span class="op">=</span> {<span class="st">'Ene'</span>: <span class="st">'Jan'</span>, <span class="st">'Abr'</span>: <span class="st">'Apr'</span>, <span class="st">'Ago'</span>: <span class="st">'Aug'</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Sept'</span>: <span class="st">'Sep'</span>, <span class="st">'Set'</span>: <span class="st">'Sep'</span>, <span class="st">'Dic'</span>: <span class="st">'Dec'</span>}</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    etiquetas <span class="op">=</span> df[<span class="st">'fecha'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> es, en <span class="kw">in</span> equivalencias.items():</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        etiquetas <span class="op">=</span> etiquetas.<span class="bu">str</span>.replace(<span class="vs">rf'</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">!</span><span class="pp">[A-Za-z]</span><span class="kw">)</span><span class="sc">{</span>es<span class="sc">}</span><span class="ex">(</span><span class="fu">?!</span><span class="pp">[a-z]</span><span class="ex">)</span><span class="vs">'</span>, en, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'fecha'</span>] <span class="op">=</span> pd.to_datetime(etiquetas, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df[<span class="st">'fecha'</span>].isna().<span class="bu">any</span>():</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        ejemplos <span class="op">=</span> etiquetas[df[<span class="st">'fecha'</span>].isna()].head(<span class="dv">3</span>).tolist()</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">: periodos sin parsear, p. ej. </span><span class="sc">{</span>ejemplos<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.set_index(<span class="st">'fecha'</span>)[<span class="st">'valor'</span>]</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Descarga de todas las series (sin resamplear, sin imputar) ---</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>series_descargadas <span class="op">=</span> {}</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>errores <span class="op">=</span> []</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, codigo <span class="kw">in</span> SERIES.items():</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        series_descargadas[nombre] <span class="op">=</span> descargar_serie(codigo)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  OK  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span><span class="bu">len</span>(series_descargadas[nombre])<span class="sc">}</span><span class="ss"> obs.'</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        errores.append((nombre, codigo, <span class="bu">str</span>(e)))</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'  ERROR  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> errores:</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Series con error: </span><span class="sc">{</span><span class="bu">len</span>(errores)<span class="sc">}</span><span class="ss"> — revisar antes de continuar'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  OK  Crédito SF sector privado (PN00518MM): 228 obs.
   OK  Crédito empresarial (PN00532MM): 228 obs.
@@ -1158,32 +1162,29 @@ Name: valor, Length: 228, dtype: float64}
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>            valor <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        registros.append({<span class="st">'fecha'</span>: p[<span class="st">'name'</span>], <span class="st">'valor'</span>: valor})</span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(registros)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># CORRECCIÓN 2026-10-04: el BCRP rotula septiembre como "Set" (abreviatura</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># peruana), que pd.to_datetime NO reconoce; con errors='coerce' se convertía en</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NaT sin aviso. En la serie DIARIA del EMBI esto eliminaba todos los días de</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># septiembre; al pasar a mensual en 04b, septiembre quedaba NaN y el dropna()</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># borraba los 19 septiembres 2007-2025 de </span><span class="al">TODO</span><span class="co"> el dataset mensual.</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se normalizan las abreviaturas en español (en cualquier posición de la</span></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># etiqueta, p. ej. "Set.2007" o "02Set07") y se exige que no quede ningún NaT.</span></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    equivalencias <span class="op">=</span> {<span class="st">'Ene'</span>: <span class="st">'Jan'</span>, <span class="st">'Abr'</span>: <span class="st">'Apr'</span>, <span class="st">'Ago'</span>: <span class="st">'Aug'</span>,</span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Sept'</span>: <span class="st">'Sep'</span>, <span class="st">'Set'</span>: <span class="st">'Sep'</span>, <span class="st">'Dic'</span>: <span class="st">'Dec'</span>}</span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    etiquetas <span class="op">=</span> df[<span class="st">'fecha'</span>].astype(<span class="bu">str</span>)</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> es, en <span class="kw">in</span> equivalencias.items():</span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        etiquetas <span class="op">=</span> etiquetas.<span class="bu">str</span>.replace(<span class="vs">rf'</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">!</span><span class="pp">[A-Za-z]</span><span class="kw">)</span><span class="sc">{</span>es<span class="sc">}</span><span class="ex">(</span><span class="fu">?!</span><span class="pp">[a-z]</span><span class="ex">)</span><span class="vs">'</span>, en, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'fecha'</span>] <span class="op">=</span> pd.to_datetime(etiquetas, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df[<span class="st">'fecha'</span>].isna().<span class="bu">any</span>():</span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>        ejemplos <span class="op">=</span> etiquetas[df[<span class="st">'fecha'</span>].isna()].head(<span class="dv">3</span>).tolist()</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">: periodos sin parsear, p. ej. </span><span class="sc">{</span>ejemplos<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.set_index(<span class="st">'fecha'</span>)[<span class="st">'valor'</span>]</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Descargando EMBI Perú (serie diaria, archivo separado)...'</span>)</span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>embi <span class="op">=</span> descargar_serie_diaria(<span class="st">'PD04709XD'</span>, inicio<span class="op">=</span><span class="st">'2003-1-1'</span>, fin<span class="op">=</span><span class="st">'2025-12-31'</span>)</span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>df_embi <span class="op">=</span> embi.to_frame(name<span class="op">=</span><span class="st">'embi_peru'</span>)</span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/raw'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>df_embi.to_csv(<span class="st">'data/raw/embi_peru_raw.csv'</span>)</span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'EMBI Perú guardado: </span><span class="sc">{</span>df_embi<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones diarias'</span>)</span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Archivo: data/raw/embi_peru_raw.csv (diario, inmutable, igual que series_bcrp_raw.csv)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># El BCRP rotula los meses con abreviaturas en español (p. ej. "Set" para</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># septiembre, "Ene", "Abr", "Ago", "Dic"), que pd.to_datetime no reconoce.</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se normalizan en cualquier posición de la etiqueta (p. ej. "Set.2007" o</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># "02Set07") y se exige que no quede ninguna fecha sin parsear.</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    equivalencias <span class="op">=</span> {<span class="st">'Ene'</span>: <span class="st">'Jan'</span>, <span class="st">'Abr'</span>: <span class="st">'Apr'</span>, <span class="st">'Ago'</span>: <span class="st">'Aug'</span>,</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Sept'</span>: <span class="st">'Sep'</span>, <span class="st">'Set'</span>: <span class="st">'Sep'</span>, <span class="st">'Dic'</span>: <span class="st">'Dec'</span>}</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    etiquetas <span class="op">=</span> df[<span class="st">'fecha'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> es, en <span class="kw">in</span> equivalencias.items():</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        etiquetas <span class="op">=</span> etiquetas.<span class="bu">str</span>.replace(<span class="vs">rf'</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">!</span><span class="pp">[A-Za-z]</span><span class="kw">)</span><span class="sc">{</span>es<span class="sc">}</span><span class="ex">(</span><span class="fu">?!</span><span class="pp">[a-z]</span><span class="ex">)</span><span class="vs">'</span>, en, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'fecha'</span>] <span class="op">=</span> pd.to_datetime(etiquetas, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df[<span class="st">'fecha'</span>].isna().<span class="bu">any</span>():</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        ejemplos <span class="op">=</span> etiquetas[df[<span class="st">'fecha'</span>].isna()].head(<span class="dv">3</span>).tolist()</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'</span><span class="sc">{</span>codigo<span class="sc">}</span><span class="ss">: periodos sin parsear, p. ej. </span><span class="sc">{</span>ejemplos<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.set_index(<span class="st">'fecha'</span>)[<span class="st">'valor'</span>]</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Descargando EMBI Perú (serie diaria, archivo separado)...'</span>)</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>embi <span class="op">=</span> descargar_serie_diaria(<span class="st">'PD04709XD'</span>, inicio<span class="op">=</span><span class="st">'2003-1-1'</span>, fin<span class="op">=</span><span class="st">'2025-12-31'</span>)</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>df_embi <span class="op">=</span> embi.to_frame(name<span class="op">=</span><span class="st">'embi_peru'</span>)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/raw'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>df_embi.to_csv(<span class="st">'data/raw/embi_peru_raw.csv'</span>)</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'EMBI Perú guardado: </span><span class="sc">{</span>df_embi<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> observaciones diarias'</span>)</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Archivo: data/raw/embi_peru_raw.csv (diario, inmutable, igual que series_bcrp_raw.csv)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Descargando EMBI Perú (serie diaria, archivo separado)...
 EMBI Perú guardado: 6001 observaciones diarias
@@ -1268,7 +1269,7 @@ Archivo: data/raw/embi_peru_raw.csv (diario, inmutable, igual que series_bcrp_ra
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
