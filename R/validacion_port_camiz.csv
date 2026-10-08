@@ -1,0 +1,7 @@
+"prueba","casos","dif_relativa_maxima","coincide","plataforma"
+"clahfac: objeto completo, dataset de la tesis (salvo signo de factores)",1,1.02e-14,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
+"clahfac: columnas con signo distinto que no son empates",3,0,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
+"clahpart: noeud = 1..8, dataset de la tesis (salvo signo)",8,1.02e-14,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
+"aede: 4 ventanas x 2 esquemas de pesos, dataset de la tesis",8,9.89e-13,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
+"clahfacsub: 22 salidas, datos simulados",200,2.9e-13,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
+"fishersub: criterio y límites, series simuladas",300,1.74e-13,TRUE,"x86_64-pc-linux-gnu R version 4.3.3 (2024-02-29)"
