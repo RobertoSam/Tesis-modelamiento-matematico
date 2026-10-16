@@ -13,6 +13,61 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 16 de octubre de 2026
+
+**Documento en R: análisis completo en dos vías**
+
+- A pedido del asesor (sustentar la transformación y probar sin transformar),
+  `R/tesis_ciclo_financiero.Rmd` ejecuta ahora la cadena completa dos veces, con el mismo código y
+  los mismos parámetros. La Parte A usa las series sin transformar y la Parte B las transformadas.
+  La Parte C compara ambas vías. Decisión registrada en el [registro de decisiones](decisiones.qmd) (D2).
+- Nueva sección de sustento con cuatro pruebas sobre los propios datos:
+  - Qué paso cambia la estructura: el logaritmo no la cambia; la diferencia sí.
+  - Ganancia del filtro de primera diferencia: atenúa las oscilaciones de 8 años a 0,4 % de su
+    varianza.
+  - Nulo de tendencias independientes: el PC1 sin transformar no lo supera y el PC2 sí.
+  - ADF/KPSS en las dos versiones.
+- La vía transformada reproduce en R los resultados de Python: transiciones de la EPCA
+  (2013-05, 2017-11, 2018-02) y los 8 regímenes del notebook `09`.
+
+**Hallazgos**
+
+- Estacionalidad residual visible al diferenciar: demanda interna (autocorrelación a 12 meses de
+  0,58), M1, crédito empresarial e IPC.
+- En las dos vías, parte de las transiciones de la EPCA coinciden con la entrada o la salida de
+  un episodio de la ventana de 60 meses (bordes de ventana), no con un cambio de régimen.
+- Transformadas, los ejes menores del PCA dependen de episodios (PC4 de la pandemia, PC3 de la
+  crisis global); sin transformar, ninguno.
+- La regla de fases hereda una tendencia en las dos vías: el nivel del crédito sin transformar y
+  su desaceleración en las transformadas.
+
+**Trazabilidad**
+
+- Tags `v0.1-transformadas` (documento en R con las series transformadas como base) y
+  `v0.2-niveles` (versión del 8 de octubre). Nueva página [Decisiones](decisiones.qmd).
+
+**Pendientes**
+
+- Discutir con el asesor la propuesta de la Parte C: medir sin transformar y detectar con las
+  series transformadas.
+- Verificar antes de citarlas las referencias Granger y Newbold (1974), Phillips (1986) y Engle y
+  Granger (1987).
+- Verificar si el indicador de demanda interna (PN01774AM) está desestacionalizado.
+- Prueba de robustez de la EPCA que separe las transiciones reales de los bordes de ventana.
+- Reformular la regla de fases.
+
+## 8 de octubre de 2026
+
+**Documento en R**
+
+- Verificación del PCA de Rcamiz frente a scikit-learn sobre los 227 meses (notebook `07`).
+- Traducción a R puro de `AedeClahfac` 1.2 (HFC y EPCA del asesor), validada contra el binario
+  (`R/camiz_port.R`, `R/validacion_port_camiz.R`).
+- Versión en R de la pipeline, unificada en un solo `R/tesis_ciclo_financiero.Rmd` (fuera del
+  sitio).
+- Decisión: el documento en R pasa a las series sin transformar, con las transformadas como
+  contraste ([registro de decisiones](decisiones.qmd), D1).
+
 ## 7 de octubre de 2026
 
 **Datos**
