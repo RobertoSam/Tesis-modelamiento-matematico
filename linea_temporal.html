@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,13 +12,10 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
+code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -42,10 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bb5ce4f09c3d713477d34b1921f208f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +107,10 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link active" href="./linea_temporal.html" aria-current="page"> 
 <span class="menu-text">Línea temporal</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./decisiones.html"> 
+<span class="menu-text">Decisiones</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./glosario.html"> 
@@ -291,8 +292,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">7 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">4–5 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">16 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">8 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-2" id="toc-de-octubre-de-2026-2" class="nav-link" data-scroll-target="#de-octubre-de-2026-2">7 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-3" id="toc-de-octubre-de-2026-3" class="nav-link" data-scroll-target="#de-octubre-de-2026-3">4–5 de octubre de 2026</a></li>
   </ul>
 </nav>
     </div>
@@ -333,7 +336,51 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <section id="de-octubre-de-2026" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026">7 de octubre de 2026</h2>
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026">16 de octubre de 2026</h2>
+<p><strong>Documento en R: análisis completo en dos vías</strong></p>
+<ul>
+<li>A pedido del asesor (sustentar la transformación y probar sin transformar), <code>R/tesis_ciclo_financiero.Rmd</code> ejecuta ahora la cadena completa dos veces, con el mismo código y los mismos parámetros. La Parte A usa las series sin transformar y la Parte B las transformadas. La Parte C compara ambas vías. Decisión registrada en el <a href="./decisiones.html">registro de decisiones</a> (D2).</li>
+<li>Nueva sección de sustento con cuatro pruebas sobre los propios datos:
+<ul>
+<li>Qué paso cambia la estructura: el logaritmo no la cambia; la diferencia sí.</li>
+<li>Ganancia del filtro de primera diferencia: atenúa las oscilaciones de 8 años a 0,4 % de su varianza.</li>
+<li>Nulo de tendencias independientes: el PC1 sin transformar no lo supera y el PC2 sí.</li>
+<li>ADF/KPSS en las dos versiones.</li>
+</ul></li>
+<li>La vía transformada reproduce en R los resultados de Python: transiciones de la EPCA (2013-05, 2017-11, 2018-02) y los 8 regímenes del notebook <code>09</code>.</li>
+</ul>
+<p><strong>Hallazgos</strong></p>
+<ul>
+<li>Estacionalidad residual visible al diferenciar: demanda interna (autocorrelación a 12 meses de 0,58), M1, crédito empresarial e IPC.</li>
+<li>En las dos vías, parte de las transiciones de la EPCA coinciden con la entrada o la salida de un episodio de la ventana de 60 meses (bordes de ventana), no con un cambio de régimen.</li>
+<li>Transformadas, los ejes menores del PCA dependen de episodios (PC4 de la pandemia, PC3 de la crisis global); sin transformar, ninguno.</li>
+<li>La regla de fases hereda una tendencia en las dos vías: el nivel del crédito sin transformar y su desaceleración en las transformadas.</li>
+</ul>
+<p><strong>Trazabilidad</strong></p>
+<ul>
+<li>Tags <code>v0.1-transformadas</code> (documento en R con las series transformadas como base) y <code>v0.2-niveles</code> (versión del 8 de octubre). Nueva página <a href="./decisiones.html">Decisiones</a>.</li>
+</ul>
+<p><strong>Pendientes</strong></p>
+<ul>
+<li>Discutir con el asesor la propuesta de la Parte C: medir sin transformar y detectar con las series transformadas.</li>
+<li>Verificar antes de citarlas las referencias Granger y Newbold (1974), Phillips (1986) y Engle y Granger (1987).</li>
+<li>Verificar si el indicador de demanda interna (PN01774AM) está desestacionalizado.</li>
+<li>Prueba de robustez de la EPCA que separe las transiciones reales de los bordes de ventana.</li>
+<li>Reformular la regla de fases.</li>
+</ul>
+</section>
+<section id="de-octubre-de-2026-1" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">8 de octubre de 2026</h2>
+<p><strong>Documento en R</strong></p>
+<ul>
+<li>Verificación del PCA de Rcamiz frente a scikit-learn sobre los 227 meses (notebook <code>07</code>).</li>
+<li>Traducción a R puro de <code>AedeClahfac</code> 1.2 (HFC y EPCA del asesor), validada contra el binario (<code>R/camiz_port.R</code>, <code>R/validacion_port_camiz.R</code>).</li>
+<li>Versión en R de la pipeline, unificada en un solo <code>R/tesis_ciclo_financiero.Rmd</code> (fuera del sitio).</li>
+<li>Decisión: el documento en R pasa a las series sin transformar, con las transformadas como contraste (<a href="./decisiones.html">registro de decisiones</a>, D1).</li>
+</ul>
+</section>
+<section id="de-octubre-de-2026-2" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-2">7 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li>Se retiraron del sitio, el README, las fichas y los notebooks todas las referencias a la corrida previa con datos incompletos. Todas las cifras quedan referidas al dataset mensual vigente: 227 meses × 17 variables (2007-02 a 2025-12).</li>
@@ -352,8 +399,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Consolidar la interpretación de todos los resultados antes de presentarlos al asesor.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-1" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">4–5 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-3" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-3">4–5 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li><strong>Dataset mensual:</strong> 227 meses × 17 variables (2007-02 a 2025-12), con calendario continuo verificado; <code>04b</code> detiene la ejecución si falta cualquier mes.</li>
@@ -462,7 +509,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
