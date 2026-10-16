@@ -1,0 +1,71 @@
+---
+title: "Registro de decisiones metodológicas"
+subtitle: "Qué se decidió, por qué, qué alternativa se descartó y dónde queda el rastro"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+::: {.callout-note title="Cómo se usa esta página"}
+Cada decisión que cambia el análisis se registra con su fecha, el motivo, la alternativa y el
+punto del repositorio donde puede recuperarse el estado anterior (un *tag* de git o un commit).
+Las entradas van de la más reciente a la más antigua. El avance por sesión está en la
+[línea temporal](linea_temporal.qmd).
+:::
+
+## D2 · 16 de octubre de 2026 · Análisis completo en dos vías
+
+**Contexto.** El asesor no objeta transformar las series (log-diferencias y diferencias), pero
+pide sustentar la transformación y probar también con las series sin transformar.
+
+**Decisión.** El documento en R (`R/tesis_ciclo_financiero.Rmd`) ejecuta la cadena completa
+(exploración, PCA, EPCA, HFC, autoencoders y LSTM, datación de regímenes y fases) en **dos vías**,
+con el mismo código y los mismos parámetros:
+
+- **Parte A**: las 17 series sin transformar, solo estandarizadas.
+- **Parte B**: las mismas 17 series transformadas, como en la corrida en Python.
+
+Una sección previa reúne el sustento con evidencia de los propios datos, y la Parte C compara
+ambas vías. Ninguna vía se elige de antemano.
+
+**Evidencia principal para el sustento**
+
+- El logaritmo no cambia la estructura del PCA (congruencia 1,00 / 1,00 / 0,99 con las series sin
+  transformar); la diferencia sí (PC1 baja de 67,2 % a 23–25 %). La discusión es sobre diferenciar.
+- La primera diferencia es un filtro con ganancia $2\sin(\pi/P)$ para un período de $P$ meses:
+  una oscilación de 8 años conserva el 0,4 % de su varianza. En los datos, la varianza en
+  oscilaciones de dos años o más pasa de 94 % (sin transformar y sin tendencia lineal) a 22 %
+  (mediana de las series).
+- Frente a 17 series independientes con la misma tendencia de cada una (remuestreo por bloques de
+  sus propios incrementos), el PC1 sin transformar no es mayor de lo esperable (p ≈ 0,90): se lee
+  como profundización, no como ciclo. El PC2 sí lo supera (p ≈ 0,01): el co-movimiento de tasas
+  es real.
+- Transformadas, la detección de episodios fuera de muestra es informativa (falsas alarmas de
+  0,6–1,9 %), mientras que sin transformar no lo es (más de 56 %).
+
+**Propuesta pendiente de decisión** (Parte C del documento). Medir la estructura y los
+regímenes sin transformar, y usar las series transformadas para detectar episodios y para las
+pruebas que exigen estacionariedad. Se debe discutir con el asesor antes de reescribir los
+notebooks.
+
+**Rastro**
+
+- Versión anterior, solo sin transformar con las transformadas como contraste: tag
+  [`v0.2-niveles`](https://github.com/RobertoSam/Tesis-modelamiento-matematico/tree/v0.2-niveles).
+
+## D1 · 8 de octubre de 2026 · El análisis en R pasa a las series sin transformar
+
+**Contexto.** La posición del asesor, materialista y de "datos primero", es trabajar con los datos
+como los publica la fuente.
+
+**Decisión.** El documento en R toma las 17 series sin transformar como análisis principal; las
+transformadas quedan como un bloque de contraste. Los notebooks de Python no se modificaron.
+
+**Alternativa.** Mantener las series transformadas, que eran la base de la corrida en Python.
+
+**Rastro**
+
+- Estado anterior, con las series transformadas como base del documento en R: tag
+  [`v0.1-transformadas`](https://github.com/RobertoSam/Tesis-modelamiento-matematico/tree/v0.1-transformadas).
+- Estado posterior: tag `v0.2-niveles`. La decisión D2 la amplía.

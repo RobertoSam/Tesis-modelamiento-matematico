@@ -1,6 +1,6 @@
 ---
 title: "Ciclo financiero del Perú"
-subtitle: "Análisis completo en R sobre las series sin transformar: series base, exploración, PCA, EPCA, HFC, redes neuronales, contraste con series transformadas y síntesis"
+subtitle: "Análisis completo en R en dos vías (series sin transformar y transformadas): sustento de la transformación, exploración, PCA, EPCA, HFC, redes neuronales, datación y comparación"
 author: "Roberto Samaniego Salcedo · Asesor: Dr. Sergio Camiz"
 date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
@@ -8,13 +8,14 @@ output:
     toc: true
     toc_float: true
     toc_depth: 3
-    number_sections: true
+    number_sections: false
     code_folding: hide
     df_print: kable
 params:
   raiz_repo: ""            # ruta del repositorio; vacío = se detecta automáticamente
   bootstrap_reps: 500      # réplicas del bootstrap por bloques del PCA
   semilla: 2026
+  reps_nulo: 1000         # simulaciones del nulo de tendencias independientes (sección 2)
 ---
 
 ```{r configuracion, include = FALSE}
@@ -72,21 +73,18 @@ table td, table th { padding: 4px 6px !important; vertical-align: top; }
 
 # Cómo leer este documento {-}
 
-El documento sigue el orden del análisis de la tesis. Cada bloque parte de lo que dejó el
-anterior:
+El documento tiene cinco partes:
 
 1. **Series base**: qué mide cada serie y cómo se comportó entre 2007 y 2025.
-2. **Exploración conjunta**: qué implica trabajar sin transformar, tendencia común, estacionariedad,
-   meses extremos y relaciones entre series.
-3. **PCA**: qué componentes resumen la variabilidad conjunta, qué significan y qué tan robustos son.
-4. **EPCA**: si esa estructura cambia en el tiempo (supuesto de ventanas).
-5. **HFC**: cómo se agrupan las variables y si esa jerarquía cambia.
-6. **Autoencoders y LSTM**: cómo se diseñan las redes y si aportan algo que los métodos anteriores no.
-7. **Contraste**: los mismos análisis sobre las series transformadas (log-diferencias y diferencias).
-8. **Síntesis**: datación de regímenes y todos los métodos frente al objetivo de la tesis.
-
-El **análisis oficial usa las 17 series sin transformar** (en sus unidades originales, solo
-estandarizadas). Las series transformadas aparecen únicamente en el bloque 7, como contraste.
+2. **¿Transformar o no?**: el sustento de la decisión con evidencia de estos datos (qué paso de
+   la transformación cambia la estructura, qué hace la diferencia con las frecuencias del ciclo,
+   correlación entre tendencias y estacionariedad).
+3. **Parte A, series sin transformar**: la cadena completa. A.1 exploración, A.2 PCA, A.3 EPCA,
+   A.4 HFC, A.5 autoencoders y LSTM, A.6 datación de regímenes y fases.
+4. **Parte B, series transformadas** (log-diferencias y diferencias): la misma cadena, con el
+   mismo código y los mismos parámetros, en las secciones B.1 a B.6.
+5. **Parte C, comparación**: las dos vías frente a los criterios de la tesis y una propuesta de
+   cómo sustentar la decisión ante el asesor.
 
 En cada resultado hay tres tipos de recuadro:
 
@@ -107,8 +105,8 @@ Algo que contradice o matiza lo establecido en avances previos y que conviene re
 EPCA del asesor usan `R/camiz_port.R`, una traducción a R del paquete `AedeClahfac` 1.2
 validada contra el original (`R/validacion_port_camiz.R`). Los resultados de autoencoders y
 LSTM se leen de las corridas en Python: las copias de los notebooks `08` y `09` sobre las series
-sin transformar (`R/redes_python/`) y los notebooks originales para el contraste; el bloque 6
-explica el diseño de las redes en detalle.
+sin transformar (`R/redes_python/`) para la Parte A y los notebooks originales para la Parte B;
+A.5 explica el diseño de las redes en detalle.
 
 ```{r funciones}
 # ---- Datos ------------------------------------------------------------------
@@ -426,9 +424,21 @@ escala_divergente <- function(nombre, lim = NULL) {
 # Distancia en meses entre fechas
 meses_entre <- function(a, b) abs((as.numeric(format(a, "%Y")) - as.numeric(format(b, "%Y"))) * 12 +
                                     as.numeric(format(a, "%m")) - as.numeric(format(b, "%m")))
+# Desplaza una fecha k meses (k puede ser negativo)
+mover_meses <- function(f, k) seq(f, by = paste(k, "months"), length.out = 2)[2]
+
+# ¿Coincide una transición (centro de ventana) con la entrada o salida de un episodio de la ventana?
+# La ventana de w meses con centro f va de f - w/2 a f + w/2 - 1: un episodio sale cuando el
+# inicio de la ventana pasa su fin, y entra cuando el final de la ventana llega a su inicio.
+borde_ventana <- function(f, w = VENTANA, tol = 3) {
+  sale <- episodios$nombre[meses_entre(mover_meses(f, -(w %/% 2)), episodios$fin) <= tol]
+  entra <- episodios$nombre[meses_entre(mover_meses(f, w - 1 - w %/% 2), episodios$inicio) <= tol]
+  r <- c(if (length(entra)) paste("Entra", entra), if (length(sale)) paste("Sale", sale))
+  if (length(r)) paste(r, collapse = "; ") else "—"
+}
 ```
 
-# Series base del análisis
+# 1. Series base del análisis
 
 ```{r b1-datos}
 niv <- cargar_niveles()
@@ -467,18 +477,18 @@ ficha <- meta[, c("bloque", "nombre_corto", "codigo", "nombre_bcrp", "unidad",
                   "frecuencia_origen", "transformacion", "entra")]
 knitr::kable(ficha, row.names = FALSE,
              col.names = c("Bloque", "Serie", "Código BCRP", "Nombre en el BCRP", "Unidad",
-                           "Frecuencia de origen", "Transformación (solo contraste, bloque 7)", "¿Entra?"))
+                           "Frecuencia de origen", "Transformación (Parte B)", "¿Entra?"))
 ```
 
 Las series entran al análisis **sin transformar**. Para describirlas en este bloque se usan dos
 convenciones:
 
 - **Series en nivel** (saldos, índices y tipo de cambio): crecen con el tiempo, así que se
-  describen por su variación porcentual. En el contraste del bloque 7 se transforman con
+  describen por su variación porcentual. En la Parte B se transforman con
   log-diferencia.
 - **Tasas y spread** (tasas de interés en % y EMBIG en puntos básicos): ya son precios
-  relativos, así que se describen por cambios absolutos (puntos porcentuales o básicos). En el
-  contraste del bloque 7 se transforman con diferencia simple.
+  relativos, así que se describen por cambios absolutos (puntos porcentuales o básicos). En
+  la Parte B se transforman con diferencia simple.
 
 ## Indicadores básicos
 
@@ -701,7 +711,7 @@ del resto de la muestra. Las reservas internacionales se multiplicaron por
 
 ::: {.pregunta}
 En variaciones mensuales, una caída de esa magnitud puede definir por sí sola un componente
-(bloque 7); sin transformar, se ve como un hundimiento temporal del nivel. ¿Prefieres tratar
+(Parte B); sin transformar, se ve como un hundimiento temporal del nivel. ¿Prefieres tratar
 2020 como parte del ciclo (y que pese lo que pese), o analizar también una versión sin los
 meses de la pandemia? Los bloques 2 y 3 cuantifican su peso.
 :::
@@ -748,8 +758,8 @@ son del ciclo financiero)?
 - La muestra cubre `r n_meses` meses completos y tres episodios de estrés de naturaleza
   distinta: una crisis financiera global (2008), un choque de tasas externas (2013) y una
   crisis sanitaria con respuesta monetaria extrema (2020).
-- Las series en nivel crecen de forma sostenida. El análisis se hace sobre ellas sin
-  transformar, y el bloque 2 mide cuánto pesa esa tendencia común.
+- Las series en nivel crecen de forma sostenida. La sección 2 discute si conviene
+  transformarlas, y las Partes A y B analizan ambas versiones.
 - Hay redundancias claras (referencia e interbancaria, correlación de niveles
   `r num(cor_ref_inter, 3)`; M2 y M3, correlación de variaciones mensuales
   `r num(cor(diff(log(niv[["Liquidez M2"]])), diff(log(niv[["Liquidez M3"]]))), 2)`) y episodios
@@ -758,33 +768,337 @@ son del ciclo financiero)?
   crédito por segmento, redundancia de tasas, papel del IPC y tratamiento de 2020.
 
 
-# Exploración conjunta
+# 2. ¿Transformar o no? Sustento de la decisión {#sustento}
+
+La corrida en Python transformó las series antes del análisis: **log-diferencia** para saldos e
+índices ($\Delta \ln x_t$, aproximadamente la variación porcentual mensual) y **diferencia
+simple** para tasas y spread ($\Delta x_t$, el cambio mensual en puntos). El asesor no objeta
+la transformación, pero pide sustentarla y probar también con las series sin transformar. Esta
+sección reúne la evidencia de estos mismos datos a favor y en contra, antes de los dos análisis
+completos:
+
+- **Parte A**: las 17 series sin transformar (solo estandarizadas).
+- **Parte B**: las mismas 17 series transformadas.
+
+Las dos partes aplican la misma cadena de métodos con el mismo código y los mismos parámetros
+(ventanas, umbrales, semillas). La Parte C las compara.
 
 ```{r b2-datos}
-# Análisis oficial: las 17 series SIN transformar (niveles en sus unidades originales)
+# Vía A: las 17 series SIN transformar (niveles en sus unidades originales)
 meta_an <- meta[meta$entra == "Sí", ]
 X <- as.matrix(niv[, meta_an$columna]); colnames(X) <- meta_an$nombre_corto
 fechas <- niv$fecha
 Z <- estandarizar(X)
 n <- nrow(Z); p <- ncol(Z)
 
-# Contraste (bloque 7): las mismas 17 series transformadas, en el mismo orden de columnas
+# Vía B: las mismas 17 series transformadas (notebook 04), en el mismo orden de columnas
 tr <- cargar_transformado()
 verificar_calendario(tr)
 cols_tr <- setdiff(names(tr), "fecha")
 base_tr <- sub("_log_diff$|_diff$", "", cols_tr)
 Xt <- as.matrix(tr[, cols_tr[match(meta_an$columna, base_tr)]]); colnames(Xt) <- colnames(X)
 fechas_t <- tr$fecha
+nt <- nrow(Xt)
+
+# Las transformadas del notebook 04 se reconstruyen exactamente desde los niveles
+dif_transf <- max(sapply(seq_len(p), function(j) {
+  x <- X[, j]
+  r <- if (meta_an$transformacion[j] == "log-diferencia") diff(log(x)) else diff(x)
+  max(abs(r - Xt[, j]))
+}))
+stopifnot(dif_transf < 1e-8)
 ```
 
-El análisis oficial trabaja con las **`r p` series sin transformar** y **`r n` meses**
+Las series transformadas (`r nt` meses, de `r format(min(fechas_t), "%m/%Y")` a
+`r format(max(fechas_t), "%m/%Y")`, porque al diferenciar se pierde el primer mes) se leen de
+`data/processed/dataset_transformado_mensual.csv`, que genera el notebook
+`04_preprocesamiento`. Recalculadas en R desde los niveles, la diferencia máxima con ese archivo
+es `r format(dif_transf, digits = 2)`: es el mismo dato.
+
+## Qué paso cambia la estructura: el logaritmo o la diferencia
+
+La transformación de Python tiene dos pasos (logaritmo y diferencia) que conviene separar,
+porque se justifican de forma distinta. Se calcula el PCA con cuatro versiones de las mismas
+series.
+
+```{r b2s-pasos}
+logX <- X
+for (j in seq_len(p)) if (meta_an$transformacion[j] == "log-diferencia") logX[, j] <- log(X[, j])
+version_pca <- function(M) {
+  Zm <- estandarizar(M); pm <- pca_basico(Zm)
+  list(inercia = 100 * pm$valores / p, cargas = sweep(pm$vectores, 2, sqrt(pm$valores), "*"),
+       horn = horn(Zm, n_sim = 500, semilla = params$semilla)$retener,
+       r_t = cor(pm$scores[, 1], seq_len(nrow(M))))
+}
+versiones <- list(`Sin transformar` = X, `Solo logaritmo` = logX,
+                  `Solo diferencia simple` = apply(X, 2, diff), `Log-diferencia (Python)` = Xt)
+vers <- lapply(versiones, version_pca)
+cong_niv <- function(v) sapply(1:3, function(k) max(abs(sapply(1:6, function(j) tucker(vers[[1]]$cargas[, k], v$cargas[, j])))))
+knitr::kable(data.frame(
+  Versión = names(vers),
+  `Inercia PC1 (%)` = sapply(vers, function(v) num(v$inercia[1], 1)),
+  `Inercia 3 PC (%)` = sapply(vers, function(v) num(sum(v$inercia[1:3]), 1)),
+  `Horn` = sapply(vers, `[[`, "horn"),
+  `Correlación PC1–tiempo` = sapply(vers, function(v) num(abs(v$r_t), 2)),
+  `Congruencia con PC1, PC2, PC3 sin transformar` = sapply(vers, function(v) paste(num(cong_niv(v), 2), collapse = " / ")),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Congruencia de Tucker con la componente más parecida (valor absoluto). La versión \"solo diferencia simple\" aplica Δx a todas las series.")
+```
+
+::: {.lectura}
+El logaritmo no cambia la estructura: con solo logaritmo, las tres primeras componentes tienen
+congruencia `r paste(num(cong_niv(vers[[2]]), 2), collapse = ", ")` con las de las series sin
+transformar. La diferencia lo cambia todo: con o sin logaritmo, el primer componente baja de
+`r num(vers[[1]]$inercia[1], 1)` % a `r num(min(vers[[3]]$inercia[1], vers[[4]]$inercia[1]), 1)`–`r num(max(vers[[3]]$inercia[1], vers[[4]]$inercia[1]), 1)` %
+y deja de seguir el tiempo. **La discusión es, por lo tanto, sobre diferenciar o no.** El
+logaritmo es un cambio de escala que conserva el orden de los meses y casi no afecta a un PCA
+sobre correlaciones.
+:::
+
+## Lo que la diferencia hace con las frecuencias del ciclo
+
+Diferenciar es aplicar un filtro lineal: $\Delta x_t = x_t - x_{t-1} = (1 - L)\,x_t$. Una
+oscilación de período $P$ meses (frecuencia $\omega = 2\pi/P$) sale del filtro multiplicada en
+amplitud por su **ganancia**:
+
+$$
+G(\omega) = |1 - e^{-i\omega}| = 2 \sin(\omega / 2).
+$$
+
+Es un resultado exacto, que no depende de los datos. La tabla lo evalúa en los períodos que
+interesan a la tesis.
+
+```{r b2s-ganancia}
+periodos <- c(6, 12, 24, 36, 60, 96, 120, 228, 360)
+ganancia <- 2 * sin(pi / periodos)
+knitr::kable(data.frame(`Período (meses)` = periodos, `Período (años)` = num(periodos / 12, 1),
+                        Ganancia = num(ganancia, 3), `Varianza que conserva (%)` = num(100 * ganancia^2, 2),
+                        check.names = FALSE), row.names = FALSE,
+             caption = "Ganancia del filtro de primera diferencia. Varianza que conserva = ganancia². 228 meses es la longitud de la muestra.")
+```
+
+```{r b2s-g-ganancia, fig.height = 3.8}
+curva <- data.frame(P = exp(seq(log(2), log(400), length.out = 300)))
+curva$g <- 2 * sin(pi / curva$P)
+ggplot(curva, aes(P, g)) +
+  annotate("rect", xmin = 96, xmax = 360, ymin = -Inf, ymax = Inf, fill = gris_episodio, alpha = 0.8) +
+  annotate("text", x = 186, y = 1.75, label = "Ciclo financiero\n(8 a 30 años)", size = 3, color = "#52514e") +
+  geom_hline(yintercept = 1, color = "#9a9890", linetype = 3, linewidth = 0.3) +
+  geom_line(color = color_serie, linewidth = 0.9) +
+  scale_x_log10(breaks = c(2, 6, 12, 24, 60, 96, 228, 360)) +
+  labs(x = "Período de la oscilación (meses, escala log)", y = "Ganancia de Δ",
+       title = "La primera diferencia atenúa las oscilaciones lentas y amplifica las rápidas",
+       subtitle = "Ganancia 1: la oscilación pasa sin cambios. Sobre 1: se amplifica (períodos menores a 6 meses).") +
+  tema_tesis()
+```
+
+```{r b2s-espectro}
+# Parte de la varianza de cada serie en oscilaciones de 2 años o más (periodograma)
+frac_lenta <- function(x, P_min = 24) {
+  f <- spec.pgram(x - mean(x), taper = 0, detrend = FALSE, plot = FALSE)
+  sum(f$spec[1 / f$freq >= P_min]) / sum(f$spec)
+}
+espectro <- data.frame(Serie = colnames(X),
+                       niv = apply(X, 2, frac_lenta),
+                       niv_det = apply(X, 2, function(x) frac_lenta(resid(lm(x ~ seq_along(x))))),
+                       tr = apply(Xt, 2, frac_lenta))
+knitr::kable(data.frame(Serie = espectro$Serie,
+                        `Sin transformar (%)` = num(100 * espectro$niv, 0),
+                        `Sin transformar, sin tendencia lineal (%)` = num(100 * espectro$niv_det, 0),
+                        `Transformadas (%)` = num(100 * espectro$tr, 0), check.names = FALSE),
+             row.names = FALSE, caption = "Porcentaje de la varianza en oscilaciones de 24 meses o más (periodograma sin ventana). La columna central retira solo una recta, para separar el efecto de la tendencia.")
+```
+
+::: {.lectura}
+Una oscilación de 8 años sale de la diferencia con `r num(100 * (2 * sin(pi / 96))^2, 1)` % de
+su varianza; una de 1 año, con `r num(100 * (2 * sin(pi / 12))^2, 0)` %. En estos datos, la
+mediana de la varianza en oscilaciones de dos años o más es
+`r num(100 * median(espectro$niv_det), 0)` % sin transformar (aun después de retirar una
+recta) y `r num(100 * median(espectro$tr), 0)` % en las series transformadas. Si el ciclo
+financiero es un fenómeno de mediano plazo, como lo discute la tesis a partir de Drehmann, Borio
+y Tsatsaronis (2012), la diferencia **atenúa precisamente las frecuencias que se quieren medir**
+y deja en primer plano el corto plazo: choques de un mes, estacionalidad residual y ruido de
+medición.
+:::
+
+```{r b2s-estacional}
+acf_k <- function(x, k) acf(x, lag.max = 12, plot = FALSE)$acf[k + 1]
+estac_t <- data.frame(Serie = colnames(Xt), a1 = apply(Xt, 2, acf_k, k = 1), a12 = apply(Xt, 2, acf_k, k = 12))
+estac_t <- estac_t[order(-estac_t$a12), ]
+umbral_acf <- 2 / sqrt(nt)
+```
+
+::: {.hallazgo}
+**La diferencia hace visible una estacionalidad residual.** En las series transformadas, la
+autocorrelación a 12 meses supera la banda aproximada de ±2/√n (`r num(umbral_acf, 2)`) en
+`r sum(estac_t$a12 > umbral_acf)` series:
+`r paste0(estac_t$Serie[estac_t$a12 > umbral_acf], " (", num(estac_t$a12[estac_t$a12 > umbral_acf], 2), ")", collapse = ", ")`.
+La más marcada es la demanda interna, cuya autocorrelación a un mes es negativa
+(`r num(estac_t$a1[estac_t$Serie == "Demanda interna"], 2)`) y a 12 meses alta: el patrón de una
+serie con estacionalidad. Sin transformar, este patrón queda oculto bajo la tendencia; al
+diferenciar, la ganancia a 12 meses (`r num(2 * sin(pi / 12), 2)`) es `r num(sin(pi / 12) / sin(pi / 96), 1)` veces la de 8 años, y
+la estacionalidad pasa a competir con el ciclo en el PCA.
+:::
+
+::: {.pregunta}
+El BCRP publica un PBI desestacionalizado, pero ¿el indicador de demanda interna (PN01774AM) lo
+está? Si no lo está, hay que decidir si se desestacionaliza antes del análisis (otra
+transformación que sustentar) o si se reemplaza por una versión desestacionalizada. Lo mismo vale,
+en menor grado, para M1, el crédito empresarial y el IPC.
+:::
+
+## El argumento a favor de transformar: correlación entre tendencias
+
+El argumento clásico para diferenciar es que dos series con tendencia estocástica (integradas)
+pueden estar muy correlacionadas sin tener relación alguna; la correlación entre sus niveles es
+**espuria**. El resultado se suele atribuir a Granger y Newbold (1974) y a Phillips (1986)
+(**verificar ambas referencias antes de citarlas**). La prueba directa con estos datos es
+preguntarse qué PCA darían 17 series **independientes** con las mismas tendencias que las
+observadas:
+
+- Para cada serie se toman sus propios incrementos mensuales, se remuestrean en bloques de 12
+  meses (para conservar su dinámica de corto plazo) y se acumulan. Cada serie conserva su
+  deriva, su volatilidad y su persistencia, pero se rompe toda relación entre series.
+- **Con deriva**: los incrementos se usan tal cual, de modo que cada serie conserva su crecimiento
+  medio.
+- **Sin deriva**: se resta antes el incremento medio, y cada serie es un paseo aleatorio sin
+  tendencia determinística.
+
+Se repite `r params$reps_nulo` veces y se compara la inercia observada con la distribución que
+generan series independientes. Es el equivalente del análisis paralelo de Horn para series
+integradas: Horn compara con ruido gaussiano independiente en el tiempo, una referencia que no
+corresponde a series con tendencia.
+
+```{r b2s-nulo}
+D_niv <- apply(X, 2, diff)
+simular_nulo <- function(con_deriva) {
+  set.seed(params$semilla)
+  t(replicate(params$reps_nulo, {
+    M <- sapply(seq_len(p), function(j) {
+      d <- D_niv[indices_bloques(nrow(D_niv), 12), j]
+      if (!con_deriva) d <- d - mean(D_niv[, j])
+      cumsum(c(0, d))
+    })
+    Rm <- cor(M); e <- eigen(Rm, symmetric = TRUE, only.values = TRUE)$values
+    c(100 * e[1:3] / p, mean(abs(Rm[upper.tri(Rm)])))
+  }))
+}
+nulo_d <- simular_nulo(TRUE); nulo_0 <- simular_nulo(FALSE)
+obs_nulo <- c(vers[[1]]$inercia[1:3], mean(abs(cor(X)[upper.tri(cor(X))])))
+fila_nulo <- function(sim) sapply(1:4, function(j) paste(num(quantile(sim[, j], 0.5), c(1, 1, 1, 2)[j]), "/",
+                                                       num(quantile(sim[, j], 0.95), c(1, 1, 1, 2)[j])))
+pos_nulo <- function(sim) sapply(1:4, function(j) mean(sim[, j] >= obs_nulo[j]))
+knitr::kable(data.frame(
+  Medida = c("Inercia PC1 (%)", "Inercia PC2 (%)", "Inercia PC3 (%)", "|r| promedio entre pares"),
+  Observado = num(obs_nulo, c(1, 1, 1, 2)),
+  `Independientes con deriva: p50 / p95` = fila_nulo(nulo_d),
+  `Proporción de simulaciones ≥ observado (con deriva)` = num(pos_nulo(nulo_d), 2),
+  `Independientes sin deriva: p50 / p95` = fila_nulo(nulo_0),
+  `Proporción ≥ observado (sin deriva)` = num(pos_nulo(nulo_0), 2), check.names = FALSE),
+  row.names = FALSE, caption = "La proporción de simulaciones con un valor igual o mayor que el observado funciona como un p-valor: si es baja, el valor observado no se explica por series independientes.")
+```
+
+::: {.hallazgo}
+**Sin transformar, el primer componente no prueba que las series estén relacionadas, pero el
+segundo sí.** Diecisiete series independientes con la deriva de cada una darían un PC1 con una
+inercia mediana de `r num(median(nulo_d[, 1]), 1)` %, más que la observada
+(`r num(obs_nulo[1], 1)` %). La dominancia del PC1 es compatible con que cada serie siga su
+propia tendencia, sin necesidad de que se muevan juntas. Sin deriva, el PC1 de series independientes
+llega a `r num(quantile(nulo_0[, 1], 0.95), 1)` % (p95): la dominancia observada viene del
+crecimiento determinístico, no de la acumulación aleatoria. En cambio, el PC2 observado
+(`r num(obs_nulo[2], 1)` %) supera al `r num(100 * (1 - pos_nulo(nulo_d)[2]), 0)` % de las
+simulaciones con deriva: la estructura de tasas que mide (A.2) es **co-movimiento real** y
+sobrevive a la objeción de correlación espuria.
+:::
+
+Esto ordena la discusión con el asesor. La objeción de correlación espuria es válida para el
+**primer** componente sin transformar, que no debe interpretarse como evidencia de un ciclo
+común, sino como la profundización compartida (A.2). No invalida los componentes siguientes,
+que es donde está el ciclo en la Parte A.
+
+## Estacionariedad en las dos versiones
+
+Se aplican dos pruebas con hipótesis opuestas a cada serie:
+
+- **ADF** (Dickey-Fuller aumentada, con constante y tendencia): hipótesis nula de raíz
+  unitaria (no estacionaria).
+- **KPSS**: hipótesis nula de estacionariedad en nivel.
+
+Una serie se considera estacionaria cuando la ADF rechaza (p < 0,05) y la KPSS no rechaza
+(p > 0,05). Ambas pruebas reportan p-valores interpolados en tablas: 0,01 significa "0,01 o
+menos" y 0,10 significa "0,10 o más".
+
+```{r b2-estacionariedad}
+prueba <- function(x) {
+  adf <- suppressWarnings(tseries::adf.test(x)$p.value)
+  kpss <- suppressWarnings(tseries::kpss.test(x, null = "Level")$p.value)
+  c(adf = adf, kpss = kpss)
+}
+dictamen <- function(adf, kpss) ifelse(adf < 0.05 & kpss > 0.05, "Estacionaria",
+                                ifelse(adf >= 0.05 & kpss <= 0.05, "No estacionaria", "Ambigua"))
+pruebas_m <- function(M) do.call(rbind, lapply(seq_len(p), function(j) {
+  a <- prueba(M[, j])
+  data.frame(serie = colnames(M)[j], adf = a["adf"], kpss = a["kpss"], dictamen = dictamen(a["adf"], a["kpss"]))
+}))
+est <- pruebas_m(X); est_t <- pruebas_m(Xt)
+knitr::kable(data.frame(Serie = est$serie, `ADF p` = num(est$adf, 2), `KPSS p` = num(est$kpss, 2), Dictamen = est$dictamen,
+                        `ADF p (transf.)` = num(est_t$adf, 2), `KPSS p (transf.)` = num(est_t$kpss, 2),
+                        `Dictamen (transf.)` = est_t$dictamen, check.names = FALSE), row.names = FALSE,
+             caption = "Izquierda: series sin transformar. Derecha: series transformadas. p-valores de tseries::adf.test y tseries::kpss.test.")
+cuenta <- function(e, d) sum(e$dictamen == d)
+```
+
+::: {.lectura}
+Sin transformar, `r cuenta(est, "No estacionaria")` de `r p` series son no estacionarias según
+ambas pruebas, `r cuenta(est, "Ambigua")` tienen dictamen ambiguo y
+`r cuenta(est, "Estacionaria")` es estacionaria. Transformadas, `r cuenta(est_t, "Estacionaria")`
+son estacionarias, `r cuenta(est_t, "Ambigua")` ambiguas y `r cuenta(est_t, "No estacionaria")`
+no estacionarias: la transformación cumple su propósito estadístico. El PCA no exige
+estacionariedad (es una descripción, no un modelo de inferencia); lo que sí la necesita son las
+pruebas que suponen meses independientes, como la de Bartlett (A.2), y la evaluación fuera de
+muestra de las redes (A.5).
+:::
+
+## Balance de los argumentos
+
+| Argumento | A favor de transformar | A favor de no transformar | Evidencia en estos datos |
+|---|---|---|---|
+| Correlación espuria | Las correlaciones entre series con tendencia pueden no reflejar relación | Solo afecta a la parte de la estructura que reproduce la tendencia | PC1 sin transformar no supera el nulo de tendencias independientes; PC2 sí |
+| Frecuencias del ciclo | — | La diferencia atenúa las oscilaciones de mediano plazo (8 años: `r num(100 * (2 * sin(pi / 96))^2, 1)` % de su varianza) | Mediana de varianza en períodos ≥ 2 años: `r num(100 * median(espectro$niv_det), 0)` % sin transformar frente a `r num(100 * median(espectro$tr), 0)` % transformadas |
+| Qué representa cada mes | Variación: dirección de movimiento, cercana a la noción de fase | Estado: posición del sistema en el ciclo | Ver Parte C: las dos vías no encuentran los mismos ejes |
+| Estacionariedad e inferencia | Validez de pruebas y de la evaluación fuera de muestra | El PCA es descriptivo y no la necesita | `r cuenta(est, "No estacionaria")` series no estacionarias sin transformar; `r cuenta(est_t, "No estacionaria")` transformadas |
+| Principio de la tradición del asesor | — | Trabajar con los datos como los publica la fuente; estandarizar es la única operación necesaria (unidades distintas) | Coherente con Benzécri (1973) y el marco conceptual de la tesis |
+| Relaciones de largo plazo | — | Diferenciar descarta la información de niveles; si hay cointegración, se pierde (Engle y Granger, 1987: **verificar antes de citar**) | No evaluado en este documento |
+| Ruido de corto plazo | — | La diferencia amplifica choques de un mes y estacionalidad residual | Estacionalidad visible en `r sum(estac_t$a12 > umbral_acf)` series transformadas |
+
+El documento **no elige una vía de antemano**. Las Partes A y B aplican la misma cadena completa
+y la Parte C las juzga con tres criterios del objetivo de la tesis: (1) una estructura
+interpretable y estable, (2) señales que coincidan con los episodios conocidos y (3) una
+datación de regímenes y fases coherente.
+
+::: {.pregunta}
+Entre las dos vías hay una tercera que la literatura de ciclo financiero usa con frecuencia: la
+**brecha** respecto de una tendencia de largo plazo (por ejemplo, con filtros pasa-banda o de
+Hodrick-Prescott; **verificar las referencias antes de citarlas**). También es una
+transformación, pero retira la tendencia sin atenuar las frecuencias medias. ¿La planteas al
+asesor como alternativa intermedia, o prefieres cerrar la discusión con las dos vías actuales?
+:::
+
+
+# Parte A. Series sin transformar {#parte-a}
+
+Las 17 series en sus unidades originales, solo estandarizadas. Las secciones A.1 a A.6 recorren
+la cadena completa de la tesis.
+
+## A.1 Exploración conjunta
+
+Esta parte trabaja con las **`r p` series sin transformar** y **`r n` meses**
 (`r format(min(fechas), "%m/%Y")` a `r format(max(fechas), "%m/%Y")`). No se aplican
 logaritmos ni diferencias: cada serie entra en sus unidades originales y solo se estandariza
 (media 0, desviación 1), que es lo que hace de todos modos un PCA sobre la matriz de
-correlaciones. Las series transformadas (log-diferencias y diferencias) se conservan como
-contraste en el bloque 7.
+correlaciones. La Parte B repite la misma cadena sobre las series transformadas.
 
-## Qué significa trabajar sin transformar
+### Qué significa trabajar sin transformar
 
 La decisión sigue la posición de la tesis (marco conceptual): trabajar con los datos tal como
 los publica la fuente, sin transformaciones impuestas antes del análisis. Tiene una consecuencia
@@ -815,7 +1129,7 @@ ggplot(largo_z, aes(fecha, z, group = serie)) +
   tema_tesis()
 ```
 
-## Tendencia compartida
+### Tendencia compartida
 
 ```{r b2-tendencia}
 t_idx <- seq_len(n)
@@ -844,49 +1158,20 @@ La tendencia común (crédito, liquidez, precios y actividad creciendo juntos) p
 formas: como **profundización financiera**, un rasgo del fenómeno que la tesis mide, o como un
 componente que oculta el ciclo, que es una oscilación alrededor de esa tendencia. ¿Cuál de las
 dos lecturas adoptas? La respuesta define cómo se interpreta el primer componente del PCA en el
-bloque 3.
+A.2.
 :::
 
-## Estacionariedad
+### Estacionariedad
 
-Se aplican dos pruebas con hipótesis opuestas a cada serie sin transformar:
+Las pruebas ADF y KPSS de las dos versiones están en la sección 2. Sin transformar,
+`r cuenta(est, "No estacionaria")` de `r p` series son no estacionarias según ambas pruebas,
+`r cuenta(est, "Ambigua")` tienen dictamen ambiguo y `r cuenta(est, "Estacionaria")` es
+estacionaria. El PCA no exige estacionariedad (es una descripción, no un modelo de inferencia),
+pero con series no estacionarias las correlaciones mezclan co-movimiento y tendencia común
+(sección 2, prueba de tendencias independientes), y las pruebas de significancia de A.2
+(Bartlett) pierden su base: suponen meses independientes.
 
-- **ADF** (Dickey-Fuller aumentada, con constante y tendencia): hipótesis nula de raíz
-  unitaria (no estacionaria).
-- **KPSS**: hipótesis nula de estacionariedad en nivel.
-
-Una serie se considera estacionaria cuando la ADF rechaza (p < 0,05) y la KPSS no rechaza
-(p > 0,05). Ambas pruebas reportan p-valores interpolados en tablas: 0,01 significa "0,01 o
-menos" y 0,10 significa "0,10 o más". Aquí no se busca "corregir" las series, sino saber qué
-tipo de dato entra al PCA.
-
-```{r b2-estacionariedad}
-prueba <- function(x) {
-  adf <- suppressWarnings(tseries::adf.test(x)$p.value)
-  kpss <- suppressWarnings(tseries::kpss.test(x, null = "Level")$p.value)
-  c(adf = adf, kpss = kpss)
-}
-dictamen <- function(adf, kpss) ifelse(adf < 0.05 & kpss > 0.05, "Estacionaria",
-                                ifelse(adf >= 0.05 & kpss <= 0.05, "No estacionaria", "Ambigua"))
-est <- do.call(rbind, lapply(seq_len(p), function(j) {
-  a <- prueba(X[, j])
-  data.frame(serie = colnames(X)[j], adf = a["adf"], kpss = a["kpss"], dictamen = dictamen(a["adf"], a["kpss"]))
-}))
-knitr::kable(data.frame(Serie = est$serie, `ADF p` = num(est$adf, 2), `KPSS p` = num(est$kpss, 2),
-                        Dictamen = est$dictamen, check.names = FALSE), row.names = FALSE,
-             caption = "Series en sus unidades originales. p-valores de tseries::adf.test y tseries::kpss.test.")
-```
-
-::: {.lectura}
-`r sum(est$dictamen == "No estacionaria")` de `r p` series son no estacionarias según ambas
-pruebas, `r sum(est$dictamen == "Ambigua")` tienen dictamen ambiguo y
-`r sum(est$dictamen == "Estacionaria")` `r if (sum(est$dictamen == "Estacionaria") == 1) "es estacionaria" else "son estacionarias"``r if (any(est$dictamen == "Estacionaria")) paste0(" (", paste(est$serie[est$dictamen == "Estacionaria"], collapse = ", "), ")") else ""`.
-El PCA no exige estacionariedad (es una descripción, no un modelo de inferencia), pero con
-series no estacionarias las correlaciones mezclan co-movimiento y tendencia común, y las
-pruebas de significancia del bloque 3 (Bartlett) pierden su base: suponen meses independientes.
-:::
-
-## Meses que más se alejan del promedio
+### Meses que más se alejan del promedio
 
 ```{r b2-g-mapa-z, fig.height = 5.5}
 mapa_z <- data.frame(fecha = rep(fechas, p), serie = factor(rep(colnames(Z), each = n), levels = rev(colnames(Z))),
@@ -924,11 +1209,11 @@ están más lejos de su media. La **crisis financiera global** (2008-09 a 2009-0
 tasas altas, bolsa baja y el EMBIG en su máximo (z = `r num(max(Z[, "EMBIG Perú"]), 1)`),
 cuando las series con tendencia todavía estaban en niveles bajos. Los diez meses del COVID-19
 aportan el `r num(sum(part_mes[covid]), 1)` % (son el `r num(100 * mean(covid), 1)` % de la
-muestra): la pandemia, que dominaba la variabilidad de las series transformadas (bloque 7), aquí
+muestra): la pandemia, que dominaba la variabilidad de las series transformadas (Parte B), aquí
 pesa poco más que un periodo cualquiera.
 :::
 
-### Saltos aislados en el crédito
+#### Saltos aislados en el crédito
 
 La variación mensual se usa aquí solo como diagnóstico, para encontrar saltos que en el nivel
 se ven como pequeños escalones.
@@ -958,7 +1243,7 @@ transformar, cada reclasificación desplaza el resto de la serie de forma perman
 crédito como un solo bloque.
 :::
 
-## Persistencia
+### Persistencia
 
 ```{r b2-persistencia}
 acf_k <- function(x, k) acf(x, lag.max = 12, plot = FALSE)$acf[k + 1]
@@ -983,12 +1268,12 @@ oscilan con ciclos de pocos años.
 
 ::: {.pregunta}
 Con series tan persistentes, los `r n` meses contienen mucha menos información independiente
-de lo que sugiere su número, y eso afecta a las ventanas de la EPCA (bloque 4) y al
-entrenamiento de las redes (bloque 6). ¿Lo declaras como una limitación de la muestra o es un
+de lo que sugiere su número, y eso afecta a las ventanas de la EPCA (A.3) y al
+entrenamiento de las redes (A.5). ¿Lo declaras como una limitación de la muestra o es un
 argumento más para extender la serie hacia atrás, como ya consideraste?
 :::
 
-## Relaciones entre las series
+### Relaciones entre las series
 
 ```{r b2-correlaciones, fig.height = 7}
 R_niv <- cor(X)
@@ -1016,7 +1301,7 @@ knitr::kable(data.frame(
   `Par de series` = paste(colnames(X)[top_pares[, 1]], "–", colnames(X)[top_pares[, 2]]),
   `r sin transformar` = num(R_niv[top_pares], 2), `r de las variaciones mensuales` = num(R_tr[top_pares], 2),
   check.names = FALSE), row.names = FALSE,
-  caption = "Los 12 pares más correlacionados sin transformar y la correlación de sus variaciones mensuales (series transformadas del bloque 7).")
+  caption = "Los 12 pares más correlacionados sin transformar y la correlación de sus variaciones mensuales (series transformadas, Parte B).")
 p_niv <- mean(abs(fuera_diag(R_niv)) > 0.8)
 ```
 
@@ -1036,7 +1321,7 @@ sistema" (series con tendencia) de un eje de "condiciones de tasas y riesgo" (se
 oscilan)? Si es así, el ciclo financiero estaría más en el segundo que en el primero.
 :::
 
-## Las relaciones cambian en el tiempo
+### Las relaciones cambian en el tiempo
 
 Si la relación entre dos series no es constante, un PCA sobre toda la muestra promedia
 estructuras distintas. Las correlaciones móviles de 60 meses muestran si eso ocurre.
@@ -1076,7 +1361,7 @@ de una ventana de cinco años la tendencia de largo plazo pesa menos, y
 correlación de toda la muestra no describe bien cada periodo. Es la primera evidencia directa del supuesto que justifica la EPCA.
 :::
 
-## Síntesis del bloque
+### Síntesis del bloque
 
 - Sin transformar, la mayoría de las series comparte una tendencia creciente; las tasas de
   interés y el EMBIG oscilan sin tendencia.
@@ -1089,13 +1374,13 @@ correlación de toda la muestra no describe bien cada periodo. Es la primera evi
   años las relaciones cambian, lo que motiva la EPCA.
 
 
-# Análisis de componentes principales (PCA)
+## A.2 Análisis de componentes principales (PCA)
 
 El PCA busca pocas variables nuevas (componentes), combinaciones lineales de las `r p` series
 estandarizadas, que concentren la mayor parte de su variabilidad conjunta. Cada componente es
 ortogonal a los anteriores y explica la mayor varianza posible que estos dejaron sin explicar.
 Se trabaja sobre la matriz de correlaciones (series estandarizadas), porque las series están en
-unidades distintas. Las series entran sin transformar (bloque 2).
+unidades distintas. Las series entran sin transformar (A.1).
 
 ```{r b3-pca}
 R <- crossprod(Z) / n
@@ -1110,7 +1395,7 @@ dimnames(ctr_var) <- dimnames(cargas)
 cos2 <- cargas^2                                        # calidad de representación
 ```
 
-## ¿Tiene sentido un PCA con estos datos?
+### ¿Tiene sentido un PCA con estos datos?
 
 ```{r b3-adecuacion}
 bt <- bartlett_esfericidad(R, n)
@@ -1137,20 +1422,20 @@ knitr::kable(data.frame(Serie = kmo_tab$Serie, `KMO individual` = num(kmo_tab$KM
 ::: {.lectura}
 Bartlett rechaza con holgura que las series sean independientes, de modo que hay estructura
 común que resumir. Su estadístico supone meses independientes, algo que estas series no cumplen
-(bloque 2), así que su p-valor exagera la evidencia; la conclusión cualitativa no cambia. El KMO global de `r num(km$global, 2)` es
+(A.1), así que su p-valor exagera la evidencia; la conclusión cualitativa no cambia. El KMO global de `r num(km$global, 2)` es
 `r if (km$global >= 0.8) "bueno" else if (km$global >= 0.6) "aceptable" else "bajo"`.
 `r if (any(km$por_variable < 0.5)) paste0("Las series con KMO individual menor que 0,5 son ", paste(kmo_tab$Serie[kmo_tab$KMO < 0.5], collapse = ", "), ": comparten poca varianza con las demás una vez descontadas las relaciones indirectas.") else paste0("Ninguna serie tiene KMO individual menor que 0,5; el menor es el de ", kmo_tab$Serie[1], " (", num(kmo_tab$KMO[1], 2), ").")`
 :::
 
 ::: {.pregunta}
 Las cuatro series con menor KMO individual son `r paste(kmo_tab$Serie[1:4], collapse = ", ")`:
-casi las mismas que no tienen tendencia (bloque 2). Su información es más propia y se resume
+casi las mismas que no tienen tendencia (A.1). Su información es más propia y se resume
 peor con las demás, justamente porque no comparten el crecimiento común. ¿Las ves como el
 núcleo del ciclo financiero o como series auxiliares? Si el ciclo está en ellas, conviene que
 la interpretación del PCA no dependa solo del primer componente.
 :::
 
-## ¿Cuántas componentes retener?
+### ¿Cuántas componentes retener?
 
 ```{r b3-retencion}
 set.seed(params$semilla)
@@ -1201,7 +1486,7 @@ para que puedas juzgar cuáles tienen una interpretación económica propia; el 
 explica `r num(inercia[3], 1)` %, puede ser relevante para el ciclo (sección siguiente).
 :::
 
-## Qué representa cada componente
+### Qué representa cada componente
 
 ```{r b3-cargas-tabla}
 tab_c <- data.frame(Serie = colnames(Z))
@@ -1264,7 +1549,7 @@ resto del documento y debe sostenerse con las series que lo componen, no con lo 
 del ciclo financiero.
 :::
 
-## El primer componente y el tiempo
+### El primer componente y el tiempo
 
 ```{r b3-tiempo}
 r_tiempo <- cor(scores[, 1:4], seq_len(n))[, 1]
@@ -1275,7 +1560,7 @@ knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Inercia (%)` = num(iner
 
 ::: {.hallazgo}
 **El primer componente es la tendencia común.** Su score tiene una correlación de
-`r num(abs(r_tiempo[1]), 3)` con el tiempo y lo componen las series que crecen (bloque 2). Es la
+`r num(abs(r_tiempo[1]), 3)` con el tiempo y lo componen las series que crecen (A.1). Es la
 profundización del sistema financiero y de la economía entre 2007 y 2025, no una oscilación. Las
 demás componentes no tienen tendencia (correlación con el tiempo menor que
 `r num(max(abs(r_tiempo[-1])), 2)`): el movimiento cíclico está en PC2 en adelante. Es lo mismo
@@ -1283,7 +1568,7 @@ que encontró el notebook `05` sobre el PCA trimestral en niveles, y la razón p
 notebook `06` sigue el segundo componente en la EPCA en niveles.
 :::
 
-## Círculos de correlación
+### Círculos de correlación
 
 Cada flecha es una serie; su posición son sus correlaciones con dos componentes. Flechas largas
 (cerca del círculo) están bien representadas en ese plano; flechas que apuntan en la misma
@@ -1312,7 +1597,7 @@ ggplot(circ) +
   tema_tesis()
 ```
 
-## Los meses en el espacio de las componentes
+### Los meses en el espacio de las componentes
 
 ```{r b3-g-individuos, fig.height = 5.5}
 ctr_mes <- 100 * sweep(scores^2, 2, n * vp, "/")       # contribución (%) de cada mes a cada eje
@@ -1356,7 +1641,7 @@ aportan `r num(sum(sort(ctr_mes[, 3], decreasing = TRUE)[1:5]), 1)` % de su cons
 regularidad del periodo.
 :::
 
-## Las componentes en el tiempo
+### Las componentes en el tiempo
 
 ```{r b3-g-scores-tiempo, fig.height = 7.5}
 largo_s <- do.call(rbind, lapply(1:4, function(k) rbind(
@@ -1387,9 +1672,9 @@ a positivos a medida que el sistema crece. PC2 y PC3 oscilan (`r pers_sc["mensua
 vez suavizadas a 12 meses): son los componentes con forma de ciclo.
 :::
 
-## ¿Qué tan robustas son las componentes?
+### ¿Qué tan robustas son las componentes?
 
-### Orientación de los ejes
+#### Orientación de los ejes
 
 ```{r b3-signo}
 margen <- sapply(1:4, function(k) { v <- pc$vectores[, k]; c(neg = sum(v[v < 0]^2), pos = sum(v[v > 0]^2)) })
@@ -1399,7 +1684,7 @@ knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Suma de cuadrados posit
              caption = "Regla de signo de Rcamiz: el eje se orienta para que dominen los coeficientes positivos. Un margen cercano a 0 hace frágil la orientación.")
 ```
 
-### Bootstrap por bloques
+#### Bootstrap por bloques
 
 Se remuestrean los meses en bloques contiguos de 24 meses (para conservar la dependencia
 temporal), se recalcula el PCA `r params$bootstrap_reps` veces y se mide cuánto varían las
@@ -1447,7 +1732,7 @@ ggplot(ic_df, aes(r, serie)) +
   tema_tesis()
 ```
 
-### Sensibilidad a los episodios extremos
+#### Sensibilidad a los episodios extremos
 
 Se repite el PCA retirando, por separado, los meses de la crisis financiera global
 (2008-09 a 2009-06) y los de la pandemia (2020-03 a 2020-12), y se busca la componente
@@ -1489,7 +1774,7 @@ la bolsa y su construcción se concentra en la crisis global (cinco meses aporta
 `r num(sum(sort(ctr_mes[, 3], decreasing = TRUE)[1:5]), 0)` %), pero al retirar esos meses
 el eje se conserva (congruencia `r num(emp_crisis["t", 3], 2)`): la crisis es su episodio más
 intenso, no su único contenido. Con las series transformadas ocurre lo contrario: la cuarta
-componente desaparece sin la pandemia (bloque 7).
+componente desaparece sin la pandemia (Parte B).
 :::
 
 ::: {.pregunta}
@@ -1507,25 +1792,25 @@ cat(sprintf("\n**Verificación con Rcamiz.** Diferencia máxima en valores propi
             format(max(abs(abs(rc$coord$var) - abs(cargas))), digits = 2)))
 ```
 
-## Síntesis del bloque
+### Síntesis del bloque
 
 - Sin transformar, el primer componente domina la variabilidad y es la tendencia común de
   crédito, liquidez, precios y actividad.
 - El movimiento cíclico está en los componentes siguientes: las tasas de interés (PC2) y el
   riesgo frente a la bolsa (PC3), que construye sobre todo la crisis de 2008.
 - Las tres primeras componentes son estables en el bootstrap y la pandemia no las altera. El
-  bloque 4 examina si esa estructura cambia dentro de la muestra.
+  A.3 examina si esa estructura cambia dentro de la muestra.
 
 
-# EPCA: ¿cambia la estructura en el tiempo?
+## A.3 EPCA: ¿cambia la estructura en el tiempo?
 
-El PCA del bloque 3 supone que hay **una sola** estructura de correlaciones para todo el
+El PCA de A.2 supone que hay **una sola** estructura de correlaciones para todo el
 periodo. El análisis evolutivo de componentes principales (EPCA) abandona ese supuesto: calcula
 un PCA en cada ventana móvil de meses consecutivos y estudia cómo cambian los valores propios y
 las cargas de una ventana a la siguiente. Un cambio brusco señala una transición entre
 estructuras: un candidato a cambio de régimen del sistema financiero.
 
-## ¿Es estable la estructura del PCA global?
+### ¿Es estable la estructura del PCA global?
 
 ```{r b4-subperiodos}
 cortes_sp <- split(seq_len(n), cut(seq_len(n), 4, labels = FALSE))
@@ -1564,7 +1849,7 @@ los de un bloque no usado para estimarlo con `r num(mean(mse_fuera), 2)``r if (m
 La estructura estimada en un periodo no se transfiere bien a otro.
 :::
 
-## Tamaño de la ventana
+### Tamaño de la ventana
 
 La ventana enfrenta un compromiso. Con ventanas cortas hay pocos meses por variable (con
 `r p` series, una ventana de 36 meses tiene `r num(36 / p, 1)` meses por variable) y las
@@ -1608,12 +1893,12 @@ años, más largos que cualquier ventana posible con esta muestra) o preferiría
 criterio formal, como el RV/Procrustes que la tesis tiene pendiente?
 :::
 
-## Seguimiento de las cargas entre ventanas (regla del notebook 06)
+### Seguimiento de las cargas entre ventanas (regla del notebook 06)
 
 Ventana de 60 meses con paso de 3 meses. En cada ventana se estandarizan las series, se calcula
 el PCA y se guardan las cargas de una componente; las cargas se alinean en signo con la ventana
 anterior y se marca una transición cuando la correlación entre cargas consecutivas cae por
-debajo de su media menos una desviación estándar. Como PC1 es la tendencia (bloque 3), el
+debajo de su media menos una desviación estándar. Como PC1 es la tendencia (A.2), el
 notebook `06` sigue en niveles la **segunda** componente; aquí se muestran ambas.
 
 ```{r b4-replica}
@@ -1664,14 +1949,14 @@ aproximadamente de 2010 a 2015.
 
 ::: {.hallazgo}
 **El notebook `06` corre la EPCA en niveles con 19 series, no con 17.** Incluye el crédito
-total y el IPC subyacente, que la tesis deja fuera del análisis (bloque 1). Con esas 19 series,
+total y el IPC subyacente, que la tesis deja fuera del análisis (sección 1). Con esas 19 series,
 este documento reproduce sus transiciones
 (`r if (identical(trans_r19, trans_py)) paste("idénticas:", paste(trans_py, collapse = ", ")) else paste("R:", paste(trans_r19, collapse = ", "), "; Python:", paste(trans_py, collapse = ", "))`);
-con las 17 del análisis oficial, las fechas cambian. Al pasar a Python conviene alinear el
+con las 17 de este documento, las fechas cambian. Al pasar a Python conviene alinear el
 notebook con las 17 series.
 :::
 
-## EPCA del asesor (`aede`)
+### EPCA del asesor (`aede`)
 
 `aede()` usa todas las ventanas (paso de un mes), orienta cada eje con la regla de Rcamiz y lo
 alinea además con la ventana anterior, y segmenta la serie del **primer valor propio** con la
@@ -1744,7 +2029,7 @@ cambio estructural. ¿Cuál corresponde mejor a "cambio de régimen" en tu marco
 que la tesis necesite ambas.
 :::
 
-## Cargas evolutivas
+### Cargas evolutivas
 
 ```{r b4-g-cargas, fig.height = 8}
 cl <- aede_u$a$correlationlsq
@@ -1774,7 +2059,7 @@ las más estables, `r paste(names(sort(cambio))[1:3], collapse = ", ")`. Un rang
 significa que la serie pasó de estar en un lado del eje al otro.
 :::
 
-## Transiciones frente a episodios conocidos
+### Transiciones frente a episodios conocidos
 
 ```{r b4-transiciones}
 tabla_trans <- function(fechas_t, metodo) if (length(fechas_t)) data.frame(Método = metodo, Fecha = fechas_t) else NULL
@@ -1784,6 +2069,7 @@ tt <- rbind(tabla_trans(transiciones_epca, "Seguimiento de cargas de PC2 (regla 
 tt$`Episodio a ±12 meses` <- sapply(tt$Fecha, function(f) {
   e <- episodios$nombre[meses_entre(f, episodios$inicio) <= 12 | (f >= episodios$inicio & f <= episodios$fin)]
   if (length(e)) paste(e, collapse = ", ") else "—" })
+tt$`Borde de ventana (±3 meses)` <- sapply(tt$Fecha, borde_ventana)
 tt$Fecha <- format(tt$Fecha, "%Y-%m")
 knitr::kable(tt, row.names = FALSE, caption = "Fechas: centro de la ventana. Con ventanas de 60 meses, un cambio puede reflejar meses hasta 30 meses antes o después de la fecha.")
 ```
@@ -1795,16 +2081,27 @@ coinciden con crisis: justamente lo que un análisis de regímenes debería pode
 falsos positivos que hay que descartar.
 :::
 
-## Síntesis del bloque
+::: {.hallazgo}
+**Parte de las transiciones son bordes de ventana.** La última columna revisa una explicación
+mecánica: una ventana de 60 meses con centro en la fecha $f$ va de $f - 30$ a $f + 29$ meses, de
+modo que un episodio sale de la ventana cuando su centro pasa 30 meses después del fin del
+episodio y entra cuando su centro llega a 29 meses antes del inicio.
+`r sum(tt[["Borde de ventana (±3 meses)"]] != "—")` de `r nrow(tt)` fechas coinciden a ±3 meses
+con uno de esos momentos (`r paste(tt$Fecha[tt[["Borde de ventana (±3 meses)"]] != "—"], collapse = ", ")`).
+Lo que se lee como transición puede ser la crisis o la pandemia vistas desde el borde de la
+ventana, no un cambio de régimen.
+:::
+
+### Síntesis del bloque
 
 - La estructura de correlaciones no es estable: estimada en un periodo, no reproduce bien otro.
 - La EPCA detecta transiciones, pero su número y sus fechas dependen de la ventana, de la
   noción de cambio (cargas o valor propio) y del criterio para elegir el número de clases.
 - Calinski-Harabász no da un óptimo interior en esta serie; la regla de codo sí, pero es
-  frágil. La datación de regímenes necesita un criterio de estabilidad (bloque 7).
+  frágil. La datación de regímenes necesita un criterio de estabilidad (Parte B).
 
 
-# Clasificación Factorial Jerárquica (HFC)
+## A.4 Clasificación Factorial Jerárquica (HFC)
 
 La HFC agrupa **variables**, no meses. Empieza con cada serie por separado y, en cada paso, une
 los dos grupos cuya fusión pierde menos información: cada grupo se representa por su primer
@@ -1823,14 +2120,14 @@ nombre_nodo <- function(k) if (k <= p) colnames(X)[k] else paste0("Nodo ", k)
 composicion <- function(k) { v <- hfc$nclass[as.character(k), ]; v <- v[v != 0]; colnames(X)[v] }
 ```
 
-## Dendrograma
+### Dendrograma
 
 ```{r b5-g-dendro, fig.height = 6.5}
 par(mar = c(9, 4, 3, 1))
 part4 <- dendhier_r(hfc$hier, 4, hiertit = "HFC de las 17 series sin transformar")
 ```
 
-## Lectura de los nodos superiores
+### Lectura de los nodos superiores
 
 ```{r b5-nodos}
 sup <- tail(jer, 8)[8:1, ]
@@ -1874,7 +2171,7 @@ o con el bloque de escala, como la ubica la HFC? Pon nombre a los grupos con las
 efectivamente contienen.
 :::
 
-## Particiones posibles
+### Particiones posibles
 
 ```{r b5-particiones}
 particiones <- do.call(rbind, lapply(1:4, function(k) {
@@ -1885,7 +2182,7 @@ particiones <- do.call(rbind, lapply(1:4, function(k) {
 knitr::kable(particiones, row.names = FALSE, caption = "Particiones que resultan de cortar los 1 a 4 nodos superiores.")
 ```
 
-## HFC frente a PCA
+### HFC frente a PCA
 
 ```{r b5-vs-pca}
 grupos4 <- unique(particiones$Nodo[particiones$Grupos == 4])
@@ -1932,12 +2229,12 @@ dif_eigentab <- abs(tail(jer$Eigentab, 1) - tail(crudo$eigentab_convergido, 1))
 mayor valor propio posible de cada grupo (el del PCA de sus series), para medir qué tan cerca
 está el factor del nodo de ese óptimo (columna `Ratio`). En la versión 1.2, la iteración que lo
 calcula se detiene en la segunda vuelta.
-`r if (dif_eigentab < 0.01) paste0("Con las series sin transformar el error es despreciable (en la raíz, ", num(tail(jer$Eigentab, 1), 3), " frente a ", num(tail(crudo$eigentab_convergido, 1), 3), " convergido), porque el primer valor propio domina con holgura y la iteración converge en pocos pasos; con las series transformadas el error es grande (bloque 7).") else paste0("En la raíz reporta ", num(tail(jer$Eigentab, 1), 2), ", mientras que el valor convergido es ", num(tail(crudo$eigentab_convergido, 1), 2), ".")`
+`r if (dif_eigentab < 0.01) paste0("Con las series sin transformar el error es despreciable (en la raíz, ", num(tail(jer$Eigentab, 1), 3), " frente a ", num(tail(crudo$eigentab_convergido, 1), 3), " convergido), porque el primer valor propio domina con holgura y la iteración converge en pocos pasos; con las series transformadas el error es grande (Parte B).") else paste0("En la raíz reporta ", num(tail(jer$Eigentab, 1), 2), ", mientras que el valor convergido es ", num(tail(crudo$eigentab_convergido, 1), 2), ".")`
 Además, el argumento de ponderación `poid` no tiene efecto en esta versión. Conviene comentarlo
 con el asesor.
 :::
 
-## HFC evolutiva
+### HFC evolutiva
 
 Se aplica la HFC en cada ventana de 60 meses (paso de 3) y se compara cada jerarquía con la de
 la ventana anterior de dos formas: la **correlación cofenética** entre dendrogramas (¿se
@@ -1988,7 +2285,7 @@ bajos de la jerarquía se estiman con poca precisión. ¿Interpretarías la HFC 
 sus nodos superiores (los dos o tres grandes bloques), que son los más estables?
 :::
 
-## Síntesis del bloque
+### Síntesis del bloque
 
 - La HFC encuentra una división principal nítida: las tasas de política y la tasa pasiva
   frente al resto de las series, que comparten la tendencia común.
@@ -1998,7 +2295,7 @@ sus nodos superiores (los dos o tres grandes bloques), que son los más estables
   régimen, a contrastar en la síntesis.
 
 
-# Autoencoders y LSTM: ¿aportan algo?
+## A.5 Autoencoders y LSTM: ¿aportan algo?
 
 Los bloques anteriores usan métodos lineales. Este bloque evalúa si dos redes neuronales, un
 autoencoder y un LSTM-autoencoder, encuentran algo que el PCA, la EPCA y la HFC no. Se presentan
@@ -2007,7 +2304,7 @@ los resultados.
 
 Las redes se entrenan en Python con `torch`. Los notebooks `08_autoencoder` y
 `09_lstm_autoencoder` trabajan con las series transformadas (sus resultados se discuten en el
-bloque 7); para el análisis oficial se corrieron copias que solo cambian los datos de entrada a
+Parte B); para la Parte A se corrieron copias que solo cambian los datos de entrada a
 las `r p` series sin transformar: `R/redes_python/08_autoencoder_niveles.ipynb` y
 `R/redes_python/09_lstm_autoencoder_niveles.ipynb`. Aquí se leen sus resultados desde
 `data/results/niveles/`. El código equivalente en `torch` para R está en
@@ -2025,7 +2322,7 @@ r09_reg_pca <- read.csv("data/results/niveles/09_regimenes_pca.csv", check.names
 stopifnot(nrow(r08_err) == n, all(r08_err$fecha == fechas))   # mismos meses que este documento
 ```
 
-## Qué tendría que mostrar una red para justificarse
+### Qué tendría que mostrar una red para justificarse
 
 Una red tiene muchos más parámetros que un PCA y sus resultados son más difíciles de
 interpretar. Para que valga la pena en la tesis debe superar al PCA en al menos uno de estos
@@ -2039,7 +2336,7 @@ criterios, sin perder en los demás:
    variaciones de los datos.
 4. **Interpretabilidad**: producir factores que se puedan leer en términos de las series.
 
-## Diseño del autoencoder
+### Diseño del autoencoder
 
 Un autoencoder comprime cada mes (un vector de `r p` series) en un **código** de pocas
 dimensiones y luego intenta reconstruir el mes original a partir de ese código. Se entrena
@@ -2090,7 +2387,7 @@ El autoencoder tiene `r param_ae` parámetros frente a `r num(datos_n, 0)` datos
 componentes estima `r 3 * p` coeficientes.
 :::
 
-## Diseño del LSTM-autoencoder
+### Diseño del LSTM-autoencoder
 
 El autoencoder trata cada mes por separado. El LSTM-autoencoder, en cambio, recibe una
 **secuencia** de 12 meses consecutivos y la resume en un código de 3 dimensiones que describe
@@ -2121,7 +2418,7 @@ El LSTM-autoencoder tiene `r num(param_lstm, 0)` parámetros, **más que el tota
 muestra, la regularización y la evaluación fuera de muestra no son opcionales.
 :::
 
-## Alternativas consideradas
+### Alternativas consideradas
 
 | Método | Qué haría | Por qué no se usó (o cuándo sí) |
 |---|---|---|
@@ -2133,9 +2430,9 @@ muestra, la regularización y la evaluación fuera de muestra no son opcionales.
 | Modelo de factores dinámicos | Factores latentes con dinámica autorregresiva explícita | Alternativa estadística natural al LSTM; supone una estructura constante |
 | Modelos de cambio de régimen de Markov | Estiman regímenes y probabilidades de transición | Responden directamente a la pregunta de regímenes; son supervisados por un modelo paramétrico (verificar referencias antes de citarlos) |
 
-## Resultados
+### Resultados
 
-### Anclaje: la versión lineal reproduce el PCA
+#### Anclaje: la versión lineal reproduce el PCA
 
 ```{r b6-anclaje}
 knitr::kable(data.frame(Dimensión = r08_anclaje$d, `Error AE lineal` = num(r08_anclaje$mse_ae_lineal, 4),
@@ -2150,7 +2447,7 @@ autoencoder es una generalización estricta del PCA: cualquier diferencia poster
 no linealidad.
 :::
 
-### Compresión fuera de muestra
+#### Compresión fuera de muestra
 
 ```{r b6-cv}
 knitr::kable(data.frame(Dimensión = r08_cv$d, `Error PCA` = num(r08_cv[[2]], 3), `Error AE no lineal` = num(r08_cv[[3]], 3),
@@ -2166,7 +2463,7 @@ vio: el PCA extrapola linealmente, mientras que la tanh se satura y no puede seg
 del rango de entrenamiento.
 :::
 
-### Detección de episodios
+#### Detección de episodios
 
 ```{r b6-g-error, fig.height = 4}
 err_df <- rbind(data.frame(fecha = r08_err$fecha, metodo = "Autoencoder", error = r08_err$error_ae),
@@ -2213,10 +2510,10 @@ año evaluado está más allá del rango de los años de entrenamiento, porque l
 error de reconstrucción sube por la tendencia, no por un episodio. La sensibilidad de
 `r num(r09_disc[[5]][1], 0)` % en los episodios no tiene valor con tantas falsas alarmas. La
 detección de episodios fuera de muestra necesita series sin tendencia: con las series
-transformadas (bloque 7) sí es informativa.
+transformadas (Parte B) sí es informativa.
 :::
 
-### Estabilidad e interpretación
+#### Estabilidad e interpretación
 
 ::: {.lectura}
 Entre réplicas con distinta semilla, los códigos del autoencoder son parecidos (coeficiente RV
@@ -2227,11 +2524,11 @@ del PCA, no una estructura distinta. La datación de regímenes con el LSTM-AE d
 `r nrow(r09_reg_lstm)` regímenes (corte en `r r09_reg_lstm$inicio[2]`), frente a
 `r nrow(r09_reg_pca)` del PCA suavizado. Sin transformar, la regla de codo del notebook `09`
 (primer número de regímenes cuya reducción es menor que 10 %) no elige en ninguno de los dos
-casos; las copias usan como respaldo el codo por caída máxima, la misma regla que el bloque 4
+casos; las copias usan como respaldo el codo por caída máxima, la misma regla que A.3
 aplica a `aede`.
 :::
 
-## Veredicto
+### Veredicto
 
 | Criterio | Resultado sin transformar | ¿Aporta? |
 |---|---|---|
@@ -2244,267 +2541,20 @@ aplica a `aede`.
 Con estos resultados, las redes no se justifican como método principal de medición del ciclo.
 Pueden quedar en la tesis como (a) prueba de que la estructura es esencialmente lineal con esta
 muestra, (b) detector complementario de meses atípicos, solo sobre las series transformadas
-(bloque 7), o (c) línea futura cuando la muestra se extienda desde 1985. ¿Cuál de los tres papeles les das? La respuesta define cuánto espacio les
+(Parte B), o (c) línea futura cuando la muestra se extienda desde 1985. ¿Cuál de los tres papeles les das? La respuesta define cuánto espacio les
 corresponde en el documento final y cómo se formula la contribución (1) de la tesis.
 :::
 
 
-# Contraste: las mismas series transformadas
 
-Este bloque repite los análisis principales sobre las series transformadas, que fueron la base de
-la corrida en Python: **log-diferencia** para saldos e índices ($\Delta \ln x_t$,
-aproximadamente la variación porcentual mensual) y **diferencia simple** para tasas y spread
-($\Delta x_t$, el cambio mensual en puntos). No reemplaza al análisis oficial: muestra qué
-cambia cuando se mira la variación de cada mes en lugar de su estado.
-
-```{r b7-verificacion}
-# Las transformadas del notebook 04 se reconstruyen exactamente desde los niveles
-dif_transf <- max(sapply(seq_len(p), function(j) {
-  x <- X[, j]
-  r <- if (meta_an$transformacion[j] == "log-diferencia") diff(log(x)) else diff(x)
-  max(abs(r - Xt[, j]))
-}))
-nt <- nrow(Xt)
-```
-
-Las `r p` series transformadas (`r nt` meses, de `r format(min(fechas_t), "%m/%Y")` a
-`r format(max(fechas_t), "%m/%Y")`; se pierde el primer mes al diferenciar) se leen de
-`data/processed/dataset_transformado_mensual.csv`, que genera el notebook
-`04_preprocesamiento`. Recalculadas en R desde los niveles, la diferencia máxima con ese archivo
-es `r format(dif_transf, digits = 2)`: es el mismo dato.
-
-## PCA
-
-```{r b7-pca}
-Zt <- estandarizar(Xt)
-pct <- pca_basico(Zt)
-vpt <- pct$valores; inercia_t <- 100 * vpt / sum(vpt)
-cargas_t <- sweep(pct$vectores, 2, sqrt(vpt), "*"); dimnames(cargas_t) <- list(colnames(Xt), paste0("PC", 1:p))
-scores_t <- pct$scores
-set.seed(params$semilla)
-hrt <- horn(Zt, n_sim = 1000)
-r_tiempo_t <- cor(scores_t[, 1:4], seq_len(nt))[, 1]
-knitr::kable(data.frame(Componente = paste0("PC", 1:5),
-                        `Inercia sin transformar (%)` = num(inercia[1:5], 1),
-                        `Inercia transformadas (%)` = num(inercia_t[1:5], 1),
-                        `Correlación con el tiempo sin transformar` = num(c(r_tiempo, NA), 2),
-                        `Correlación con el tiempo transformadas` = num(c(r_tiempo_t, NA), 2),
-                        check.names = FALSE), row.names = FALSE,
-             caption = paste0("Horn retiene ", k_horn, " componentes sin transformar y ", hrt$retener, " con las series transformadas."))
-```
-
-```{r b7-congruencia}
-congr_nt <- abs(sapply(1:4, function(k) sapply(1:4, function(j) tucker(cargas[, k], cargas_t[, j]))))
-dimnames(congr_nt) <- list(paste0("PC", 1:4, " transformadas"), paste0("PC", 1:4, " sin transformar"))
-knitr::kable(apply(congr_nt, 2, num, dec = 2), caption = "Congruencia de Tucker (en valor absoluto) entre las componentes de los dos análisis. Sobre 0,85: componentes parecidas.")
-describir_m <- function(C, k, umbral = 0.4) {
-  o <- order(abs(C[, k]), decreasing = TRUE); f <- o[abs(C[o, k]) >= umbral]
-  if (!length(f)) f <- o[1:3]
-  paste0(rownames(C)[f], " (", num(C[f, k], 2), ")", collapse = ", ")
-}
-```
-
-::: {.lectura}
-Con las series transformadas ninguna componente domina: la primera explica
-`r num(inercia_t[1], 1)` % y las tres primeras `r num(sum(inercia_t[1:3]), 1)` %, frente a
-`r num(inercia[1], 1)` % y `r num(sum(inercia[1:3]), 1)` % sin transformar. Ninguna sigue una
-tendencia como la del PC1 sin transformar (correlación con el tiempo de
-`r num(max(abs(r_tiempo_t)), 2)` como máximo, en valor absoluto). Sus cargas más
-fuertes son:
-
-- **PC1**: `r describir_m(cargas_t, 1)`.
-- **PC2**: `r describir_m(cargas_t, 2)`.
-- **PC3**: `r describir_m(cargas_t, 3)`.
-
-La mayor congruencia entre una componente transformada y una sin transformar es
-`r num(max(congr_nt), 2)`: los dos análisis no encuentran los mismos ejes, porque las variaciones
-mensuales y los estados se organizan de forma distinta.
-:::
-
-```{r b7-pandemia}
-ctr_t <- 100 * sweep(scores_t^2, 2, nt * vpt, "/")
-covid_t <- fechas_t >= as.Date("2020-03-01") & fechas_t <= as.Date("2020-12-01")
-Zts <- estandarizar(Xt[!covid_t, ])
-ets <- eigen(crossprod(Zts) / nrow(Zts), symmetric = TRUE)
-Cts <- sweep(ets$vectors[, 1:6], 2, sqrt(ets$values[1:6]), "*")
-cong_sin_covid_t <- sapply(1:4, function(k) max(sapply(1:6, function(j) abs(tucker(cargas_t[, k], Cts[, j])))))
-knitr::kable(data.frame(Componente = paste0("PC", 1:4),
-                        `Aporte de los meses de la pandemia a su construcción (%)` = num(colSums(ctr_t[covid_t, 1:4]), 1),
-                        `Congruencia sin la pandemia` = num(cong_sin_covid_t, 2), check.names = FALSE),
-             row.names = FALSE, caption = "Los diez meses de 2020-03 a 2020-12 son el 4,4 % de la muestra transformada.")
-```
-
-::: {.lectura}
-Con las series transformadas, la pandemia construye
-`r num(sum(ctr_t[covid_t, 4]), 0)` % de la cuarta componente, y sin esos meses la congruencia
-de PC4 con la original cae a `r num(cong_sin_covid_t[4], 2)`: ese eje es la pandemia. Sin
-transformar ningún eje depende de un episodio; el que más se concentra en uno (PC3, en la crisis
-de 2008) se conserva al retirarla (bloque 3).
-:::
-
-## EPCA
-
-```{r b7-epca}
-# Regla del notebook 06 sobre las transformadas (PC1), con el archivo estandarizado de Python
-df_std <- read.csv("data/processed/dataset_estandarizado_mensual.csv", row.names = 1, check.names = FALSE)
-fechas_std <- as.Date(rownames(df_std))
-ini_t <- seq(1, nrow(df_std) - VENTANA + 1, by = PASO)
-C1t <- t(sapply(ini_t, function(i) {
-  e <- eigen(crossprod(estandarizar(df_std[i:(i + VENTANA - 1), ])) / VENTANA, symmetric = TRUE); e$vectors[, 1] }))
-for (i in 2:nrow(C1t)) if (cor(C1t[i, ], C1t[i - 1, ]) < 0) C1t[i, ] <- -C1t[i, ]
-estab_t <- sapply(2:nrow(C1t), function(i) cor(C1t[i, ], C1t[i - 1, ]))
-fechas_epca_t <- fechas_std[ini_t + VENTANA %/% 2]
-transiciones_t <- fechas_epca_t[-1][estab_t < mean(estab_t) - sqrt(mean((estab_t - mean(estab_t))^2))]
-trans_py_t <- format(as.Date(read.csv("data/results/06_epca_transiciones_detectadas.csv")[[1]]), "%Y-%m")
-
-# aede del asesor sobre las transformadas, pesos uniformes, mismo criterio de codo que el bloque 4
-Xtf <- Xt; rownames(Xtf) <- format(fechas_t, "%Y-%m-%d")
-at <- aede_r(serie = Xtf, ndim = 3, nw = VENTANA, nsd = 0, maxcl = 10)
-wss_t <- at$cutpoints$part[, 2]; red_t <- c(-diff(wss_t) / head(wss_t, -1), NA)
-k_codo_t <- which.max(red_t[1:(length(red_t) - 2)] - red_t[2:(length(red_t) - 1)]) + 1
-lim_t <- at$cutpoints$part[k_codo_t, grep("^v_", colnames(at$cutpoints$part))]
-lim_t <- lim_t[lim_t > 0 & lim_t < nrow(at$eigenvalues)]
-cortes_aede_t <- as.Date(rownames(at$eigenvalues))[lim_t + 1]
-knitr::kable(data.frame(
-  Método = c("Seguimiento de cargas (regla 06)", "aede uniforme (λ1, codo)"),
-  `Sin transformar` = c(paste0(paste(format(transiciones_epca, "%Y-%m"), collapse = ", "), " (PC2)"),
-                        paste(format(aede_u$cortes_codo, "%Y-%m"), collapse = ", ")),
-  `Transformadas` = c(paste0(paste(format(transiciones_t, "%Y-%m"), collapse = ", "), " (PC1)"),
-                      paste(format(cortes_aede_t, "%Y-%m"), collapse = ", ")),
-  check.names = FALSE), row.names = FALSE, caption = "Fechas del centro de la ventana (60 meses).")
-```
-
-::: {.lectura}
-Con las series transformadas, el seguimiento de cargas de PC1 da
-`r length(transiciones_t)` transiciones
-(`r if (identical(format(transiciones_t, "%Y-%m"), trans_py_t)) "idénticas a las del notebook 06" else paste("Python:", paste(trans_py_t, collapse = ", "))`).
-Fechas a 12 meses o menos entre ambos análisis:
-`r { cerca <- sapply(transiciones_t, function(f) any(meses_entre(f, c(transiciones_epca, aede_u$cortes_codo)) <= 12)); if (any(cerca)) paste(format(transiciones_t[cerca], "%Y-%m"), collapse = ", ") else "ninguna" }`.
-Los dos análisis miden cambios de estructura distintos: sin transformar, cambia qué series
-acompañan a las tasas (PC2); transformadas, cambia qué series se mueven juntas mes a mes.
-:::
-
-## HFC
-
-```{r b7-hfc}
-invisible(capture.output(hfc_t <- clahfac_r(as.data.frame(Xt), out = TRUE)))
-crudo_t <- clahfacsub_r(as.data.frame(Xt))
-jer_t <- as.data.frame(hfc_t$hierar)
-comp_t <- function(k) { v <- hfc_t$nclass[as.character(k), ]; colnames(Xt)[v[v != 0]] }
-# Las particiones vienen en el orden de las columnas, que es el mismo en X y Xt
-grupos_de <- function(h, k) .partclas_ac(h, k)$partition$Position
-ari_k <- sapply(2:5, function(k) rand_ajustado(grupos_de(hfc$hier, k), grupos_de(hfc_t$hier, k)))
-knitr::kable(data.frame(
-  ` ` = c("Grupo A de la raíz", "Grupo B de la raíz", "Índice de la raíz / índice siguiente"),
-  `Sin transformar` = c(paste(composicion(jer$N1[nrow(jer)]), collapse = ", "), paste(composicion(jer$N2[nrow(jer)]), collapse = ", "),
-                        paste(num(indices_sup[1], 2), "/", num(indices_sup[2], 2))),
-  Transformadas = c(paste(comp_t(jer_t$N1[nrow(jer_t)]), collapse = ", "), paste(comp_t(jer_t$N2[nrow(jer_t)]), collapse = ", "),
-                    paste(num(rev(tail(jer_t$Index, 2)), 2), collapse = " / ")),
-  check.names = FALSE), row.names = FALSE)
-```
-
-::: {.lectura}
-Las jerarquías son distintas: el índice de Rand ajustado entre las particiones de los dos
-análisis es `r paste(num(ari_k, 2), collapse = ", ")` para 2 a 5 grupos (1 = mismas particiones;
-0 = coincidencia al azar). Con las series transformadas, la columna `Eigentab` de `clahfac`
-reporta en la raíz `r num(tail(jer_t$Eigentab, 1), 2)`, mientras que el valor convergido es
-`r num(tail(crudo_t$eigentab_convergido, 1), 2)`: aquí el error de la iteración de dos pasos sí es
-grande (bloque 5).
-:::
-
-## Datación de regímenes y fases
-
-```{r b7-datacion}
-mm_t <- function(S) apply(S, 2, mm_causal, w = 12)[12:nt, , drop = FALSE]
-fechas_zt <- fechas_t[12:nt]
-dat3t <- datar(mm_t(scores_t[, 1:3]))
-cortes3t <- dat3t$res[[as.character(dat3t$k_codo)]]$cortes
-reg_py_t <- read.csv("data/results/09_regimenes_pca.csv")
-comp_credito_t <- rowMeans(Zt[, c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario")])
-seg_t <- segmentos(cortes3t, fechas_zt)
-fases_t <- do.call(rbind, lapply(seq_len(nrow(seg_t)), function(i) {
-  sel <- fechas_t >= seg_t$inicio[i] & fechas_t <= seg_t$fin[i]
-  m <- mean(comp_credito_t[sel]); dur <- sum(sel)
-  data.frame(Inicio = format(seg_t$inicio[i], "%Y-%m"), Fin = format(seg_t$fin[i], "%Y-%m"), Meses = dur,
-             `Componente de crédito` = num(m, 2),
-             Fase = if (dur < 18 || abs(m) <= 0.25) "Transición" else if (m > 0) "Expansión" else "Contracción",
-             check.names = FALSE)
-}))
-knitr::kable(fases_t, row.names = FALSE,
-             caption = "Series transformadas: regímenes del PCA suavizado (3 componentes, regla de codo) y fases según la regla del notebook 09.")
-```
-
-::: {.lectura}
-Con las series transformadas, la datación da `r dat3t$k_codo` regímenes
-(`r if (identical(fechas_corte(cortes3t, fechas_zt), reg_py_t$inicio[-1])) "idénticos a los del notebook 09" else paste("Python:", paste(reg_py_t$inicio[-1], collapse = ", "))`),
-y el componente de crédito mide el ritmo de crecimiento del crédito: la clasificación
-(`r paste(table(fases_t$Fase), tolower(names(table(fases_t$Fase))), collapse = ", ")`) responde a
-si el crédito crece más o menos rápido que su promedio. Sin
-transformar (bloque 8), el componente de crédito mide el nivel del crédito.
-:::
-
-## Redes neuronales
-
-```{r b7-redes}
-t08_cv <- read.csv("data/results/08_ae_cv_bloques.csv", check.names = FALSE)
-t09_disc <- read.csv("data/results/09_discriminacion_episodios.csv", check.names = FALSE)
-t09_wf <- read.csv("data/results/09_walkforward_errores.csv", check.names = FALSE); t09_wf$fecha <- as.Date(t09_wf$fecha)
-knitr::kable(data.frame(
-  Resultado = c("Mejora del AE sobre el PCA fuera de muestra, 3 dimensiones (%)",
-                "Falsas alarmas PCA / AE / LSTM-AE (%)", "Meses del COVID-19 con alarma PCA / AE / LSTM-AE (%)",
-                "Meses del taper tantrum con alarma PCA / AE / LSTM-AE (%)"),
-  `Sin transformar` = c(num(r08_cv[[5]][3], 1), paste(num(r09_disc[[3]], 1), collapse = " / "),
-                        paste(num(r09_disc[[7]], 0), collapse = " / "), paste(num(r09_disc[[5]], 0), collapse = " / ")),
-  Transformadas = c(num(t08_cv[[5]][3], 1), paste(num(t09_disc[[3]], 1), collapse = " / "),
-                    paste(num(t09_disc[[7]], 0), collapse = " / "), paste(num(t09_disc[[5]], 0), collapse = " / ")),
-  check.names = FALSE), row.names = FALSE,
-  caption = "Transformadas: notebooks 08 y 09. Sin transformar: sus copias en R/redes_python/.")
-```
-
-::: {.lectura}
-El autoencoder es peor que el PCA fuera de muestra en los dos análisis. La diferencia está en la
-detección: con las series transformadas las falsas alarmas son pocas
-(`r paste(num(t09_disc[[3]], 1), collapse = " %, ")` % para PCA, AE y LSTM-AE) y las alarmas se
-concentran en la pandemia; sin transformar, la tendencia hace que casi todos los meses parezcan
-atípicos.
-:::
-
-## Qué cambia entre los dos análisis
-
-```{r b7-resumen}
-knitr::kable(data.frame(
-  Aspecto = c("Qué describe cada mes", "Inercia de PC1", "Componentes según Horn", "Componente con tendencia",
-              "Eje que depende de un episodio", "Primera división de la HFC", "Regímenes del PCA suavizado (3 PC)",
-              "Detección fuera de muestra"),
-  `Sin transformar (oficial)` = c("Estado del sistema", paste(num(inercia[1], 1), "%"), k_horn,
-                                  paste0("PC1 (r = ", num(r_tiempo[1], 2), ")"), "Ninguno",
-                                  paste(length(composicion(jer$N2[nrow(jer)])), "frente a", length(composicion(jer$N1[nrow(jer)])), "series"),
-                                  "bloque 8", "No informativa"),
-  Transformadas = c("Variación mensual", paste(num(inercia_t[1], 1), "%"), hrt$retener, "Ninguna", "PC4: pandemia",
-                    paste(length(comp_t(jer_t$N2[nrow(jer_t)])), "frente a", length(comp_t(jer_t$N1[nrow(jer_t)])), "series"),
-                    dat3t$k_codo, "Informativa"),
-  check.names = FALSE), row.names = FALSE)
-```
-
-::: {.pregunta}
-Los dos análisis responden preguntas distintas: dónde está el sistema financiero en cada mes y
-cómo se está moviendo. La tesis declara el primero como oficial. ¿El segundo queda como
-análisis de robustez, como una lectura complementaria del ciclo (la fase del ciclo es, en el
-fondo, una dirección de movimiento) o fuera del documento final? Conviene decidirlo con el
-asesor, porque cambia el alcance de la contribución (2).
-:::
-
-
-# Síntesis: regímenes y aporte de cada método
-
-## Datación de regímenes con el PCA suavizado
+## A.6 Datación de regímenes y fases
 
 Siguiendo el notebook `09`, los regímenes se datan con la partición óptima de Fisher sobre los
 scores del PCA suavizados con una media móvil **causal** de 12 meses (cada mes usa solo el año
 anterior, de modo que la datación no mira al futuro), con regímenes de al menos 12 meses. El
 número de regímenes se elige con la regla de codo (primer número cuya reducción de la suma de
-cuadrados es menor que 10 %; si ninguna lo es, la caída máxima, como en el bloque 4) y, como
-contraste, con Calinski-Harabász. Como PC1 es la tendencia (bloque 3), se agrega una variante
+cuadrados es menor que 10 %; si ninguna lo es, la caída máxima, como en A.3) y, como
+contraste, con Calinski-Harabász. Como PC1 es la tendencia (A.2), se agrega una variante
 que usa solo PC2 y PC3.
 
 ```{r b8-datacion}
@@ -2532,7 +2582,7 @@ knitr::kable(data.frame(
 
 ### ¿Qué tan estables son los cortes?
 
-Las cargas del PCA tienen incertidumbre (bloque 3). Se repite la datación con las cargas de
+Las cargas del PCA tienen incertidumbre (A.2). Se repite la datación con las cargas de
 cada réplica bootstrap, con el mismo número de regímenes, y se cuenta en qué proporción de
 réplicas aparece cada corte a ±3 meses de su fecha original.
 
@@ -2597,7 +2647,7 @@ crédito es el promedio de tres saldos que crecen durante toda la muestra: su co
 tiempo es `r num(r_credito_tiempo, 3)`. Por eso los primeros regímenes salen como contracción o
 transición (crédito por debajo de su media 2007-2025) y los últimos como expansión, sin relación
 con el ritmo del crédito en cada periodo. Con las series transformadas el mismo componente mide
-el ritmo de crecimiento del crédito (bloque 7).
+el ritmo de crecimiento del crédito (Parte B).
 :::
 
 ::: {.pregunta}
@@ -2609,38 +2659,1215 @@ regla depende de dos números fijados a mano (umbral 0,25 y duración mínima de
 ¿Cuál de estas vías es coherente con trabajar con los datos sin transformar?
 :::
 
-## Todos los métodos en una misma línea de tiempo
 
-```{r b8-eventos}
-umbral_ae <- quantile(r08_err$error_ae, 0.95)
+# Parte B. Series transformadas {#parte-b}
+
+Esta parte repite **toda** la cadena de la Parte A sobre las `r p` series transformadas
+(log-diferencia para saldos e índices, diferencia simple para tasas y spread), con el mismo
+código, las mismas ventanas, los mismos umbrales y las mismas semillas. Cada mes describe ahora
+una **variación**: cuánto cambió cada serie respecto del mes anterior. Las secciones B.1 a B.6
+corresponden a A.1 a A.6.
+
+```{r bB-datos}
+Zt <- estandarizar(Xt)
+covid_t <- fechas_t >= as.Date("2020-03-01") & fechas_t <= as.Date("2020-12-01")
+crisis_t <- fechas_t >= episodios$inicio[1] & fechas_t <= episodios$fin[1]
+anio_t <- as.integer(format(fechas_t, "%Y"))
+```
+
+## B.1 Exploración conjunta
+
+```{r bB1-g-series, fig.height = 9}
+largo_zt <- data.frame(fecha = rep(fechas_t, p), serie = rep(colnames(Zt), each = nt),
+                       bloque = rep(as.character(meta_an$bloque), each = nt), z = as.vector(Zt))
+largo_zt$bloque <- factor(largo_zt$bloque, levels = levels(meta$bloque))
+ggplot(largo_zt, aes(fecha, z, group = serie)) +
+  capa_episodios() +
+  geom_hline(yintercept = 0, color = "#9a9890", linewidth = 0.3) +
+  geom_line(color = color_serie, linewidth = 0.4, alpha = 0.7) +
+  facet_wrap(~ bloque, ncol = 2) +
+  scale_x_date(date_breaks = "3 years", date_labels = "%Y") +
+  labs(x = NULL, y = "Variación estandarizada (z)", title = "Las 17 series transformadas, estandarizadas",
+       subtitle = "Cada línea es la variación mensual de una serie en desviaciones estándar respecto de su media.",
+       caption = nota_episodios) +
+  tema_tesis()
+```
+
+### Tendencia
+
+```{r bB1-tendencia}
+tend_t <- data.frame(Serie = colnames(Xt), r_tiempo = apply(Xt, 2, cor, y = seq_len(nt)))
+tend_t <- tend_t[order(-abs(tend_t$r_tiempo)), ]
+knitr::kable(data.frame(Serie = tend_t$Serie[1:6], `Correlación con el tiempo` = num(tend_t$r_tiempo[1:6], 2), check.names = FALSE),
+             row.names = FALSE, caption = "Las seis series transformadas con mayor correlación (en valor absoluto) con el número de mes.")
+```
+
+::: {.lectura}
+Ninguna serie transformada sigue una tendencia: la correlación con el tiempo más alta, en valor
+absoluto, es `r num(abs(tend_t$r_tiempo[1]), 2)` (`r tend_t$Serie[1]`), frente a
+`r n_tend` series con correlación de 0,9 o más sin transformar (A.1). Las correlaciones
+negativas de los créditos dicen que su **ritmo** de crecimiento fue bajando a lo largo de la
+muestra, aunque sus saldos siguieran subiendo.
+:::
+
+### Meses que más se alejan del promedio
+
+```{r bB1-g-mapa, fig.height = 5.5}
+mapa_zt <- data.frame(fecha = rep(fechas_t, p), serie = factor(rep(colnames(Zt), each = nt), levels = rev(colnames(Zt))),
+                      z = as.vector(Zt))
+ggplot(mapa_zt, aes(fecha, serie, fill = z)) +
+  geom_tile() +
+  escala_divergente("z", c(-3, 3)) +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y", expand = c(0, 0)) +
+  labs(x = NULL, y = NULL, title = "Mapa de variaciones estandarizadas por mes",
+       subtitle = "Azul: variación menor que la promedio; naranja: mayor (truncado en ±3).") +
+  tema_tesis() + theme(panel.grid = element_blank())
+```
+
+```{r bB1-inercia-meses}
+part_mes_t <- 100 * rowSums(Zt^2) / sum(Zt^2)
+top_meses_t <- order(part_mes_t, decreasing = TRUE)[1:10]
+episodio_mes_t <- rep("Resto de meses", nt)
+for (i in seq_len(nrow(episodios))) episodio_mes_t[fechas_t >= episodios$inicio[i] & fechas_t <= episodios$fin[i]] <- episodios$nombre[i]
+knitr::kable(data.frame(Mes = format(fechas_t[top_meses_t], "%Y-%m"),
+                        `Inercia del mes (% del total)` = num(part_mes_t[top_meses_t], 2),
+                        `Series con |z| > 2` = sapply(top_meses_t, function(i) paste(colnames(Zt)[abs(Zt[i, ]) > 2], collapse = ", ")),
+                        check.names = FALSE),
+             row.names = FALSE, caption = paste0("Los 10 meses más alejados del mes promedio. Un mes promedio aporta 1/", nt, " = ", num(100 / nt, 2), " %."))
+```
+
+::: {.lectura}
+Transformadas, los meses que más pesan son los de los episodios: la crisis global (el
+`r num(100 * mean(crisis_t), 1)` % de los meses) aporta el `r num(sum(part_mes_t[crisis_t]), 1)` %
+de la variabilidad total y los diez meses del COVID-19 (`r num(100 * mean(covid_t), 1)` % de la
+muestra), el `r num(sum(part_mes_t[covid_t]), 1)` %. Sin transformar, la pandemia aportaba el
+`r num(sum(part_mes[covid]), 1)` % y los extremos de la muestra dominaban (A.1).
+`r sum(episodio_mes_t[top_meses_t] != "Resto de meses")` de los diez meses más atípicos
+pertenecen a un episodio conocido: en variaciones, los episodios son lo que más se aleja de lo
+normal.
+:::
+
+### Persistencia
+
+```{r bB1-persistencia}
+pers_t <- data.frame(Serie = colnames(Xt),
+                     `Autocorrelación 1 mes` = apply(Xt, 2, acf_k, k = 1),
+                     `Autocorrelación 12 meses` = apply(Xt, 2, acf_k, k = 12), check.names = FALSE)
+pers_t_fmt <- pers_t; pers_t_fmt[[2]] <- num(pers_t[[2]], 2); pers_t_fmt[[3]] <- num(pers_t[[3]], 2)
+knitr::kable(pers_t_fmt, row.names = FALSE, caption = "Autocorrelación de las series transformadas.")
+```
+
+::: {.lectura}
+La persistencia cae de forma drástica: la autocorrelación a un mes va de
+`r num(min(pers_t[[2]]), 2)` a `r num(max(pers_t[[2]]), 2)`, frente a valores sobre 0,9 sin
+transformar. Las más persistentes son las tasas de política, la interbancaria y la TIPMN
+(`r num(pers_t[[2]][pers_t$Serie == "Tasa de referencia"], 2)`,
+`r num(pers_t[[2]][pers_t$Serie == "Tasa interbancaria"], 2)` y
+`r num(pers_t[[2]][pers_t$Serie == "TIPMN"], 2)`), porque la política monetaria mueve la tasa en
+pasos sucesivos en la misma dirección. A 12 meses aparece la estacionalidad residual del
+sustento (sección 2). Cada mes aporta ahora información casi nueva: la muestra efectiva es
+mucho mayor que sin transformar, lo que favorece a las ventanas de la EPCA y a las redes.
+:::
+
+### Relaciones entre las series
+
+```{r bB1-correlaciones, fig.height = 7}
+R_tr <- cor(Xt)
+orden_t <- hclust(as.dist(1 - abs(R_tr)), method = "average")$order
+largo_rt <- expand.grid(fila = colnames(Xt)[orden_t], columna = colnames(Xt)[orden_t], stringsAsFactors = FALSE)
+largo_rt$r <- R_tr[cbind(largo_rt$fila, largo_rt$columna)]
+largo_rt$fila <- factor(largo_rt$fila, levels = colnames(Xt)[orden_t])
+largo_rt$columna <- factor(largo_rt$columna, levels = rev(colnames(Xt)[orden_t]))
+ggplot(largo_rt, aes(fila, columna, fill = r)) +
+  geom_tile(color = "white", linewidth = 0.4) +
+  geom_text(aes(label = ifelse(fila != columna, num(r, 2), "")), size = 2.2) +
+  escala_divergente("r", c(-1, 1)) +
+  labs(x = NULL, y = NULL, title = "Correlaciones entre las series transformadas",
+       subtitle = "Ordenadas por afinidad (agrupamiento jerárquico sobre 1 − |r|).") +
+  tema_tesis() + theme(axis.text.x = element_text(angle = 45, hjust = 1), panel.grid = element_blank())
+pares_t <- which(upper.tri(R_tr), arr.ind = TRUE)
+top_pares_t <- pares_t[order(abs(R_tr[pares_t]), decreasing = TRUE)[1:8], ]
+```
+
+::: {.lectura}
+La correlación absoluta promedio entre pares baja a `r num(mean(abs(R_tr[upper.tri(R_tr)])), 2)`
+(`r num(mean(abs(R_niv[upper.tri(R_niv)])), 2)` sin transformar) y solo
+`r sum(abs(R_tr[upper.tri(R_tr)]) > 0.5)` de `r p * (p - 1) / 2` pares superan 0,5. Los pares más
+correlacionados son
+`r paste0(colnames(Xt)[top_pares_t[1:5, 1]], " – ", colnames(Xt)[top_pares_t[1:5, 2]], " (", num(R_tr[top_pares_t[1:5, , drop = FALSE]], 2), ")", collapse = "; ")`:
+en su mayoría relaciones de definición (los agregados monetarios se contienen unos a otros) o de
+transmisión inmediata (la interbancaria y la TIPMN siguen a la referencia), más que de ciclo.
+:::
+
+### Las relaciones cambian en el tiempo
+
+```{r bB1-g-movil, fig.height = 6}
+movil_t <- do.call(rbind, lapply(pares_movil, function(pr) {
+  r <- sapply(1:(nt - W + 1), function(i) cor(Xt[i:(i + W - 1), pr[1]], Xt[i:(i + W - 1), pr[2]]))
+  data.frame(fecha = fechas_t[(1:(nt - W + 1)) + W %/% 2], par = paste(pr, collapse = " – "), r = r)
+}))
+movil_t$par <- factor(movil_t$par, levels = unique(movil_t$par))
+rango_movil_t <- tapply(movil_t$r, movil_t$par, function(r) diff(range(r)))
+ggplot(movil_t, aes(fecha, r)) +
+  capa_episodios() +
+  geom_hline(yintercept = 0, color = "#9a9890", linewidth = 0.3) +
+  geom_hline(data = data.frame(par = factor(names(rango_movil_t), levels = levels(movil_t$par)),
+                               r = sapply(pares_movil, function(pr) cor(Xt[, pr[1]], Xt[, pr[2]]))),
+             aes(yintercept = r), linetype = 2, color = "#eb6834", linewidth = 0.4) +
+  geom_line(color = color_serie, linewidth = 0.6) +
+  facet_wrap(~ par, ncol = 2) +
+  scale_y_continuous(limits = c(-1, 1)) +
+  labs(x = NULL, y = "Correlación", title = "Correlaciones móviles de 60 meses (series transformadas)",
+       subtitle = "Mismos pares que en A.1. Línea punteada: correlación de toda la muestra.", caption = nota_episodios) +
+  tema_tesis()
+```
+
+::: {.lectura}
+Los rangos de las correlaciones móviles van de `r num(min(rango_movil_t), 2)`
+(`r names(rango_movil_t)[which.min(rango_movil_t)]`) a `r num(max(rango_movil_t), 2)`
+(`r names(rango_movil_t)[which.max(rango_movil_t)]`), frente a `r num(min(rango_movil), 2)` a
+`r num(max(rango_movil), 2)` sin transformar. En variaciones, las relaciones también cambian en
+el tiempo, pero ningún par tiene un rango mayor que 1 (`r sum(rango_movil > 1)` sin transformar):
+sin la tendencia, las correlaciones de las ventanas no llegan a invertirse de forma sostenida.
+:::
+
+### Síntesis de B.1
+
+- Sin tendencia y con poca persistencia: cada mes aporta información nueva.
+- Los meses atípicos son los episodios conocidos, sobre todo la crisis global y la pandemia.
+- Las correlaciones son bajas y las más altas reflejan relaciones de definición.
+- Aparece estacionalidad residual en algunas series, que sin transformar quedaba oculta.
+
+## B.2 Análisis de componentes principales (PCA)
+
+```{r bB2-pca}
+pc_t <- pca_basico(Zt)
+vpt <- pc_t$valores; inercia_t <- 100 * vpt / sum(vpt)
+cargas_t <- sweep(pc_t$vectores, 2, sqrt(vpt), "*"); dimnames(cargas_t) <- list(colnames(Zt), paste0("PC", 1:p))
+scores_t <- pc_t$scores; colnames(scores_t) <- paste0("PC", 1:p)
+ctr_var_t <- 100 * pc_t$vectores^2; dimnames(ctr_var_t) <- dimnames(cargas_t)
+cos2_t <- cargas_t^2
+Rt <- crossprod(Zt) / nt
+bt_t <- bartlett_esfericidad(Rt, nt); km_t <- kmo(Rt)
+```
+
+### ¿Tiene sentido un PCA con estos datos?
+
+```{r bB2-kmo}
+kmo_tab_t <- data.frame(Serie = names(km_t$por_variable), KMO = km_t$por_variable)
+kmo_tab_t <- kmo_tab_t[order(kmo_tab_t$KMO), ]
+knitr::kable(data.frame(Serie = kmo_tab_t$Serie, `KMO individual` = num(kmo_tab_t$KMO, 2), check.names = FALSE),
+             row.names = FALSE, caption = "Adecuación de cada serie transformada al análisis factorial (de menor a mayor).")
+```
+
+::: {.lectura}
+Bartlett rechaza la independencia (chi-cuadrado `r num(bt_t$estadistico, 0)` con `r bt_t$gl`
+grados de libertad, p-valor `r format.pval(bt_t$p_valor, digits = 2)`), y aquí su supuesto de
+meses independientes es mucho más razonable que sin transformar. El KMO global es
+**`r num(km_t$global, 2)`** (`r num(km$global, 2)` sin transformar), `r if (km_t$global >= 0.8) "bueno" else if (km_t$global >= 0.6) "aceptable" else "bajo"`.
+La serie con menor KMO individual es `r kmo_tab_t$Serie[1]` (`r num(kmo_tab_t$KMO[1], 2)`).
+:::
+
+### ¿Cuántas componentes retener?
+
+```{r bB2-retencion}
+set.seed(params$semilla)
+hrt <- horn(Zt, n_sim = 1000)
+k_kaiser_t <- sum(vpt > 1); k_horn_t <- hrt$retener; k_vara_t <- sum(cumprod(inercia_t > vq))
+k_70_t <- which(cumsum(inercia_t) >= 70)[1]; k_80_t <- which(cumsum(inercia_t) >= 80)[1]
+knitr::kable(data.frame(Componente = paste0("PC", 1:8), `Valor propio` = num(vpt[1:8], 3),
+                        `Inercia (%)` = num(inercia_t[1:8], 1), `Acumulada (%)` = num(cumsum(inercia_t)[1:8], 1),
+                        `Umbral Horn p95` = num(hrt$umbral[1:8], 3), `Vara quebrada (%)` = num(vq[1:8], 1),
+                        check.names = FALSE), row.names = FALSE)
+knitr::kable(data.frame(Criterio = c("Kaiser (valor propio > 1)", "Análisis paralelo de Horn (p95, 1 000 simulaciones)",
+                                     "Vara quebrada", "70 % de inercia acumulada", "80 % de inercia acumulada"),
+                        `Transformadas` = c(k_kaiser_t, k_horn_t, k_vara_t, k_70_t, k_80_t),
+                        `Sin transformar (A.2)` = c(k_kaiser, k_horn, k_vara, k_70, k_80), check.names = FALSE),
+             row.names = FALSE, caption = "Número de componentes que retiene cada criterio en las dos vías.")
+```
+
+```{r bB2-g-scree, fig.height = 4}
+sc_t <- data.frame(k = 1:p, observado = vpt, horn = hrt$umbral, vara = vq / 100 * p)
+ggplot(sc_t, aes(k)) +
+  geom_hline(yintercept = 1, color = "#9a9890", linewidth = 0.3, linetype = 3) +
+  geom_line(aes(y = horn, color = "Umbral de Horn (p95)"), linetype = 2, linewidth = 0.6) +
+  geom_line(aes(y = vara, color = "Vara quebrada"), linetype = 3, linewidth = 0.6) +
+  geom_line(aes(y = observado, color = "Valores propios observados"), linewidth = 0.8) +
+  geom_point(aes(y = observado, color = "Valores propios observados"), size = 2) +
+  scale_color_manual(NULL, values = c("Valores propios observados" = colores_cat[1],
+                                      "Umbral de Horn (p95)" = colores_cat[2], "Vara quebrada" = colores_cat[3])) +
+  scale_x_continuous(breaks = 1:p) +
+  labs(x = "Componente", y = "Valor propio", title = "Gráfico de sedimentación (series transformadas)",
+       subtitle = "Línea punteada gris: criterio de Kaiser (valor propio = 1).") +
+  tema_tesis()
+```
+
+::: {.lectura}
+Ninguna componente domina: la primera explica `r num(inercia_t[1], 1)` % y las tres primeras
+`r num(sum(inercia_t[1:3]), 1)` % (`r num(inercia[1], 1)` % y `r num(sum(inercia[1:3]), 1)` % sin
+transformar). Los criterios discrepan mucho más que en A.2: Kaiser retiene `r k_kaiser_t`, Horn
+`r k_horn_t` y la vara quebrada `r k_vara_t`. Con Horn, que aquí sí es la referencia adecuada
+(series sin tendencia y poco persistentes), se retienen `r k_horn_t` componentes, frente a
+`r k_horn` sin transformar: la variabilidad de las variaciones está más repartida.
+:::
+
+### Qué representa cada componente
+
+```{r bB2-cargas-tabla}
+tab_ct <- data.frame(Serie = colnames(Zt))
+for (k in 1:4) {
+  tab_ct[[paste0("r PC", k)]] <- num(cargas_t[, k], 2)
+  tab_ct[[paste0("Contr. PC", k, " (%)")]] <- num(ctr_var_t[, k], 1)
+}
+tab_ct[["Calidad 4 dims (cos²)"]] <- num(rowSums(cos2_t[, 1:4]), 2)
+knitr::kable(tab_ct, row.names = FALSE,
+             caption = "r: correlación de la serie transformada con la componente. Contr.: aporte de la serie a la construcción del eje (promedio 5,9 %).")
+```
+
+```{r bB2-g-cargas, fig.height = 7.5}
+largo_ct <- do.call(rbind, lapply(1:4, function(k) data.frame(
+  comp = sprintf("PC%d (%s %% de inercia)", k, num(inercia_t[k], 1)), serie = colnames(Zt), r = cargas_t[, k])))
+ggplot(largo_ct, aes(r, reorder(paste(comp, serie, sep = "___"), r), fill = r > 0)) +
+  geom_col(width = 0.7) +
+  geom_vline(xintercept = 0, color = "#52514e", linewidth = 0.3) +
+  geom_vline(xintercept = c(-0.5, 0.5), color = "#9a9890", linewidth = 0.3, linetype = 3) +
+  facet_wrap(~ comp, scales = "free_y", ncol = 2) +
+  scale_y_discrete(labels = function(x) sub(".*___", "", x)) +
+  scale_fill_manual(values = c(`TRUE` = colores_cat[2], `FALSE` = colores_cat[1]), guide = "none") +
+  scale_x_continuous(limits = c(-1, 1)) +
+  labs(x = "Correlación con la componente", y = NULL, title = "Correlaciones de las series transformadas con las cuatro primeras componentes",
+       subtitle = "Naranja: correlación positiva; azul: negativa. Líneas punteadas en ±0,5.") +
+  tema_tesis()
+```
+
+```{r bB2-interpretacion}
+describir_c <- function(C, k, umbral = 0.4) {
+  o <- order(abs(C[, k]), decreasing = TRUE); fuertes <- o[abs(C[o, k]) >= umbral]
+  if (length(fuertes) == 0) fuertes <- o[1:3]
+  pos <- fuertes[C[fuertes, k] > 0]; neg <- fuertes[C[fuertes, k] < 0]
+  f <- function(i) paste0(rownames(C)[i], " (", num(C[i, k], 2), ")", collapse = ", ")
+  list(pos = if (length(pos)) f(pos) else "ninguna", neg = if (length(neg)) f(neg) else "ninguna")
+}
+dt <- lapply(1:4, describir_c, C = cargas_t)
+```
+
+::: {.lectura}
+- **PC1 (`r num(inercia_t[1], 1)` %)**: positivas con `r dt[[1]]$pos`; negativas con `r dt[[1]]$neg`.
+- **PC2 (`r num(inercia_t[2], 1)` %)**: positivas con `r dt[[2]]$pos`; negativas con `r dt[[2]]$neg`.
+- **PC3 (`r num(inercia_t[3], 1)` %)**: positivas con `r dt[[3]]$pos`; negativas con `r dt[[3]]$neg`.
+- **PC4 (`r num(inercia_t[4], 1)` %)**: positivas con `r dt[[4]]$pos`; negativas con `r dt[[4]]$neg`.
+
+Correlaciones de magnitud 0,4 o más; el signo de cada eje es convencional (regla de Rcamiz).
+:::
+
+::: {.pregunta}
+Una lectura posible, que tendrías que confirmar: PC1 opone las subidas de tasas (y del EMBIG) al
+crecimiento de la liquidez y de la bolsa, es decir, **endurecimiento frente a holgura** de las
+condiciones financieras; PC2 reúne las tasas con el consumo y la actividad (movimientos que
+acompañan a la política monetaria en el mismo mes); PC3 junta el crédito empresarial, M1, el tipo
+de cambio y el EMBIG frente a la bolsa, lo que sugiere **riesgo y dolarización**; PC4 opone la
+actividad a las reservas y el hipotecario. ¿Qué nombre le pones a cada uno? A diferencia de la
+Parte A, aquí ningún eje es la tendencia: todos compiten por ser "el ciclo".
+:::
+
+### Las componentes y el tiempo
+
+```{r bB2-tiempo}
+r_tiempo_t <- cor(scores_t[, 1:4], seq_len(nt))[, 1]
+knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Inercia (%)` = num(inercia_t[1:4], 1),
+                        `Correlación con el tiempo` = num(r_tiempo_t, 3),
+                        `Correlación con el tiempo sin transformar (A.2)` = num(r_tiempo, 3), check.names = FALSE),
+             row.names = FALSE)
+```
+
+### Círculos de correlación
+
+```{r bB2-g-circulos, fig.height = 10}
+circ_t <- do.call(rbind, lapply(planos, function(pl) data.frame(
+  plano = sprintf("PC%d (%s %%) – PC%d (%s %%)", pl[1], num(inercia_t[pl[1]], 1), pl[2], num(inercia_t[pl[2]], 1)),
+  serie = colnames(Zt), x = cargas_t[, pl[1]], y = cargas_t[, pl[2]])))
+circ_t$plano <- factor(circ_t$plano, levels = unique(circ_t$plano))
+circ_t$largo <- sqrt(circ_t$x^2 + circ_t$y^2)
+ggplot(circ_t) +
+  geom_path(data = circulo, aes(x, y), color = "#9a9890", linewidth = 0.3) +
+  geom_hline(yintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_segment(aes(x = 0, y = 0, xend = x, yend = y, alpha = largo), color = color_serie,
+               arrow = arrow(length = unit(0.12, "cm")), linewidth = 0.5) +
+  geom_text(aes(x = x * 1.08, y = y * 1.08, label = serie, alpha = largo), size = 2.5, color = "#0b0b0b") +
+  scale_alpha_continuous(range = c(0.3, 1), guide = "none") +
+  facet_wrap(~ plano, ncol = 2) +
+  coord_equal(xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25)) +
+  labs(x = NULL, y = NULL, title = "Círculos de correlación (series transformadas)",
+       subtitle = "Opacidad proporcional a la calidad de representación en el plano.") +
+  tema_tesis()
+```
+
+### Los meses en el espacio de las componentes
+
+```{r bB2-g-individuos, fig.height = 5.5}
+ctr_mes_t <- 100 * sweep(scores_t^2, 2, nt * vpt, "/")
+episodio_t <- rep("Resto de meses", nt)
+for (i in seq_len(nrow(episodios))) episodio_t[fechas_t >= episodios$inicio[i] & fechas_t <= episodios$fin[i]] <- episodios$nombre[i]
+episodio_t <- factor(episodio_t, levels = c(episodios$nombre, "Resto de meses"))
+ind_dft <- do.call(rbind, lapply(list(c(1, 2), c(1, 3)), function(pl) data.frame(
+  plano = sprintf("PC%d – PC%d", pl[1], pl[2]), x = scores_t[, pl[1]], y = scores_t[, pl[2]], episodio = episodio_t,
+  etiqueta = ifelse(rank(-(ctr_mes_t[, pl[1]] + ctr_mes_t[, pl[2]])) <= 6, format(fechas_t, "%Y-%m"), ""))))
+ggplot(ind_dft, aes(x, y)) +
+  geom_hline(yintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_point(data = function(d) d[d$episodio == "Resto de meses", ], color = "#b5b4ab", size = 1.4) +
+  geom_point(data = function(d) d[d$episodio != "Resto de meses", ], aes(color = episodio), size = 2) +
+  geom_text(aes(label = etiqueta), size = 2.6, vjust = -0.8, color = "#52514e") +
+  scale_color_manual(NULL, values = setNames(colores_cat, episodios$nombre)) +
+  facet_wrap(~ plano, ncol = 2) +
+  labs(x = NULL, y = NULL, title = "Meses en los planos factoriales (series transformadas)",
+       subtitle = "Se rotulan los seis meses que más contribuyen a cada plano.") +
+  tema_tesis()
+```
+
+```{r bB2-ctr-meses}
+top_ctr_t <- lapply(1:4, function(k) {
+  o <- order(ctr_mes_t[, k], decreasing = TRUE)[1:5]
+  paste0(format(fechas_t[o], "%Y-%m"), " (", num(ctr_mes_t[o, k], 1), " %)", collapse = ", ")
+})
+top5_t <- sapply(1:4, function(k) sum(sort(ctr_mes_t[, k], decreasing = TRUE)[1:5]))
+top5_n <- sapply(1:4, function(k) sum(sort(ctr_mes[, k], decreasing = TRUE)[1:5]))
+knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Cinco meses que más contribuyen` = unlist(top_ctr_t),
+                        `Contribución de esos 5 meses` = paste0(num(top5_t, 1), " %"),
+                        `Ídem sin transformar (A.2)` = paste0(num(top5_n, 1), " %"), check.names = FALSE),
+             row.names = FALSE, caption = paste0("Un mes promedio contribuye 1/", nt, " = ", num(100 / nt, 2), " % a cada eje."))
+```
+
+::: {.lectura}
+Cinco meses construyen entre `r num(min(top5_t), 0)` % y `r num(max(top5_t), 0)` % de cada
+componente (entre `r num(min(top5_n), 0)` % y `r num(max(top5_n), 0)` % sin transformar). Los
+ejes transformados se apoyan en pocos meses, casi todos de la crisis de 2008 y de la pandemia:
+PC4 es el caso extremo (`r top_ctr_t[[4]]`).
+:::
+
+### Las componentes en el tiempo
+
+```{r bB2-g-scores, fig.height = 7.5}
+largo_st <- do.call(rbind, lapply(1:4, function(k) rbind(
+  data.frame(fecha = fechas_t, comp = paste0("PC", k), tipo = "Mensual", valor = scores_t[, k]),
+  data.frame(fecha = fechas_t, comp = paste0("PC", k), tipo = "Media móvil centrada de 12 meses", valor = mm_centrada(scores_t[, k], 12)))))
+largo_st$tipo <- factor(largo_st$tipo, levels = c("Mensual", "Media móvil centrada de 12 meses"))
+ggplot(largo_st[!is.na(largo_st$valor), ], aes(fecha, valor, color = tipo, linewidth = tipo)) +
+  capa_episodios() +
+  geom_hline(yintercept = 0, color = "#9a9890", linewidth = 0.3) +
+  geom_line() +
+  scale_color_manual(NULL, values = c("#b5b4ab", color_serie)) +
+  scale_linewidth_manual(NULL, values = c(0.35, 0.9)) +
+  facet_wrap(~ comp, ncol = 1, scales = "free_y") +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  labs(x = NULL, y = "Score", title = "Componentes principales en el tiempo (series transformadas)", caption = nota_episodios) +
+  tema_tesis()
+pers_sc_t <- sapply(1:4, function(k) c(mensual = cruces(scores_t[, k]), mm12 = cruces(mm_centrada(scores_t[, k], 12))))
+```
+
+::: {.lectura}
+Las componentes mensuales cruzan el cero muchas veces (`r paste(pers_sc_t["mensual", ], collapse = ", ")`
+cruces para PC1 a PC4): son ruidosas mes a mes. Suavizadas a 12 meses, los cruces bajan a
+`r paste(pers_sc_t["mm12", ], collapse = ", ")`. La forma de ciclo solo aparece después de
+suavizar, es decir, después de **volver a acumular** las variaciones que la diferencia separó.
+:::
+
+::: {.pregunta}
+Suavizar una variación con una media móvil de 12 meses equivale a mirar la variación interanual,
+que se aproxima a la diferencia entre el nivel actual y el de hace un año. ¿Es coherente
+diferenciar primero para luego suavizar, o es un rodeo para recuperar parte de lo que los niveles
+ya tenían? Es un argumento que el asesor podría plantear.
+:::
+
+### ¿Qué tan robustas son las componentes?
+
+```{r bB2-bootstrap}
+set.seed(params$semilla)
+boot_c_t <- array(NA, c(B, p, K)); boot_vp_t <- matrix(NA, B, K); congr_t <- matrix(NA, B, K)
+for (b in 1:B) {
+  idx <- indices_bloques(nt, 24)
+  Zb <- estandarizar(Xt[idx, ])
+  eb <- eigen(crossprod(Zb) / nt, symmetric = TRUE)
+  Cb <- sweep(eb$vectors[, 1:6], 2, sqrt(eb$values[1:6]), "*")
+  usadas <- integer(0)
+  for (k in 1:K) {
+    tk <- sapply(1:6, function(j) if (j %in% usadas) 0 else abs(tucker(cargas_t[, k], Cb[, j])))
+    j <- which.max(tk); usadas <- c(usadas, j)
+    s <- sign(tucker(cargas_t[, k], Cb[, j]))
+    boot_c_t[b, , k] <- s * Cb[, j]; boot_vp_t[b, k] <- eb$values[j]; congr_t[b, k] <- tk[j]
+  }
+}
+ic_t <- apply(boot_c_t, c(2, 3), quantile, probs = c(0.05, 0.95))
+knitr::kable(data.frame(Componente = paste0("PC", 1:K),
+                        `Congruencia mediana` = num(apply(congr_t, 2, median), 3),
+                        `Congruencia p5` = num(apply(congr_t, 2, quantile, 0.05), 3),
+                        `Congruencia mediana sin transformar (A.2)` = num(apply(congr, 2, median), 3),
+                        check.names = FALSE), row.names = FALSE,
+             caption = paste(B, "réplicas bootstrap por bloques de 24 meses. Sobre 0,95: la misma componente; bajo 0,85: distinta."))
+```
+
+```{r bB2-g-bootstrap, fig.height = 7.5}
+ic_dft <- do.call(rbind, lapply(1:K, function(k) data.frame(
+  comp = paste0("PC", k), serie = colnames(Zt), r = cargas_t[, k], lo = ic_t[1, , k], hi = ic_t[2, , k])))
+ic_dft$serie <- factor(ic_dft$serie, levels = rev(colnames(Zt)))
+ggplot(ic_dft, aes(r, serie)) +
+  geom_vline(xintercept = 0, color = "#52514e", linewidth = 0.3) +
+  geom_segment(aes(x = lo, xend = hi, yend = serie), color = "#9a9890", linewidth = 1.6) +
+  geom_point(color = color_serie, size = 1.8) +
+  facet_wrap(~ comp, ncol = 4) +
+  scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1)) +
+  labs(x = "Correlación con la componente", y = NULL, title = "Intervalos bootstrap (p5–p95) de las correlaciones (series transformadas)") +
+  tema_tesis()
+```
+
+```{r bB2-episodios}
+sin_episodio_t <- function(excluir) {
+  Zs <- estandarizar(Xt[!excluir, ])
+  es <- eigen(crossprod(Zs) / nrow(Zs), symmetric = TRUE)
+  Cs <- sweep(es$vectors[, 1:6], 2, sqrt(es$values[1:6]), "*")
+  e <- sapply(1:4, function(k) { t <- sapply(1:6, function(j) abs(tucker(cargas_t[, k], Cs[, j]))); c(j = which.max(t), t = max(t)) })
+  rbind(e, inercia = 100 * es$values[e["j", ]] / p)
+}
+emp_t <- sin_episodio_t(covid_t); emp_crisis_t <- sin_episodio_t(crisis_t)
+knitr::kable(data.frame(Componente = paste0("PC", 1:4),
+                        `Inercia (%)` = num(inercia_t[1:4], 1),
+                        `Aporte de la crisis global (%)` = num(colSums(ctr_mes_t[crisis_t, 1:4]), 1),
+                        `Sin la crisis: congruencia` = num(emp_crisis_t["t", ], 3),
+                        `Aporte de la pandemia (%)` = num(colSums(ctr_mes_t[covid_t, 1:4]), 1),
+                        `Sin la pandemia: congruencia` = num(emp_t["t", ], 3), check.names = FALSE), row.names = FALSE,
+             caption = "Aporte: parte de la construcción de cada eje que corresponde a los meses del episodio.")
+```
+
+::: {.lectura}
+En el bootstrap, PC1 a PC3 conservan su dirección (congruencias medianas de
+`r paste(num(apply(congr_t[, 1:3], 2, median), 2), collapse = ", ")`) y PC4 es menos estable
+(`r num(median(congr_t[, 4]), 2)`). La pandemia construye `r num(sum(ctr_mes_t[covid_t, 4]), 0)` %
+de PC4, y sin esos meses su congruencia con el original cae a `r num(emp_t["t", 4], 2)`. Sin la
+crisis global, PC3 y PC4 caen a `r num(emp_crisis_t["t", 3], 2)` y `r num(emp_crisis_t["t", 4], 2)`.
+:::
+
+::: {.hallazgo}
+**Con las series transformadas, los ejes menores son episodios.** PC4 es en buena medida la
+pandemia y PC3 depende de la crisis global; sin transformar, ningún eje depende de un episodio
+(A.2). En variaciones, un mes extremo pesa mucho más que en niveles, porque los meses normales
+están cerca de cero. Esto favorece la **detección** de episodios, pero hace más frágil la
+**medición** de una estructura estable.
+:::
+
+### Síntesis de B.2
+
+- Ninguna componente domina; Horn retiene `r k_horn_t` (`r k_horn` sin transformar).
+- PC1 a PC3 son estables en el bootstrap; PC3 y PC4 dependen de los episodios.
+- Los ejes no tienen tendencia y su forma de ciclo aparece solo al suavizar.
+
+## B.3 EPCA: ¿cambia la estructura en el tiempo?
+
+### ¿Es estable la estructura del PCA global?
+
+```{r bB3-subperiodos}
+sub_t <- do.call(rbind, lapply(split(seq_len(nt), cut(seq_len(nt), 4, labels = FALSE)), function(idx) {
+  e <- eigen(crossprod(estandarizar(Xt[idx, ])) / length(idx), symmetric = TRUE)
+  Cs <- sweep(e$vectors[, 1:6], 2, sqrt(e$values[1:6]), "*")
+  cg <- sapply(1:3, function(k) max(sapply(1:6, function(j) abs(tucker(cargas_t[, k], Cs[, j])))))
+  data.frame(Subperiodo = paste(format(fechas_t[min(idx)], "%Y-%m"), "a", format(fechas_t[max(idx)], "%Y-%m")),
+             in1 = 100 * e$values[1] / p, in3 = 100 * sum(e$values[1:3]) / p, c1 = cg[1], c2 = cg[2], c3 = cg[3])
+}))
+knitr::kable(data.frame(Subperiodo = sub_t$Subperiodo, `Inercia PC1 (%)` = num(sub_t$in1, 1), `Inercia 3 PC (%)` = num(sub_t$in3, 1),
+                        `Congruencia PC1` = num(sub_t$c1, 2), `Congruencia PC2` = num(sub_t$c2, 2), `Congruencia PC3` = num(sub_t$c3, 2),
+                        check.names = FALSE), row.names = FALSE, caption = "PCA de las series transformadas por subperiodos. Congruencia: con la componente global más parecida.")
+# Validación por bloques (misma regla que A.3)
+bloques_cv_t <- split(seq_len(nt), cut(seq_len(nt), 5, labels = FALSE))
+mse_fuera_t <- sapply(bloques_cv_t, function(prueba) {
+  ent <- setdiff(seq_len(nt), prueba)
+  m <- colMeans(Xt[ent, ]); s <- sqrt(colMeans(sweep(Xt[ent, ], 2, m)^2))
+  Ze <- sweep(sweep(Xt[ent, ], 2, m), 2, s, "/"); Zp <- sweep(sweep(Xt[prueba, ], 2, m), 2, s, "/")
+  V <- eigen(crossprod(Ze) / length(ent), symmetric = TRUE)$vectors[, 1:3]
+  mean((Zp - Zp %*% V %*% t(V))^2)
+})
+mse_dentro_t <- mean((Zt - Zt %*% pc_t$vectores[, 1:3] %*% t(pc_t$vectores[, 1:3]))^2)
+```
+
+::: {.lectura}
+La congruencia de PC1 con su equivalente global va de `r num(min(sub_t$c1), 2)` a
+`r num(max(sub_t$c1), 2)` según el subperiodo (PC2: `r num(min(sub_t$c2), 2)` a
+`r num(max(sub_t$c2), 2)`). En la validación por bloques, el PCA de 3 dimensiones reconstruye la
+propia muestra con un error medio de `r num(mse_dentro_t, 2)` y los bloques no usados con
+`r num(mean(mse_fuera_t), 2)` (`r num(mse_dentro, 2)` y `r num(mean(mse_fuera), 2)` sin
+transformar). El error fuera de muestra varía mucho entre bloques
+(`r paste(num(mse_fuera_t, 2), collapse = ", ")`, en orden cronológico): los dos mayores
+corresponden a los bloques que contienen la crisis global y la pandemia. Una estructura estimada
+sin un episodio extremo no lo reproduce.
+:::
+
+### Tamaño de la ventana
+
+```{r bB3-ventanas}
+analizar_ventana_t <- function(w) {
+  ini <- 1:(nt - w + 1)
+  C1 <- sapply(ini, function(i) {
+    e <- eigen(crossprod(estandarizar(Xt[i:(i + w - 1), ])) / w, symmetric = TRUE)
+    c(e$vectors[, 1] * sqrt(e$values[1]), e$values[1])
+  })
+  cg <- sapply(2:length(ini), function(i) abs(tucker(C1[1:p, i], C1[1:p, i - 1])))
+  data.frame(`Ventana (meses)` = w, `Meses por variable` = num(w / p, 1), Ventanas = length(ini),
+             `Inercia PC1 media (%)` = num(100 * mean(C1[p + 1, ]) / p, 1),
+             `Congruencia consecutiva mediana` = num(median(cg), 3), `Congruencia consecutiva mínima` = num(min(cg), 3),
+             `Ventanas con ruptura` = sum(cg < mean(cg) - 2 * sd(cg)), check.names = FALSE)
+}
+tab_vent_t <- do.call(rbind, lapply(c(36, 48, 60, 72, 96), analizar_ventana_t))
+knitr::kable(tab_vent_t, row.names = FALSE, caption = "Mismo análisis que en A.3, sobre las series transformadas.")
+```
+
+::: {.lectura}
+Con las series transformadas, el primer componente de una ventana se parece mucho al de la
+siguiente (congruencia mediana de `r tab_vent_t[[5]][3]` con 60 meses), pero la congruencia
+mínima cae a valores muy bajos con cualquier tamaño (`r paste(tab_vent_t[[6]], collapse = ", ")`):
+hay saltos bruscos entre ventanas consecutivas (más abajo se revisa si coinciden con la entrada o
+la salida de un episodio extremo de la ventana). Se mantiene la ventana de **60 meses**, igual que en A.3 y en el notebook `06`.
+:::
+
+### Seguimiento de las cargas entre ventanas (regla del notebook 06)
+
+```{r bB3-seguimiento}
+inicios_t <- seq(1, nt - VENTANA + 1, by = PASO)
+fechas_epca_t <- fechas_t[inicios_t + VENTANA %/% 2]
+cargas_ventana_t <- function(M, k) t(sapply(inicios_t, function(i) {
+  eigen(crossprod(estandarizar(M[i:(i + VENTANA - 1), ])) / VENTANA, symmetric = TRUE)$vectors[, k]
+}))
+seguir_cargas_t <- function(C) {
+  for (i in 2:nrow(C)) if (cor(C[i, ], C[i - 1, ]) < 0) C[i, ] <- -C[i, ]
+  est <- sapply(2:nrow(C), function(i) cor(C[i, ], C[i - 1, ]))
+  umbral <- mean(est) - sqrt(mean((est - mean(est))^2))
+  list(cargas = C, estabilidad = est, umbral = umbral, transiciones = fechas_epca_t[-1][est < umbral])
+}
+seg_pc1_t <- seguir_cargas_t(cargas_ventana_t(Xt, 1))
+seg_pc2_t <- seguir_cargas_t(cargas_ventana_t(Xt, 2))
+transiciones_t <- seg_pc1_t$transiciones
+trans_py_t <- format(as.Date(read.csv("data/results/06_epca_transiciones_detectadas.csv")[[1]]), "%Y-%m")
+```
+
+```{r bB3-g-seguimiento, fig.height = 5}
+estab_dft <- rbind(data.frame(fecha = fechas_epca_t[-1], comp = "PC1 (componente que sigue el notebook 06 en transformadas)", r = seg_pc1_t$estabilidad, umbral = seg_pc1_t$umbral),
+                   data.frame(fecha = fechas_epca_t[-1], comp = "PC2", r = seg_pc2_t$estabilidad, umbral = seg_pc2_t$umbral))
+ggplot(estab_dft, aes(fecha, r)) +
+  capa_episodios() +
+  geom_hline(aes(yintercept = umbral), color = colores_cat[2], linetype = 2, linewidth = 0.5) +
+  geom_line(color = color_serie, linewidth = 0.7) + geom_point(color = color_serie, size = 1.2) +
+  facet_wrap(~ comp, ncol = 1, scales = "free_y") +
+  labs(x = "Centro de la ventana", y = "Correlación con la ventana anterior",
+       title = "Estabilidad de las cargas entre ventanas consecutivas (series transformadas, 60 meses, paso 3)",
+       subtitle = "Línea naranja: umbral de transición (media − 1 desviación estándar).", caption = nota_episodios) +
+  tema_tesis()
+```
+
+::: {.lectura}
+Como en las series transformadas PC1 no es una tendencia, se sigue PC1, igual que el notebook
+`06`. Se detectan `r length(transiciones_t)` transiciones:
+`r paste(format(transiciones_t, "%Y-%m"), collapse = ", ")`
+(`r if (identical(format(transiciones_t, "%Y-%m"), trans_py_t)) "idénticas a las del notebook 06" else paste("Python:", paste(trans_py_t, collapse = ", "))`).
+Siguiendo PC2 aparecen `r length(seg_pc2_t$transiciones)`:
+`r paste(format(seg_pc2_t$transiciones, "%Y-%m"), collapse = ", ")`.
+:::
+
+### EPCA del asesor (`aede`)
+
+```{r bB3-aede}
+Xtf <- Xt; rownames(Xtf) <- format(fechas_t, "%Y-%m-%d")
+correr_aede_t <- function(nsd) {
+  a <- aede_r(serie = Xtf, ndim = 3, nw = VENTANA, nsd = nsd, maxcl = 10)
+  part <- a$cutpoints$part
+  fv <- as.Date(rownames(a$eigenvalues))
+  wss <- part[, 2]; red <- c(-diff(wss) / head(wss, -1), NA)
+  caida <- red[1:(length(red) - 2)] - red[2:(length(red) - 1)]
+  k_codo <- which.max(caida) + 1
+  limites <- function(k) { l <- part[k, grep("^v_", colnames(part))]; l <- l[l > 0 & l < nrow(a$eigenvalues)]; fv[l + 1] }
+  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, k_ch = which.max(part[, 3]),
+       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])))
+}
+aede_ut <- correr_aede_t(0); aede_gt <- correr_aede_t(3)
+knitr::kable(data.frame(Clases = 1:10,
+                        `SC intra (uniforme)` = num(aede_ut$part[, 2], 2), `Reducción al agregar una clase` = num(100 * aede_ut$red, 0),
+                        `Calinski-Harabász (uniforme)` = num(aede_ut$part[, 3], 0),
+                        `SC intra (gaussiana)` = num(aede_gt$part[, 2], 2), `Calinski-Harabász (gaussiana)` = num(aede_gt$part[, 3], 0),
+                        check.names = FALSE), row.names = FALSE,
+             caption = "Series transformadas. Partición de Fisher de la serie del primer valor propio. Reducción en %.")
+```
+
+```{r bB3-g-aede, fig.height = 4.5}
+vp_evt <- rbind(
+  data.frame(fecha = aede_ut$fechas, pesos = "Pesos uniformes", dim = rep(paste0("λ", 1:3), each = nrow(aede_ut$a$eigenvalues)),
+             valor = 100 * as.vector(aede_ut$a$eigenvalues) / p),
+  data.frame(fecha = aede_gt$fechas, pesos = "Pesos gaussianos (nsd = 3)", dim = rep(paste0("λ", 1:3), each = nrow(aede_gt$a$eigenvalues)),
+             valor = 100 * as.vector(aede_gt$a$eigenvalues) / p))
+cortes_dft <- rbind(data.frame(pesos = "Pesos uniformes", fecha = aede_ut$cortes_codo),
+                    data.frame(pesos = "Pesos gaussianos (nsd = 3)", fecha = aede_gt$cortes_codo))
+ggplot(vp_evt, aes(fecha, valor, color = dim)) +
+  capa_episodios() +
+  geom_vline(data = cortes_dft, aes(xintercept = fecha), color = "#52514e", linetype = 3, linewidth = 0.4) +
+  geom_line(linewidth = 0.7) +
+  scale_color_manual(NULL, values = colores_cat) +
+  facet_wrap(~ pesos, ncol = 2) +
+  labs(x = "Centro de la ventana", y = "Inercia de la componente (%)",
+       title = "Valores propios por ventana (series transformadas, 60 meses, paso 1)",
+       subtitle = "Líneas punteadas: cortes de Fisher sobre λ1 con el número de clases de la regla de codo.", caption = nota_episodios) +
+  tema_tesis()
+```
+
+::: {.lectura}
+Con la misma regla de codo que en A.3, `aede` elige `r aede_ut$k_codo` clases con pesos
+uniformes (cortes en `r paste(format(aede_ut$cortes_codo, "%Y-%m"), collapse = ", ")`) y
+`r aede_gt$k_codo` con pesos gaussianos (`r paste(format(aede_gt$cortes_codo, "%Y-%m"), collapse = ", ")`).
+Sin transformar se obtenían `r aede_u$k_codo` y `r aede_g$k_codo` clases. La inercia del primer
+componente por ventana varía entre `r num(min(100 * aede_ut$a$eigenvalues[, 1] / p), 0)` % y
+`r num(max(100 * aede_ut$a$eigenvalues[, 1] / p), 0)` %: sube con fuerza cuando la ventana
+incluye la crisis o la pandemia, porque un episodio extremo concentra la variabilidad en un solo
+eje. Calinski-Harabász vuelve a crecer sin óptimo interior (máximo en `r aede_ut$k_ch` clases).
+:::
+
+### Cargas evolutivas
+
+```{r bB3-g-cargas, fig.height = 8}
+cl_t <- aede_ut$a$correlationlsq
+mapa_t <- do.call(rbind, lapply(1:2, function(k) data.frame(
+  fecha = rep(aede_ut$fechas, p), serie = factor(rep(colnames(Xt), each = length(aede_ut$fechas)), levels = rev(colnames(Xt))),
+  dim = paste0("Dimensión ", k), r = as.vector(cl_t[, , k]))))
+ggplot(mapa_t, aes(fecha, serie, fill = r)) +
+  geom_tile() +
+  geom_vline(data = data.frame(fecha = transiciones_t), aes(xintercept = fecha), color = "#0b0b0b", linetype = 2, linewidth = 0.4) +
+  escala_divergente("r", c(-1, 1)) +
+  facet_wrap(~ dim, ncol = 1) +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y", expand = c(0, 0)) +
+  labs(x = "Centro de la ventana", y = NULL, title = "Correlaciones de cada serie transformada con las dos primeras dimensiones, por ventana",
+       subtitle = "aede, 60 meses, pesos uniformes. Líneas punteadas: transiciones del seguimiento de PC1.") +
+  tema_tesis() + theme(panel.grid = element_blank())
+cambio_t <- apply(cl_t[, , 1], 2, function(r) max(r) - min(r))
+```
+
+::: {.lectura}
+Las series cuya correlación con la primera dimensión más cambia entre ventanas son
+`r paste(names(sort(cambio_t, decreasing = TRUE))[1:4], collapse = ", ")`; las más estables,
+`r paste(names(sort(cambio_t))[1:3], collapse = ", ")`. `r sum(cambio_t > 1)` de `r p` series
+cambian de lado del eje en algún momento (`r sum(cambio > 1)` sin transformar).
+:::
+
+### Transiciones frente a episodios conocidos
+
+```{r bB3-transiciones}
+tt_t <- rbind(tabla_trans(transiciones_t, "Seguimiento de cargas de PC1 (regla 06)"),
+              tabla_trans(aede_ut$cortes_codo, "aede uniforme (λ1, codo)"),
+              tabla_trans(aede_gt$cortes_codo, "aede gaussiana (λ1, codo)"))
+tt_t$`Episodio a ±12 meses` <- sapply(tt_t$Fecha, function(f) {
+  e <- episodios$nombre[meses_entre(f, episodios$inicio) <= 12 | (f >= episodios$inicio & f <= episodios$fin)]
+  if (length(e)) paste(e, collapse = ", ") else "—" })
+tt_t$`Borde de ventana (±3 meses)` <- sapply(tt_t$Fecha, borde_ventana)
+tt_t$Fecha <- format(tt_t$Fecha, "%Y-%m")
+knitr::kable(tt_t, row.names = FALSE, caption = "Series transformadas. Fechas: centro de la ventana de 60 meses.")
+```
+
+::: {.lectura}
+De `r nrow(tt_t)` fechas candidatas, `r sum(tt_t[["Episodio a ±12 meses"]] != "—")` quedan a un
+año o menos de un episodio conocido (`r sum(tt[["Episodio a ±12 meses"]] != "—")` de `r nrow(tt)`
+sin transformar). La última columna revisa otra explicación: con ventanas de 60 meses centradas,
+una ventana deja de contener un episodio cuando su centro pasa 30 meses después del fin del
+episodio, y empieza a contenerlo cuando su centro llega a 29 meses antes del inicio.
+:::
+
+::: {.hallazgo}
+**También con las series transformadas, parte de las transiciones son bordes de ventana.**
+`r sum(tt_t[["Borde de ventana (±3 meses)"]] != "—")` de `r nrow(tt_t)` fechas coinciden a ±3
+meses con el momento en que un episodio entra o sale de la ventana
+(`r paste(tt_t$Fecha[tt_t[["Borde de ventana (±3 meses)"]] != "—"], collapse = ", ")`), como
+`r sum(tt[["Borde de ventana (±3 meses)"]] != "—")` de `r nrow(tt)` sin transformar (A.3). En
+variaciones el efecto es más fuerte: un episodio extremo domina la correlación de toda ventana que
+lo contiene (la inercia de λ1 por ventana sube con la crisis y la pandemia).
+:::
+
+::: {.pregunta}
+Una forma de separar ambas cosas es repetir la EPCA transformada sin los meses de la crisis y de
+la pandemia (o con un estimador robusto de la correlación) y ver qué transiciones sobreviven.
+¿Lo incorporas como prueba de robustez de la EPCA en las dos vías?
+:::
+
+### Síntesis de B.3
+
+- La estructura de las variaciones también cambia en el tiempo; una parte de las transiciones
+  coincide con la entrada o la salida de un episodio extremo de la ventana, como en A.3.
+- El seguimiento de PC1 reproduce las fechas del notebook `06`.
+
+## B.4 Clasificación Factorial Jerárquica (HFC)
+
+```{r bB4-hfc}
+Xt_df <- as.data.frame(Xt)
+invisible(capture.output(hfc_t <- clahfac_r(Xt_df, out = TRUE)))
+crudo_t <- clahfacsub_r(Xt_df)
+jer_t <- as.data.frame(hfc_t$hierar)
+nombre_nodo_t <- function(k) if (k <= p) colnames(Xt)[k] else paste0("Nodo ", k)
+comp_t <- function(k) { v <- hfc_t$nclass[as.character(k), ]; v <- v[v != 0]; colnames(Xt)[v] }
+```
+
+### Dendrograma
+
+```{r bB4-g-dendro, fig.height = 6.5}
+par(mar = c(9, 4, 3, 1))
+part4_t <- dendhier_r(hfc_t$hier, 4, hiertit = "HFC de las 17 series transformadas")
+```
+
+### Lectura de los nodos superiores
+
+```{r bB4-nodos}
+sup_t <- tail(jer_t, 8)[8:1, ]
+knitr::kable(data.frame(
+  Nodo = rownames(sup_t),
+  `Une` = paste(sapply(sup_t$N1, nombre_nodo_t), "+", sapply(sup_t$N2, nombre_nodo_t)),
+  Series = sup_t$Num,
+  `λ1 del nodo` = num(sup_t$Eigenv, 2), `Índice (λ2)` = num(sup_t$Index, 3),
+  `λ1 / (λ1 + λ2) (%)` = num(sup_t[["Loc_%1"]], 1),
+  `Composición` = sapply(as.integer(rownames(sup_t)), function(k) paste(comp_t(k), collapse = ", ")),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Series transformadas: ocho nodos superiores, de la raíz hacia abajo.")
+indices_sup_t <- rev(tail(jer_t$Index, 6))
+```
+
+::: {.lectura}
+El índice de la raíz (`r num(indices_sup_t[1], 2)`) es `r num(indices_sup_t[1] / indices_sup_t[2], 1)`
+veces el del nodo siguiente (`r num(indices_sup[1] / indices_sup[2], 1)` veces sin transformar).
+La primera división separa:
+
+- **Grupo A**: `r paste(comp_t(jer_t$N1[nrow(jer_t)]), collapse = ", ")`.
+- **Grupo B**: `r paste(comp_t(jer_t$N2[nrow(jer_t)]), collapse = ", ")`.
+
+El factor de la raíz conserva `r num(hfc_t$inertia["Percent", "Repr_Var"], 1)` % de la
+variabilidad total, frente a `r num(inercia_t[1], 1)` % del primer componente del PCA
+transformado.
+:::
+
+::: {.pregunta}
+En variaciones, las tasas de política, la TIPMN, el IPC y el crédito de consumo e hipotecario
+quedan en un mismo grupo, separado de la liquidez, la actividad y los mercados. ¿Lo lees como
+"transmisión de la política monetaria a precios y crédito a hogares" frente a "liquidez y
+mercados"? Compáralo con la división sin transformar (A.4), que separaba las tasas de todo lo que
+crece.
+:::
+
+### Particiones posibles
+
+```{r bB4-particiones}
+particiones_t <- do.call(rbind, lapply(1:4, function(k) {
+  invisible(capture.output(pc_k <- clahpart_r(hfc_t, noeud = k)))
+  g <- tapply(pc_k$itemclas$label, pc_k$itemclas$class, paste, collapse = ", ")
+  data.frame(Grupos = k + 1, Nodo = names(g), Series = as.character(g))
+}))
+knitr::kable(particiones_t, row.names = FALSE, caption = "Series transformadas: particiones que resultan de cortar los 1 a 4 nodos superiores.")
+```
+
+### HFC frente a PCA
+
+```{r bB4-vs-pca}
+grupos4_t <- unique(particiones_t$Nodo[particiones_t$Grupos == 4])
+F4_t <- sapply(grupos4_t, function(k) { k <- as.integer(k); if (k <= p) Zt[, k] else hfc_t$repvar[, 2 * (k - p) - 1] })
+colnames(F4_t) <- paste("Grupo", grupos4_t)
+cor_fp_t <- cor(F4_t, scores_t[, 1:4])
+knitr::kable(data.frame(Grupo = colnames(F4_t),
+                        Series = sapply(grupos4_t, function(k) paste(particiones_t$Series[particiones_t$Grupos == 4 & particiones_t$Nodo == k])),
+                        apply(cor_fp_t, 2, num, dec = 2), check.names = FALSE), row.names = FALSE,
+             caption = "Correlación del factor de cada grupo (partición en 4) con las cuatro primeras componentes del PCA transformado.")
+```
+
+::: {.lectura}
+`r paste(sapply(seq_len(ncol(F4_t)), function(g) paste0(if (g == 1) "El " else "el ", colnames(F4_t)[g], " se asocia sobre todo con PC", which.max(abs(cor_fp_t[g, ])), " (r = ", num(cor_fp_t[g, which.max(abs(cor_fp_t[g, ]))], 2), ")")), collapse = "; ")`.
+Como en A.4, la HFC reparte la información de otra forma que el PCA.
+:::
+
+```{r bB4-eigentab}
+dif_eigentab_t <- abs(tail(jer_t$Eigentab, 1) - tail(crudo_t$eigentab_convergido, 1))
+```
+
+::: {.hallazgo}
+**El error de la columna `Eigentab` de `clahfac` (A.4) es grande con las series transformadas.**
+En la raíz reporta `r num(tail(jer_t$Eigentab, 1), 2)`, mientras que el valor convergido es
+`r num(tail(crudo_t$eigentab_convergido, 1), 2)`. Con valores propios menos separados, la
+iteración de dos pasos queda lejos de converger. La columna `Ratio` no debe usarse con estas
+series hasta corregir la función.
+:::
+
+### HFC evolutiva
+
+```{r bB4-ehfc}
+jerarquias_t <- lapply(inicios_t, function(i) {
+  invisible(capture.output(r <- clahfac_r(Xt_df[i:(i + VENTANA - 1), ], out = TRUE)))
+  r$hier
+})
+cofen_t <- sapply(2:length(jerarquias_t), function(i)
+  cor_cophenetic(as.dendrogram(jerarquias_t[[i]]), as.dendrogram(jerarquias_t[[i - 1]])))
+grupos_ventana_t <- lapply(jerarquias_t, function(h) .partclas_ac(h, 4)$partition$Position)
+ari_t <- sapply(2:length(grupos_ventana_t), function(i) rand_ajustado(grupos_ventana_t[[i]], grupos_ventana_t[[i - 1]]))
+umbral_cof_t <- mean(cofen_t) - sd(cofen_t)
+cambios_ehfc_t <- fechas_epca_t[-1][cofen_t < umbral_cof_t]
+```
+
+```{r bB4-g-ehfc, fig.height = 4.5}
+ehfc_dft <- rbind(data.frame(fecha = fechas_epca_t[-1], medida = "Correlación cofenética", valor = cofen_t),
+                  data.frame(fecha = fechas_epca_t[-1], medida = "Rand ajustado (4 grupos)", valor = ari_t))
+ggplot(ehfc_dft, aes(fecha, valor)) +
+  capa_episodios() +
+  geom_hline(data = data.frame(medida = "Correlación cofenética", valor = umbral_cof_t), aes(yintercept = valor),
+             color = colores_cat[2], linetype = 2, linewidth = 0.5) +
+  geom_line(color = color_serie, linewidth = 0.7) + geom_point(color = color_serie, size = 1) +
+  facet_wrap(~ medida, ncol = 1, scales = "free_y") +
+  labs(x = "Centro de la ventana", y = NULL, title = "Semejanza de la jerarquía con la ventana anterior (series transformadas)",
+       subtitle = "Línea naranja: umbral de reconfiguración (media − 1 desviación estándar).", caption = nota_episodios) +
+  tema_tesis()
+```
+
+::: {.lectura}
+La jerarquía de las variaciones se reconfigura en `r length(cambios_ehfc_t)` ventanas:
+`r paste(format(cambios_ehfc_t, "%Y-%m"), collapse = ", ")` (`r length(cambios_ehfc)` sin
+transformar). El índice de Rand entre particiones consecutivas tiene una mediana de
+`r num(median(ari_t), 2)` (`r num(median(ari), 2)` sin transformar).
+`r { co <- intersect(format(cambios_ehfc_t, "%Y-%m"), format(transiciones_t, "%Y-%m")); if (length(co)) paste0("Coinciden con la EPCA transformada en: ", paste(co, collapse = ", "), ".") else "Ninguna fecha coincide exactamente con las transiciones de la EPCA transformada." }`
+:::
+
+### Síntesis de B.4
+
+- La HFC de las variaciones separa un bloque de tasas, precios y crédito a hogares de otro de
+  liquidez, actividad y mercados.
+- La jerarquía también se reconfigura entre ventanas.
+- El error de `Eigentab` es relevante con estas series.
+
+## B.5 Autoencoders y LSTM
+
+Los resultados vienen de los notebooks originales `08_autoencoder` y `09_lstm_autoencoder`, que
+trabajan con estas mismas series transformadas. El diseño de las redes es el mismo de A.5.
+
+```{r bB5-datos}
+t08_anclaje <- read.csv("data/results/08_ae_anclaje_lineal.csv", check.names = FALSE)
+t08_cv <- read.csv("data/results/08_ae_cv_bloques.csv", check.names = FALSE)
+t08_est <- read.csv("data/results/08_ae_estabilidad.csv", row.names = 1, check.names = FALSE)
+t08_err <- read.csv("data/results/08_ae_factores_y_error.csv", check.names = FALSE); t08_err$fecha <- as.Date(t08_err$fecha)
+t09_wf <- read.csv("data/results/09_walkforward_errores.csv", check.names = FALSE); t09_wf$fecha <- as.Date(t09_wf$fecha)
+t09_disc <- read.csv("data/results/09_discriminacion_episodios.csv", check.names = FALSE)
+t09_reg_lstm <- read.csv("data/results/09_regimenes_lstm.csv", check.names = FALSE)
+t09_reg_pca <- read.csv("data/results/09_regimenes_pca.csv", check.names = FALSE)
+stopifnot(nrow(t08_err) == nt, all(t08_err$fecha == fechas_t))   # mismos meses que este documento
+stopifnot(abs(t08_anclaje[3, "inercia_pca_%"] - sum(inercia_t[1:3])) < 0.01)   # mismo PCA que B.2
+```
+
+### Anclaje y compresión fuera de muestra
+
+```{r bB5-cv}
+knitr::kable(data.frame(Dimensión = t08_cv$d, `Error PCA` = num(t08_cv[[2]], 3), `Error AE no lineal` = num(t08_cv[[3]], 3),
+                        `Error AE con preentrenamiento` = num(t08_cv[[4]], 3), `Mejora del AE sobre el PCA (%)` = num(t08_cv[[5]], 1),
+                        `Mejora sin transformar (A.5) (%)` = num(r08_cv[[5]], 1), check.names = FALSE), row.names = FALSE,
+             caption = "Validación por cinco bloques temporales. Una mejora negativa significa que el AE reconstruye peor que el PCA.")
+```
+
+::: {.lectura}
+El autoencoder lineal reproduce el PCA (ángulo máximo entre subespacios de
+`r num(max(t08_anclaje[[4]]), 2)` grados). El no lineal es peor que el PCA fuera de muestra en
+todas las dimensiones (`r num(t08_cv[[5]][3], 1)` % con 3), aunque la desventaja es menor que sin
+transformar (`r num(r08_cv[[5]][3], 1)` %): sin la tendencia, la saturación de la tanh pesa menos.
+:::
+
+### Detección de episodios
+
+```{r bB5-g-error, fig.height = 4}
+err_dft <- rbind(data.frame(fecha = t08_err$fecha, metodo = "Autoencoder", error = t08_err$error_ae),
+                 data.frame(fecha = t08_err$fecha, metodo = "PCA (3 componentes)", error = t08_err$error_pca))
+ggplot(err_dft, aes(fecha, error, color = metodo)) +
+  capa_episodios() +
+  geom_line(linewidth = 0.5) +
+  scale_color_manual(NULL, values = colores_cat[1:2]) +
+  scale_y_log10() +
+  labs(x = NULL, y = "Error de reconstrucción (escala log)", title = "Error de reconstrucción por mes, en muestra (series transformadas)",
+       caption = nota_episodios) +
+  tema_tesis()
+```
+
+```{r bB5-g-walkforward, fig.height = 4}
+wf_dft <- rbind(data.frame(fecha = t09_wf$fecha, metodo = "LSTM-AE", valor = t09_wf$lstm),
+                data.frame(fecha = t09_wf$fecha, metodo = "Autoencoder", valor = t09_wf$ae),
+                data.frame(fecha = t09_wf$fecha, metodo = "PCA", valor = t09_wf$pca))
+ggplot(wf_dft, aes(fecha, valor, color = metodo)) +
+  capa_episodios() +
+  geom_hline(yintercept = 1, color = "#52514e", linetype = 2, linewidth = 0.4) +
+  geom_line(linewidth = 0.5) +
+  scale_color_manual(NULL, values = colores_cat) +
+  scale_y_log10() +
+  labs(x = NULL, y = "Error / percentil 95 del entrenamiento", title = "Evaluación fuera de muestra (walk-forward, series transformadas)",
+       subtitle = "Sobre la línea punteada: el mes es más atípico que el 95 % de los meses de entrenamiento (alarma).",
+       caption = nota_episodios) +
+  tema_tesis()
+```
+
+```{r bB5-disc}
+knitr::kable(data.frame(Método = c("PCA", "Autoencoder", "LSTM-AE"),
+                        `Falsas alarmas (%)` = num(t09_disc[[3]], 2),
+                        `Falsas alarmas sin transformar (%)` = num(r09_disc[[3]], 0),
+                        `Taper tantrum con alarma (%)` = num(t09_disc[[5]], 0),
+                        `COVID-19 con alarma (%)` = num(t09_disc[[7]], 0), check.names = FALSE),
+             row.names = FALSE, caption = "Falsas alarmas: porcentaje de meses fuera de episodios con alarma. La crisis de 2008 no puede evaluarse fuera de muestra.")
+```
+
+::: {.lectura}
+Con las series transformadas, la detección fuera de muestra **sí es informativa**: las falsas
+alarmas bajan a `r paste(num(t09_disc[[3]], 1), collapse = " %, ")` % (PCA, AE y LSTM-AE) frente
+a más de `r num(min(r09_disc[[3]]), 0)` % sin transformar, y los tres métodos marcan alarma en la
+mitad de los meses de la pandemia. Ninguno detecta el taper tantrum. El LSTM-AE es el que menos
+falsas alarmas tiene, con la misma sensibilidad que los otros dos.
+:::
+
+### Estabilidad y veredicto
+
+| Criterio | Transformadas | Sin transformar (A.5) |
+|---|---|---|
+| Compresión fuera de muestra | Peor que el PCA (`r num(t08_cv[[5]][3], 0)` % con 3 dimensiones) | Peor que el PCA (`r num(r08_cv[[5]][3], 0)` %) |
+| Detección de episodios | Informativa: falsas alarmas `r num(min(t09_disc[[3]]), 1)`–`r num(max(t09_disc[[3]]), 1)` %, COVID-19 al `r num(t09_disc[[7]][1], 0)` %; taper tantrum no detectado | No informativa (falsas alarmas sobre `r num(min(r09_disc[[3]]), 0)` %) |
+| Estabilidad entre semillas | RV mediano `r num(t08_est["RV entre réplicas (mediana)", 1], 2)` | RV mediano `r num(r08_est["RV entre réplicas (mediana)", 1], 2)` |
+| Parecido con el PCA | RV `r num(t08_est["RV réplica vs PCA (mediana)", 1], 2)` | RV `r num(r08_est["RV réplica vs PCA (mediana)", 1], 2)` |
+| Regímenes del LSTM-AE | `r nrow(t09_reg_lstm)` (corte en `r t09_reg_lstm$inicio[2]`) | `r nrow(r09_reg_lstm)` (corte en `r r09_reg_lstm$inicio[2]`) |
+
+::: {.lectura}
+El único criterio en que las redes muestran algo útil es la detección de episodios con las
+series transformadas, y aun ahí el PCA detecta lo mismo: el LSTM-AE solo reduce las falsas
+alarmas. Las redes no justifican un papel principal en ninguna de las dos vías.
+:::
+
+## B.6 Datación de regímenes y fases
+
+Misma regla que A.6: partición de Fisher sobre los scores suavizados con una media móvil causal
+de 12 meses, regímenes de al menos 12 meses y regla de codo.
+
+```{r bB6-datacion}
+fechas_zt <- fechas_t[L:nt]
+mm_scores_t <- function(S) apply(S, 2, mm_causal, w = L)[L:nt, , drop = FALSE]
+dat3t <- datar(mm_scores_t(scores_t[, 1:3]))
+dat4t <- datar(mm_scores_t(scores_t[, 1:4]))
+cortes3t <- dat3t$res[[as.character(dat3t$k_codo)]]$cortes
+reg_py_t <- read.csv("data/results/09_regimenes_pca.csv")
+knitr::kable(data.frame(
+  Variante = c(paste0("PC1 a PC3, codo (", regla(dat3t), ")"), "PC1 a PC3, Calinski-Harabász",
+               paste0("PC1 a PC4, codo (", regla(dat4t), ")"), "Python (notebook 09)"),
+  Regímenes = c(dat3t$k_codo, dat3t$k_ch, dat4t$k_codo, nrow(reg_py_t)),
+  `Inicio de cada régimen nuevo` = c(paste(fechas_corte(cortes3t, fechas_zt), collapse = ", "),
+                                     paste(fechas_corte(dat3t$res[[as.character(dat3t$k_ch)]]$cortes, fechas_zt), collapse = ", "),
+                                     paste(fechas_corte(dat4t$res[[as.character(dat4t$k_codo)]]$cortes, fechas_zt), collapse = ", "),
+                                     paste(reg_py_t$inicio[-1], collapse = ", ")), check.names = FALSE), row.names = FALSE)
+```
+
+### ¿Qué tan estables son los cortes?
+
+```{r bB6-estabilidad}
+k_ref_t <- dat3t$k_codo
+cortes_boot_t <- lapply(1:B_cortes, function(b) {
+  V <- sapply(1:3, function(k) boot_c_t[b, , k] / sqrt(boot_vp_t[b, k]))
+  Sb <- mm_scores_t(Zt %*% V)
+  particion_fisher(estandarizar(Sb), k_max = k_ref_t, tam_min = 12)[[as.character(k_ref_t)]]$cortes
+})
+frecuencia_t <- sapply(cortes3t, function(c0) mean(sapply(cortes_boot_t, function(cb) any(abs(cb - c0) <= 3))))
+estab_cortes_t <- data.frame(Corte = fechas_corte(cortes3t, fechas_zt), frecuencia = frecuencia_t)
+knitr::kable(data.frame(`Inicio del régimen` = estab_cortes_t$Corte,
+                        `Réplicas que lo reproducen a ±3 meses (%)` = num(100 * frecuencia_t, 0), check.names = FALSE),
+             row.names = FALSE, caption = paste(B_cortes, "réplicas bootstrap por bloques de 24 meses."))
+```
+
+::: {.lectura}
+La datación da `r dat3t$k_codo` regímenes
+(`r if (identical(fechas_corte(cortes3t, fechas_zt), reg_py_t$inicio[-1])) "idénticos a los del notebook 09" else paste("Python:", paste(reg_py_t$inicio[-1], collapse = ", "))`),
+frente a `r dat3$k_codo` sin transformar. `r sum(frecuencia_t >= 0.8)` de `r length(frecuencia_t)`
+cortes aparecen en al menos el 80 % de las réplicas
+(`r if (any(frecuencia_t >= 0.8)) paste(estab_cortes_t$Corte[frecuencia_t >= 0.8], collapse = ", ") else "ninguno"`).
+La regla de codo eligió con `r if (dat3t$regla_codo == "umbral") "el umbral de 10 %" else "la caída máxima"``r if (dat3t$regla_codo != dat3$regla_codo) paste0(", a diferencia de A.6, donde se usó ", if (dat3$regla_codo == "umbral") "el umbral" else "la caída máxima") else ", igual que en A.6"`; Calinski-Harabász da `r dat3t$k_ch` y con 4 componentes se obtienen
+`r dat4t$k_codo`.
+:::
+
+### Clasificación de fases
+
+```{r bB6-fases}
+comp_credito_t <- rowMeans(Zt[, c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario")])
+clasificar_t <- function(seg, umbral = 0.25, dur_min = 18) {
+  do.call(rbind, lapply(seq_len(nrow(seg)), function(i) {
+    sel <- fechas_t >= seg$inicio[i] & fechas_t <= seg$fin[i]
+    m <- mean(comp_credito_t[sel]); dur <- sum(sel)
+    fase <- if (dur < dur_min || abs(m) <= umbral) "Transición" else if (m > 0) "Expansión" else "Contracción"
+    epi <- episodios$nombre[episodios$inicio <= seg$fin[i] & episodios$fin >= seg$inicio[i]]
+    data.frame(Inicio = format(seg$inicio[i], "%Y-%m"), Fin = format(seg$fin[i], "%Y-%m"), Meses = dur,
+               `Componente de crédito` = num(m, 2), Fase = fase, `Episodios contenidos` = paste(epi, collapse = ", "),
+               check.names = FALSE)
+  }))
+}
+fases_t <- clasificar_t(segmentos(cortes3t, fechas_zt))
+knitr::kable(fases_t, row.names = FALSE)
+r_credito_tiempo_t <- cor(comp_credito_t, seq_len(nt))
+```
+
+::: {.lectura}
+Con las series transformadas, el componente de crédito mide el **ritmo** de crecimiento del
+crédito respecto de su ritmo promedio. La clasificación da
+`r paste(table(fases_t$Fase), tolower(names(table(fases_t$Fase))), collapse = ", ")`. La
+expansión de 2010–2013 y la contracción desde la pandemia corresponden a un crédito que crece más
+y menos rápido que su promedio, no a saldos altos o bajos. Pero el componente también tiene
+tendencia: su correlación con el tiempo es `r num(r_credito_tiempo_t, 2)`, porque el ritmo de
+crecimiento del crédito fue bajando a lo largo de la muestra. Los regímenes recientes salen como
+contracción en parte por esa desaceleración de largo plazo.
+:::
+
+::: {.pregunta}
+En las dos vías, la regla de fases hereda una tendencia: el nivel del crédito sin transformar
+(correlación con el tiempo `r num(r_credito_tiempo, 2)`) y la desaceleración del crédito en las
+transformadas (`r num(r_credito_tiempo_t, 2)`). ¿Una regla que compare cada régimen con el
+anterior (aceleración o desaceleración relativa), y no con el promedio de toda la muestra,
+resolvería el problema en ambas vías?
+:::
+
+
+# Parte C. Comparación de las dos vías y síntesis {#parte-c}
+
+## C.1 Las dos vías lado a lado
+
+```{r bC1-resumen}
+ari_k <- sapply(2:5, function(k) rand_ajustado(.partclas_ac(hfc$hier, k)$partition$Position,
+                                               .partclas_ac(hfc_t$hier, k)$partition$Position))
+knitr::kable(data.frame(
+  Aspecto = c("Qué describe cada mes", "Series no estacionarias (ADF y KPSS)", "Persistencia a 1 mes (mediana)",
+              "Inercia de PC1", "Inercia de 3 PC", "Componentes según Horn", "Componente con tendencia",
+              "PC1 frente a tendencias independientes", "Ejes que dependen de un episodio (congruencia < 0,85 al retirarlo)",
+              "Congruencia bootstrap mediana PC1–PC3", "Transiciones de la EPCA (seguimiento de cargas)",
+              "Fechas de la EPCA (cargas y aede) que son bordes de ventana", "Primera división de la HFC", "Regímenes del PCA suavizado (3 PC)",
+              "Falsas alarmas fuera de muestra (LSTM-AE)"),
+  `A. Sin transformar` = c("Estado del sistema", cuenta(est, "No estacionaria"), num(median(pers[[2]]), 2),
+                           paste(num(inercia[1], 1), "%"), paste(num(sum(inercia[1:3]), 1), "%"), k_horn,
+                           paste0("PC1 (r = ", num(r_tiempo[1], 2), ")"),
+                           paste0("No lo supera (p = ", num(pos_nulo(nulo_d)[1], 2), ")"),
+                           sum(pmin(emp["t", ], emp_crisis["t", ]) < 0.85),
+                           paste(num(apply(congr[, 1:3], 2, median), 2), collapse = " / "),
+                           paste0(length(transiciones_epca), " (PC2)"),
+                           paste(sum(tt[["Borde de ventana (±3 meses)"]] != "—"), "de", nrow(tt)),
+                           paste(length(composicion(jer$N2[nrow(jer)])), "frente a", length(composicion(jer$N1[nrow(jer)])), "series"),
+                           paste0(dat3$k_codo, " (", regla(dat3), ")"), paste(num(r09_disc[[3]][3], 1), "%")),
+  `B. Transformadas` = c("Variación mensual", cuenta(est_t, "No estacionaria"), num(median(pers_t[[2]]), 2),
+                         paste(num(inercia_t[1], 1), "%"), paste(num(sum(inercia_t[1:3]), 1), "%"), k_horn_t,
+                         "Ninguna", "No aplica (sin tendencia)",
+                         sum(pmin(emp_t["t", ], emp_crisis_t["t", ]) < 0.85),
+                         paste(num(apply(congr_t[, 1:3], 2, median), 2), collapse = " / "),
+                         paste0(length(transiciones_t), " (PC1)"),
+                         paste(sum(tt_t[["Borde de ventana (±3 meses)"]] != "—"), "de", nrow(tt_t)),
+                         paste(length(comp_t(jer_t$N2[nrow(jer_t)])), "frente a", length(comp_t(jer_t$N1[nrow(jer_t)])), "series"),
+                         paste0(dat3t$k_codo, " (", regla(dat3t), ")"), paste(num(t09_disc[[3]][3], 1), "%")),
+  check.names = FALSE), row.names = FALSE)
+```
+
+## C.2 ¿Encuentran los mismos ejes?
+
+```{r bC2-congruencia}
+congr_nt <- abs(sapply(1:4, function(k) sapply(1:4, function(j) tucker(cargas[, k], cargas_t[, j]))))
+dimnames(congr_nt) <- list(paste0("PC", 1:4, " transformadas"), paste0("PC", 1:4, " sin transformar"))
+knitr::kable(apply(congr_nt, 2, num, dec = 2),
+             caption = "Congruencia de Tucker (valor absoluto) entre las cargas de las dos vías. Sobre 0,85: componentes parecidas.")
+```
+
+::: {.lectura}
+La mayor congruencia entre una componente transformada y una sin transformar es
+`r num(max(congr_nt), 2)`: **las dos vías no encuentran los mismos ejes**. No es que una mida mejor
+lo mismo que la otra; describen objetos distintos. Sin transformar, los ejes ordenan los meses
+por su posición (cuánto crédito, qué nivel de tasas, cuánto riesgo); transformadas, por su
+movimiento (qué series suben o bajan juntas en el mes).
+:::
+
+## C.3 Cambios de estructura y regímenes
+
+```{r bC3-fechas}
+knitr::kable(data.frame(
+  Método = c("EPCA, seguimiento de cargas", "aede uniforme (λ1, codo)", "aede gaussiana (λ1, codo)",
+             "HFC evolutiva", "Regímenes del PCA suavizado", "Regímenes del LSTM-AE"),
+  `A. Sin transformar` = c(paste0(paste(format(transiciones_epca, "%Y-%m"), collapse = ", "), " (PC2)"),
+                           paste(format(aede_u$cortes_codo, "%Y-%m"), collapse = ", "),
+                           paste(format(aede_g$cortes_codo, "%Y-%m"), collapse = ", "),
+                           paste(format(cambios_ehfc, "%Y-%m"), collapse = ", "),
+                           paste(fechas_corte(cortes3, fechas_z), collapse = ", "),
+                           paste(r09_reg_lstm$inicio[-1], collapse = ", ")),
+  `B. Transformadas` = c(paste0(paste(format(transiciones_t, "%Y-%m"), collapse = ", "), " (PC1)"),
+                         paste(format(aede_ut$cortes_codo, "%Y-%m"), collapse = ", "),
+                         paste(format(aede_gt$cortes_codo, "%Y-%m"), collapse = ", "),
+                         paste(format(cambios_ehfc_t, "%Y-%m"), collapse = ", "),
+                         paste(fechas_corte(cortes3t, fechas_zt), collapse = ", "),
+                         paste(t09_reg_lstm$inicio[-1], collapse = ", ")),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Métodos por ventanas: fecha del centro de la ventana. Regímenes: primer mes de cada régimen nuevo.")
+cerca_vias <- function(a, b) if (!length(a) || !length(b)) 0 else mean(sapply(a, function(f) any(meses_entre(f, b) <= 12)))
+reg_A <- fechas_z[cortes3 + 1]; reg_B <- fechas_zt[cortes3t + 1]
+```
+
+::: {.lectura}
+De los `r length(reg_A)` cortes de régimen sin transformar, el
+`r num(100 * cerca_vias(reg_A, reg_B), 0)` % tiene un corte de la vía transformada a 12 meses o
+menos; de los `r length(reg_B)` cortes transformados, el `r num(100 * cerca_vias(reg_B, reg_A), 0)` %
+tiene uno sin transformar. Las particiones de la HFC entre las dos vías tienen un índice de Rand
+ajustado de `r paste(num(ari_k, 2), collapse = ", ")` para 2 a 5 grupos (1 = mismas
+particiones; 0 = coincidencia al azar).
+:::
+
+```{r bC3-g-regimenes, fig.height = 3.6}
+seg_A <- segmentos(cortes3, fechas_z); seg_A$fase <- fases$Fase; seg_A$via <- "A. Sin transformar"
+seg_B <- segmentos(cortes3t, fechas_zt); seg_B$fase <- fases_t$Fase; seg_B$via <- "B. Transformadas"
+seg_AB <- rbind(seg_A, seg_B)
+seg_AB$fin_g <- as.Date(sapply(seg_AB$fin, function(f) seq(f, by = "month", length.out = 2)[2]))
+ggplot(seg_AB) +
+  capa_episodios() +
+  geom_rect(aes(xmin = inicio, xmax = fin_g, ymin = 0, ymax = 1, fill = fase), color = "white", linewidth = 0.8) +
+  facet_wrap(~ via, ncol = 1) +
+  scale_fill_manual(NULL, values = c("Expansión" = colores_cat[3], "Contracción" = colores_cat[2], "Transición" = "#b5b4ab")) +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y", limits = c(min(fechas), mover_meses(max(fechas), 1))) +
+  labs(x = NULL, y = NULL, title = "Regímenes y fases en las dos vías",
+       subtitle = "Partición de Fisher sobre PC1 a PC3 suavizados; fases según la regla del notebook 09.", caption = nota_episodios) +
+  tema_tesis() + theme(axis.text.y = element_blank(), panel.grid.major.y = element_blank())
+```
+
+::: {.lectura}
+Las fases no coinciden: sin transformar, la muestra va de contracción (saldos bajos al inicio) a
+expansión (saldos altos al final); transformadas, de expansión (crédito creciendo rápido hasta
+2013) a contracción (crédito creciendo cada vez más lento). Las dos clasificaciones heredan la
+tendencia de su componente de crédito (A.6 y B.6), en sentidos opuestos. **Ninguna vía resuelve
+todavía la contribución (2)**: la regla de fases necesita otra formulación.
+:::
+
+## C.4 Todos los métodos en una misma línea de tiempo
+
+```{r bC4-eventos}
+umbral_ae <- quantile(r08_err$error_ae, 0.95); umbral_ae_t <- quantile(t08_err$error_ae, 0.95)
+cortes23 <- dat23$res[[as.character(dat23$k_codo)]]$cortes
 eventos <- rbind(
-  data.frame(metodo = "PCA suavizado: cortes de régimen", fecha = fechas_z[cortes3 + 1]),
-  data.frame(metodo = "PCA sin tendencia (PC2-PC3): cortes", fecha = fechas_z[cortes23 + 1]),
-  data.frame(metodo = "EPCA (cargas de PC2): transiciones", fecha = transiciones_epca),
-  data.frame(metodo = "aede: cortes sobre λ1", fecha = aede_u$cortes_codo),
-  data.frame(metodo = "HFC evolutiva: reconfiguraciones", fecha = cambios_ehfc),
-  data.frame(metodo = "Autoencoder: meses atípicos (p95)", fecha = r08_err$fecha[r08_err$error_ae > umbral_ae]),
-  data.frame(metodo = "LSTM-AE: cortes de régimen", fecha = as.Date(paste0(r09_reg_lstm$inicio[-1], "-01"))),
-  data.frame(metodo = "Contraste transformadas: cortes del PCA", fecha = fechas_zt[cortes3t + 1]),
-  data.frame(metodo = "Contraste transformadas: EPCA", fecha = transiciones_t),
-  data.frame(metodo = "Contraste transformadas: alarmas LSTM-AE", fecha = t09_wf$fecha[t09_wf$lstm > 1]))
+  data.frame(via = "A. Sin transformar", metodo = "A · PCA suavizado: cortes de régimen", fecha = reg_A),
+  data.frame(via = "A. Sin transformar", metodo = "A · PCA sin tendencia (PC2-PC3): cortes", fecha = fechas_z[cortes23 + 1]),
+  data.frame(via = "A. Sin transformar", metodo = "A · EPCA (cargas de PC2)", fecha = transiciones_epca),
+  data.frame(via = "A. Sin transformar", metodo = "A · aede: cortes sobre λ1", fecha = aede_u$cortes_codo),
+  data.frame(via = "A. Sin transformar", metodo = "A · HFC evolutiva", fecha = cambios_ehfc),
+  data.frame(via = "A. Sin transformar", metodo = "A · Autoencoder: meses atípicos (p95)", fecha = r08_err$fecha[r08_err$error_ae > umbral_ae]),
+  data.frame(via = "A. Sin transformar", metodo = "A · LSTM-AE: cortes de régimen", fecha = as.Date(paste0(r09_reg_lstm$inicio[-1], "-01"))),
+  data.frame(via = "B. Transformadas", metodo = "B · PCA suavizado: cortes de régimen", fecha = reg_B),
+  data.frame(via = "B. Transformadas", metodo = "B · EPCA (cargas de PC1)", fecha = transiciones_t),
+  data.frame(via = "B. Transformadas", metodo = "B · aede: cortes sobre λ1", fecha = aede_ut$cortes_codo),
+  data.frame(via = "B. Transformadas", metodo = "B · HFC evolutiva", fecha = cambios_ehfc_t),
+  data.frame(via = "B. Transformadas", metodo = "B · Autoencoder: meses atípicos (p95)", fecha = t08_err$fecha[t08_err$error_ae > umbral_ae_t]),
+  data.frame(via = "B. Transformadas", metodo = "B · LSTM-AE: alarmas fuera de muestra", fecha = t09_wf$fecha[t09_wf$lstm > 1]))
 eventos$metodo <- factor(eventos$metodo, levels = rev(unique(eventos$metodo)))
 ```
 
-```{r b8-g-linea, fig.height = 5.6}
-ggplot(eventos, aes(fecha, metodo)) +
+```{r bC4-g-linea, fig.height = 6.5}
+ggplot(eventos, aes(fecha, metodo, color = via)) +
   capa_episodios() +
-  geom_point(color = color_serie, size = 2.4, shape = 124) +
+  geom_point(size = 2.4, shape = 124) +
+  scale_color_manual(NULL, values = c("A. Sin transformar" = colores_cat[1], "B. Transformadas" = colores_cat[2])) +
   scale_x_date(date_breaks = "2 years", date_labels = "%Y", limits = range(fechas)) +
-  labs(x = NULL, y = NULL, title = "Cambios y señales detectados por cada método",
-       subtitle = "Cada marca es una fecha señalada. Métodos por ventanas: fecha del centro de la ventana. Las tres últimas filas usan las series transformadas.",
+  labs(x = NULL, y = NULL, title = "Cambios y señales detectados por cada método, en las dos vías",
+       subtitle = "Cada marca es una fecha señalada. Métodos por ventanas: fecha del centro de la ventana.",
        caption = nota_episodios) +
   tema_tesis()
 ```
 
 ### Coincidencias entre métodos
 
-```{r b8-g-coincidencias, fig.height = 6.5}
+```{r bC4-g-coincidencias, fig.height = 8}
 metodos <- levels(eventos$metodo)
 coinc <- outer(metodos, metodos, Vectorize(function(a, b) {
   fa <- eventos$fecha[eventos$metodo == a]; fb <- eventos$fecha[eventos$metodo == b]
@@ -2652,16 +3879,16 @@ coinc_df$v <- as.vector(coinc)
 coinc_df$a <- factor(coinc_df$a, levels = metodos); coinc_df$b <- factor(coinc_df$b, levels = rev(metodos))
 ggplot(coinc_df[coinc_df$a != coinc_df$b, ], aes(b, a, fill = v)) +
   geom_tile(color = "white") +
-  geom_text(aes(label = num(100 * v, 0)), size = 3) +
+  geom_text(aes(label = num(100 * v, 0)), size = 2.6) +
   scale_fill_gradient("%", low = "#f4f3ee", high = "#2a78d6", limits = c(0, 1), labels = function(x) 100 * x) +
   labs(x = "… tiene una señal de este método a ±12 meses", y = "Porcentaje de señales de este método que…",
-       title = "Coincidencia entre métodos") +
-  tema_tesis() + theme(axis.text.x = element_text(angle = 30, hjust = 1), panel.grid = element_blank())
+       title = "Coincidencia entre métodos de las dos vías") +
+  tema_tesis() + theme(axis.text.x = element_text(angle = 35, hjust = 1), panel.grid = element_blank())
 ```
 
 ### Episodios conocidos
 
-```{r b8-episodios}
+```{r bC4-episodios}
 deteccion <- sapply(metodos, function(m) sapply(seq_len(nrow(episodios)), function(i) {
   f <- eventos$fecha[eventos$metodo == m]
   length(f) > 0 && any(f >= seq(episodios$inicio[i], by = "-12 months", length.out = 2)[2] &
@@ -2670,65 +3897,125 @@ deteccion <- sapply(metodos, function(m) sapply(seq_len(nrow(episodios)), functi
 rownames(deteccion) <- episodios$nombre
 knitr::kable(data.frame(Método = rev(metodos), t(ifelse(deteccion[, rev(metodos)], "Sí", "—")), check.names = FALSE),
              row.names = FALSE, caption = "¿Hay al menos una señal del método entre 12 meses antes del inicio y 12 meses después del fin del episodio? Las alarmas del LSTM fuera de muestra empiezan en 2011.")
+det_via <- sapply(c("A · ", "B · "), function(v) rowSums(deteccion[, startsWith(metodos, v), drop = FALSE]))
+n_via <- sapply(c("A · ", "B · "), function(v) sum(startsWith(metodos, v)))
 ```
 
 ::: {.lectura}
-`r paste(sapply(seq_len(nrow(episodios)), function(i) paste0(episodios$nombre[i], ": ", sum(deteccion[i, ]), " de ", length(metodos), " métodos")), collapse = "; ")`.
-Entre los métodos con al menos tres señales, el par que más coincide es
-`r { varios <- metodos[table(eventos$metodo)[metodos] >= 3]; m <- coinc[metodos %in% varios, metodos %in% varios]; diag(m) <- NA; i <- which(m == max(m, na.rm = TRUE), arr.ind = TRUE)[1, ]; paste0(varios[i[1]], " con ", varios[i[2]], " (", num(100 * max(m, na.rm = TRUE), 0), " % de sus señales)") }`.
-Las señales que ningún otro método respalda son las que más evidencia necesitan antes de
-interpretarse como cambios de régimen.
+`r paste(sapply(seq_len(nrow(episodios)), function(i) paste0(episodios$nombre[i], ": ", det_via[i, 1], " de ", n_via[1], " métodos sin transformar y ", det_via[i, 2], " de ", n_via[2], " transformadas")), collapse = "; ")`.
+Las coincidencias con episodios de los métodos por ventanas deben leerse con la advertencia de
+A.3 y B.3: en las dos vías, parte de ellas son bordes de ventana.
 :::
 
-## Qué aporta cada método al objetivo de la tesis
+## C.5 Veredicto frente a los criterios de la tesis
 
-```{r b8-aporte}
+| Criterio | A. Sin transformar | B. Transformadas | Vía más adecuada |
+|---|---|---|---|
+| Estructura interpretable y estable | PC1 es la tendencia (no supera el nulo de tendencias independientes); PC2 y PC3 son estables y no dependen de episodios | Ningún eje domina; PC1 a PC3 estables en el bootstrap, pero PC3 y PC4 dependen de la crisis y la pandemia | **A**, leyendo el ciclo en PC2 y PC3 |
+| Frecuencias del ciclo financiero | Conserva las oscilaciones de mediano plazo | Las atenúa (8 años: `r num(100 * (2 * sin(pi / 96))^2, 1)` % de su varianza) y amplifica estacionalidad y ruido | **A** |
+| Detección de episodios | No informativa fuera de muestra (falsas alarmas sobre `r num(min(r09_disc[[3]]), 0)` %) | Informativa (falsas alarmas `r num(min(t09_disc[[3]]), 1)`–`r num(max(t09_disc[[3]]), 1)` %; COVID-19 detectado) | **B** |
+| Cambios de estructura (EPCA) | `r sum(tt[["Borde de ventana (±3 meses)"]] != "—")` de `r nrow(tt)` fechas son la entrada o salida de un episodio de la ventana | `r sum(tt_t[["Borde de ventana (±3 meses)"]] != "—")` de `r nrow(tt_t)` fechas, con el mismo problema | Ninguna sin una prueba de robustez |
+| Validez de pruebas estadísticas | `r cuenta(est, "No estacionaria")` series no estacionarias; Bartlett y Horn no tienen su supuesto | Series estacionarias o ambiguas | **B** |
+| Datación y fases | Fases según la tendencia del nivel del crédito | Fases según la desaceleración del crédito | Ninguna: la regla necesita reformularse |
+| Coherencia con la tradición del asesor | Datos como los publica la fuente | Impone un modelo de raíz unitaria antes de mirar los datos | **A** |
+
+::: {.hallazgo}
+**La evidencia no favorece una sola vía para todo.** Sin transformar es la vía adecuada para
+**medir** la estructura y los regímenes del ciclo (conserva sus frecuencias, sus ejes cíclicos son
+estables y es coherente con el principio de trabajar con los datos tal como son), siempre que el
+primer componente se lea como profundización y no como ciclo. Transformar se justifica para
+**detectar** episodios y para las pruebas que exigen estacionariedad, con la advertencia de que
+sus ejes menores son episodios. En las dos vías, la EPCA necesita una prueba que separe las
+transiciones reales de los bordes de ventana.
+:::
+
+### Cómo sustentarlo ante el asesor
+
+Una propuesta de argumentación, apoyada solo en resultados de este documento, para que la
+ajustes:
+
+1. **El logaritmo es irrelevante; la diferencia no.** Con solo logaritmo, la estructura es la
+   misma que sin transformar (congruencia `r paste(num(cong_niv(vers[[2]]), 2), collapse = ", ")`).
+   La discusión es sobre diferenciar (sección 2).
+2. **Diferenciar atenúa lo que se quiere medir.** La ganancia del filtro de primera diferencia
+   en un período de 8 años es `r num(2 * sin(pi / 96), 3)`: la variación de mediano plazo
+   prácticamente desaparece, y en estos datos la varianza en oscilaciones de dos años o más pasa
+   de `r num(100 * median(espectro$niv_det), 0)` % a `r num(100 * median(espectro$tr), 0)` %
+   (mediana).
+3. **La objeción de correlación espuria se responde con los datos.** El PC1 sin transformar no
+   supera lo que darían 17 series independientes con las mismas tendencias (por eso no se
+   interpreta como ciclo), pero el PC2 sí (p = `r num(pos_nulo(nulo_d)[2], 2)`): el co-movimiento
+   cíclico es real.
+4. **Las series transformadas quedan como vía complementaria** para la detección de episodios,
+   donde son las únicas informativas, y como prueba de que los resultados no dependen de la
+   transformación en lo que ambas vías coinciden.
+
+::: {.pregunta}
+Esta argumentación concilia la posición del asesor (no transformar) con la corrida original
+(transformar) asignando a cada vía la pregunta que responde mejor. ¿La adoptas como posición de
+la tesis, o prefieres mantener una sola vía y presentar la otra solo como robustez? En cualquier
+caso, conviene presentarle al asesor la sección 2 y C.5 antes de reescribir los notebooks.
+:::
+
+## C.6 Qué aporta cada método al objetivo de la tesis
+
+```{r bC6-aporte}
 aporte <- data.frame(
-  Método = c("PCA", "EPCA (cargas y aede)", "HFC", "HFC evolutiva", "Autoencoder", "LSTM-AE", "Series transformadas"),
+  Método = c("PCA", "EPCA (cargas y aede)", "HFC", "HFC evolutiva", "Autoencoder", "LSTM-AE"),
   `Qué responde` = c("Qué combinaciones de series resumen la variabilidad común",
                      "Si esa estructura cambia y cuándo",
                      "Qué series forman bloques coherentes y en qué orden se integran",
                      "Si los bloques de series se recomponen en el tiempo",
                      "Si hay estructura no lineal; qué meses son atípicos",
-                     "Si la dinámica de 12 meses agrega información",
-                     "Qué cambia al mirar variaciones en lugar de estados"),
-  `Evidencia en este documento` = c(
+                     "Si la dinámica de 12 meses agrega información"),
+  `A. Sin transformar` = c(
     sprintf("PC1 (%s %%) es la tendencia común; PC2 tasas y PC3 riesgo frente a bolsa; congruencia bootstrap ≥ %s",
             num(inercia[1], 1), num(min(apply(congr[, 1:3], 2, median)), 2)),
-    sprintf("%d transiciones en las cargas de PC2; %d corte(s) en λ1; PC1 estable en todas las ventanas",
-            length(transiciones_epca), length(aede_u$cortes_codo)),
-    sprintf("Raíz: %s frente al resto (índice %s, %s veces el siguiente)",
-            paste(composicion(jer$N2[nrow(jer)]), collapse = ", "), num(indices_sup[1], 2), num(indices_sup[1] / indices_sup[2], 1)),
+    sprintf("%d transiciones en las cargas de PC2; %d corte(s) en λ1", length(transiciones_epca), length(aede_u$cortes_codo)),
+    sprintf("Raíz: %s frente al resto (índice %s veces el siguiente)",
+            paste(composicion(jer$N2[nrow(jer)]), collapse = ", "), num(indices_sup[1] / indices_sup[2], 1)),
     sprintf("%d reconfiguraciones; Rand ajustado mediano %s", length(cambios_ehfc), num(median(ari), 2)),
     sprintf("Peor que el PCA fuera de muestra (%s %% con 3 dimensiones)", num(r08_cv[[5]][3], 0)),
-    sprintf("Detección no informativa sin transformar (falsas alarmas %s %%)", num(r09_disc[[3]][3], 0)),
-    sprintf("Otros ejes (congruencia máxima %s), fases según el ritmo del crédito, detección informativa", num(max(congr_nt), 2))),
-  `Papel propuesto` = c("Base de la medición", "Detección de cambios de estructura", "Interpretación de la estructura",
-                        "Contraste de los cambios de estructura", "Prueba de linealidad",
-                        "Línea futura con muestra extendida", "Robustez o lectura complementaria (por decidir)"),
+    sprintf("Detección no informativa (falsas alarmas %s %%)", num(r09_disc[[3]][3], 0))),
+  `B. Transformadas` = c(
+    sprintf("PC1 (%s %%) sin tendencia; ejes menores dependen de episodios; congruencia bootstrap ≥ %s",
+            num(inercia_t[1], 1), num(min(apply(congr_t[, 1:3], 2, median)), 2)),
+    sprintf("%d transiciones en las cargas de PC1 (%d bordes de ventana); %d corte(s) en λ1",
+            length(transiciones_t), sum(tt_t[["Borde de ventana (±3 meses)"]] != "—"), length(aede_ut$cortes_codo)),
+    sprintf("Raíz: %s frente al resto (índice %s veces el siguiente)",
+            paste(comp_t(jer_t$N2[nrow(jer_t)]), collapse = ", "), num(indices_sup_t[1] / indices_sup_t[2], 1)),
+    sprintf("%d reconfiguraciones; Rand ajustado mediano %s", length(cambios_ehfc_t), num(median(ari_t), 2)),
+    sprintf("Peor que el PCA fuera de muestra (%s %% con 3 dimensiones)", num(t08_cv[[5]][3], 0)),
+    sprintf("Detección informativa (falsas alarmas %s %%)", num(t09_disc[[3]][3], 1))),
   check.names = FALSE)
 knitr::kable(aporte, row.names = FALSE)
 ```
 
-## Decisiones pendientes
+## C.7 Decisiones pendientes
 
 Las preguntas abiertas de todo el documento se resumen en estas decisiones, en el orden en que
 condicionan el análisis:
 
-1. **Datos**: fecha de corte de las series revisadas (PBI, demanda interna); posibles
+1. **Transformación**: adoptar la división de papeles de C.5 (medir sin transformar, detectar
+   con transformadas), una sola vía con la otra como robustez, o una tercera vía de brechas
+   (sección 2).
+2. **Datos**: fecha de corte de las series revisadas (PBI, demanda interna); posibles
    reclasificaciones del crédito por segmento en 2008-12 y 2010-08; argumento correcto para
-   excluir el crédito total.
-2. **Variables**: crédito como un solo bloque o por segmento; tasa de referencia e interbancaria
+   excluir el crédito total; estacionalidad residual de la demanda interna, M1, el crédito
+   empresarial y el IPC.
+3. **Variables**: crédito como un solo bloque o por segmento; tasa de referencia e interbancaria
    juntas o una sola; IPC dentro o como contraste.
-3. **Tendencia común**: si el primer componente (profundización del sistema) es parte del ciclo
-   o el ciclo está en PC2 y PC3.
-4. **Dimensión**: 2 componentes (Horn) o 3, sabiendo que la tercera concentra su construcción
-   en la crisis de 2008, aunque no depende de ella.
-5. **Ventanas**: 60 meses por compromiso o fijadas con un criterio formal (RV/Procrustes).
-6. **Noción de cambio de régimen**: cambio en las cargas, en el valor propio o en la jerarquía
+4. **Tendencia común**: el PC1 sin transformar como profundización (no supera el nulo de
+   tendencias independientes) y el ciclo en PC2 y PC3.
+5. **Dimensión**: 2 componentes (Horn) o 3 sin transformar; `r k_horn_t` con las transformadas.
+6. **Ventanas**: 60 meses por compromiso o fijadas con un criterio formal (RV/Procrustes), y una
+   prueba de robustez que separe las transiciones reales de los bordes de ventana.
+7. **Noción de cambio de régimen**: cambio en las cargas, en el valor propio o en la jerarquía
    de variables; con o sin la tendencia.
-7. **Fases**: una regla de clasificación que no dependa de la tendencia del crédito.
-8. **Series transformadas**: robustez, lectura complementaria o fuera del documento.
-9. **Redes neuronales**: qué papel tienen en la tesis.
-10. **Python**: alinear la EPCA en niveles del notebook `06` con las 17 series y llevar las
-    copias de `08` y `09` sin transformar a los notebooks.
+8. **Fases**: una regla que no herede la tendencia del componente de crédito en ninguna de las
+   dos vías.
+9. **Redes neuronales**: detector complementario de episodios con las series transformadas, o
+   línea futura.
+10. **Python**: alinear el notebook `06` con las 17 series en niveles, llevar las copias de `08`
+    y `09` sin transformar a los notebooks, y reflejar en el sitio la decisión que se tome en el
+    punto 1.

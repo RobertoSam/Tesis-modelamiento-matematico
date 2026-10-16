@@ -17,6 +17,8 @@ website:
         text: "Marco matemático AE/LSTM"
       - href: linea_temporal.qmd
         text: "Línea temporal"
+      - href: decisiones.qmd
+        text: "Decisiones"
       - href: glosario.qmd
         text: "Glosario"
       - href: papers/diccionario_datos.qmd
