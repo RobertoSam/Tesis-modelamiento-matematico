@@ -1,0 +1,207 @@
+## Antecedentes y estado del arte
+
+Los antecedentes se organizan en cuatro bloques: los estudios sobre el ciclo financiero peruano, el marco metodológico de la escuela de Camiz, los métodos de aprendizaje profundo para representar series multivariadas y, por último, los vacíos que justifican el aporte de la tesis.
+
+### Antecedentes peruanos
+
+El antecedente más directo es el de @camiz_cerda_atoche_2026[^v2-cca], que, según esa misma fuente, continúa la tesis de maestría de Atoche Murrieta [CITA PENDIENTE: Atoche Murrieta (2022), tesis de maestría, PUCP; sin ficha]. Los autores aplican PCA, HFC y EPCA a 17 series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020. El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima, EMBIG y coeficiente de dolarización)[^v2-res]. A continuación, el EPCA se aplica al conjunto completo y a cada grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio se particiona en subperíodos de estabilidad mediante el algoritmo de @fisher_1958[^v2-fis], y el número de cortes se elige con el criterio de Calinski y Harabász [CITA PENDIENTE: Calinski y Harabász (1974); sin ficha].
+
+Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases del ciclo.
+
+### Marco metodológico de la escuela de Camiz
+
+#### Análisis de Componentes Principales
+
+Sea $\mathbf{X}\in\mathbb{R}^{n\times p}$ la matriz de datos centrados y estandarizados, cuyas filas $X_t^\top$ son los vectores de indicadores del mes $t$, y sea $\mathbf{R}=\mathbf{X}^\top\mathbf{X}/n$ su matriz de correlaciones. El PCA busca las direcciones $v_1,\dots,v_d$ que maximizan sucesivamente la varianza proyectada. De forma equivalente, busca la matriz $V\in\mathbb{R}^{p\times d}$ con columnas ortonormales que minimiza el error de reconstrucción:
+
+$$
+J(V)=\frac{1}{n}\sum_{t=1}^{n}\bigl\lVert X_t-VV^\top X_t\bigr\rVert^2 .
+$$ {#eq-pca}
+
+Si los valores propios de $\mathbf{R}$ cumplen $\lambda_d>\lambda_{d+1}$, el mínimo se alcanza cuando las columnas de $V$ generan el subespacio de los $d$ vectores propios asociados a los mayores valores propios. Ese subespacio se denota $W_d$, siguiendo la notación de la descomposición en valores singulares $\mathbf{X}=U\Sigma W^\top$. Con datos estandarizados, el error mínimo por celda es igual a uno menos la proporción de inercia retenida, $\sum_{j\le d}\lambda_j/p$ [CITA PENDIENTE: teorema de Eckart y Young (1936) y obra de referencia del PCA, por ejemplo Jolliffe (2002); sin ficha]. La formulación (@eq-pca) importa para la tesis porque es el mismo criterio que optimiza un autoencoder. Además, $J$ depende de $V$ solo a través del proyector $VV^\top$: el PCA identifica un subespacio, y la base que lo genera, incluido el signo de cada eje, se fija por convención.
+
+#### Clasificación Factorial Jerárquica
+
+La HFC, cuya formulación original los autores atribuyen a Denimal [2007, como se cita en @camiz_et_al_2020][^v2-c20], es una clasificación jerárquica ascendente de las **variables**, no de las observaciones. Cada grupo $G$ de variables tiene un representante $y_G\in\mathbb{R}^n$. Al inicio, cada variable estandarizada es su propio representante. En cada paso, para cada par de grupos candidatos $(A,B)$ se calcula el PCA bivariado de $[\,y_A\;\;y_B\,]$, con valores propios $\mu_1^{AB}\ge\mu_2^{AB}$, y se fusiona el par que minimiza el segundo valor propio:
+
+$$
+(A^\ast,B^\ast)=\arg\min_{A\neq B}\;\mu_2^{AB}.
+$$ {#eq-hfc}
+
+El índice de fusión $\mu_2^{AB}$ mide la heterogeneidad del grupo resultante: cuanto menor es, mayor es la parte de la varianza conjunta que recoge un único eje. Cada nodo produce dos series: el primer componente del PCA bivariado, que funciona como **cronología representativa** de lo que el grupo comparte, y el segundo, o **componente de diferencias**, que mide las divergencias internas. @camiz_et_al_2020 cortan la jerarquía cuando el segundo valor propio supera 0,7, umbral que remiten a Jolliffe [2002, como se cita en @camiz_et_al_2020]. Muestran también, en series dendrocronológicas, que la HFC aproxima de cerca la solución global del PCA y que, a diferencia de este, entrega una partición explícita de las series en grupos con representantes propios. Ese caso de estudio, sin embargo, tiene pocas series, que además son aproximadamente estacionarias.
+
+#### Análisis evolutivo de componentes principales
+
+El PCA y la HFC suponen implícitamente que la estructura de correlación es la misma en toda la muestra. @camiz_maulucci_roig_2010[^v2-cmr] relajan ese supuesto con el EPCA: un PCA independiente sobre cada subtabla de una ventana móvil. Sea $\mathcal{W}_t=\{t-\lfloor w/2\rfloor,\dots,t+\lceil w/2\rceil-1\}$ la ventana de ancho $w$ asociada al mes $t$, y sean $\omega_s\ge0$, $s\in\mathcal{W}_t$, pesos que suman uno. La versión que se implementa en la tesis[^v2-impl] calcula, para cada ventana, la media, la covarianza y la correlación **ponderadas**:
+
+$$
+\begin{aligned}
+m_t&=\sum_{s\in\mathcal{W}_t}\omega_s X_s, &
+\mathbf{C}_t&=\sum_{s\in\mathcal{W}_t}\omega_s\,(X_s-m_t)(X_s-m_t)^\top,\\
+\mathbf{D}_t&=\operatorname{diag}(\mathbf{C}_t), &
+\mathbf{R}_t^{(w)}&=\mathbf{D}_t^{-1/2}\,\mathbf{C}_t\,\mathbf{D}_t^{-1/2}.
+\end{aligned}
+$$ {#eq-epca}
+
+Por construcción, la diagonal de $\mathbf{R}_t^{(w)}$ es igual a uno y la matriz es una correlación ponderada para cualquier elección de pesos. Los pesos uniformes, $\omega_s=1/w$, corresponden a la ventana rectangular del trabajo de 2010. La alternativa que siguen @camiz_cerda_atoche_2026 privilegia el centro de la ventana [CITA PENDIENTE: Camiz y Diblasi (2013), fuente del esquema de ponderación gaussiana; sin ficha]. En la implementación, con $i=1,\dots,w$ como posición dentro de la ventana y $\nu$ como parámetro de forma, esos pesos son
+
+$$
+\omega_i\propto\exp\!\left[-\tfrac12\left(\nu\,\frac{i-(w+1)/2}{(w-1)/\sqrt2}\right)^{2}\right],\qquad \sum_{i=1}^{w}\omega_i=1,
+$$ {#eq-pesos}
+
+y $\nu=0$ recupera los pesos uniformes. La descomposición espectral de cada $\mathbf{R}_t^{(w)}$ produce series temporales de valores propios $\lambda_j(t)$ y de correlaciones entre variables y componentes. Que el primer valor propio descienda significa que el conjunto pierde coherencia unidimensional; que cambien las correlaciones indica qué series provocan la reconfiguración. @camiz_maulucci_roig_2010 enmarcan el procedimiento en el análisis exploratorio: sus resultados describen la muestra y no se generalizan a una población [CITA PENDIENTE: Tukey (1977); sin ficha]. En el mismo trabajo, el análisis STATIS dual, que compara las matrices de correlación de todas las ventanas en un espacio común, identifica años de quiebre coherentes con el EPCA.
+
+Un problema que estos trabajos no resuelven es la elección de $w$. @camiz_maulucci_roig_2010 fijan la ventana sin un criterio estadístico explícito, @camiz_roig_2011[^v2-cr] comparan dos anchos de manera informal y, como se señaló, @camiz_cerda_atoche_2026 eligen la ventana por experimentación. El ancho regula un compromiso: una ventana corta estima mal las matrices de correlación cuando $p$ se acerca a $w$, y una ventana larga atenúa la sensibilidad al cambio estructural.
+
+#### Partición óptima de Fisher y datación de regímenes
+
+@camiz_roig_2011 completan la cadena con un procedimiento de datación. Sobre la serie del primer valor propio del EPCA aplican el algoritmo de @fisher_1958, que divide una sucesión ordenada en intervalos contiguos de máxima homogeneidad interna, y luego realizan un PCA independiente en cada período. En términos generales, dada una trayectoria $Y_1,\dots,Y_n\in\mathbb{R}^q$, se busca la partición en $k$ segmentos contiguos que minimiza la suma de cuadrados intrasegmento:
+
+$$
+\min_{0=\tau_0<\tau_1<\dots<\tau_k=n}\;\sum_{j=1}^{k}\;\sum_{t=\tau_{j-1}+1}^{\tau_j}\bigl\lVert Y_t-\bar Y_{(\tau_{j-1},\tau_j]}\bigr\rVert^2 .
+$$ {#eq-fisher}
+
+El aporte general de @fisher_1958 consiste en mostrar que, cuando los datos están ordenados, la partición óptima puede hallarse exactamente. A diferencia de los algoritmos de clasificación sin restricción, el resultado no depende de una inicialización. El método no determina $k$, que requiere un criterio adicional. En el trabajo peruano ese criterio fue el de Calinski y Harabász [CITA PENDIENTE: Calinski y Harabász (1974)]. La extensión de (@eq-fisher) al caso $q>1$ es directa, pero debe declararse como adaptación mientras no se verifique el alcance del artículo original.
+
+#### Coeficiente RV
+
+Para comparar dos configuraciones **centradas** $\mathbf{Y}\in\mathbb{R}^{n\times q}$ y $\mathbf{Z}\in\mathbb{R}^{n\times r}$ de las mismas $n$ observaciones, @robert_escoufier_1976[^v2-re] definen el coeficiente RV como una correlación entre sus matrices de productos escalares:
+
+$$
+\mathrm{RV}(\mathbf{Y},\mathbf{Z})=\frac{\operatorname{tr}\!\left(\mathbf{Y}\mathbf{Y}^\top\mathbf{Z}\mathbf{Z}^\top\right)}{\sqrt{\operatorname{tr}\!\left[(\mathbf{Y}\mathbf{Y}^\top)^2\right]\operatorname{tr}\!\left[(\mathbf{Z}\mathbf{Z}^\top)^2\right]}}\in[0,1].
+$$ {#eq-rv}
+
+El coeficiente es invariante a rotaciones y homotecias. Esa invariancia es la adecuada cuando las coordenadas solo están identificadas salvo una transformación ortogonal, como ocurre con los signos de los ejes en el EPCA o con los códigos de un autoencoder **lineal**. En un autoencoder no lineal, los códigos están identificados, a lo sumo, salvo transformaciones no lineales invertibles, frente a las que el RV no es invariante. En ese caso, el RV mide solo la concordancia lineal entre configuraciones y debe interpretarse como una cota de su similitud, no como una medida invariante. Es también la medida que subyace a STATIS [CITA PENDIENTE: Lavit (1988), fuente primaria de STATIS; sin ficha]. En esta tesis, el RV permite usar una misma métrica para comparar ventanas sucesivas del EPCA, réplicas de un autoencoder y configuraciones de métodos distintos, con la salvedad anterior. Queda por verificar en la fuente cómo se comporta cuando $n$ es pequeño respecto de $p$.
+
+### Aprendizaje profundo: autoencoders, LSTM y LSTM-autoencoder
+
+#### Autoencoders
+
+Un autoencoder es un par formado por un codificador $f_\theta:\mathbb{R}^p\to\mathbb{R}^d$ y un decodificador $g_\phi:\mathbb{R}^d\to\mathbb{R}^p$, con $d<p$, que se entrenan para reconstruir la entrada:
+
+$$
+(\hat\theta,\hat\phi)=\arg\min_{\theta,\phi}\;\frac{1}{n}\sum_{t=1}^{n}\bigl\lVert X_t-g_\phi\bigl(f_\theta(X_t)\bigr)\bigr\rVert^2+\Omega(\theta,\phi),
+$$ {#eq-ae}
+
+donde $\Omega$ es un término de regularización. El vínculo con el PCA es formal. @bourlard_kamp_1988[^v2-bk] muestran que la solución óptima de un perceptrón autoasociativo en el sentido de mínimos cuadrados se obtiene por descomposición en valores singulares. @baldi_hornik_1989 muestran que, en el caso lineal, el mínimo global proyecta sobre el subespacio de los primeros componentes principales y que la superficie de error no tiene mínimos locales espurios. Si $f(X)=AX$ y $g(z)=A^\top z$, con $A\in\mathbb{R}^{d\times p}$, y los valores propios de $\mathbf{R}$ cumplen $\lambda_d>\lambda_{d+1}$ (condición que garantiza que el subespacio principal sea único), la condición de óptimo es
+
+$$
+A^\top A=W_dW_d^\top ,
+$$ {#eq-ae-pca}
+
+con $W_d$ los $d$ primeros vectores propios de $\mathbf{R}$. De este resultado se sigue que el PCA es el caso particular del autoencoder con activación identidad. Las filas de $A$ forman una base del subespacio principal, pero solo salvo una rotación $Q$ arbitraria. Como apoyo técnico, @plaut_2018[^v2-pl], en un *preprint*, muestra que las direcciones principales pueden recuperarse con una descomposición en valores singulares de los pesos aprendidos.
+
+@hinton_salakhutdinov_2006[^v2-hs] mostraron que los autoencoders profundos, con preentrenamiento capa por capa y ajuste fino posterior, pueden producir códigos de baja dimensión mejores que los del PCA cuando la estructura de los datos no es lineal. Sus aplicaciones (imágenes y documentos) usan, no obstante, conjuntos de datos grandes, y el sobreajuste solo se observó en el conjunto de rostros, pequeño en relación con la capacidad del modelo. @vincent_et_al_2008[^v2-vi] proponen el autoencoder con eliminación de ruido, que reconstruye la entrada limpia a partir de una versión corrompida. Los autores ofrecen una lectura geométrica: la red aprende a proyectar los puntos perturbados de vuelta hacia la región que ocupan los datos. A partir de esa lectura, esta tesis infiere que una observación alejada de la estructura típica tendría un error de reconstrucción alto. La inferencia es propia, no de los autores. @gal_ghahramani_2016[^v2-gg] interpretan el entrenamiento con *dropout* como inferencia variacional aproximada, de modo que mantener el *dropout* activo durante la inferencia y promediar varias pasadas estocásticas produce una medida de la incertidumbre del modelo.
+
+#### Redes LSTM
+
+Una red recurrente procesa la secuencia $X_1,\dots,X_T$ y mantiene un estado oculto $h_t\in\mathbb{R}^m$. @hochreiter_schmidhuber_1997[^v2-hoch] introdujeron la celda de memoria LSTM para resolver el problema del gradiente que se desvanece o explota en las dependencias temporales largas. Su núcleo es un «carrusel de error constante», una autoconexión lineal que deja fluir el error sin atenuarse, protegido por compuertas multiplicativas de entrada y de salida. @gers_schmidhuber_cummins_2000[^v2-gsc] añadieron la compuerta de olvido, que permite a la red reiniciar su memoria en secuencias continuas. La forma con compuerta de olvido, que es la que implementan las bibliotecas actuales, es
+
+$$
+\begin{aligned}
+i_t &= \sigma(W_iX_t+U_ih_{t-1}+b_i), &
+f_t &= \sigma(W_fX_t+U_fh_{t-1}+b_f), &
+o_t &= \sigma(W_oX_t+U_oh_{t-1}+b_o),\\
+\tilde c_t &= \tanh(W_cX_t+U_ch_{t-1}+b_c), &
+c_t &= f_t\odot c_{t-1}+i_t\odot\tilde c_t, &
+h_t &= o_t\odot\tanh(c_t),
+\end{aligned}
+$$ {#eq-lstm}
+
+donde $\sigma$ es la función logística y $\odot$ el producto elemento a elemento. La forma aditiva de $c_t$ hace que $\partial c_t/\partial c_{t-1}=\operatorname{diag}(f_t)$, si se omiten las dependencias indirectas: cuando $f_t\approx 1$ la memoria persiste, y cuando $f_t\approx 0$ se reinicia. Este segundo comportamiento es relevante cuando la serie cruza un cambio de régimen. @hochreiter_schmidhuber_1997 no aplican la arquitectura a series económicas: sus experimentos son tareas sintéticas que requieren muchas repeticiones de entrenamiento.
+
+#### LSTM-autoencoder
+
+@srivastava_mansimov_salakhutdinov_2015[^v2-sms] combinan ambas ideas. Un LSTM codificador lee una secuencia, y su estado final constituye la representación. Un LSTM decodificador reconstruye la secuencia en orden inverso. Los autores comparan decodificadores condicionados, que reciben su salida previa, y no condicionados, y proponen además un modelo compuesto que reconstruye el pasado y predice el futuro. En la adaptación de esta tesis, el codificador lee una ventana $(X_{t-L+1},\dots,X_t)$ y su estado final se proyecta a un código $z_t\in\mathbb{R}^d$. A diferencia del PCA o de un autoencoder estático, el código $z_t$ resume una **trayectoria**: dos meses con el mismo vector $X_t$ pero historias distintas pueden recibir códigos distintos. Si $z_t$ se fecha en el último mes de la ventana, solo usa información disponible hasta $t$.
+
+@tuhin_et_al_2025[^v2-tu] constituyen el precedente reciente más cercano en el dominio financiero. Entrenan un LSTM-autoencoder sobre los retornos diarios de acciones del S&P 500 entre 2000 y 2022, interpretan los pesos de la capa central como una matriz de influencia direccional entre series y construyen con ella redes de umbral por año. Las métricas topológicas de esas redes cambian de manera distintiva en las crisis estudiadas, con mayor claridad que las redes construidas por métodos clásicos. Los propios autores reconocen dos limitaciones que importan aquí: el enfoque exige muchos datos y su interpretación económica es difícil.
+
+### Vacíos identificados y aporte de la tesis
+
+La revisión permite identificar cinco vacíos:
+
+1. **Ausencia de aprendizaje profundo en el antecedente peruano.** @camiz_cerda_atoche_2026 se mantiene dentro del marco exploratorio clásico.
+2. **Ausencia de una HFC evolutiva unificada.** No existe en la literatura revisada un algoritmo EHFC publicado. @camiz_roig_2011 y @camiz_cerda_atoche_2026 aplican la HFC y el EPCA de forma secuencial, y la integración se produce en la interpretación conjunta, no en un algoritmo.
+3. **Ausencia de una clasificación explícita de fases.** @camiz_cerda_atoche_2026 interpretan indicadores por grupo, pero no clasifican intervalos en expansión, contracción o transición ni los contrastan con episodios fechados de manera independiente.
+4. **Muestra anterior a la pospandemia.** La muestra de @camiz_cerda_atoche_2026 termina en 2020.
+5. **Ausencia de un criterio objetivo para el ancho de ventana del EPCA.** Las tres aplicaciones de la escuela fijan el ancho de manera informal.
+
+El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante (@eq-ae-pca); (2) la clasificación explícita de fases, validada contra episodios fechados con fuentes externas; (3) la actualización de la muestra hasta diciembre de 2025, que cubre la dinámica pospandemia; y (4) un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas, medida con el coeficiente RV (@eq-rv) o con la distancia de Procrustes. La formalización de una EHFC queda como objetivo exploratorio condicional, porque no existe una especificación previa contra la cual validarla.
+
+## Marco teórico
+
+### El ciclo financiero
+
+Siguiendo a @drehmann_borio_tsatsaronis_2012, el ciclo financiero se define como el componente de mediano plazo que comparten el crédito, la razón entre crédito y producto y los precios de los inmuebles, con oscilaciones de 8 a 30 años. Los autores lo caracterizan con dos métodos complementarios, los filtros de frecuencia y la datación de puntos de giro, y encuentran que los precios bursátiles siguen una dinámica distinta, más volátil y menos sincronizada con el crédito, por lo que los excluyen de la definición. La distinción respecto del ciclo económico, de 1 a 8 años, es también de duración, y las recesiones que coinciden con la fase de contracción del ciclo financiero resultan, en promedio, más profundas.
+
+Esta definición plantea tres dificultades para el caso peruano. La primera es la longitud: identificar ciclos de 8 a 30 años exige series de varias décadas, y la muestra mensual disponible abarca menos de veinte años. Por ello, la tesis no pretende estimar ciclos completos, sino **regímenes**, entendidos como configuraciones estructurales dentro de la muestra. La segunda son los datos: el índice de precios de inmuebles del BCRP es trimestral y no forma parte del conjunto mensual, de modo que el crédito, la liquidez, las tasas y el riesgo soberano son las aproximaciones disponibles. La tercera es el enfoque: en lugar de fijar *a priori* qué variables componen el ciclo, la escuela de Camiz deja que la estructura de correlación determine los grupos. Ese es el sentido de la exclusión de series en @camiz_cerda_atoche_2026, que responde a su comportamiento estadístico y no a un criterio temático.
+
+### Régimen, transición y detección como objetos matemáticos
+
+El sistema macrofinanciero se observa como una trayectoria $\{X_t\}_{t=1}^{n}$, con $X_t\in\mathbb{R}^p$. Sea $S(\cdot)$ una función que asigna a un conjunto de meses una **estructura** estimada: la matriz de correlaciones, el subespacio principal, la jerarquía de la HFC o la configuración de códigos latentes. Sobre esta base se adoptan las siguientes definiciones de trabajo, desarrolladas en el marco conceptual del proyecto.
+
+**Definición 1 (régimen).** Un régimen es un intervalo de meses $I_k=[t_a,t_b]$ en el que la estructura del sistema es aproximadamente constante:
+
+$$
+d\bigl(S(W),S(W')\bigr)\le\varepsilon\quad\text{para toda ventana } W,W'\subset I_k ,
+$$ {#eq-regimen}
+
+donde $d$ es una disimilitud entre estructuras (por ejemplo, $1-\mathrm{RV}$) y $\varepsilon$ una tolerancia. Un régimen es, por tanto, una propiedad de la configuración conjunta de las variables y no del nivel de una variable aislada.
+
+**Definición 2 (transición).** Hay una transición en $\tau$ cuando la estructura cambia de manera significativa y persistente: $d\bigl(S(W_{\tau}^{-}),S(W_{\tau}^{+})\bigr)>\varepsilon$, donde $W_\tau^-$ y $W_\tau^+$ son ventanas adyacentes antes y después de $\tau$, y la nueva estructura se mantiene en ventanas posteriores. Según su forma, una transición puede ser abrupta o suave (una rotación progresiva de factores), y según su alcance, total o parcial (cuando afecta solo a un bloque de variables).
+
+**Definición 3 (detección).** Detectar regímenes es estimar la partición $0=\tau_0<\tau_1<\dots<\tau_k=n$ de una trayectoria de representaciones $Y_t$, ya sean la serie de valores propios del EPCA, los *scores* del PCA o los códigos latentes, mediante (@eq-fisher). Así planteada, la detección es una clasificación con restricción de contigüidad temporal, que puede contrastarse con la HFC, una clasificación de variables sin esa restricción.
+
+**Definición 4 (fase).** Una fase es una etiqueta asignada a cada régimen detectado: expansión, contracción o transición. La segmentación usa toda la estructura multivariada, y la etiqueta se asigna después, a partir del comportamiento del crédito dentro de cada intervalo. Esta separación evita que la clasificación se reduzca a una relectura del crecimiento del crédito. La regla concreta de etiquetado y sus umbrales son una propuesta preliminar del proyecto, que se presenta en la metodología y está pendiente de discusión con el asesor.
+
+**Validación externa.** Los episodios con los que se contrastan los regímenes se fechan con fuentes externas al análisis, nunca a partir de las propias series ni de un indicador derivado de ellas. De lo contrario, la validación sería circular. La bibliografía revisada sirve aquí **solo para identificar eventos candidatos, no para fecharlos**. @tuhin_et_al_2025 tratan la crisis financiera global y la pandemia de COVID-19 como crisis del mercado estadounidense. @camiz_cerda_atoche_2026 asocian a eventos como la renuncia de Kuczynski y la guerra comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no pueden usarse como fechas externas. Cada evento se fechará con una cronología independiente: crisis financiera global [CITA PENDIENTE: fuente externa para fechar la crisis financiera global en el Perú], *taper tantrum* [CITA PENDIENTE: fuente externa para fechar el *taper tantrum* de 2013], pandemia de COVID-19 [CITA PENDIENTE: fuente externa para fechar el choque de la COVID-19 en el Perú], renuncia de Kuczynski [CITA PENDIENTE: fuente externa para fechar la renuncia de Kuczynski] y guerra comercial entre Estados Unidos y China [CITA PENDIENTE: fuente externa para fechar la guerra comercial entre Estados Unidos y China].
+
+### Posición epistemológica: «datos primero»
+
+La tesis se inscribe en la tradición del análisis de datos que sigue el asesor, cuyo principio rector es dejar que los datos hablen [CITA PENDIENTE: Benzécri (1973), *L'analyse des données*; principio *laisser parler les données*; sin ficha]. Según este principio, la estructura debe emerger de los datos con el mínimo de supuestos impuestos por el analista. El PCA solo exige elegir la métrica y la HFC solo exige elegir el criterio de fusión. Ninguno de los dos postula un modelo generador. Los antecedentes de la escuela se declaran explícitamente exploratorios, y sus resultados describen la muestra sin generalizarla [@camiz_maulucci_roig_2010; @camiz_et_al_2020].
+
+Esta posición tiene dos consecuencias para el diseño. La primera se refiere a la transformación de las series. Diferenciar es un supuesto: la primera diferencia es un filtro lineal cuya ganancia para una oscilación de período $P$ meses es
+
+$$
+G(P)=\bigl|1-e^{-2\pi i/P}\bigr|=2\sin(\pi/P),
+$$ {#eq-filtro}
+
+que se anula cuando $P\to\infty$. La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo financiero. Trabajar sin transformar respeta los datos tal como los publica la fuente, pero mezcla la tendencia de profundización financiera con la estructura de régimen. Por eso el proyecto mantiene las series sin transformar como análisis oficial (decisión D1) y las analiza, junto con las transformadas, en **dos vías** con el mismo código y los mismos parámetros (decisión D2). D2 no elige una vía como definitiva para la interpretación, y la propuesta de cómo combinarlas está pendiente de discusión con el asesor.
+
+La segunda consecuencia, y la tensión central del marco, se refiere a los autoencoders y las redes LSTM. Estos modelos introducen **supuestos arquitectónicos** que no provienen de los datos: el número de capas y su ancho, la función de activación, la dimensión latente, la longitud de la ventana, la regularización y la semilla aleatoria. Cada uno es una decisión del analista. La tesis no oculta esa tensión, sino que la acota con cuatro principios:
+
+1. **Anidamiento.** Por (@eq-ae-pca), el PCA es un caso particular del autoencoder. El aprendizaje profundo no sustituye el criterio de reconstrucción del análisis de datos, sino que amplía la clase de funciones admitida.
+2. **Anclaje lineal.** Cada modelo no lineal se reporta junto con su versión lineal, con la misma dimensión y en la misma escala de error. La no linealidad se acepta solo si mejora fuera de muestra.
+3. **Estabilidad como condición de validez.** Una estructura que cambia con la semilla aleatoria no puede considerarse emergida de los datos. Por eso se exige estabilidad entre réplicas, medida con (@eq-rv), y se reporta la réplica central, no la de mejor ajuste.
+4. **Subordinación a la evidencia.** El aprendizaje profundo se justifica por lo que el PCA no puede hacer por construcción: representar la dinámica de las trayectorias (LSTM) y señalar observaciones que no comparten la estructura típica (error de reconstrucción). No se justifica por una supuesta superioridad general.
+
+Con estos principios, los autoencoders y las redes LSTM se presentan como un **complemento** de la cadena PCA–HFC–EPCA, no como su reemplazo.
+
+### Criterios de comparación entre métodos
+
+La comparación entre métodos no busca determinar cuál «funciona mejor», sino qué tipo de estructura revela cada uno y bajo qué criterio resulta útil. Se adoptan los tres criterios de la ficha de inscripción (interpretabilidad, estabilidad temporal y capacidad descriptiva), ampliados con la robustez:
+
+- **Interpretabilidad.** Indica si el resultado puede asociarse a dimensiones económicas comprensibles. Se evalúa con la concentración de cargas o correlaciones con las variables originales, la coherencia económica de los grupos y la posibilidad de explicar episodios sin forzar la interpretación. En los modelos no lineales, que carecen de cargas constantes, se usan las correlaciones entre cada variable y cada eje latente tras una rotación de Procrustes hacia los *scores* del PCA.
+- **Estabilidad temporal.** Indica si la estructura se mantiene dentro de un régimen y cambia en las transiciones. Se evalúa con el coeficiente RV y la distancia entre subespacios de ventanas sucesivas, y con la persistencia de los grupos.
+- **Capacidad descriptiva.** Indica cuánto de la información original conserva la representación. Se evalúa con la inercia retenida en el PCA y el error de reconstrucción, medido fuera de muestra con validación por bloques temporales contiguos.
+- **Robustez.** Indica si los resultados resisten variaciones razonables del diseño: ancho de ventana, conjunto de variables, transformación (las dos vías de D2), semilla aleatoria y regla de selección del número de regímenes.
+
+Además de estos criterios, la ficha de inscripción compromete una comparación **sobre un contexto simulado**, con regímenes conocidos por construcción, que permita medir la capacidad de recuperación de cada método y calibrar sus parámetros: número de factores, número de clases, ancho de ventana y pesos de los análisis evolutivos. Es el único escenario en el que la «verdad» del régimen está disponible sin circularidad. Por ello, complementa y no sustituye la validación con episodios externos.
+
+[^v2-cca]: VERIFICAR: manuscrito fechado el 25 de abril de 2026 sin datos de revista, volumen ni DOI. Debe confirmarse con el Dr. Camiz su estado de publicación.
+[^v2-fis]: VERIFICAR: número (284) y DOI en JSTOR o Taylor & Francis. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general.
+[^v2-c20]: La fuente primaria de la HFC no tiene ficha en el proyecto: Camiz et al. (2020) citan a Denimal (2007), y Camiz y Roig (2011), a Denimal (2001). Se cita de forma secundaria.
+[^v2-res]: VERIFICAR: la ficha distingue «reservas» (grupo de riesgo) de «reservas internacionales netas» (grupo de salud). Confirmar en la Tabla 1 del manuscrito a qué series del BCRP corresponden.
+[^v2-impl]: La ecuación reproduce la función `aede` del paquete AedeClahfac 1.2 del asesor, traducida a R en el repositorio de la tesis (`R/camiz_port.R`, funciones `aede_r`, `.bstatw_ac` y `.ustatw_ac`). El notebook de Python `06_epca.ipynb` estandariza cada ventana sin ponderar, lo que corresponde al caso de pesos uniformes.
+[^v2-cmr]: VERIFICAR: datos de edición de las actas (ISBN o DOI).
+[^v2-cr]: VERIFICAR: el nombre del editor de las actas (O. Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.
+[^v2-re]: VERIFICAR: volumen, número, páginas y DOI en JSTOR. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general.
+[^v2-bk]: VERIFICAR: Bourlard y Kamp (1988), número del fascículo y alcance exacto del resultado sobre las no linealidades; Baldi y Hornik (1989), enunciados y supuestos exactos. Ambas fichas son preliminares.
+[^v2-pl]: VERIFICAR: *preprint* sin revisión por pares (fuente de exploración); se cita solo como apoyo técnico secundario de Baldi y Hornik (1989).
+[^v2-hs]: VERIFICAR: la ficha se elaboró con el material suplementario y no con el artículo principal de *Science*.
+[^v2-vi]: VERIFICAR: DOI en ACM Digital Library.
+[^v2-gg]: VERIFICAR: editores del volumen; se leyó el resumen oficial, pero no el PDF.
+[^v2-hoch]: VERIFICAR: se procesó el informe técnico FKI-207-95 y no la versión publicada en *Neural Computation*.
+[^v2-gsc]: VERIFICAR: DOI contra el registro de MIT Press. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general (la compuerta de olvido).
+[^v2-sms]: VERIFICAR: páginas 843–852 y editores del volumen en PMLR.
+[^v2-tu]: VERIFICAR: lista completa de autores contra la fuente original.
