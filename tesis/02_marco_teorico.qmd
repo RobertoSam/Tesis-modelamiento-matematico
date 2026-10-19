@@ -1,0 +1,5 @@
+---
+title: "Capítulo 2. Antecedentes y marco teórico"
+---
+
+{{< include _capitulos/02_marco_teorico.qmd >}}

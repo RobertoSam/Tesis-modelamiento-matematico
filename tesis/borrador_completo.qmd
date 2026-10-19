@@ -1,0 +1,45 @@
+---
+title: "Detección evolutiva de regímenes del ciclo financiero peruano mediante Clasificación Factorial Jerárquica y aprendizaje automático"
+subtitle: "Borrador de tesis — MMC102 Seminario de Tesis II"
+author: "Roberto Carlos Samaniego Salcedo"
+date: last-modified
+date-format: "D [de] MMMM [de] YYYY"
+number-sections: true
+toc: true
+toc-title: "Índice de contenidos"
+format:
+  html: default
+  docx:
+    reference-doc: plantilla_uni.docx
+    toc: true
+    number-sections: true
+---
+
+# Resumen {.unnumbered}
+
+{{< include _capitulos/00_resumen.qmd >}}
+
+# Introducción
+
+{{< include _capitulos/01_introduccion.qmd >}}
+
+# Antecedentes y marco teórico
+
+{{< include _capitulos/02_marco_teorico.qmd >}}
+
+# Metodología y desarrollo del modelo
+
+{{< include _capitulos/03_metodologia.qmd >}}
+
+# Resultados y discusión
+
+{{< include _capitulos/04_resultados.qmd >}}
+
+# Conclusiones y recomendaciones
+
+{{< include _capitulos/05_conclusiones.qmd >}}
+
+# Referencias {.unnumbered}
+
+::: {#refs}
+:::

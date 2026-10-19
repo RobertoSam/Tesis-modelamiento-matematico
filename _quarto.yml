@@ -3,6 +3,7 @@ project:
   render:
     - "*.qmd"
     - "papers/*.qmd"
+    - "tesis/*.qmd"
     - "notebooks/*.ipynb"
     - "!R/"
 website:
@@ -11,6 +12,24 @@ website:
     left:
       - href: index.qmd
         text: Inicio
+      - text: "Borrador de tesis"
+        menu:
+          - href: tesis/index.qmd
+            text: "Estado del borrador"
+          - href: tesis/01_introduccion.qmd
+            text: "1 · Introducción"
+          - href: tesis/02_marco_teorico.qmd
+            text: "2 · Antecedentes y marco teórico"
+          - href: tesis/03_metodologia.qmd
+            text: "3 · Metodología"
+          - href: tesis/04_resultados.qmd
+            text: "4 · Resultados y discusión"
+          - href: tesis/05_conclusiones.qmd
+            text: "5 · Conclusiones"
+          - href: tesis/06_referencias.qmd
+            text: "Referencias"
+          - href: tesis/borrador_completo.qmd
+            text: "Borrador completo (HTML y Word)"
       - href: marco_conceptual.qmd
         text: "Marco conceptual"
       - href: marco_matematico_ae_lstm.qmd

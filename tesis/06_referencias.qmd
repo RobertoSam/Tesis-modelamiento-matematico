@@ -1,0 +1,14 @@
+---
+title: "Fuentes de información"
+nocite: |
+  @*
+---
+
+## Referencias
+
+::: {#refs}
+:::
+
+## Estado de verificación de las referencias
+
+{{< include registro_verificacion.md >}}

@@ -1,0 +1,30 @@
+---
+title: "Borrador de tesis"
+subtitle: "Seminario de Tesis II (MMC102) — Maestría en Ciencias en Modelización Matemática y Computacional, UNI"
+---
+
+::: {.callout-warning title="Documento en construcción"}
+Este borrador se construye por iteraciones. En cada una, el desarrollador ejecuta el análisis,
+el editor redacta y aplica APA 7, y un auditor independiente valida antes de publicar. Los
+dictámenes de auditoría están en la carpeta
+[`auditorias/`](https://github.com/RobertoSam/Tesis-modelamiento-matematico/tree/main/auditorias)
+del repositorio. La versión para descargar en Word está en
+[Borrador completo](borrador_completo.qmd).
+:::
+
+**Título:** Detección evolutiva de regímenes del ciclo financiero peruano mediante
+Clasificación Factorial Jerárquica y aprendizaje automático
+
+**Tesista:** Roberto Carlos Samaniego Salcedo · **Asesor:** Dr. Sergio Camiz
+
+## Estado por sección
+
+| Parte (estructura MMC102) | Página | Estado |
+|---|---|---|
+| Cuerpo preliminar: resumen | [Resumen](00_resumen.qmd) | Pendiente: se redacta al final |
+| Introducción: problema, justificación, objetivos, hipótesis | [Capítulo 1](01_introduccion.qmd) | Iteración 1 |
+| Antecedentes y marco teórico | [Capítulo 2](02_marco_teorico.qmd) | Iteración 1 |
+| Metodología y desarrollo del modelo | [Capítulo 3](03_metodologia.qmd) | Pendiente |
+| Resultados y discusión | [Capítulo 4](04_resultados.qmd) | Pendiente: depende de la decisión D2 |
+| Conclusiones y recomendaciones | [Capítulo 5](05_conclusiones.qmd) | Pendiente |
+| Fuentes de información y anexos | [Referencias](06_referencias.qmd) | Se actualiza en cada iteración |

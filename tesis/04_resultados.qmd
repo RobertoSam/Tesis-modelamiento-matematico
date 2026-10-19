@@ -1,0 +1,5 @@
+---
+title: "Capítulo 4. Resultados y discusión"
+---
+
+{{< include _capitulos/04_resultados.qmd >}}

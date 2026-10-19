@@ -1,0 +1,11 @@
+# Metadatos comunes a todas las páginas del borrador de tesis
+lang: es
+bibliography: referencias.bib
+csl: apa.csl
+link-citations: true
+number-sections: false
+crossref:
+  fig-title: "Figura"
+  tbl-title: "Tabla"
+  fig-prefix: "figura"
+  tbl-prefix: "tabla"

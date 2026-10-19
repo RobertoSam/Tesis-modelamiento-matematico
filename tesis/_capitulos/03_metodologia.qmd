@@ -1,0 +1,11 @@
+## Metodología
+
+::: {.callout-note title="Pendiente"}
+Iteración posterior: diseño, datos (227 meses × 17 series del BCRP), preprocesamiento y análisis en dos vías (decisiones D1 y D2).
+:::
+
+## Desarrollo del modelo matemático y computacional
+
+::: {.callout-note title="Pendiente"}
+Iteración posterior: formalización de PCA, HFC, EPCA, autoencoders y LSTM a partir de `marco_matematico_ae_lstm.qmd`.
+:::

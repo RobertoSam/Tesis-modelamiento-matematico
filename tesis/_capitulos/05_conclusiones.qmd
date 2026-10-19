@@ -1,0 +1,8 @@
+## Conclusiones preliminares
+
+::: {.callout-note title="Pendiente"}
+Se redactan a partir del capítulo 4.
+:::
+
+## Recomendaciones y trabajos futuros
+

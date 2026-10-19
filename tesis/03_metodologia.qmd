@@ -1,0 +1,5 @@
+---
+title: "Capítulo 3. Metodología y desarrollo del modelo"
+---
+
+{{< include _capitulos/03_metodologia.qmd >}}
