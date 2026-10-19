@@ -35,7 +35,8 @@ o los archivos indicados) y sus dependencias directas.
 **C. Coherencia**
 9. El texto respeta D1 y D2 y no contradice `marco_conceptual.qmd`,
    `marco_matematico_ae_lstm.qmd` ni las fichas.
-10. No hay afirmaciones superadas: tamaño de muestra distinto de 227 × 17, la EHFC presentada
+10. No hay afirmaciones superadas: tamaños de muestra distintos de 228 × 17 (niveles) o de
+    227 × 17 (transformadas), la EHFC presentada
     como algoritmo publicado, ni episodios fechados con las propias series.
 11. La estructura sigue MMC102 y el estilo es académico, impersonal y en español.
 

@@ -31,7 +31,8 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
 ```
 notebooks/        Pipeline numerada 01–09 (prefijo 999 = desarrollo)
 src/              Funciones reutilizables
-data/processed/   Datasets (mensual vigente: 227 meses × 17 variables, 2007-02 a 2025-12)
+data/processed/   Datasets mensuales vigentes: niveles 228 meses × 17 series (2007-01 a 2025-12,
+                  análisis oficial D1); transformadas 227 × 17 (2007-02 a 2025-12)
 data/results/     Salidas con prefijo del notebook que las genera
 papers/           Fichas bibliográficas apellido_año.qmd (Ficha Estándar)
 R/                Versión en R (fuera del sitio; requiere Rcamiz/AedeClahfac locales)

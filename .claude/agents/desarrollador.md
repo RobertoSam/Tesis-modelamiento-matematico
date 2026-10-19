@@ -15,7 +15,9 @@ Implementar y ejecutar el análisis, y entregar resultados reproducibles y traza
 
 1. **Python 3**, comentado en español. Las funciones reutilizables van a `src/`. Los notebooks
    siguen la numeración 01–09; el desarrollo exploratorio lleva el prefijo `999_`.
-2. **Datos:** el dataset vigente es `data/processed/` mensual (227 × 17, 2007-02 a 2025-12).
+2. **Datos:** los datasets vigentes están en `data/processed/`, en frecuencia mensual. La vía en
+   niveles tiene 228 × 17 (2007-01 a 2025-12) y la transformada 227 × 17 (2007-02 a 2025-12),
+   porque la diferenciación pierde el primer mes.
    Las series sin transformar (niveles) son el análisis oficial (D1). La vía transformada se
    ejecuta como segunda vía (D2), con el mismo código y los mismos parámetros. **Nunca ejecutes
    ni reportes con data incompleta**: verifica el calendario continuo y la ausencia de
