@@ -356,7 +356,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías" id="toc-d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías" class="nav-link active" data-scroll-target="#d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías">D2 · 16 de octubre de 2026 · Análisis completo en dos vías</a></li>
+  <li><a href="#d3-octubre-de-2026-registrada-el-20-de-octubre-solo-la-vía-mensual" id="toc-d3-octubre-de-2026-registrada-el-20-de-octubre-solo-la-vía-mensual" class="nav-link active" data-scroll-target="#d3-octubre-de-2026-registrada-el-20-de-octubre-solo-la-vía-mensual">D3 · octubre de 2026 (registrada el 20 de octubre) · Solo la vía mensual</a></li>
+  <li><a href="#d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías" id="toc-d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías" class="nav-link" data-scroll-target="#d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías">D2 · 16 de octubre de 2026 · Análisis completo en dos vías</a></li>
   <li><a href="#d1-8-de-octubre-de-2026-el-análisis-en-r-pasa-a-las-series-sin-transformar" id="toc-d1-8-de-octubre-de-2026-el-análisis-en-r-pasa-a-las-series-sin-transformar" class="nav-link" data-scroll-target="#d1-8-de-octubre-de-2026-el-análisis-en-r-pasa-a-las-series-sin-transformar">D1 · 8 de octubre de 2026 · El análisis en R pasa a las series sin transformar</a></li>
   </ul>
 </nav>
@@ -397,6 +398,13 @@ Cómo se usa esta página
 <p>Cada decisión que cambia el análisis se registra con su fecha, el motivo, la alternativa y el punto del repositorio donde puede recuperarse el estado anterior (un <em>tag</em> de git o un commit). Las entradas van de la más reciente a la más antigua. El avance por sesión está en la <a href="./linea_temporal.html">línea temporal</a>.</p>
 </div>
 </div>
+<section id="d3-octubre-de-2026-registrada-el-20-de-octubre-solo-la-vía-mensual" class="level2">
+<h2 class="anchored" data-anchor-id="d3-octubre-de-2026-registrada-el-20-de-octubre-solo-la-vía-mensual">D3 · octubre de 2026 (registrada el 20 de octubre) · Solo la vía mensual</h2>
+<p><strong>Contexto.</strong> El repositorio mantenía dos frecuencias: trimestral (notebooks <code>04</code>, <code>05</code>, <code>06a</code>) y mensual (<code>04b</code>, <code>05b</code>, <code>06b</code>, <code>06</code>, <code>08</code>, <code>09</code>). La vía trimestral tiene pocas observaciones para el número de variables: 72 trimestres con 18 variables en la vía transformada, una razón n/p de 4,0. Además, en niveles la ventana de 20 trimestres produce una matriz de correlación singular.</p>
+<p><strong>Decisión.</strong> El análisis de la tesis se hace <strong>solo con datos mensuales</strong>. El notebook <code>06a</code> queda como antecedente superado. El PCA estático <code>05_pca.ipynb</code> se rehará con los datos mensuales, con las 17 series de D1 y en las dos vías de D2.</p>
+<p><strong>Alternativa.</strong> Mantener las dos frecuencias en paralelo.</p>
+<p><strong>Rastro.</strong> Los resultados trimestrales siguen en el repositorio (<code>data/results/05_*</code>, <code>06a_*</code>) hasta que se rehaga <code>05</code>. El estado anterior se puede recuperar desde el tag <code>v0.2-niveles</code>.</p>
+</section>
 <section id="d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías" class="level2">
 <h2 class="anchored" data-anchor-id="d2-16-de-octubre-de-2026-análisis-completo-en-dos-vías">D2 · 16 de octubre de 2026 · Análisis completo en dos vías</h2>
 <p><strong>Contexto.</strong> El asesor no objeta transformar las series (log-diferencias y diferencias), pero pide sustentar la transformación y probar también con las series sin transformar.</p>

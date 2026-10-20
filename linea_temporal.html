@@ -327,11 +327,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">18–19 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">16 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-2" id="toc-de-octubre-de-2026-2" class="nav-link" data-scroll-target="#de-octubre-de-2026-2">8 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-3" id="toc-de-octubre-de-2026-3" class="nav-link" data-scroll-target="#de-octubre-de-2026-3">7 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-4" id="toc-de-octubre-de-2026-4" class="nav-link" data-scroll-target="#de-octubre-de-2026-4">4–5 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">19–20 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">18–19 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-2" id="toc-de-octubre-de-2026-2" class="nav-link" data-scroll-target="#de-octubre-de-2026-2">16 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-3" id="toc-de-octubre-de-2026-3" class="nav-link" data-scroll-target="#de-octubre-de-2026-3">8 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-4" id="toc-de-octubre-de-2026-4" class="nav-link" data-scroll-target="#de-octubre-de-2026-4">7 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-5" id="toc-de-octubre-de-2026-5" class="nav-link" data-scroll-target="#de-octubre-de-2026-5">4–5 de octubre de 2026</a></li>
   </ul>
 </nav>
     </div>
@@ -372,7 +373,33 @@ Cómo se usa esta página
 </div>
 </div>
 <section id="de-octubre-de-2026" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026">18–19 de octubre de 2026</h2>
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026">19–20 de octubre de 2026</h2>
+<p><strong>Versión en R operativa y en paridad con Python</strong></p>
+<ul>
+<li><code>R/tesis_ciclo_financiero.Rmd</code> se ejecuta completo, en unos 2,5 minutos con los parámetros por defecto. En servidores sin locale UTF-8 fallaba, porque los nombres de las series llevan tilde; ahora lo fija al inicio.</li>
+<li><strong>Paridad Python–R: 15 de 15 en las dos vías.</strong> Comprende los valores propios y las cargas del PCA, las transiciones de la EPCA, los regímenes y las fases del notebook <code>09</code>, y la traducción a R del código del asesor frente al binario original.</li>
+<li>El Rmd vigente genera los archivos de paridad (<code>R_*</code>) en las dos vías: <code>data/results/</code> y <code>data/results/niveles/</code>. La jerarquía de la HFC identifica cada hoja por nombre y código de serie.</li>
+</ul>
+<p><strong>Ajustes metodológicos</strong></p>
+<ul>
+<li>La EPCA en niveles del notebook <code>06</code> usa ahora las 17 series de D1; antes usaba 19. Aparece una transición adicional en 2017-10. Está cerca del umbral y coincide con un borde de ventana, por lo que no se interpreta todavía como cambio de régimen.</li>
+<li>El índice de Calinski-Harabász se reporta con las dos variantes del numerador (k y k−1), porque la elección cambia el número de regímenes. La variante que se adopte se decidirá con el asesor.</li>
+<li>Se precisa la regla de orientación de ejes de <code>aede</code> (suma lineal de coeficientes), distinta de la de Rcamiz (suma de cuadrados).</li>
+<li>Nueva decisión <a href="./decisiones.html">D3</a>: solo frecuencia mensual. El notebook <code>06a</code> (trimestral) queda como antecedente superado y <code>05</code> se rehará con datos mensuales.</li>
+</ul>
+<p><strong>Trazabilidad</strong></p>
+<ul>
+<li>Las fechas de los episodios de referencia y las obras sin ficha quedan marcadas como pendientes de verificación (28 marcas) y registradas en las <a href="./tesis/06_referencias.html">referencias</a>.</li>
+</ul>
+<p><strong>Pendientes</strong></p>
+<ul>
+<li>Una sola definición de los episodios, con fuente externa y convención de fecha.</li>
+<li>Fijar la fecha de corte de los datos: el BCRP revisa el ajuste estacional de algunas series.</li>
+<li>Rehacer <code>05_pca</code> con datos mensuales (D3).</li>
+</ul>
+</section>
+<section id="de-octubre-de-2026-1" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">18–19 de octubre de 2026</h2>
 <p><strong>Forma de trabajo: equipo de agentes</strong></p>
 <ul>
 <li>Se definen tres agentes en el repositorio (<code>.claude/agents/</code>), con reglas comunes en <code>CLAUDE.md</code>:
@@ -402,8 +429,8 @@ Cómo se usa esta página
 <li>Obtener las pautas de redacción de tesis de la UNI y ajustar la plantilla Word.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-1" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">16 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-2" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-2">16 de octubre de 2026</h2>
 <p><strong>Documento en R: análisis completo en dos vías</strong></p>
 <ul>
 <li>A pedido del asesor (sustentar la transformación y probar sin transformar), <code>R/tesis_ciclo_financiero.Rmd</code> ejecuta ahora la cadena completa dos veces, con el mismo código y los mismos parámetros. La Parte A usa las series sin transformar y la Parte B las transformadas. La Parte C compara ambas vías. Decisión registrada en el <a href="./decisiones.html">registro de decisiones</a> (D2).</li>
@@ -436,8 +463,8 @@ Cómo se usa esta página
 <li>Reformular la regla de fases.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-2" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-2">8 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-3" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-3">8 de octubre de 2026</h2>
 <p><strong>Documento en R</strong></p>
 <ul>
 <li>Verificación del PCA de Rcamiz frente a scikit-learn sobre los 227 meses (notebook <code>07</code>).</li>
@@ -446,8 +473,8 @@ Cómo se usa esta página
 <li>Decisión: el documento en R pasa a las series sin transformar, con las transformadas como contraste (<a href="./decisiones.html">registro de decisiones</a>, D1).</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-3" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-3">7 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-4" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-4">7 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li>Se retiraron del sitio, el README, las fichas y los notebooks todas las referencias a la corrida previa con datos incompletos. Todas las cifras quedan referidas al dataset mensual vigente: 227 meses × 17 variables (2007-02 a 2025-12).</li>
@@ -466,8 +493,8 @@ Cómo se usa esta página
 <li>Consolidar la interpretación de todos los resultados antes de presentarlos al asesor.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-4" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-4">4–5 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-5" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-5">4–5 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li><strong>Dataset mensual:</strong> 227 meses × 17 variables (2007-02 a 2025-12), con calendario continuo verificado; <code>04b</code> detiene la ejecución si falta cualquier mes.</li>

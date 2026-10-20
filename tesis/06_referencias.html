@@ -348,7 +348,10 @@ div.csl-indent {
    
   <ul>
   <li><a href="#referencias" id="toc-referencias" class="nav-link active" data-scroll-target="#referencias">Referencias</a></li>
-  <li><a href="#estado-de-verificación-de-las-referencias" id="toc-estado-de-verificación-de-las-referencias" class="nav-link" data-scroll-target="#estado-de-verificación-de-las-referencias">Estado de verificación de las referencias</a></li>
+  <li><a href="#estado-de-verificación-de-las-referencias" id="toc-estado-de-verificación-de-las-referencias" class="nav-link" data-scroll-target="#estado-de-verificación-de-las-referencias">Estado de verificación de las referencias</a>
+  <ul class="collapse">
+  <li><a href="#episodios-de-referencia" id="toc-episodios-de-referencia" class="nav-link" data-scroll-target="#episodios-de-referencia">Episodios de referencia</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -565,15 +568,15 @@ Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extractin
 <tr class="odd">
 <td>—</td>
 <td>Calinski y Harabász (1974)</td>
-<td>Sin ficha; criterio del número de cortes del EPCA</td>
-<td>Cap. 2 (<code>[CITA PENDIENTE]</code>)</td>
+<td>Criterio del número de cortes del EPCA y de la datación. Sin ficha en <code>papers/</code>; el Rmd ya la cita con año (1974)</td>
+<td>Cap. 2 (<code>[CITA PENDIENTE]</code>); <code>R/tesis_ciclo_financiero.Rmd</code>: chunk <code>funciones</code> (comentario del índice CH, variante <code>ch1</code>), chunk <code>b4-aede</code> (pie de la tabla de la partición de Fisher) y texto de A.3, subsección «EPCA del asesor (<code>aede</code>)»</td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="even">
 <td>—</td>
 <td>Horn (1965) y fuentes de los criterios de vara quebrada y de Rencher</td>
-<td>Sin ficha; triangulación del número de componentes</td>
-<td>Cap. 1, objetivo específico 6</td>
+<td>Triangulación del número de componentes. Sin ficha en <code>papers/</code>; citada en el Rmd: Horn (1965) en el chunk <code>funciones</code> (función del análisis paralelo) y en la sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias»; por el nombre en A.2 y B.2, subsecciones «¿Cuántas componentes retener?»; la vara quebrada en A.2, «¿Cuántas componentes retener?»</td>
+<td>Cap. 1, objetivo específico 6; <code>R/tesis_ciclo_financiero.Rmd</code></td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
@@ -614,42 +617,142 @@ Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extractin
 <tr class="even">
 <td>—</td>
 <td>Benzécri (1973), <em>L’analyse des données</em></td>
-<td>Sin ficha; principio <em>laisser parler les données</em></td>
-<td>Cap. 2, posición epistemológica</td>
+<td>Principio <em>laisser parler les données</em>. Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», tabla de argumentos)</td>
+<td>Cap. 2, posición epistemológica; <code>R/tesis_ciclo_financiero.Rmd</code></td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
 <td>—</td>
-<td>Fuente externa para fechar la crisis financiera global en el Perú</td>
-<td>Sin ficha</td>
-<td>Cap. 2, validación externa</td>
-<td>Pendiente de identificar</td>
+<td>Granger y Newbold (1974)</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias», regresión espuria)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
+<td>Pendiente</td>
 </tr>
 <tr class="even">
 <td>—</td>
-<td>Fuente externa para fechar el <em>taper tantrum</em> (2013)</td>
-<td>Sin ficha</td>
-<td>Cap. 2, validación externa</td>
-<td>Pendiente de identificar</td>
+<td>Phillips (1986)</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias», regresión espuria)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
+<td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td>—</td>
-<td>Fuente externa para fechar el choque de la COVID-19 en el Perú</td>
-<td>Sin ficha</td>
-<td>Cap. 2, validación externa</td>
-<td>Pendiente de identificar</td>
+<td>Engle y Granger (1987)</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», tabla de argumentos, cointegración)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
+<td>Pendiente</td>
 </tr>
 <tr class="even">
 <td>—</td>
-<td>Fuente externa para fechar la renuncia de Kuczynski</td>
-<td>Sin ficha; Camiz et al.&nbsp;(2026) solo identifican el evento</td>
-<td>Cap. 2, validación externa</td>
-<td>Pendiente de identificar</td>
+<td>Fuentes de los filtros pasa-banda y de Hodrick-Prescott para la brecha del ciclo financiero</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», por el nombre del método, sin autor ni año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td>—</td>
-<td>Fuente externa para fechar la guerra comercial entre Estados Unidos y China</td>
-<td>Sin ficha; Camiz et al.&nbsp;(2026) solo identifican el evento</td>
+<td>Fuente de los modelos de cambio de régimen de Markov</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.5, subsección «Alternativas consideradas», por el nombre del método, sin autor ni año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>Fuentes de las pruebas ADF («Dickey-Fuller aumentada») y KPSS</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Estacionariedad en las dos versiones», por el nombre de la prueba, sin año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td>Fuentes de la prueba de esfericidad de Bartlett, la medida KMO («Kaiser-Meyer-Olkin») y el criterio de Kaiser</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.2, subsecciones «¿Tiene sentido un PCA con estos datos?» y «¿Cuántas componentes retener?», por el nombre, sin año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>Fuente del índice de Rand ajustado</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.4, subsección «HFC evolutiva», por el nombre del índice, sin autor ni año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td>Fuente del optimizador Adam</td>
+<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.5, subsección «Diseño del autoencoder», tabla de parámetros, por el nombre, sin autor ni año)</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>Descarga de control de la API del BCRP (consulta del 08/10/2026)</td>
+<td>Los valores de diciembre de 2025 del PBI desestacionalizado (194,00) y de la demanda interna (242,86) provienen de una consulta a la API del BCRP que no está versionada. Falta guardar en <code>data/</code> la fecha de consulta, los códigos de serie y los valores obtenidos, para que el texto los lea con código (regla 3 de <code>CLAUDE.md</code>) o, en su defecto, retirar las dos cifras</td>
+<td><code>R/tesis_ciclo_financiero.Rmd</code>: chunk <code>funciones</code> (comentario de los metadatos de las series) y sección 1, subsección «Fuente, periodo y cobertura» (recuadro «Las series desestacionalizadas se revisan»); auditoría 2026-10-19, M-06 y N-03</td>
+<td>Cerrado: cifras retiradas del Rmd por decisión de Roberto (20-10-2026)</td>
+</tr>
+</tbody>
+</table>
+<section id="episodios-de-referencia" class="level3">
+<h3 class="anchored" data-anchor-id="episodios-de-referencia">Episodios de referencia</h3>
+<p>Los episodios se fechan con fuentes externas, nunca a partir de las propias series (regla 6 de <code>CLAUDE.md</code>). Ninguna de las fechas siguientes tiene hoy una fuente fichada. En cada episodio falta, además, fijar la convención de fechado: inicio en la fecha del anuncio o del evento externo, o en la fecha del impacto en el Perú. Ningún archivo documenta la convención que usa. Los archivos usan fechas distintas para el mismo episodio. Las de <code>notebooks/06a</code> y <code>06b</code> (columnas «06a» y «06b») no coinciden con las del Rmd y <code>modelos_dl.py</code>. En <code>R/tesis_ciclo_financiero.Rmd</code>, la marca <code>[VERIFICAR: fuente externa para fechar el episodio]</code> aparece en el chunk <code>funciones</code> (data frame <code>episodios</code> y pies <code>nota_episodios</code> y <code>nota_episodios_en</code>); en el texto de A.1 («Meses que más se alejan del promedio») y de A.2 («Sensibilidad a los episodios extremos»), y en los pies de tabla de los chunks <code>b4-transiciones</code>, <code>b8-fases</code>, <code>bB3-transiciones</code>, <code>bB6-fases</code> y <code>bC4-episodios</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Episodio</th>
+<th>Fechas en uso (inicio a fin)</th>
+<th>Qué falta</th>
+<th>Origen</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Crisis financiera global</td>
+<td>Rmd (data frame <code>episodios</code> del chunk <code>funciones</code>; pies <code>nota_episodios</code> y <code>nota_episodios_en</code>; texto de A.1, subsección «Meses que más se alejan del promedio») y <code>notebooks/modelos_dl.py</code> (diccionario <code>EPISODIOS_REFERENCIA</code>): 2008-09 a 2009-06. <code>06a</code> y <code>06b</code> (celda 2): 2008-07-01 a 2009-06-30</td>
+<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
+<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="even">
+<td><em>Taper tantrum</em></td>
+<td>Rmd y <code>modelos_dl.py</code>: 2013-05 a 2013-12. <code>06a</code> y <code>06b</code>: 2013-04-01 a 2013-12-31</td>
+<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
+<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="odd">
+<td>COVID-19</td>
+<td>Rmd y <code>modelos_dl.py</code>: 2020-03 a 2020-12. <code>06a</code> y <code>06b</code> («Pandemia COVID-19»): 2020-01-01 a 2020-09-30</td>
+<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
+<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="even">
+<td>Colapso de los precios de las materias primas («Colapso commodities»)</td>
+<td>Solo <code>06b</code>: 2014-06-01 a 2016-03-31</td>
+<td>Fuente externa que respalde inicio y fin; convención de fechado; decidir si se incorpora a los episodios del Rmd</td>
+<td><code>notebooks/06b</code>, celda 2; auditoría 2026-10-19, M-05</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="odd">
+<td>Kuczynski / Odebrecht</td>
+<td>Solo <code>06b</code>: 2016-07-01 a 2018-03-31. El cap. 2 menciona la renuncia de Kuczynski sin fecha</td>
+<td>Fuente externa que respalde inicio y fin; convención de fechado; precisar si el episodio es la renuncia (Camiz et al., 2026, solo identifican el evento) o un período más largo, como el de <code>06b</code></td>
+<td>Cap. 2, validación externa; <code>notebooks/06b</code>, celda 2; auditoría 2026-10-19, M-05</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="even">
+<td>Guerra comercial entre Estados Unidos y China</td>
+<td>No se usa en ningún archivo de código</td>
+<td>Fuente externa para fecharla; Camiz et al.&nbsp;(2026) solo identifican el evento</td>
 <td>Cap. 2, validación externa</td>
 <td>Pendiente de identificar</td>
 </tr>
@@ -657,6 +760,7 @@ Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extractin
 </table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

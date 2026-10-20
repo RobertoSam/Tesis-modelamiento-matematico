@@ -397,12 +397,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><strong>Tesis:</strong> Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning</p>
-<p>Analogo a <code>06a_seleccion_ventana_epca_v2.ipynb</code>, pero usando <code>data/processed/*_mensual.csv</code> (227 observaciones, n/p ≈ 13.4 en la version transformada, vs.&nbsp;4.5 en trimestral).</p>
-<p><strong>Hipótesis a verificar en este notebook:</strong> 1. ¿La mayor cantidad de observaciones permite ventanas de duración calendario más corta (ej. 2-3 años) sin caer en zona degenerada? 2. ¿El dataset mensual alcanza a cubrir la crisis financiera global 2008-2009, ausente por completo en la version trimestral?</p>
+<p>Análogo a <code>06a_seleccion_ventana_epca.ipynb</code> (versión trimestral, antecedente superado), pero usando <code>data/processed/*_mensual.csv</code> (227 observaciones, n/p ≈ 13.4 en la versión transformada, frente a 4.0 en trimestral: 72 trimestres y p = 18). Por D3 (<code>decisiones.qmd</code>), el análisis se realiza solo con frecuencia mensual: <strong>esta es la selección de ventana vigente</strong>.</p>
+<p><strong>Hipótesis a verificar en este notebook:</strong> 1. ¿La mayor cantidad de observaciones permite ventanas de duración calendario más corta (ej. 2-3 años) sin caer en zona degenerada? 2. ¿La serie de estabilidad mensual alcanza a cubrir la crisis financiera global 2008-2009? En la versión trimestral la crisis <strong>sí está en los datos</strong> (transformado desde 2008-T1), pero ninguna serie de estabilidad la cubre: con la ventana más corta de <code>06a</code> (20 trimestres, paso 2) el primer punto de estabilidad cae en 2011-T1.</p>
 <p><strong>No modifica ningún archivo de <code>data/processed/</code> – solo lee.</strong></p>
 <section id="librerías-y-carga-de-datos" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos">1. Librerías y carga de datos</h2>
-<div id="71093aa1" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:09.969080Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:09.968574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.458113Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.457832Z&quot;}" data-execution_count="1">
+<div id="71093aa1" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:37.370305Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:37.370055Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:38.769442Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:38.767589Z&quot;}" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -413,28 +413,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df_transf <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_estandarizado_mensual.csv'</span>,</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                         index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_niveles <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                          index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Transformado: </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Niveles:      </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_transf<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_transf<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>EPISODIOS <span class="op">=</span> {</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crisis financiera global'</span>: (<span class="st">'2008-07-01'</span>, <span class="st">'2009-06-30'</span>),</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Colapso commodities'</span>: (<span class="st">'2014-06-01'</span>, <span class="st">'2016-03-31'</span>),</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Kuczynski / Odebrecht'</span>: (<span class="st">'2016-07-01'</span>, <span class="st">'2018-03-31'</span>),</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Taper tantrum'</span>: (<span class="st">'2013-04-01'</span>, <span class="st">'2013-12-31'</span>),</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pandemia COVID-19'</span>: (<span class="st">'2020-01-01'</span>, <span class="st">'2020-09-30'</span>),</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Cobertura de episodios dentro del rango de datos:'</span>)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, (ini, fin) <span class="kw">in</span> EPISODIOS.items():</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    cubierto <span class="op">=</span> (pd.Timestamp(ini) <span class="op">&gt;=</span> df_transf.index.<span class="bu">min</span>()) <span class="kw">and</span> (pd.Timestamp(ini) <span class="op">&lt;=</span> df_transf.index.<span class="bu">max</span>())</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">"SI"</span> <span class="cf">if</span> cubierto <span class="cf">else</span> <span class="st">"NO"</span><span class="sc">}</span><span class="ss"> cubierto'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_niveles_archivo <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                                  index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># D1: en niveles se usan las 17 series del análisis; el crédito total del SF y el IPC</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># subyacente vienen en el archivo solo como referencia.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Este notebook solo informa la forma de niveles: sus resultados usan la vía transformada.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>SERIES_REFERENCIA <span class="op">=</span> [<span class="st">'Crédito SF sector privado'</span>, <span class="st">'IPC Subyacente'</span>]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df_niveles <span class="op">=</span> df_niveles_archivo.drop(columns<span class="op">=</span>SERIES_REFERENCIA)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df_niveles.shape[<span class="dv">1</span>] <span class="op">==</span> df_transf.shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">17</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, df_ <span class="kw">in</span> [(<span class="st">'transformado'</span>, df_transf), (<span class="st">'niveles'</span>, df_niveles)]:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> df_.isna().<span class="bu">any</span>().<span class="bu">any</span>(), <span class="ss">f'Faltantes en </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    calendario <span class="op">=</span> pd.date_range(df_.index.<span class="bu">min</span>(), df_.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(calendario) <span class="op">==</span> <span class="bu">len</span>(df_) <span class="kw">and</span> (calendario <span class="op">==</span> df_.index).<span class="bu">all</span>(), <span class="ss">f'Calendario con huecos en </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Transformado: </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Niveles:      </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Periodo: </span><span class="sc">{</span>df_transf<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df_transf<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># [VERIFICAR: fuente externa para fechar el episodio] Las fechas están escritas a mano y no</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># citan fuente externa (los episodios se fechan con fuentes externas, nunca a partir de las</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># propias series). Además difieren de las de notebooks/modelos_dl.py y del Rmd (crisis global</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 2008-07 frente a 2008-09; taper tantrum 2013-04 frente a 2013-05; COVID-19 2020-01 a 2020-09</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># frente a 2020-03 a 2020-12). Hace falta una sola definición, con fuente y convención</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># (decisión pendiente).</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># No se cambian hasta fijar la fuente.</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>EPISODIOS <span class="op">=</span> {</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Crisis financiera global'</span>: (<span class="st">'2008-07-01'</span>, <span class="st">'2009-06-30'</span>),  <span class="co"># [VERIFICAR: fuente externa para fechar el episodio]</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Colapso commodities'</span>: (<span class="st">'2014-06-01'</span>, <span class="st">'2016-03-31'</span>),  <span class="co"># [VERIFICAR: fuente externa para fechar el episodio]</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Kuczynski / Odebrecht'</span>: (<span class="st">'2016-07-01'</span>, <span class="st">'2018-03-31'</span>),  <span class="co"># [VERIFICAR: fuente externa para fechar el episodio]</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Taper tantrum'</span>: (<span class="st">'2013-04-01'</span>, <span class="st">'2013-12-31'</span>),  <span class="co"># [VERIFICAR: fuente externa para fechar el episodio]</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pandemia COVID-19'</span>: (<span class="st">'2020-01-01'</span>, <span class="st">'2020-09-30'</span>),  <span class="co"># [VERIFICAR: fuente externa para fechar el episodio]</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Cobertura de episodios dentro del rango de datos:'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, (ini, fin) <span class="kw">in</span> EPISODIOS.items():</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    cubierto <span class="op">=</span> (pd.Timestamp(ini) <span class="op">&gt;=</span> df_transf.index.<span class="bu">min</span>()) <span class="kw">and</span> (pd.Timestamp(ini) <span class="op">&lt;=</span> df_transf.index.<span class="bu">max</span>())</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">"SI"</span> <span class="cf">if</span> cubierto <span class="cf">else</span> <span class="st">"NO"</span><span class="sc">}</span><span class="ss"> cubierto'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Transformado: 227 meses x 17 variables
-Niveles:      228 meses x 19 variables
+Niveles:      228 meses x 17 variables
 Periodo: 2007-02 a 2025-12
 
 Cobertura de episodios dentro del rango de datos:
@@ -448,7 +465,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="función-de-análisis-de-sensibilidad-idéntica-lógica-que-en-06a-ajustada-a-meses" class="level2">
 <h2 class="anchored" data-anchor-id="función-de-análisis-de-sensibilidad-idéntica-lógica-que-en-06a-ajustada-a-meses">2. Función de análisis de sensibilidad (idéntica lógica que en 06a, ajustada a meses)</h2>
-<div id="a608505b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.460344Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.460207Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.463463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.463188Z&quot;}" data-execution_count="2">
+<div id="a608505b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:38.772598Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:38.772173Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:38.778808Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:38.777902Z&quot;}" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analizar_ventanas(df, tamanos_ventana, paso, componente_interes<span class="op">=</span><span class="dv">0</span>, n_componentes<span class="op">=</span><span class="dv">3</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    resultados <span class="op">=</span> {}</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> tamanos_ventana:</span>
@@ -480,11 +497,11 @@ Cobertura de episodios dentro del rango de datos:
 <section id="grilla-de-tamaños-de-ventana-en-meses" class="level2">
 <h2 class="anchored" data-anchor-id="grilla-de-tamaños-de-ventana-en-meses">3. Grilla de tamaños de ventana (en MESES)</h2>
 <ul>
-<li><strong>Mínimo:</strong> 24 meses (2 años) – lo que originalmente se quería probar y que en trimestral era matemáticamente inviable (n=8 &lt; p=16). En mensual, n=24 &gt; p=17 (razón 1.4), ya no degenerado, aunque todavía por debajo de la regla práctica de 5x.</li>
+<li><strong>Mínimo:</strong> 24 meses (2 años) – lo que originalmente se quería probar y que en trimestral era matemáticamente inviable (n=8 &lt; p=18). En mensual, n=24 &gt; p=17 (razón 1.4), ya no degenerado, aunque todavía por debajo de la regla práctica de 5x.</li>
 <li><strong>Máximo:</strong> 96 meses (8 años) – razón n/p ≈ 5.6, ya dentro de la regla práctica, y todavía por debajo de la duración típica de un ciclo financiero completo (Drehmann et al., 2012: 8-20 años).</li>
 <li><strong>Paso:</strong> 3 meses (trimestral), para mantener el costo computacional razonable sin perder demasiada resolución. Ajustable.</li>
 </ul>
-<div id="85869809" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.465017Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.464903Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:12.878577Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:12.878266Z&quot;}" data-execution_count="3">
+<div id="85869809" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:38.781790Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:38.781592Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:39.693340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:39.692401Z&quot;}" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>TAMANOS_VENTANA_MESES <span class="op">=</span> [<span class="dv">24</span>, <span class="dv">36</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">72</span>, <span class="dv">96</span>]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>PASO_MESES <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -595,7 +612,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="trade-off-estabilidad-vs.-sensibilidad-mensual" class="level2">
 <h2 class="anchored" data-anchor-id="trade-off-estabilidad-vs.-sensibilidad-mensual">4. Trade-off estabilidad vs.&nbsp;sensibilidad (mensual)</h2>
-<div id="c40e07f3" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:12.880362Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:12.880184Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.174260Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.173875Z&quot;}" data-execution_count="4">
+<div id="c40e07f3" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:39.695359Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:39.695188Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:40.138171Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:40.137259Z&quot;}" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">5.5</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>color1 <span class="op">=</span> <span class="st">'#486581'</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ax1.plot(df_resumen[<span class="st">'ventana_meses'</span>], df_resumen[<span class="st">'estabilidad_promedio'</span>], marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span>color1)</span>
@@ -626,7 +643,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="validación-externa-mensual-con-los-5-episodios-incluyendo-2008-2009" class="level2">
 <h2 class="anchored" data-anchor-id="validación-externa-mensual-con-los-5-episodios-incluyendo-2008-2009">5. Validación externa (mensual) — con los 5 episodios, incluyendo 2008-2009</h2>
-<div id="cead09a8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.176255Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.176117Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.940882Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.940559Z&quot;}" data-execution_count="5">
+<div id="cead09a8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:40.140216Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:40.140024Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:41.082259Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:41.081189Z&quot;}" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tamanos_a_graficar <span class="op">=</span> [TAMANOS_VENTANA_MESES[<span class="dv">0</span>], TAMANOS_VENTANA_MESES[<span class="bu">len</span>(TAMANOS_VENTANA_MESES)<span class="op">//</span><span class="dv">2</span>], TAMANOS_VENTANA_MESES[<span class="op">-</span><span class="dv">1</span>]]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(tamanos_a_graficar), <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.4</span> <span class="op">*</span> <span class="bu">len</span>(tamanos_a_graficar)), sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -666,14 +683,14 @@ Cobertura de episodios dentro del rango de datos:
 <section id="comparación-directa-trimestral-vs.-mensual" class="level2">
 <h2 class="anchored" data-anchor-id="comparación-directa-trimestral-vs.-mensual">6. Comparación directa trimestral vs.&nbsp;mensual</h2>
 <p>Resumen lado a lado para decidir con qué frecuencia continuar en <code>06_epca.ipynb</code>.</p>
-<div id="4caa322b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.942785Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.942635Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.950072Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.949805Z&quot;}" data-execution_count="6">
+<div id="4caa322b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:41.084325Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:41.084129Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:41.097342Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:41.096407Z&quot;}" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df_resumen_trimestral <span class="op">=</span> pd.read_csv(<span class="st">'data/results/06a_seleccion_ventana_resumen.csv'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    df_resumen_trimestral <span class="op">=</span> df_resumen_trimestral[df_resumen_trimestral[<span class="st">'dataset'</span>] <span class="op">==</span> <span class="st">'transformado_estandarizado'</span>]</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'--- Trimestral (transformado) ---'</span>)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df_resumen_trimestral[[<span class="st">'ventana_trimestres'</span>, <span class="st">'ventana_anios'</span>, <span class="st">'estabilidad_promedio'</span>, <span class="st">'estabilidad_std'</span>]])</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Corre primero 06a_seleccion_ventana_epca_v2.ipynb para tener la comparacion completa.'</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Corre primero 06a_seleccion_ventana_epca.ipynb (antecedente trimestral) para tener la comparacion completa.'</span>)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'--- Mensual (transformado) ---'</span>)</span>
@@ -681,11 +698,11 @@ Cobertura de episodios dentro del rango de datos:
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Trimestral (transformado) ---
    ventana_trimestres  ventana_anios  estabilidad_promedio  estabilidad_std
-0                  20            5.0                 0.885            0.228
-1                  24            6.0                 0.921            0.149
-2                  28            7.0                 0.913            0.179
-3                  32            8.0                 0.895            0.214
-4                  36            9.0                 0.898            0.224
+0                  20            5.0                 0.884            0.229
+1                  24            6.0                 0.923            0.146
+2                  28            7.0                 0.914            0.176
+3                  32            8.0                 0.897            0.209
+4                  36            9.0                 0.899            0.221
 5                  40           10.0                 0.922            0.147
 
 --- Mensual (transformado) ---
@@ -709,7 +726,7 @@ Cobertura de episodios dentro del rango de datos:
 </section>
 <section id="guardar-resultados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-resultados">7. Guardar resultados</h2>
-<div id="b8160a29" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:13.951661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:13.951557Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:13.955127Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:13.954902Z&quot;}" data-execution_count="7">
+<div id="b8160a29" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:41.100284Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:41.100049Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:41.111264Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:41.110269Z&quot;}" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/results'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_resumen[<span class="st">'dataset'</span>] <span class="op">=</span> <span class="st">'transformado_estandarizado_mensual'</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_resumen.to_csv(<span class="st">'data/results/06b_seleccion_ventana_resumen_mensual.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>

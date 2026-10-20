@@ -403,14 +403,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><strong>Tesis:</strong> Medición del ciclo financiero en Perú mediante técnicas de reducción dimensional y machine learning</p>
-<p><strong>Decisión de diseño (enfoque híbrido, justificada en notebooks previos):</strong> - PCA estático (<code>05_pca.ipynb</code>): frecuencia <strong>trimestral</strong>, incluye índice de precios de inmuebles. - EPCA (este notebook): frecuencia <strong>mensual</strong>, sin inmuebles (serie trimestral en origen, no se interpola). Motivo: la restricción n &gt; p hace inviables ventanas móviles cortas en trimestral (ver <code>06a_seleccion_ventana_epca_v2.ipynb</code> vs.&nbsp;<code>06b_..._mensual.ipynb</code>).</p>
+<p><strong>Decisión de diseño (enfoque híbrido, justificada en notebooks previos):</strong> - PCA estático (<code>05_pca.ipynb</code>): frecuencia <strong>trimestral</strong>, incluye índice de precios de inmuebles. - EPCA (este notebook): frecuencia <strong>mensual</strong>, sin inmuebles (serie trimestral en origen, no se interpola). Motivo: la restricción n &gt; p hace inviables ventanas móviles cortas en trimestral (ver <code>06a_seleccion_ventana_epca.ipynb</code>, antecedente trimestral, frente a <code>06b_seleccion_ventana_epca_mensual.ipynb</code>).</p>
+<p><em>Frecuencia:</em> por D3 (<code>decisiones.qmd</code>), el análisis se realiza solo con datos mensuales. La selección de ventana vigente es <code>06b</code> (mensual); <code>06a</code> (trimestral) se conserva como antecedente superado. El PCA estático de <code>05_pca.ipynb</code> sigue en frecuencia trimestral y queda pendiente de alinearse con esa decisión.</p>
 <p><strong>Parámetros elegidos, con evidencia empírica (no arbitrarios):</strong> - Ventana: <strong>60 meses (5 años)</strong> — mejor balance estabilidad/sensibilidad observado en <code>06b</code>, señal más limpia para el episodio mejor confirmado (taper tantrum 2013). - Paso: <strong>3 meses</strong>. - Componente principal rastreado: <strong>PC1</strong> para transformado (no contaminado por tendencia, corr. con tiempo = 0.089, ver <code>05_pca.ipynb</code>); <strong>PC2</strong> para niveles (PC1 contaminado, corr. = 0.994).</p>
 <p><strong>Limitaciones reconocidas (no ocultas):</strong> - La crisis financiera global (2008-2009) no pudo validarse visualmente por efecto de borde (pocas ventanas previas al inicio de la muestra). - La pandemia COVID-19 (2020) no mostró caída de estabilidad en ningún tamaño de ventana probado – se interpreta como hipótesis a discutir (shock simultáneo y generalizado que no altera la estructura relativa entre variables), no como fallo del método.</p>
+<p><strong>Series (D1):</strong> en ambas vías se usan las 17 series del análisis. En niveles se excluyen el crédito total del SF y el IPC subyacente, que el archivo de niveles trae solo como referencia (una versión anterior de este notebook usaba las 19 columnas del archivo).</p>
 <p><strong>No modifica ningún archivo de <code>data/processed/</code> – solo lee.</strong></p>
 <p><strong>Salidas:</strong> - <code>reports/figures/06_epca_*.png</code> - <code>data/results/06_epca_varianza_explicada.csv</code> - <code>data/results/06_epca_cargas_evolutivas.csv</code> - <code>data/results/06_epca_transiciones_detectadas.csv</code></p>
 <section id="librerías-y-carga-de-datos" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-carga-de-datos">1. Librerías y carga de datos</h2>
-<div id="465e800e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:26.826187Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:26.825787Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.010671Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.010385Z&quot;}" data-execution_count="1">
+<div id="465e800e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:24.696622Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:24.696435Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:26.631608Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:26.630373Z&quot;}" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'..'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">==</span> <span class="st">'notebooks'</span> <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -421,18 +423,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df_transf <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_estandarizado_mensual.csv'</span>,</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                         index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_niveles <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                          index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_niveles_archivo <span class="op">=</span> pd.read_csv(<span class="st">'data/processed/dataset_niveles_estandarizado_mensual.csv'</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                                  index_col<span class="op">=</span><span class="dv">0</span>, parse_dates<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>VENTANA <span class="op">=</span> <span class="dv">60</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>PASO <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Transformado: </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Niveles:      </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Ventana: </span><span class="sc">{</span>VENTANA<span class="sc">}</span><span class="ss"> meses, paso: </span><span class="sc">{</span>PASO<span class="sc">}</span><span class="ss"> meses'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># D1 (decisiones.qmd): el análisis oficial en niveles usa las 17 series del análisis.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># El archivo trae 19 columnas: el crédito total del SF (colineal con la suma de sus tres</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># componentes) y el IPC subyacente (serie de contraste del IPC) son solo de referencia y se</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># excluyen aquí, igual que en R/tesis_ciclo_financiero.Rmd (meta_an).</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>SERIES_REFERENCIA <span class="op">=</span> [<span class="st">'Crédito SF sector privado'</span>, <span class="st">'IPC Subyacente'</span>]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>df_niveles <span class="op">=</span> df_niveles_archivo.drop(columns<span class="op">=</span>SERIES_REFERENCIA)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Controles antes de modelar: 17 series, las mismas que la vía transformada, sin faltantes</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># y con calendario mensual continuo (no se modela con data incompleta).</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>base_transf <span class="op">=</span> {c.rsplit(<span class="st">'_'</span>, <span class="dv">1</span>)[<span class="dv">0</span>].replace(<span class="st">'_log'</span>, <span class="st">''</span>) <span class="cf">for</span> c <span class="kw">in</span> df_transf.columns}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df_niveles.shape[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">17</span> <span class="kw">and</span> <span class="bu">set</span>(df_niveles.columns) <span class="op">==</span> base_transf, <span class="st">'Series de niveles distintas de las 17 oficiales'</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nombre, df_ <span class="kw">in</span> [(<span class="st">'transformado'</span>, df_transf), (<span class="st">'niveles'</span>, df_niveles)]:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> df_.isna().<span class="bu">any</span>().<span class="bu">any</span>(), <span class="ss">f'Faltantes en </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    calendario <span class="op">=</span> pd.date_range(df_.index.<span class="bu">min</span>(), df_.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(calendario) <span class="op">==</span> <span class="bu">len</span>(df_) <span class="kw">and</span> (calendario <span class="op">==</span> df_.index).<span class="bu">all</span>(), <span class="ss">f'Calendario con huecos en </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>VENTANA <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>PASO <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Transformado: </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_transf<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables'</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Niveles:      </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>df_niveles<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> variables '</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f'(archivo: </span><span class="sc">{</span>df_niveles_archivo<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">; excluidas: </span><span class="sc">{</span><span class="st">", "</span><span class="sc">.</span>join(SERIES_REFERENCIA)<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Ventana: </span><span class="sc">{</span>VENTANA<span class="sc">}</span><span class="ss"> meses, paso: </span><span class="sc">{</span>PASO<span class="sc">}</span><span class="ss"> meses'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Transformado: 227 meses x 17 variables
-Niveles:      228 meses x 19 variables
+Niveles:      228 meses x 17 variables (archivo: 19; excluidas: Crédito SF sector privado, IPC Subyacente)
 Ventana: 60 meses, paso: 3 meses</code></pre>
 </div>
 </div>
@@ -440,7 +459,7 @@ Ventana: 60 meses, paso: 3 meses</code></pre>
 <section id="función-epca" class="level2">
 <h2 class="anchored" data-anchor-id="función-epca">2. Función EPCA</h2>
 <p>Ajusta PCA en cada ventana móvil y devuelve, por ventana: fecha central, varianza explicada, y cargas factoriales completas – la secuencia de estructuras factoriales que define EPCA (ver sección 4.3 del marco conceptual).</p>
-<div id="a0ffb65e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.012413Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.012290Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.014671Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.014456Z&quot;}" data-execution_count="2">
+<div id="a0ffb65e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:26.635140Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:26.634788Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:26.641095Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:26.639912Z&quot;}" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> epca(df, ventana, paso, n_componentes<span class="op">=</span><span class="dv">5</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    fechas <span class="op">=</span> []</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    varianzas <span class="op">=</span> []</span>
@@ -466,7 +485,7 @@ Ventana: 60 meses, paso: 3 meses</code></pre>
 </section>
 <section id="ejecutar-epca-sobre-datos-transformados-mensual" class="level2">
 <h2 class="anchored" data-anchor-id="ejecutar-epca-sobre-datos-transformados-mensual">3. Ejecutar EPCA sobre datos transformados (mensual)</h2>
-<div id="e00bd70d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.016046Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.015924Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.092662Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.092313Z&quot;}" data-execution_count="3">
+<div id="e00bd70d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:26.643490Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:26.643247Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:26.824508Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:26.823519Z&quot;}" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fechas_t, varianzas_t, cargas_t <span class="op">=</span> epca(df_transf, VENTANA, PASO, n_componentes<span class="op">=</span><span class="dv">5</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Ventanas generadas: </span><span class="sc">{</span><span class="bu">len</span>(fechas_t)<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Rango: </span><span class="sc">{</span>fechas_t[<span class="dv">0</span>]<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>fechas_t[<span class="op">-</span><span class="dv">1</span>]<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -478,7 +497,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="evolución-de-la-varianza-explicada-por-pc1-y-pc2" class="level3">
 <h3 class="anchored" data-anchor-id="evolución-de-la-varianza-explicada-por-pc1-y-pc2">3.1 Evolución de la varianza explicada por PC1 y PC2</h3>
 <p>Muestra si la capacidad descriptiva del PCA se mantiene estable en el tiempo, o si cambia (señal de reconfiguración estructural).</p>
-<div id="6510565d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.094581Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.094449Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.330803Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.330428Z&quot;}" data-execution_count="4">
+<div id="6510565d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:26.827232Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:26.827037Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:27.296585Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:27.294942Z&quot;}" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>var_pc1 <span class="op">=</span> [v[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> varianzas_t]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>var_pc2 <span class="op">=</span> [v[<span class="dv">1</span>] <span class="op">*</span> <span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> varianzas_t]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -505,7 +524,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="evolución-de-las-cargas-factoriales-de-pc1" class="level3">
 <h3 class="anchored" data-anchor-id="evolución-de-las-cargas-factoriales-de-pc1">3.2 Evolución de las cargas factoriales de PC1</h3>
 <p>Para las variables con mayor carga promedio en PC1, se grafica cómo cambia su carga a lo largo de las ventanas – esto es lo que Camiz, Maulucci &amp; Roig (2010) llaman “rotación” del componente: si una variable que dominaba PC1 pierde peso mientras otra lo gana, es evidencia directa de reconfiguración estructural (posible transición de régimen).</p>
-<div id="d5c49e5c" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.332670Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.332540Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.584143Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.583791Z&quot;}" data-execution_count="5">
+<div id="d5c49e5c" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:27.299513Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:27.299218Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:27.837181Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:27.836009Z&quot;}" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cargas_pc1 <span class="op">=</span> np.array([c[<span class="dv">0</span>] <span class="cf">for</span> c <span class="kw">in</span> cargas_t])  <span class="co"># (n_ventanas, n_variables)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_cargas_pc1 <span class="op">=</span> pd.DataFrame(cargas_pc1, index<span class="op">=</span>fechas_t, columns<span class="op">=</span>df_transf.columns)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,7 +559,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="estabilidad-y-detección-de-transiciones" class="level3">
 <h3 class="anchored" data-anchor-id="estabilidad-y-detección-de-transiciones">3.3 Estabilidad y detección de transiciones</h3>
 <p>Mismo criterio ya validado en <code>06b</code>: correlación entre cargas de PC1 de ventanas sucesivas. Se marcan como “transición candidata” los puntos por debajo de un umbral (media - 1 desviación estándar).</p>
-<div id="cfee8c15" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.586224Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.586079Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.783108Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.782782Z&quot;}" data-execution_count="6">
+<div id="cfee8c15" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:27.839261Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:27.839075Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:28.238787Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:28.237743Z&quot;}" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>estabilidad <span class="op">=</span> [</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    np.corrcoef(df_cargas_pc1.iloc[i], df_cargas_pc1.iloc[i<span class="op">-</span><span class="dv">1</span>])[<span class="dv">0</span>, <span class="dv">1</span>]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(df_cargas_pc1))</span>
@@ -586,7 +605,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="epca-sobre-niveles-mensual-rastreando-pc2" class="level2">
 <h2 class="anchored" data-anchor-id="epca-sobre-niveles-mensual-rastreando-pc2">4. EPCA sobre niveles (mensual) — rastreando PC2</h2>
 <p>Sección abreviada: mismo procedimiento, pero componente_interes=1 (PC2), por la contaminación de tendencia ya confirmada en PC1.</p>
-<div id="9cbb42f9" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.785466Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.785313Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:29.854323Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:29.854017Z&quot;}" data-execution_count="7">
+<div id="9cbb42f9" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:28.241462Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:28.241261Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:28.428634Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:28.427736Z&quot;}" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fechas_n, varianzas_n, cargas_n <span class="op">=</span> epca(df_niveles, VENTANA, PASO, n_componentes<span class="op">=</span><span class="dv">5</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Ventanas generadas (niveles): </span><span class="sc">{</span><span class="bu">len</span>(fechas_n)<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -596,7 +615,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="evolución-de-la-varianza-explicada-por-pc2-y-pc3-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="evolución-de-la-varianza-explicada-por-pc2-y-pc3-niveles">4.1 Evolución de la varianza explicada por PC2 y PC3 (niveles)</h3>
 <p>Se usa PC2 en vez de PC1 como referencia principal (PC1 contaminado por tendencia), y PC3 como segunda referencia, para mantener el mismo tipo de gráfico de dos componentes que en la sección 3.1.</p>
-<div id="ed19ba5e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:29.856275Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:29.856052Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.056104Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.055776Z&quot;}" data-execution_count="8">
+<div id="ed19ba5e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:28.431722Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:28.431473Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:28.847020Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:28.846012Z&quot;}" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>var_pc2_n <span class="op">=</span> [v[<span class="dv">1</span>] <span class="op">*</span> <span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> varianzas_n]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>var_pc3_n <span class="op">=</span> [v[<span class="dv">2</span>] <span class="op">*</span> <span class="dv">100</span> <span class="cf">for</span> v <span class="kw">in</span> varianzas_n]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -622,7 +641,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="evolución-de-las-cargas-factoriales-de-pc2-niveles" class="level3">
 <h3 class="anchored" data-anchor-id="evolución-de-las-cargas-factoriales-de-pc2-niveles">4.2 Evolución de las cargas factoriales de PC2 (niveles)</h3>
 <p>Mismo procedimiento que la sección 3.2, aplicado a PC2 de niveles.</p>
-<div id="a67850dc" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:30.058081Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:30.057845Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.339978Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.339365Z&quot;}" data-execution_count="9">
+<div id="a67850dc" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:28.850042Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:28.849788Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:29.431143Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:29.429888Z&quot;}" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cargas_pc2_niveles <span class="op">=</span> np.array([c[<span class="dv">1</span>] <span class="cf">for</span> c <span class="kw">in</span> cargas_n])</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_cargas_pc2_niveles <span class="op">=</span> pd.DataFrame(cargas_pc2_niveles, index<span class="op">=</span>fechas_n, columns<span class="op">=</span>df_niveles.columns)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -655,7 +674,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 </section>
 <section id="estabilidad-y-detección-de-transiciones-niveles-pc2" class="level3">
 <h3 class="anchored" data-anchor-id="estabilidad-y-detección-de-transiciones-niveles-pc2">4.3 Estabilidad y detección de transiciones (niveles, PC2)</h3>
-<div id="cee6f2a0" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:30.342467Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:30.342325Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.585720Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.585367Z&quot;}" data-execution_count="10">
+<div id="cee6f2a0" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:29.434689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:29.434424Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:29.875609Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:29.874099Z&quot;}" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>estabilidad_n <span class="op">=</span> [</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    np.corrcoef(df_cargas_pc2_niveles.iloc[i], df_cargas_pc2_niveles.iloc[i<span class="op">-</span><span class="dv">1</span>])[<span class="dv">0</span>, <span class="dv">1</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(df_cargas_pc2_niveles))</span>
@@ -690,10 +709,11 @@ Rango: 2009-08 a 2023-05</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Transiciones candidatas detectadas (niveles, PC2): 4
+<pre><code>Transiciones candidatas detectadas (niveles, PC2): 5
   2012-01
   2013-10
   2015-10
+  2017-10
   2018-01</code></pre>
 </div>
 </div>
@@ -702,7 +722,7 @@ Rango: 2009-08 a 2023-05</code></pre>
 <section id="comparación-directa-transformado-pc1-vs.-niveles-pc2" class="level2">
 <h2 class="anchored" data-anchor-id="comparación-directa-transformado-pc1-vs.-niveles-pc2">5. Comparación directa: transformado (PC1) vs.&nbsp;niveles (PC2)</h2>
 <p>¿Ambas variantes detectan transiciones en fechas parecidas, o divergen? Coincidencias entre ambas son evidencia más fuerte de una transición real que si solo una variante la detecta.</p>
-<div id="0052f60b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:30.588363Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:30.588178Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.592966Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.592628Z&quot;}" data-execution_count="11">
+<div id="0052f60b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:29.878273Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:29.877927Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:29.886297Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:29.885096Z&quot;}" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'--- Transiciones candidatas: transformado (PC1) ---'</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> transiciones:</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>t<span class="sc">.</span>strftime(<span class="st">"%Y-%m"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
@@ -733,18 +753,21 @@ Rango: 2009-08 a 2023-05</code></pre>
   2012-01
   2013-10
   2015-10
+  2017-10
   2018-01
 
-Coincidencias (dentro de +/- 6 meses): 3
+Coincidencias (dentro de +/- 6 meses): 5
   Transformado 2013-05  &lt;-&gt;  Niveles 2013-10
+  Transformado 2017-11  &lt;-&gt;  Niveles 2017-10
   Transformado 2017-11  &lt;-&gt;  Niveles 2018-01
+  Transformado 2018-02  &lt;-&gt;  Niveles 2017-10
   Transformado 2018-02  &lt;-&gt;  Niveles 2018-01</code></pre>
 </div>
 </div>
 </section>
 <section id="guardar-resultados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-resultados">6. Guardar resultados</h2>
-<div id="1ae86791" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:30.594683Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:30.594549Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.604582Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.604271Z&quot;}" data-execution_count="12">
+<div id="1ae86791" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:29.888628Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:29.888373Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:29.906033Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:29.905040Z&quot;}" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'data/results'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df_varianza <span class="op">=</span> pd.DataFrame({<span class="st">'fecha'</span>: fechas_t, <span class="st">'var_pc1'</span>: var_pc1, <span class="st">'var_pc2'</span>: var_pc2})</span>
@@ -770,7 +793,7 @@ Coincidencias (dentro de +/- 6 meses): 3
   - 06_epca_transiciones_detectadas.csv / 06_epca_transiciones_detectadas_niveles.csv</code></pre>
 </div>
 </div>
-<div id="be7689c8-9324-4e9a-92bc-96671e48886b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:30.607018Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:30.606801Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:37:30.615446Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:37:30.615164Z&quot;}" data-execution_count="13">
+<div id="be7689c8-9324-4e9a-92bc-96671e48886b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-20T10:15:29.908126Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-20T10:15:29.907823Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-20T10:15:29.922622Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-20T10:15:29.921055Z&quot;}" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> archivo <span class="kw">in</span> [</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'data/processed/dataset_estandarizado_trimestral.csv'</span>,</span>
