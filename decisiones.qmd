@@ -14,6 +14,56 @@ Las entradas van de la más reciente a la más antigua. El avance por sesión es
 [línea temporal](linea_temporal.qmd).
 :::
 
+## D6 · 20 de octubre de 2026 · Métodos del asesor también en Python
+
+**Contexto.** `aede` (EPCA con datación) y `clahfac` (HFC) del Dr. Camiz existen solo en R
+(`R/camiz_port.R`). Esa versión en R puro se validó contra el binario `AedeClahfac` 1.2.
+
+**Decisión.** Se portan también a Python, para mantener la paridad Python–R en todo el análisis.
+La versión en R sigue siendo la referencia: la de Python debe reproducir los CSV `R_*` de las dos
+vías.
+
+**Alternativa descartada.** Declararlos como excepción a la paridad (solo en R).
+
+## D5 · 20 de octubre de 2026 · Regla fijada para clasificar la tendencia
+
+**Contexto.** La conclusión de D2 sobre el PC2 depende del nulo de tendencias que se use: con
+deriva, p ≈ 0,01; sin deriva, p ≈ 0,59. El nulo pertinente depende de que la tendencia de cada
+serie y de cada componente sea determinística o estocástica.
+
+**Decisión.** La regla se fija **antes** de calcular. Para cada componente (PC1 a PC4, en las dos
+vías) y cada una de las 17 series sin transformar, se ajusta $x_t = a + b\,t + e_t$ por MCO y a
+los residuos se les aplican las pruebas ADF y KPSS, con especificación y rezagos fijos y
+declarados en el código.
+
+- ADF rechaza al 5 % y KPSS no → **estacionaria en tendencia** (TS).
+- ADF no rechaza y KPSS rechaza → **integrada** (DS).
+- Cualquier otro caso → **indeterminada**.
+
+El análisis de las series sin transformar sin tendencia lineal es un **diagnóstico**, no una
+tercera vía: no modifica D2.
+
+**Alternativa descartada.** Analizar las series sin tendencia como una tercera vía completa.
+
+## D4 · 20 de octubre de 2026 · Datos congelados
+
+**Contexto.** El BCRP revisa el ajuste estacional de algunas series (PBI y demanda interna
+desestacionalizados), de modo que cambian según la fecha de descarga.
+
+**Decisión.** La tesis usa la versión de los datos de 2007-01 a 2025-12 versionada en el
+repositorio el 16 de octubre de 2026. Cualquier actualización requiere una nueva decisión.
+
+| Archivo | md5 |
+|---|---|
+| `data/processed/dataset_niveles_mensual.csv` | `8088c28cf277419388d9562722faa1ad` |
+| `data/processed/dataset_transformado_mensual.csv` | `8c49f3e55608f2651be3c1dee4236194` |
+| `data/processed/dataset_niveles_estandarizado_mensual.csv` | `153638578212ecc820ec9223087c080a` |
+| `data/processed/dataset_estandarizado_mensual.csv` | `43a01dead7ffb96e8b3b7e4d2799f15d` |
+| `data/processed/series_bcrp_consolidado.csv` | `61e6a6bc92eee23c6c476f096d402edb` |
+
+**Riesgo declarado.** Los valores de las series desestacionalizadas pueden diferir de una descarga
+posterior desde el BCRP.
+
 ## D3 · octubre de 2026 (registrada el 20 de octubre) · Solo la vía mensual
 
 **Contexto.** El repositorio mantenía dos frecuencias: trimestral (notebooks `04`, `05`, `06a`)

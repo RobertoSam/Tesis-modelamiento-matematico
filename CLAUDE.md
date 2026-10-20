@@ -17,7 +17,9 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
 4. **Decisiones metodológicas:** `decisiones.qmd` es la fuente de verdad. Vigentes: D1
    (niveles como análisis oficial), D2 (análisis en dos vías; la propuesta de la Parte C está
    pendiente de discutir con el asesor) y D3 (solo frecuencia mensual; `06a` superado, `05` por
-   rehacer en mensual). Si algo contradice una decisión, se avisa; no se corrige en silencio.
+   rehacer en mensual), D4 (datos congelados), D5 (regla de tendencia fijada de antemano) y D6
+   (`aede` y HFC también en Python). Si algo contradice una decisión, se avisa; no se corrige en
+   silencio.
 5. **Epistemología:** posición del asesor «datos primero» (Benzécri, *laisser parler les
    données*). Los Autoencoders/LSTM se presentan como complemento, con discusión explícita de
    los supuestos que imponen.
