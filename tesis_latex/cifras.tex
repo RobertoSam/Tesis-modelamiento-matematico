@@ -1,0 +1,112 @@
+% Archivo generado por herramientas/generar_cifras.py a partir de herramientas/cifras_mapa.csv.
+% No editar a mano: cada cifra se lee de data/results/ (regla 3 de CLAUDE.md).
+% Para regenerarlo: python3 herramientas/generar_cifras.py
+
+% Meses de la vía en niveles | data/results/05_dimensiones.csv | via=niveles | n
+\newcommand{\nMesesNiveles}{228}
+% Meses de la vía transformada | data/results/05_dimensiones.csv | via=transformadas | n
+\newcommand{\nMesesTransformadas}{227}
+% Series del análisis (D1) | data/results/05_dimensiones.csv | via=niveles | p
+\newcommand{\nSeries}{17}
+% Primer mes de la vía en niveles | data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+\newcommand{\fechaInicioNiveles}{enero de 2007}
+% Primer mes de la vía transformada | data/results/05_dimensiones.csv | via=transformadas | fecha_inicio
+\newcommand{\fechaInicioTransformadas}{febrero de 2007}
+% Último mes de los datos (ambas vías) | data/results/05_dimensiones.csv | via=niveles | fecha_fin
+\newcommand{\fechaFinDatos}{diciembre de 2025}
+% Año inicial del período de estudio | data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+\newcommand{\anioInicioDatos}{2007}
+% Año final del período de estudio | data/results/05_dimensiones.csv | via=niveles | fecha_fin
+\newcommand{\anioFinDatos}{2025}
+% Inercia (%) de PC1 en niveles | data/results/niveles/05_pca_valores_propios.csv | componente=1 | inercia
+\newcommand{\inerciaPCUnoNiveles}{67{,}2}
+% Inercia (%) de PC2 en niveles | data/results/niveles/05_pca_valores_propios.csv | componente=2 | inercia
+\newcommand{\inerciaPCDosNiveles}{18{,}3}
+% Inercia (%) de PC3 en niveles | data/results/niveles/05_pca_valores_propios.csv | componente=3 | inercia
+\newcommand{\inerciaPCTresNiveles}{7{,}1}
+% Inercia (%) de PC4 en niveles | data/results/niveles/05_pca_valores_propios.csv | componente=4 | inercia
+\newcommand{\inerciaPCCuatroNiveles}{2{,}9}
+% Inercia (%) de PC1 en transformadas | data/results/05_pca_valores_propios.csv | componente=1 | inercia
+\newcommand{\inerciaPCUnoTransformadas}{23{,}3}
+% Inercia (%) de PC2 en transformadas | data/results/05_pca_valores_propios.csv | componente=2 | inercia
+\newcommand{\inerciaPCDosTransformadas}{16{,}0}
+% Inercia (%) de PC3 en transformadas | data/results/05_pca_valores_propios.csv | componente=3 | inercia
+\newcommand{\inerciaPCTresTransformadas}{11{,}2}
+% Inercia (%) de PC4 en transformadas | data/results/05_pca_valores_propios.csv | componente=4 | inercia
+\newcommand{\inerciaPCCuatroTransformadas}{8{,}6}
+% Componentes retenidos por Horn en niveles | data/results/niveles/05_pca_retencion.csv | criterio=horn | componentes
+\newcommand{\hornNiveles}{2}
+% Componentes retenidos por Horn en transformadas | data/results/05_pca_retencion.csv | criterio=horn | componentes
+\newcommand{\hornTransformadas}{4}
+% Componentes con valor propio > 1 en niveles | data/results/niveles/05_pca_retencion.csv | criterio=kaiser | componentes
+\newcommand{\kaiserNiveles}{3}
+% Componentes con valor propio > 1 en transformadas | data/results/05_pca_retencion.csv | criterio=kaiser | componentes
+\newcommand{\kaiserTransformadas}{6}
+% KMO global en niveles | data/results/niveles/05_adecuacion.csv | ambito=global;medida=kmo_global | valor
+\newcommand{\kmoGlobalNiveles}{0{,}86}
+% KMO global en transformadas | data/results/05_adecuacion.csv | ambito=global;medida=kmo_global | valor
+\newcommand{\kmoGlobalTransformadas}{0{,}70}
+% Chi cuadrado de Bartlett con n en niveles | data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_n | valor
+\newcommand{\chiBartlettNiveles}{12\,210}
+% Chi cuadrado de Bartlett con n en transformadas | data/results/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_n | valor
+\newcommand{\chiBartlettTransformadas}{1\,831}
+% Grados de libertad de Bartlett (p(p-1)/2) | data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_gl | valor
+\newcommand{\glBartlett}{136}
+% Chi cuadrado de Bartlett con la mediana de n_ef en niveles | data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_nef | valor
+\newcommand{\chiBartlettNefNiveles}{162}
+% p-valor de Bartlett con la mediana de n_ef en niveles | data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_p_nef | valor
+\newcommand{\pBartlettNefNiveles}{0{,}06}
+% Mediana de n_ef entre pares en niveles | data/results/niveles/05_n_efectivo_resumen.csv | version=original | n_ef_mediana
+\newcommand{\nEfMedianaNiveles}{10{,}4}
+% Mediana de n_ef entre pares en transformadas | data/results/05_n_efectivo_resumen.csv | version=original | n_ef_mediana
+\newcommand{\nEfMedianaTransformadas}{182{,}0}
+% Número de condición de R en niveles | data/results/niveles/05_adecuacion.csv | ambito=global;medida=num_condicion | valor
+\newcommand{\numCondicionNiveles}{67\,647}
+% Número de condición de R en transformadas | data/results/05_adecuacion.csv | ambito=global;medida=num_condicion | valor
+\newcommand{\numCondicionTransformadas}{68}
+% Correlación de PC1 con el tiempo en niveles | data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC1 | r_tiempo
+\newcommand{\rTiempoPCUnoNiveles}{0{,}993}
+% Clase D5 de PC1 en niveles | data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC1 | clase_d5
+\newcommand{\claseDCincoPCUnoNiveles}{DS}
+% Clase D5 de PC2 en niveles | data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC2 | clase_d5
+\newcommand{\claseDCincoPCDosNiveles}{DS}
+% Clase D5 de PC3 en niveles | data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC3 | clase_d5
+\newcommand{\claseDCincoPCTresNiveles}{DS}
+% Clase D5 de PC4 en niveles | data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC4 | clase_d5
+\newcommand{\claseDCincoPCCuatroNiveles}{DS}
+% Clase D5 de PC1 en transformadas | data/results/05_pca_tendencia_componentes.csv | nombre=PC1 | clase_d5
+\newcommand{\claseDCincoPCUnoTransformadas}{TS}
+% Clase D5 de PC2 en transformadas | data/results/05_pca_tendencia_componentes.csv | nombre=PC2 | clase_d5
+\newcommand{\claseDCincoPCDosTransformadas}{TS}
+% Clase D5 de PC3 en transformadas | data/results/05_pca_tendencia_componentes.csv | nombre=PC3 | clase_d5
+\newcommand{\claseDCincoPCTresTransformadas}{TS}
+% Clase D5 de PC4 en transformadas | data/results/05_pca_tendencia_componentes.csv | nombre=PC4 | clase_d5
+\newcommand{\claseDCincoPCCuatroTransformadas}{indeterminada}
+% Series en niveles clasificadas TS (D5) | data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | TS
+\newcommand{\nSeriesTS}{1}
+% Series en niveles clasificadas DS (D5) | data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | DS
+\newcommand{\nSeriesDS}{13}
+% Series en niveles con clase indeterminada (D5) | data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | indeterminada
+\newcommand{\nSeriesIndeterminadas}{3}
+% Proporción del nulo con deriva con PC1 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc1 | proporcion
+\newcommand{\nuloConDerivaPCUno}{0{,}902}
+% Proporción del nulo con deriva con PC2 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc2 | proporcion
+\newcommand{\nuloConDerivaPCDos}{0{,}015}
+% Proporción del nulo sin deriva con PC1 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=sin_deriva;medida=inercia_pc1 | proporcion
+\newcommand{\nuloSinDerivaPCUno}{0{,}004}
+% Proporción del nulo sin deriva con PC2 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=sin_deriva;medida=inercia_pc2 | proporcion
+\newcommand{\nuloSinDerivaPCDos}{0{,}592}
+% Proporción del nulo sin tendencia con PC1 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=sin_tendencia;medida=inercia_pc1 | proporcion
+\newcommand{\nuloSinTendenciaPCUno}{0{,}124}
+% Proporción del nulo sin tendencia con PC2 >= observado | data/results/niveles/05_nulo_tendencias.csv | version=sin_tendencia;medida=inercia_pc2 | proporcion
+\newcommand{\nuloSinTendenciaPCDos}{0{,}595}
+% Mediana de la inercia de PC1 bajo el nulo con deriva | data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc1 | p50
+\newcommand{\nuloConDerivaMedianaPCUno}{74{,}6}
+% Inercia (%) de PC1 de las series en niveles sin tendencia lineal | data/results/niveles/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=inercia;componente=1 | valor
+\newcommand{\inerciaPCUnoSinTendencia}{40{,}0}
+% KMO de las series en niveles sin tendencia lineal | data/results/niveles/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=kmo | valor
+\newcommand{\kmoSinTendencia}{0{,}70}
+% Percentil 5 de la congruencia bootstrap de PC2 (niveles; L = 24) | data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=2 | p5
+\newcommand{\congruenciaBootPCDosNiveles}{0{,}793}
+% Percentil 5 de la congruencia bootstrap de PC4 (niveles; L = 24) | data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=4 | p5
+\newcommand{\congruenciaBootPCCuatroNiveles}{0{,}608}

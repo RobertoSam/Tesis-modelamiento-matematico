@@ -1,0 +1,57 @@
+# Archivo generado por herramientas/generar_cifras.py a partir de herramientas/cifras_mapa.csv.
+# No editar a mano. Uso en Quarto: {{< meta cifras.<macro> >}} (ver herramientas/README.md).
+cifras:
+  nMesesNiveles: "228"  # data/results/05_dimensiones.csv | via=niveles | n
+  nMesesTransformadas: "227"  # data/results/05_dimensiones.csv | via=transformadas | n
+  nSeries: "17"  # data/results/05_dimensiones.csv | via=niveles | p
+  fechaInicioNiveles: "enero de 2007"  # data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+  fechaInicioTransformadas: "febrero de 2007"  # data/results/05_dimensiones.csv | via=transformadas | fecha_inicio
+  fechaFinDatos: "diciembre de 2025"  # data/results/05_dimensiones.csv | via=niveles | fecha_fin
+  anioInicioDatos: "2007"  # data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+  anioFinDatos: "2025"  # data/results/05_dimensiones.csv | via=niveles | fecha_fin
+  inerciaPCUnoNiveles: "67,2"  # data/results/niveles/05_pca_valores_propios.csv | componente=1 | inercia
+  inerciaPCDosNiveles: "18,3"  # data/results/niveles/05_pca_valores_propios.csv | componente=2 | inercia
+  inerciaPCTresNiveles: "7,1"  # data/results/niveles/05_pca_valores_propios.csv | componente=3 | inercia
+  inerciaPCCuatroNiveles: "2,9"  # data/results/niveles/05_pca_valores_propios.csv | componente=4 | inercia
+  inerciaPCUnoTransformadas: "23,3"  # data/results/05_pca_valores_propios.csv | componente=1 | inercia
+  inerciaPCDosTransformadas: "16,0"  # data/results/05_pca_valores_propios.csv | componente=2 | inercia
+  inerciaPCTresTransformadas: "11,2"  # data/results/05_pca_valores_propios.csv | componente=3 | inercia
+  inerciaPCCuatroTransformadas: "8,6"  # data/results/05_pca_valores_propios.csv | componente=4 | inercia
+  hornNiveles: "2"  # data/results/niveles/05_pca_retencion.csv | criterio=horn | componentes
+  hornTransformadas: "4"  # data/results/05_pca_retencion.csv | criterio=horn | componentes
+  kaiserNiveles: "3"  # data/results/niveles/05_pca_retencion.csv | criterio=kaiser | componentes
+  kaiserTransformadas: "6"  # data/results/05_pca_retencion.csv | criterio=kaiser | componentes
+  kmoGlobalNiveles: "0,86"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=kmo_global | valor
+  kmoGlobalTransformadas: "0,70"  # data/results/05_adecuacion.csv | ambito=global;medida=kmo_global | valor
+  chiBartlettNiveles: "12 210"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_n | valor
+  chiBartlettTransformadas: "1 831"  # data/results/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_n | valor
+  glBartlett: "136"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_gl | valor
+  chiBartlettNefNiveles: "162"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_chi2_nef | valor
+  pBartlettNefNiveles: "0,06"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=bartlett_p_nef | valor
+  nEfMedianaNiveles: "10,4"  # data/results/niveles/05_n_efectivo_resumen.csv | version=original | n_ef_mediana
+  nEfMedianaTransformadas: "182,0"  # data/results/05_n_efectivo_resumen.csv | version=original | n_ef_mediana
+  numCondicionNiveles: "67 647"  # data/results/niveles/05_adecuacion.csv | ambito=global;medida=num_condicion | valor
+  numCondicionTransformadas: "68"  # data/results/05_adecuacion.csv | ambito=global;medida=num_condicion | valor
+  rTiempoPCUnoNiveles: "0,993"  # data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC1 | r_tiempo
+  claseDCincoPCUnoNiveles: "DS"  # data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC1 | clase_d5
+  claseDCincoPCDosNiveles: "DS"  # data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC2 | clase_d5
+  claseDCincoPCTresNiveles: "DS"  # data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC3 | clase_d5
+  claseDCincoPCCuatroNiveles: "DS"  # data/results/niveles/05_pca_tendencia_componentes.csv | nombre=PC4 | clase_d5
+  claseDCincoPCUnoTransformadas: "TS"  # data/results/05_pca_tendencia_componentes.csv | nombre=PC1 | clase_d5
+  claseDCincoPCDosTransformadas: "TS"  # data/results/05_pca_tendencia_componentes.csv | nombre=PC2 | clase_d5
+  claseDCincoPCTresTransformadas: "TS"  # data/results/05_pca_tendencia_componentes.csv | nombre=PC3 | clase_d5
+  claseDCincoPCCuatroTransformadas: "indeterminada"  # data/results/05_pca_tendencia_componentes.csv | nombre=PC4 | clase_d5
+  nSeriesTS: "1"  # data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | TS
+  nSeriesDS: "13"  # data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | DS
+  nSeriesIndeterminadas: "3"  # data/results/niveles/05_clasificacion_d5_resumen.csv | conjunto=series_niveles | indeterminada
+  nuloConDerivaPCUno: "0,902"  # data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc1 | proporcion
+  nuloConDerivaPCDos: "0,015"  # data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc2 | proporcion
+  nuloSinDerivaPCUno: "0,004"  # data/results/niveles/05_nulo_tendencias.csv | version=sin_deriva;medida=inercia_pc1 | proporcion
+  nuloSinDerivaPCDos: "0,592"  # data/results/niveles/05_nulo_tendencias.csv | version=sin_deriva;medida=inercia_pc2 | proporcion
+  nuloSinTendenciaPCUno: "0,124"  # data/results/niveles/05_nulo_tendencias.csv | version=sin_tendencia;medida=inercia_pc1 | proporcion
+  nuloSinTendenciaPCDos: "0,595"  # data/results/niveles/05_nulo_tendencias.csv | version=sin_tendencia;medida=inercia_pc2 | proporcion
+  nuloConDerivaMedianaPCUno: "74,6"  # data/results/niveles/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc1 | p50
+  inerciaPCUnoSinTendencia: "40,0"  # data/results/niveles/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=inercia;componente=1 | valor
+  kmoSinTendencia: "0,70"  # data/results/niveles/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=kmo | valor
+  congruenciaBootPCDosNiveles: "0,793"  # data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=2 | p5
+  congruenciaBootPCCuatroNiveles: "0,608"  # data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=4 | p5

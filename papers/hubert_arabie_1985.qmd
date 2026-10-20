@@ -1,0 +1,64 @@
+---
+title: "Hubert & Arabie (1985) — Comparing partitions"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con metadatos de una fuente secundaria. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-035 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hubert, L., & Arabie, P. (1985). Comparing partitions. *Journal of Classification, 2*(1), 193–218. https://doi.org/10.1007/BF01908075
+
+> **Verificación:** Metadatos (autores, título, volumen 2, número 1, diciembre de 1985, pp. 193–218, DOI) tomados de RePEc/IDEAS el 2026-10-20, fuente secundaria alimentada por la editorial (Springer). **Contrastar con SpringerLink.** Sin resumen disponible.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Comparación de particiones |
+| **Área secundaria** | Índice de Rand ajustado |
+| **Relevancia para la tesis** | **MEDIA.** Fuente habitual del índice de Rand ajustado usado en A.4 (HFC evolutiva); la atribución **no se verificó en el texto**. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebooks 06–07 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Índice de Rand ajustado (atribución por verificar) | Estabilidad de las particiones HFC entre ventanas |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata del ARI.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

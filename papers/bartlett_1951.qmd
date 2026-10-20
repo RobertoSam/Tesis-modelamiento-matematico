@@ -1,0 +1,64 @@
+---
+title: "Bartlett (1951) — The effect of standardization on a χ² approximation in factor analysis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos verificados en la editorial, sin acceso al texto. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-023 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bartlett, M. S. (1951). The effect of standardization on a χ² approximation in factor analysis. *Biometrika, 38*(3–4), 337–344. https://doi.org/10.1093/biomet/38.3-4.337
+
+> **Verificación:** Metadatos (autor, título, volumen 38, número 3–4, pp. 337–344, publicado el 1 de diciembre de 1951, DOI) verificados en Oxford Academic, editorial de *Biometrika*, el 2026-10-20. El texto requiere suscripción y no se consultó.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de significación en análisis factorial |
+| **Área secundaria** | Aproximación χ² con matrices estandarizadas |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Es la referencia que la documentación de `psych::cortest.bartlett` da para la prueba de esfericidad. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración. Por el título, trata el efecto de estandarizar sobre una aproximación χ² en análisis factorial.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. La documentación de `psych` (fuente secundaria) describe el estadístico como $-\ln|R|\,(N-1-(2p+5)/6)$, distribuido como χ² si $R$ es la identidad; **no se verificó en el artículo**.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estadístico de esfericidad (según `psych`, por verificar) | $\chi^2_{\mathrm B}$ del capítulo 2 con $n$ o con $n_{\text{ef}}$ |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente probable de la forma del estadístico sobre la matriz de correlaciones.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Bartlett (1950) | Alta | Ficha preliminar FB-022 |

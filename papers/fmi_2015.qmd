@@ -1,0 +1,61 @@
+---
+title: "FMI (2015) — Recuadro especial sobre materias primas, WEO de abril de 2015"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-049 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+International Monetary Fund. (2015). Special feature: Commodity market developments and forecasts, with a focus on investment in an era of low oil prices. En *World Economic Outlook, April 2015: Uneven growth: Short- and long-term factors*. International Monetary Fund. https://www.imf.org/external/np/res/commod/pdf/WEOSpecialAPR15.pdf
+
+> **Verificación:** Leído en imf.org el 2026-10-20: «Commodity prices have declined 28 percent since September 2014»; «Metal prices have declined 15 percent since September 2014»; los metales están 44 % por debajo de su pico de 2011. **Faltan las páginas del recuadro dentro del informe completo.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Colapso de los precios de las materias primas |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Evolución de los precios de las materias primas tras el WEO de octubre de 2014.
+
+### Fecha que respalda
+
+**Septiembre de 2014** como punto de comparación de la caída (no como fecha de inicio declarada). Distinto del inicio de `06b` (2014-06). Para los metales, el FMI ubica el pico en **2011**.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio (evento externo, con matices) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- La fecha de septiembre de 2014 es la base de la comparación del FMI, no un inicio fechado del colapso.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

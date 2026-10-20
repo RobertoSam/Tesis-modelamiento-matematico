@@ -1,0 +1,64 @@
+---
+title: "Kish (1965) — Survey sampling"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con un registro de catálogo, sin acceso a la obra. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-036 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kish, L. (1965). *Survey sampling*. John Wiley & Sons.
+
+> **Verificación:** Registro del catálogo de la biblioteca de la Universidad de Pensilvania (Franklin, OCLC 256017) consultado el 2026-10-20: Kish, Leslie, 1910–2000; *Survey sampling*; Nueva York, J. Wiley, 1965; xvi + 643 p. **Verificar en el texto el capítulo y la página de la fórmula del tamaño muestral efectivo con pesos.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Muestreo |
+| **Área secundaria** | Efecto de diseño y tamaño muestral efectivo |
+| **Relevancia para la tesis** | **MEDIA.** Atribución habitual del $n$ efectivo con pesos, $1/\sum\omega^2$ (pesos normalizados), usado con los pesos gaussianos del EPCA. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. La fórmula $1/\sum\omega^2$ **no se verificó** en la obra.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| $n$ efectivo con pesos (atribución por verificar) | $n$ efectivo de una ventana con pesos gaussianos (análisis paralelo de la EPCA) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata del $n$ efectivo de Kish.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar; obra de muestreo de encuestas, no de series de tiempo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

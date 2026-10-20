@@ -1,0 +1,63 @@
+---
+title: "Granger & Newbold (1974) — Spurious regressions in econometrics"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-027 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído (copia digitalizada del artículo publicado, OCR con errores menores) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Granger, C. W. J., & Newbold, P. (1974). Spurious regressions in econometrics. *Journal of Econometrics, 2*, 111–120.
+
+> **Verificación:** Autores, afiliación (Universidad de Nottingham), título, volumen 2, año 1974, páginas 111–120 y editorial (North-Holland) tomados de la cabecera de la primera página de la copia leída (gwern.net) el 2026-10-20. **El número del fascículo y el DOI no figuran en la copia y la página de Elsevier no fue accesible: verificar.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Econometría de series de tiempo |
+| **Área secundaria** | Regresión espuria entre series no estacionarias |
+| **Relevancia para la tesis** | **ALTA.** Sostiene la advertencia de regresión espuria del apunte 11 (regresión sobre el tiempo) y del argumento de D2. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Los trabajos aplicados reportan a menudo un $R^2$ alto con un Durbin-Watson ($d$) muy bajo (p. 111). Con series no estacionarias en niveles, las pruebas de significación habituales dejan de ser válidas.
+
+### Propuesta metodológica
+
+Simulación (p. 115): dos paseos aleatorios independientes de 50 observaciones, 100 réplicas; la prueba t al 5 % rechazó la ausencia de relación en cerca de tres cuartas partes de los casos. Con más regresores (tabla 2, p. 116) el rechazo sube de 76 % ($m=1$) a 96 % ($m=5$). Las primeras diferencias de paseos aleatorios se comportan bien. Regla práctica (p. 117): «a high value for R² [...] combined with a low value of d, is no indication of a true relationship». Recomendación (p. 118): tomar primeras diferencias de las variables muy autocorrelacionadas, sin que sea una solución universal, y modelar niveles y cambios.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Paseos aleatorios independientes | Nulo de tendencias del apunte 10 (series independientes con deriva) |
+| $R^2$ alto con $d$ bajo | Correlaciones altas entre series en niveles (NIV) |
+| Diferenciar | Vía transformada (TRA) de D2 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria del fenómeno de regresión espuria invocado en el Rmd (sección 2) y en el apunte 11.
+- Apoya el argumento a favor de transformar en D2, que la tesis debe presentar junto con el de niveles.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Evidencia por simulación con muestras pequeñas (50 observaciones); la teoría asintótica es de Phillips (1986).
+- Trata la regresión entre series, no el PCA; la extensión a correlaciones resumidas por un PCA es un argumento de la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Phillips (1986) | Alta — teoría asintótica | Ficha preliminar FB-028 |

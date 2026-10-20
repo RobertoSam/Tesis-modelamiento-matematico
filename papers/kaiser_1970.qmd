@@ -1,0 +1,64 @@
+---
+title: "Kaiser (1970) — A second generation little jiffy"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos verificados en la editorial, sin acceso al texto ni a un resumen. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-024 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kaiser, H. F. (1970). A second generation little jiffy. *Psychometrika, 35*(4), 401–415. https://doi.org/10.1007/BF02291817
+
+> **Verificación:** Metadatos (autor, título, volumen 35, número 4, diciembre de 1970, pp. 401–415, DOI) verificados en Cambridge Core el 2026-10-20. Cambridge Core no muestra resumen; según su nota al pie, el texto fue un discurso presidencial ante la Psychometric Society (Miami Beach, 7 de septiembre de 1970). Texto no consultado.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial exploratorio |
+| **Área secundaria** | Medida de adecuación muestral (MSA) |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** La documentación de `psych::KMO` (fuente secundaria) la da como origen de la MSA. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. Según `psych` (fuente secundaria, por verificar), la versión de 1970 de la MSA era $1-\sum q^2/\sum r^2$ y Kaiser y Rice (1974) la cambiaron a $\sum r^2/(\sum r^2+\sum q^2)$, con $q$ las correlaciones anti-imagen.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| MSA (por verificar) | KMO global y por serie del capítulo 2 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria probable de la MSA.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar: la fórmula no se atribuye hasta leer el texto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Kaiser y Rice (1974) | Alta | Ficha preliminar FB-025 |

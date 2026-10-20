@@ -1,0 +1,55 @@
+% =============================================================================
+% tesis.tex · Documento maestro de la tesis
+% «Detección evolutiva de regímenes del ciclo financiero peruano mediante
+%  Clasificación Factorial Jerárquica y aprendizaje automático»
+% Compilar desde la raíz del repositorio:  latexmk -lualatex -cd tesis_latex/tesis.tex
+% =============================================================================
+\nonstopmode % no detenerse a pedir entrada (latexmk -cd no lee tesis_latex/latexmkrc)
+\documentclass[12pt, a4paper, oneside, openany]{book}
+
+\input{preambulo}
+\input{notacion}
+
+% Cifras: cifras.tex lo genera herramientas/generar_cifras.py desde data/results/.
+% Mientras no exista, o si le falta alguna macro, cifras_stub.tex la define como
+% \pendiente{cifra} (\providecommand no sobrescribe las macros ya generadas).
+\IfFileExists{cifras.tex}{\input{cifras}}{}
+\input{cifras_stub}
+
+\title{Detección evolutiva de regímenes del ciclo financiero peruano mediante
+  Clasificación Factorial Jerárquica y aprendizaje automático}
+\author{Roberto Carlos Samaniego Salcedo}
+\date{}
+
+\begin{document}
+
+% ---- Páginas preliminares ----------------------------------------------------
+\frontmatter
+\input{capitulos/00_portada}
+
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+\markboth{Resumen}{Resumen}
+\pendiente{el resumen (un solo párrafo de 250 palabras como máximo, con 2 a 4 palabras
+clave) y el abstract se redactan cuando los capítulos 1 a 5 estén aprobados}
+
+\cleardoublepage
+\tableofcontents
+\listadesimbolos
+
+% ---- Cuerpo ------------------------------------------------------------------
+\mainmatter
+\include{capitulos/01_introduccion}
+\include{capitulos/02_marco_teorico}
+\include{capitulos/03_metodologia}
+\include{capitulos/04_resultados}
+\include{capitulos/05_conclusiones}
+
+% ---- Referencias y apéndices -------------------------------------------------
+\backmatter
+\printbibliography[heading=bibintoc, title={Referencias}]
+
+\appendix
+\input{apendices/apendices}
+
+\end{document}

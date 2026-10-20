@@ -1,0 +1,28 @@
+ambito,medida,valor
+global,n,227.0
+global,n_ef_mediana,181.99529332029948
+global,bartlett_chi2_n,1831.0816445546118
+global,bartlett_gl,136.0
+global,bartlett_p_n,1.9457874691948535e-294
+global,bartlett_chi2_nef,1455.6497888837055
+global,bartlett_p_nef,1.3976305030220451e-219
+global,kmo_global,0.6952753596385228
+global,num_condicion,68.14257102211754
+global,log_det,-8.342057606171352
+Crédito empresarial,kmo_individual,0.5761453783810307
+Crédito consumo,kmo_individual,0.7786671798496323
+Crédito hipotecario,kmo_individual,0.6312066700855183
+M1 (dinero),kmo_individual,0.7310104471878079
+M2 (liquidez en soles),kmo_individual,0.6703651344375742
+M3 (liquidez total),kmo_individual,0.7111636145255611
+Tasa de referencia,kmo_individual,0.7218777436523908
+Tasa interbancaria,kmo_individual,0.6996734976594841
+TAMN,kmo_individual,0.673576548283972
+TIPMN,kmo_individual,0.7726944897692064
+IPC Lima,kmo_individual,0.7617206362191699
+Tipo de cambio,kmo_individual,0.5576297270017379
+Índice BVL,kmo_individual,0.7422556883808401
+EMBIG Perú,kmo_individual,0.7324975413993543
+PBI desestacionalizado,kmo_individual,0.45954873762307524
+Demanda interna,kmo_individual,0.6509194867318601
+Reservas internacionales netas,kmo_individual,0.736883931687389

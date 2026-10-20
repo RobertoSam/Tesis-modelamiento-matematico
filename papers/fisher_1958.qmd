@@ -21,7 +21,7 @@ final hay que leer el artículo y completar o corregir las secciones 4 a 6.
 
 Fisher, W. D. (1958). On grouping for maximum homogeneity. *Journal of the American Statistical Association, 53*(284), 789–798. https://doi.org/10.1080/01621459.1958.10501479
 
-> **Verificación:** Referencia (volumen 53, páginas 789–798) confirmada en registros bibliográficos secundarios el 2026-10-04. **Verificar el número (284) y el DOI en JSTOR o en Taylor & Francis**; texto no consultado.
+> **Verificación:** El 2026-10-20 la página de Taylor & Francis (editorial) apareció en el buscador con el título «On Grouping for Maximum Homogeneity: Journal of the American Statistical Association: Vol 53, No 284» y el DOI 10.1080/01621459.1958.10501479 en su dirección: quedan respaldados el volumen 53, el número 284 y el DOI. La página no se pudo abrir (error de acceso), y JSTOR, doi.org y Semantic Scholar tampoco fueron accesibles. **Las páginas 789–798 siguen constando solo en fuentes secundarias.** Texto no consultado: la ficha sigue siendo preliminar y la pregunta sobre el caso multivariado (sección 4) sigue abierta.
 
 ## 3. Clasificación temática
 

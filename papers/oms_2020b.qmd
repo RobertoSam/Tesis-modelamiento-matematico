@@ -1,0 +1,61 @@
+---
+title: "OMS (2020b) — Caracterización de la COVID-19 como pandemia"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-043 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+World Health Organization. (2020, 11 de marzo). *WHO Director-General's opening remarks at the media briefing on COVID-19, 11 March 2020*. https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020
+
+> **Verificación:** Leído en who.int el 2026-10-20: «We have therefore made the assessment that COVID-19 can be characterized as a pandemic».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | COVID-19 |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+El director general de la OMS caracteriza la COVID-19 como pandemia.
+
+### Fecha que respalda
+
+**11 de marzo de 2020** (evento externo). Respalda un inicio en **2020-03** (Rmd, `modelos_dl.py`).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio con la convención de evento externo |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- No da fecha de fin. Ninguna fuente hallada respalda el fin en 2020-12 (Rmd) ni en 2020-09 (`06a`, `06b`).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

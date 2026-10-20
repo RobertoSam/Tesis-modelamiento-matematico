@@ -1,0 +1,61 @@
+---
+title: "Lehman Brothers Holdings Inc. (2008) — Anuncio de la solicitud de quiebra"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-038 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído (comunicado de prensa) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lehman Brothers Holdings Inc. (2008, 15 de septiembre). *Lehman Brothers Holdings Inc. announces it intends to file Chapter 11 bankruptcy petition* [Comunicado de prensa, anexo 99.1 del formulario 8-K]. U.S. Securities and Exchange Commission. https://www.sec.gov/Archives/edgar/data/806085/000110465908059632/a08-22764_4ex99d1.htm
+
+> **Verificación:** Comunicado leído en EDGAR (SEC) el 2026-10-20: título, fecha (Nueva York, 15 de septiembre de 2008) y la frase «announced today that it intends to file a petition under Chapter 11 of the U.S. Bankruptcy Code».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Crisis financiera global |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Anuncio de Lehman Brothers Holdings Inc. de que solicitaría la protección del capítulo 11 de la ley de quiebras de los Estados Unidos.
+
+### Fecha que respalda
+
+**15 de septiembre de 2008** (anuncio; evento externo). Respalda un inicio en **2008-09**.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio con la convención de anuncio o evento externo |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- El comunicado anuncia la intención de presentar la solicitud; no es el registro judicial de la presentación.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

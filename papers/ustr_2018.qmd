@@ -1,0 +1,61 @@
+---
+title: "USTR (2018) — Aranceles de la sección 301 a productos chinos"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-047 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Office of the United States Trade Representative. (2018, 15 de junio). *USTR issues tariffs on Chinese products in response to unfair trade practices* [Comunicado de prensa]. https://ustr.gov/about-us/policy-offices/press-office/press-releases/2018/june/ustr-issues-tariffs-chinese-products
+
+> **Verificación:** Leído en ustr.gov el 2026-10-20: arancel adicional de 25 % sobre unos 50 000 millones de dólares de importaciones chinas; primer tramo de 818 líneas (unos 34 000 millones); «Customs and Border Protection will begin to collect the additional duties on July 6, 2018».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Guerra comercial entre los EE. UU. y China |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Anuncio de los primeros aranceles de la sección 301 contra productos chinos.
+
+### Fecha que respalda
+
+**15 de junio de 2018** (anuncio) y **6 de julio de 2018** (inicio del cobro). Respalda un inicio en **2018-06** (anuncio) o **2018-07** (aplicación).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- No da fecha de fin. La firma del acuerdo de «fase uno» (15 de enero de 2020) solo se vio en fuentes secundarias y en una página de USTR que cita a una senadora; **no verificada en un comunicado oficial**.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

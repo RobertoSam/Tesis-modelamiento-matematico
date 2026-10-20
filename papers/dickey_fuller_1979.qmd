@@ -1,0 +1,64 @@
+---
+title: "Dickey & Fuller (1979) — Distribution of the estimators for autoregressive time series with a unit root"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-031 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Dickey, D. A., & Fuller, W. A. (1979). Distribution of the estimators for autoregressive time series with a unit root. *Journal of the American Statistical Association, 74*(366a), 427–431. https://doi.org/10.1080/01621459.1979.10482531
+
+> **Verificación:** La página de Taylor & Francis aparece en el buscador con el título «...: Journal of the American Statistical Association: Vol 74, No 366a» y el DOI en su dirección; no se pudo abrir (2026-10-20). Las páginas 427–431 solo constan en fuentes secundarias. **Verificar las páginas.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de raíz unitaria |
+| **Área secundaria** | Distribución de estimadores autorregresivos |
+| **Relevancia para la tesis** | **MEDIA.** Fuente de la prueba de Dickey-Fuller usada en la regla D5. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. La versión **aumentada** (ADF), que es la que usa el código, se atribuye habitualmente a Said y Dickey (1984, *Biometrika*); esa atribución **no se verificó** en esta iteración.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Prueba de raíz unitaria (por el título) | ADF con constante y tendencia en la regla D5 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria de la prueba de Dickey-Fuller.
+
+### Limitaciones (relevantes para la adaptación)
+
+- No cubre la versión aumentada; ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Said y Dickey (1984) | Alta — prueba aumentada | Sin ficha; no verificado |

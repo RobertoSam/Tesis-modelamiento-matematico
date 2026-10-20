@@ -22,8 +22,8 @@ Clasificación Factorial Jerárquica y aprendizaje automático
 | Parte (estructura MMC102) | Página | Estado |
 |---|---|---|
 | Cuerpo preliminar: resumen | [Resumen](00_resumen.qmd) | Pendiente: se redacta al final |
-| Introducción: problema, justificación, objetivos, hipótesis | [Capítulo 1](01_introduccion.qmd) | Iteración 1 |
-| Antecedentes y marco teórico | [Capítulo 2](02_marco_teorico.qmd) | Iteración 1 |
+| Introducción: problema, justificación, objetivos, hipótesis | [Capítulo 1](01_introduccion.qmd) | Iteración 3a: derivado de la tesis LaTeX |
+| Antecedentes y marco teórico | [Capítulo 2](02_marco_teorico.qmd) | Iteración 3a: derivado de la tesis LaTeX (sin demostraciones) |
 | Metodología y desarrollo del modelo | [Capítulo 3](03_metodologia.qmd) | Pendiente |
 | Resultados y discusión | [Capítulo 4](04_resultados.qmd) | Pendiente: depende de la decisión D2 |
 | Conclusiones y recomendaciones | [Capítulo 5](05_conclusiones.qmd) | Pendiente |

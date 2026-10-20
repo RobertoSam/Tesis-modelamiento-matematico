@@ -1,0 +1,64 @@
+---
+title: "Kaiser (1960) — The application of electronic computers to factor analysis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-026 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kaiser, H. F. (1960). The application of electronic computers to factor analysis. *Educational and Psychological Measurement, 20*(1), 141–151. https://doi.org/10.1177/001316446002000116
+
+> **Verificación:** La página de SAGE aparece en el buscador como «The Application of Electronic Computers to Factor Analysis - Henry F. Kaiser, 1960», con el DOI en su dirección, pero no se pudo abrir (2026-10-20). Volumen 20, número 1 y páginas 141–151 solo constan en fuentes secundarias. **Verificar.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial |
+| **Área secundaria** | Criterio del valor propio mayor que uno |
+| **Relevancia para la tesis** | **MEDIA.** Candidata a fuente del criterio de Kaiser citado en el capítulo 2; la atribución es la habitual en la literatura y **no se verificó en el texto**. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Criterio $\lambda > 1$ (atribución por verificar) | Uno de los criterios de retención del notebook 05 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata del criterio de Kaiser.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

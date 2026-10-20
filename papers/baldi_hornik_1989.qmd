@@ -2,12 +2,6 @@
 title: "Baldi & Hornik (1989) — Neural networks and principal component analysis"
 ---
 
-::: {.callout-warning title="Ficha PRELIMINAR"}
-Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
-documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
-final hay que leer el artículo y completar o corregir las secciones 4 a 6.
-:::
-
 ## 1. Datos identificadores
 
 | Campo | Detalle |
@@ -15,13 +9,13 @@ final hay que leer el artículo y completar o corregir las secciones 4 a 6.
 | **Código de ficha** | FB-010 *(verificar numeración contra las fichas existentes)* |
 | **Fecha de procesamiento** | 4 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
-| **Estado de lectura** | No leído — localizado (preliminar) |
+| **Estado de lectura** | Texto completo leído (2026-10-20; PDF del artículo publicado en la página institucional de P. Baldi, UCI, con OCR defectuoso en algunos símbolos) |
 
 ## 2. Referencia completa (APA 7.ª edición)
 
 Baldi, P., & Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. *Neural Networks, 2*(1), 53–58. https://doi.org/10.1016/0893-6080(89)90014-2
 
-> **Verificación:** Referencia localizada en ScienceDirect, ACM Digital Library y Semantic Scholar (2026-10-04). No se accedió al texto completo, que requiere suscripción.
+> **Verificación:** Volumen 2, número 1 y páginas 53–58 verificados el 2026-10-20 en el índice del fascículo del catálogo de la Koninklijke Bibliotheek (biblioteca nacional de los Países Bajos), que registra el artículo en las pp. 53–58 entre Grossberg (pp. 29–51) y Parberry (pp. 59–67). El catálogo lista solo a P. Baldi; el artículo leído incluye a K. Hornik (Technische Universität Wien) en la nota de afiliación. Texto completo leído en igb.uci.edu (recibido el 18 de mayo de 1988; aceptado el 16 de agosto de 1988). **El DOI no se pudo confirmar:** doi.org y ScienceDirect no fueron accesibles.
 
 ## 3. Clasificación temática
 
@@ -40,7 +34,13 @@ Caracterizar el aprendizaje de una red lineal de una capa oculta entrenada para 
 
 ### Propuesta metodológica
 
-Análisis de los puntos críticos de la función de error. Se muestra que el mínimo global corresponde a la proyección sobre el subespacio de los primeros componentes principales y que los demás puntos críticos son puntos de silla, sin mínimos locales espurios. *[Confirmar enunciados exactos y supuestos, como autovalores distintos y matriz de covarianza invertible, contra el texto.]*
+Red lineal de una capa oculta, sin sesgo, con $n$ entradas, $p \le n$ unidades ocultas y $n$ salidas; error $E(A,B)=\sum_t \lVert y_t - ABx_t\rVert^2$. El caso autoasociativo toma $y_t = x_t$, de modo que $\Sigma_{YY}=\Sigma_{XX}=\Sigma$ (p. 55). Resultados (sección 2, pp. 55–56, con demostraciones en el apéndice A):
+
+- **Hechos 1 y 2:** fijada $A$, $E$ es convexa en $B$; si $\Sigma_{XX}$ es invertible y $A$ tiene rango completo $p$, es estrictamente convexa con mínimo único (y simétricamente para $A$).
+- **Hecho 3:** si $\Sigma_{XX}$ es invertible, en los puntos críticos $W = AB = P_A\Sigma_{YX}\Sigma_{XX}^{-1}$, con $P_A$ que conmuta con $\Sigma$.
+- **Hecho 4 (supuestos: $\Sigma$ de rango completo con $n$ valores propios distintos, que los autores califican de no restrictivos):** los puntos críticos corresponden a subconjuntos de $p$ vectores propios; el error vale $\operatorname{tr}\Sigma_{YY} - \sum_{i\in\mathcal I}\lambda_i$. El subconjunto $\{1,\dots,p\}$ da, salvo equivalencia, **el único mínimo local y global**, la proyección ortogonal sobre el subespacio de los $p$ primeros vectores propios; **todos los demás puntos críticos son puntos de silla** (también los de rango deficiente, apéndice B).
+- **Caso autoasociativo (p. 56):** con $C=I$, $B=U'$: los pesos de la primera unidad oculta son el vector propio dominante (enlace con Oja, 1982).
+- **Advertencia (p. 56):** aunque $E$ no tiene mínimos locales, el descenso por gradiente o los métodos de Newton podrían quedar atrapados en un punto de silla; los autores lo consideran improbable en la práctica según sus simulaciones.
 
 ## 5. Conceptos clave (equivalencia de dominio)
 
@@ -59,7 +59,8 @@ Análisis de los puntos críticos de la función de error. Se muestra que el mí
 
 ### Limitaciones (relevantes para la adaptación)
 
-- Resultado limitado al caso lineal; no dice nada sobre redes con activaciones no lineales.
+- Resultado limitado al caso lineal. Los autores señalan que una extensión rigurosa al caso sigmoide no lineal parece «más difícil» (p. 56) y no la demuestran; sí afirman que los rasgos principales del paisaje se mantienen con varias capas ocultas lineales y que el caso afín (con sesgo) se extiende de forma directa.
+- El mínimo es único «salvo equivalencia»: la base del subespacio latente no está identificada (de ahí la rotación de Procrustes).
 - Con n = 227, las garantías asintóticas sobre la superficie de error no sustituyen la verificación numérica, ya realizada en 08.
 
 ## 7. Referencias internas relevantes

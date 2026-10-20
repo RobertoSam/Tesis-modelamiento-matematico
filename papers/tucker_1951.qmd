@@ -1,0 +1,73 @@
+---
+title: "Tucker (1951) — A method for synthesis of factor analysis studies"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con el registro del repositorio institucional de ETS, sin acceso al informe. El
+registro no trae resumen, de modo que no se describe ningún contenido. Antes de usarla para
+sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-050 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Tucker, L. R. (1951). *A method for synthesis of factor analysis studies* (PRS Report 984).
+[VERIFICAR: entidad que emite el informe]
+
+> **Verificación:** Registro del repositorio de publicaciones de Educational Testing Service
+> (ets.org/research/policy_research_reports/publications/report/1951/avxw.html), consultado el
+> 2026-10-20: autor «Tucker, Ledyard R»; título *A Method for Synthesis of Factor Analysis
+> Studies*; año 1951; número «PRS Report 984»; fuente «ETS Program Report»; tipo «Report»;
+> 120 páginas. El registro **no indica la entidad que emite el informe ni el lugar**, y no hay DOI.
+> La sigla PRS suele leerse como Personnel Research Section (Department of the Army), pero eso no
+> se vio en ninguna fuente oficial: queda `VERIFICAR`. No se encontró un registro en DTIC.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial |
+| **Área secundaria** | Comparación de soluciones factoriales (coeficiente de congruencia) |
+| **Relevancia para la tesis** | **MEDIA.** Fuente primaria habitual del coeficiente de congruencia (Def. «Coeficiente de congruencia de Tucker» del cap. 2). La atribución procede de la literatura secundaria (el título de Lorenzo-Seva y ten Berge, 2006, lo llama «Tucker's congruence coefficient»); **no se comprobó en el informe que defina el coeficiente**. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado. El registro de ETS no trae resumen.
+
+### Propuesta metodológica
+
+No consultado. La fórmula $\operatorname{cong}(\mathbf a,\mathbf b)=\mathbf a^{\top}\mathbf b/(\lVert\mathbf a\rVert\,\lVert\mathbf b\rVert)$ **no se verificó** en el informe.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Coeficiente de congruencia (atribución por verificar) | Comparación de cargas entre réplicas bootstrap, ventanas y vías |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria candidata del coeficiente; los umbrales de interpretación se toman de
+  Lorenzo-Seva y ten Berge (2006), no de esta obra.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar: informe técnico sin DOI, no consultado; entidad emisora sin verificar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

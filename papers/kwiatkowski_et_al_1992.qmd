@@ -1,0 +1,64 @@
+---
+title: "Kwiatkowski et al. (1992) — Testing the null hypothesis of stationarity against the alternative of a unit root"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con el resumen de la versión de documento de trabajo. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-032 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (versión de documento de trabajo, EconPapers); versión publicada no consultada |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Referencia APA pendiente: **la lista de autores de la versión publicada no se verificó** (ver abajo). No tiene entrada en `tesis/referencias.bib` hasta verificarla.
+
+> **Verificación:** EconPapers (Cowles Foundation Discussion Paper 979, mayo de 1991, 28 p.) registra como autores a Denis Kwiatkowski, Peter Phillips y Peter Schmidt, y como versión publicada *Journal of Econometrics*, 54(1–3), 159–178, 1992, sin DOI. La versión publicada se cita habitualmente con un cuarto autor; **no se vio en ninguna fuente oficial en esta iteración**. Verificar autores y DOI en Elsevier.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de estacionariedad |
+| **Área secundaria** | Hipótesis nula de estacionariedad |
+| **Relevancia para la tesis** | **MEDIA.** Fuente de la prueba KPSS usada en la regla D5. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el resumen del documento de trabajo: la conclusión habitual de que muchas series agregadas tienen raíz unitaria puede deberse a que la raíz unitaria es la hipótesis nula, que se mantiene salvo evidencia fuerte en contra.
+
+### Propuesta metodológica
+
+Según el mismo resumen y el título: contrastar la estacionariedad como hipótesis nula frente a la raíz unitaria, para complementar las pruebas de raíz unitaria de baja potencia.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Nula de estacionariedad | KPSS en nivel/tendencia en la regla D5, combinada con ADF |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Justifica combinar ADF y KPSS (nulas opuestas) en la regla D5.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Autoría de la versión publicada por verificar; sin entrada en el `.bib`.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

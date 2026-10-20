@@ -1,0 +1,64 @@
+---
+title: "Kaiser & Rice (1974) — Little Jiffy, Mark IV"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos verificados en la editorial y el resumen de ERIC. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-025 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (ERIC); texto no consultado |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kaiser, H. F., & Rice, J. (1974). Little Jiffy, Mark IV. *Educational and Psychological Measurement, 34*(1), 111–117. https://doi.org/10.1177/001316447403400115
+
+> **Verificación:** Metadatos (autores, título, volumen 34, número 1, pp. 111–117, abril de 1974, DOI) verificados en SAGE Journals el 2026-10-20. Resumen leído en ERIC (EJ097115), que da como fecha septiembre de 1974; se adopta la de la editorial.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial exploratorio |
+| **Área secundaria** | Medida de adecuación muestral (MSA) |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Fuente probable de la forma de la MSA que implementan `psych::KMO` y el código. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según ERIC: revisar el procedimiento de segunda generación de Kaiser (*Little Jiffy*).
+
+### Propuesta metodológica
+
+Según ERIC, el trabajo propone tres revisiones y una característica nueva del procedimiento y presenta un algoritmo de cálculo paso a paso (*Little Jiffy, Mark IV*). Que una de esas revisiones sea la forma $\sum r^2/(\sum r^2+\sum q^2)$ de la MSA consta solo en la documentación de `psych` (fuente secundaria). **Verificar en el texto.**
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| MSA revisada (por verificar) | KMO del capítulo 2 y de `src/multivariado.py` |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Junto con Kaiser (1970), fuente de la medida KMO.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El resumen no menciona la MSA explícitamente.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Kaiser (1970) | Alta | Ficha preliminar FB-024 |

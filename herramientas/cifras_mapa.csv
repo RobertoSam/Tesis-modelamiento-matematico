@@ -1,0 +1,55 @@
+macro,archivo,filtro,columna,formato,descripcion
+nMesesNiveles,data/results/05_dimensiones.csv,via=niveles,n,entero,Meses de la vía en niveles
+nMesesTransformadas,data/results/05_dimensiones.csv,via=transformadas,n,entero,Meses de la vía transformada
+nSeries,data/results/05_dimensiones.csv,via=niveles,p,entero,Series del análisis (D1)
+fechaInicioNiveles,data/results/05_dimensiones.csv,via=niveles,fecha_inicio,fecha_mes,Primer mes de la vía en niveles
+fechaInicioTransformadas,data/results/05_dimensiones.csv,via=transformadas,fecha_inicio,fecha_mes,Primer mes de la vía transformada
+fechaFinDatos,data/results/05_dimensiones.csv,via=niveles,fecha_fin,fecha_mes,Último mes de los datos (ambas vías)
+anioInicioDatos,data/results/05_dimensiones.csv,via=niveles,fecha_inicio,anio,Año inicial del período de estudio
+anioFinDatos,data/results/05_dimensiones.csv,via=niveles,fecha_fin,anio,Año final del período de estudio
+inerciaPCUnoNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=1,inercia,decimal:1,Inercia (%) de PC1 en niveles
+inerciaPCDosNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=2,inercia,decimal:1,Inercia (%) de PC2 en niveles
+inerciaPCTresNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=3,inercia,decimal:1,Inercia (%) de PC3 en niveles
+inerciaPCCuatroNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=4,inercia,decimal:1,Inercia (%) de PC4 en niveles
+inerciaPCUnoTransformadas,data/results/05_pca_valores_propios.csv,componente=1,inercia,decimal:1,Inercia (%) de PC1 en transformadas
+inerciaPCDosTransformadas,data/results/05_pca_valores_propios.csv,componente=2,inercia,decimal:1,Inercia (%) de PC2 en transformadas
+inerciaPCTresTransformadas,data/results/05_pca_valores_propios.csv,componente=3,inercia,decimal:1,Inercia (%) de PC3 en transformadas
+inerciaPCCuatroTransformadas,data/results/05_pca_valores_propios.csv,componente=4,inercia,decimal:1,Inercia (%) de PC4 en transformadas
+hornNiveles,data/results/niveles/05_pca_retencion.csv,criterio=horn,componentes,entero,Componentes retenidos por Horn en niveles
+hornTransformadas,data/results/05_pca_retencion.csv,criterio=horn,componentes,entero,Componentes retenidos por Horn en transformadas
+kaiserNiveles,data/results/niveles/05_pca_retencion.csv,criterio=kaiser,componentes,entero,Componentes con valor propio > 1 en niveles
+kaiserTransformadas,data/results/05_pca_retencion.csv,criterio=kaiser,componentes,entero,Componentes con valor propio > 1 en transformadas
+kmoGlobalNiveles,data/results/niveles/05_adecuacion.csv,ambito=global;medida=kmo_global,valor,decimal:2,KMO global en niveles
+kmoGlobalTransformadas,data/results/05_adecuacion.csv,ambito=global;medida=kmo_global,valor,decimal:2,KMO global en transformadas
+chiBartlettNiveles,data/results/niveles/05_adecuacion.csv,ambito=global;medida=bartlett_chi2_n,valor,entero,Chi cuadrado de Bartlett con n en niveles
+chiBartlettTransformadas,data/results/05_adecuacion.csv,ambito=global;medida=bartlett_chi2_n,valor,entero,Chi cuadrado de Bartlett con n en transformadas
+glBartlett,data/results/niveles/05_adecuacion.csv,ambito=global;medida=bartlett_gl,valor,entero,Grados de libertad de Bartlett (p(p-1)/2)
+chiBartlettNefNiveles,data/results/niveles/05_adecuacion.csv,ambito=global;medida=bartlett_chi2_nef,valor,entero,Chi cuadrado de Bartlett con la mediana de n_ef en niveles
+pBartlettNefNiveles,data/results/niveles/05_adecuacion.csv,ambito=global;medida=bartlett_p_nef,valor,decimal:2,p-valor de Bartlett con la mediana de n_ef en niveles
+nEfMedianaNiveles,data/results/niveles/05_n_efectivo_resumen.csv,version=original,n_ef_mediana,decimal:1,Mediana de n_ef entre pares en niveles
+nEfMedianaTransformadas,data/results/05_n_efectivo_resumen.csv,version=original,n_ef_mediana,decimal:1,Mediana de n_ef entre pares en transformadas
+numCondicionNiveles,data/results/niveles/05_adecuacion.csv,ambito=global;medida=num_condicion,valor,entero,Número de condición de R en niveles
+numCondicionTransformadas,data/results/05_adecuacion.csv,ambito=global;medida=num_condicion,valor,entero,Número de condición de R en transformadas
+rTiempoPCUnoNiveles,data/results/niveles/05_pca_tendencia_componentes.csv,nombre=PC1,r_tiempo,decimal:3,Correlación de PC1 con el tiempo en niveles
+claseDCincoPCUnoNiveles,data/results/niveles/05_pca_tendencia_componentes.csv,nombre=PC1,clase_d5,texto,Clase D5 de PC1 en niveles
+claseDCincoPCDosNiveles,data/results/niveles/05_pca_tendencia_componentes.csv,nombre=PC2,clase_d5,texto,Clase D5 de PC2 en niveles
+claseDCincoPCTresNiveles,data/results/niveles/05_pca_tendencia_componentes.csv,nombre=PC3,clase_d5,texto,Clase D5 de PC3 en niveles
+claseDCincoPCCuatroNiveles,data/results/niveles/05_pca_tendencia_componentes.csv,nombre=PC4,clase_d5,texto,Clase D5 de PC4 en niveles
+claseDCincoPCUnoTransformadas,data/results/05_pca_tendencia_componentes.csv,nombre=PC1,clase_d5,texto,Clase D5 de PC1 en transformadas
+claseDCincoPCDosTransformadas,data/results/05_pca_tendencia_componentes.csv,nombre=PC2,clase_d5,texto,Clase D5 de PC2 en transformadas
+claseDCincoPCTresTransformadas,data/results/05_pca_tendencia_componentes.csv,nombre=PC3,clase_d5,texto,Clase D5 de PC3 en transformadas
+claseDCincoPCCuatroTransformadas,data/results/05_pca_tendencia_componentes.csv,nombre=PC4,clase_d5,texto,Clase D5 de PC4 en transformadas
+nSeriesTS,data/results/niveles/05_clasificacion_d5_resumen.csv,conjunto=series_niveles,TS,entero,Series en niveles clasificadas TS (D5)
+nSeriesDS,data/results/niveles/05_clasificacion_d5_resumen.csv,conjunto=series_niveles,DS,entero,Series en niveles clasificadas DS (D5)
+nSeriesIndeterminadas,data/results/niveles/05_clasificacion_d5_resumen.csv,conjunto=series_niveles,indeterminada,entero,Series en niveles con clase indeterminada (D5)
+nuloConDerivaPCUno,data/results/niveles/05_nulo_tendencias.csv,version=con_deriva;medida=inercia_pc1,proporcion,decimal:3,Proporción del nulo con deriva con PC1 >= observado
+nuloConDerivaPCDos,data/results/niveles/05_nulo_tendencias.csv,version=con_deriva;medida=inercia_pc2,proporcion,decimal:3,Proporción del nulo con deriva con PC2 >= observado
+nuloSinDerivaPCUno,data/results/niveles/05_nulo_tendencias.csv,version=sin_deriva;medida=inercia_pc1,proporcion,decimal:3,Proporción del nulo sin deriva con PC1 >= observado
+nuloSinDerivaPCDos,data/results/niveles/05_nulo_tendencias.csv,version=sin_deriva;medida=inercia_pc2,proporcion,decimal:3,Proporción del nulo sin deriva con PC2 >= observado
+nuloSinTendenciaPCUno,data/results/niveles/05_nulo_tendencias.csv,version=sin_tendencia;medida=inercia_pc1,proporcion,decimal:3,Proporción del nulo sin tendencia con PC1 >= observado
+nuloSinTendenciaPCDos,data/results/niveles/05_nulo_tendencias.csv,version=sin_tendencia;medida=inercia_pc2,proporcion,decimal:3,Proporción del nulo sin tendencia con PC2 >= observado
+nuloConDerivaMedianaPCUno,data/results/niveles/05_nulo_tendencias.csv,version=con_deriva;medida=inercia_pc1,p50,decimal:1,Mediana de la inercia de PC1 bajo el nulo con deriva
+inerciaPCUnoSinTendencia,data/results/niveles/05_pca_contraste_tendencia.csv,version=niveles_sin_tendencia;medida=inercia;componente=1,valor,decimal:1,Inercia (%) de PC1 de las series en niveles sin tendencia lineal
+kmoSinTendencia,data/results/niveles/05_pca_contraste_tendencia.csv,version=niveles_sin_tendencia;medida=kmo,valor,decimal:2,KMO de las series en niveles sin tendencia lineal
+congruenciaBootPCDosNiveles,data/results/niveles/05_bootstrap_congruencia.csv,L=24;componente=2,p5,decimal:3,Percentil 5 de la congruencia bootstrap de PC2 (niveles; L = 24)
+congruenciaBootPCCuatroNiveles,data/results/niveles/05_bootstrap_congruencia.csv,L=24;componente=4,p5,decimal:3,Percentil 5 de la congruencia bootstrap de PC4 (niveles; L = 24)

@@ -1,0 +1,147 @@
+% =============================================================================
+% preambulo.tex · Paquetes, formato y entornos de la tesis maestra
+% Formato provisional (decisión B, 20-10-2026): clase book con los márgenes y el
+% espaciado de tesis/plantilla_uni.docx. Debe revisarse cuando se disponga de las
+% «Pautas para redactar el Trabajo de Tesis de Maestría» de la UNI.
+% =============================================================================
+
+% ---- Página: A4, 3 cm a la izquierda y 2,5 cm en los demás lados ----------------
+% La plantilla Word no fija el tamaño de papel; se adopta A4, el estándar en el Perú.
+\usepackage[a4paper, left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm,
+            footskip=1.25cm, headheight=15pt]{geometry}
+
+% ---- Codificación y tipografía ----------------------------------------------
+% El preámbulo no usa fontspec: en este entorno TeX Live no incluye luaotfload (paquete
+% texlive-luatex), sin el cual fontspec no funciona. Se usan fuentes Type 1 con
+% codificación T1, que compilan igual en cualquier instalación de TeX Live.
+% Texto: Nimbus Sans (paquete helvet), clon de Helvetica; Arial reproduce los anchos de
+% Helvetica, de modo que es el equivalente métrico de Arial 12. Matemáticas: Computer
+% Modern (amsfonts), porque no hay una fuente matemática sin serifas instalada.
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\rmdefault}{phv}       % evita sustituciones: no hay Latin Modern T1 instalada
+\renewcommand{\ttdefault}{pcr}       % monoespaciada: Courier (Type 1; las EC solo existen en mapa de bits)
+% Sin luaotfload, LuaLaTeX pasa el código Unicode a la fuente T1, que coincide con Latin-1
+% en las letras acentuadas pero no en los signos siguientes; se definen explícitamente.
+\usepackage{newunicodechar}
+\newunicodechar{«}{\guillemotleft}
+\newunicodechar{»}{\guillemotright}
+\newunicodechar{¿}{\textquestiondown}
+\newunicodechar{¡}{\textexclamdown}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{“}{\textquotedblleft}
+\newunicodechar{”}{\textquotedblright}
+\newunicodechar{‘}{\textquoteleft}
+\newunicodechar{’}{\textquoteright}
+\newunicodechar{·}{\textperiodcentered}
+\newunicodechar{ń}{\'n}                % Caliński, en el .bib
+\usepackage{amsmath, amssymb, amsthm, mathtools, bm}
+\usepackage{icomma}                  % 0,7 en modo matemático sin espacio tras la coma
+
+% ---- Idioma -----------------------------------------------------------------
+% es-tabla: «Tabla» en lugar de «Cuadro»; es-noshorthands evita conflictos de «"» y «~»;
+% es-nodecimaldot conserva el punto en modo matemático (la coma decimal la da icomma).
+\usepackage[spanish, es-tabla, es-noshorthands, es-nodecimaldot]{babel}
+\usepackage{csquotes}
+\DeclareQuoteStyle{spanish}{\guillemotleft}{\guillemotright}{\textquotedblleft}{\textquotedblright}
+
+% ---- Interlineado 1,5 (equivalente al w:line="360" de la plantilla Word) -------
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}   % evita líneas desbordadas en párrafos con términos largos
+
+% ---- Encabezados y pie: número de página centrado, como la plantilla ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}}
+
+% ---- Títulos ----------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]{\normalfont\bfseries\Large}
+  {\MakeUppercase{\chaptertitlename}\ \thechapter}{0.6em}{\LARGE}
+\titlespacing*{\chapter}{0pt}{0pt}{1.5em}
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalfont\bfseries\normalsize}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\normalfont\bfseries\itshape\normalsize}{\thesubsubsection}{0.8em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+% ---- Tablas, figuras y listas ------------------------------------------------
+\usepackage{booktabs, longtable, array}
+\usepackage{graphicx}
+\graphicspath{{../reports/figures/}{../reports/figures/niveles/}}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=4pt}
+\usepackage{xcolor}
+
+% ---- Bibliografía: APA 7 con biblatex-apa y el .bib compartido con el informe --
+\usepackage[style=apa, backend=biber]{biblatex}
+\addbibresource{../tesis/referencias.bib}
+
+% ---- Enlaces y referencias cruzadas (hyperref antes de cleveref) --------------
+\usepackage[hidelinks, unicode, pdfusetitle]{hyperref}
+\usepackage[spanish, noabbrev]{cleveref}
+
+% ---- Entornos de amsthm, numerados por capítulo -----------------------------
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{proposicion}[teorema]{Proposición}
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{corolario}[teorema]{Corolario}
+\theoremstyle{definition}
+\newtheorem{definicion}[teorema]{Definición}
+\newtheorem{supuesto}[teorema]{Supuesto}
+\newtheorem{algoritmo}[teorema]{Algoritmo}
+\theoremstyle{remark}
+\newtheorem{observacion}[teorema]{Observación}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
+
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{supuesto}{supuesto}{supuestos}
+\Crefname{supuesto}{Supuesto}{Supuestos}
+\crefname{algoritmo}{algoritmo}{algoritmos}
+\Crefname{algoritmo}{Algoritmo}{Algoritmos}
+\crefname{observacion}{observación}{observaciones}
+\Crefname{observacion}{Observación}{Observaciones}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\creflabelformat{equation}{#2(#1)#3}
+\crefname{chapter}{capítulo}{capítulos}
+\Crefname{chapter}{Capítulo}{Capítulos}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+\crefname{subsection}{subsección}{subsecciones}
+\Crefname{subsection}{Subsección}{Subsecciones}
+\crefname{enumi}{objetivo}{objetivos}
+\Crefname{enumi}{Objetivo}{Objetivos}
+\numberwithin{equation}{chapter}
+
+% ---- Marcas editoriales -----------------------------------------------------
+% \pendiente{qué falta}: obra sin ficha en papers/ o cifra aún no generada. Se resalta en
+%   el PDF y cada uso se lista en la nota del redactor y en tesis/registro_verificacion.md.
+% \verificar{motivo}: obra con ficha y entrada en el .bib, pero con un dato por verificar
+%   (equivale a la marca [VERIFICAR: motivo] del informe). Va como nota al pie.
+\newcommand{\pendiente}[1]{%
+  \textcolor{red!75!black}{\textbf{[PENDIENTE:}~\textit{#1}\textbf{]}}}
+\newcommand{\verificar}[1]{%
+  \footnote{\textcolor{orange!70!black}{\textbf{VERIFICAR:}}~#1}}

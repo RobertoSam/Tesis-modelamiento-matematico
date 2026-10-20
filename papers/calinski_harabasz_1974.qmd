@@ -1,0 +1,64 @@
+---
+title: "Caliński & Harabasz (1974) — A dendrite method for cluster analysis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto ni al resumen. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-021 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Caliński, T., & Harabasz, J. (1974). A dendrite method for cluster analysis. *Communications in Statistics, 3*(1), 1–27. https://doi.org/10.1080/03610927408827101
+
+> **Verificación:** La página de Taylor & Francis (editorial) aparece en el buscador con el título «A dendrite method for cluster analysis: Communications in Statistics: Vol 3, No 1» y el DOI en su dirección, pero no se pudo abrir (error de acceso, 2026-10-20). Las páginas 1–27 solo constan en una fuente secundaria (bibliografía de la revista en ftp.math.utah.edu). **Verificar las páginas.** Grafía de los autores según esa fuente: «T. Caliński» y «J. Harabasz» (sin tilde en la *a*; el registro y el cap. 2 escribían «Harabász»).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Clasificación (análisis de conglomerados) |
+| **Área secundaria** | Criterio del número de grupos |
+| **Relevancia para la tesis** | **ALTA.** Fuente del índice CH usado para elegir el número de cortes del EPCA y la datación. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebooks 06–09 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración. Solo se conoce el título.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. La forma exacta del índice (grados de libertad $k-1$ y $n-k$) y la variante del código de `aede` deben contrastarse con el texto antes de atribuirlas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Índice CH (por el título y el uso habitual; no verificado en el texto) | Criterio para el número de clases de la partición de Fisher |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite citar el índice con su fuente primaria una vez verificado.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar: no se le atribuye ninguna fórmula hasta leerla.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

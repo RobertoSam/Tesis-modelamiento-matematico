@@ -1,0 +1,7 @@
+pesos,criterio,k,cortes
+uniformes,codo (caída máxima),2,2020-03
+uniformes,Calinski-Harabász k gl (aede),10,2012-08 2013-06 2014-04 2015-05 2017-03 2019-12 2020-05 2020-11 2022-12
+uniformes,Calinski-Harabász k-1 gl (habitual),2,2020-03
+gaussianos_nsd3,codo (caída máxima),2,2020-05
+gaussianos_nsd3,Calinski-Harabász k gl (aede),10,2012-05 2013-05 2014-10 2015-07 2017-02 2020-01 2020-06 2020-12 2021-11
+gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),10,2012-05 2013-05 2014-10 2015-07 2017-02 2020-01 2020-06 2020-12 2021-11

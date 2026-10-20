@@ -1,0 +1,61 @@
+---
+title: "Departamento de Justicia de los EE. UU. (2016) — Declaración de culpabilidad de Odebrecht y Braskem"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-044 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+U.S. Department of Justice. (2016, 21 de diciembre). *Odebrecht and Braskem plead guilty and agree to pay at least $3.5 billion in global penalties to resolve largest foreign bribery case in history* [Comunicado de prensa]. https://www.justice.gov/archives/opa/pr/odebrecht-and-braskem-plead-guilty-and-agree-pay-least-35-billion-global-penalties-resolve
+
+> **Verificación:** Leído en justice.gov el 2026-10-20: título, fecha (miércoles 21 de diciembre de 2016) y la declaración de culpabilidad. El comunicado da cifras globales (unos 788 millones de dólares en sobornos en varios países desde 2001) y **no menciona al Perú** en la parte leída.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Kuczynski / Odebrecht |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Declaración de culpabilidad de Odebrecht y Braskem ante la justicia de los Estados Unidos por sobornos en varios países.
+
+### Fecha que respalda
+
+**21 de diciembre de 2016** (evento externo). Fecha candidata para el inicio del episodio si este se define por la revelación del caso Odebrecht, no por el inicio del gobierno (2016-07 en `06b`).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio alternativo del episodio |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- No vincula por sí solo el caso con el Perú; para eso hace falta el documento de la propia acusación o una fuente peruana.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

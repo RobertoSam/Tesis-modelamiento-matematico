@@ -1,0 +1,61 @@
+---
+title: "Congreso de la República (2018) — Aceptación de la renuncia de Pedro Pablo Kuczynski"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-046 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Ficha de la nota oficial; texto de la resolución no leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Congreso de la República del Perú. (2018, 23 de marzo). *Resolución Legislativa del Congreso 008-2017-2018-CR, por la que se acepta la renuncia del ciudadano Pedro Pablo Kuczynski Godard al cargo de Presidente de la República y se declara la vacancia de la Presidencia de la República*. https://comunicaciones.congreso.gob.pe/noticias/resolucion-legislativa-del-congreso-008-2017-2018-cr-por-la-que-se-acepta-la-renuncia-del-ciudadano-pedro-pablo-kuczynski-godard-al-cargo-de-presidente-de-la-republica-y-se-declara-la-vacancia-de-la
+
+> **Verificación:** Nota del portal de comunicaciones del Congreso leída el 2026-10-20: título de la resolución y fecha de publicación de la nota (23 de marzo de 2018, 16:06 h). **No se leyó el texto de la resolución ni su publicación en *El Peruano*; la fecha de la carta de renuncia no consta en la nota.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Kuczynski / Odebrecht |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Aceptación por el Congreso de la renuncia del presidente Kuczynski y declaración de vacancia.
+
+### Fecha que respalda
+
+**23 de marzo de 2018** (evento interno). Respalda el fin en **2018-03** de `06b` y fecha la «renuncia de Kuczynski» que menciona el cap. 2 (Camiz et al., 2026, solo identifican el evento).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Fin del episodio o fecha puntual del evento |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Para citar la norma conviene la versión de *El Peruano*; la nota del Congreso es una fuente institucional secundaria de la resolución.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

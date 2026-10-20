@@ -1,0 +1,66 @@
+---
+title: "Perron (1989) — The great crash, the oil price shock, and the unit root hypothesis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con el resumen oficial de la editorial. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-033 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página de la Econometric Society); texto no consultado |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Perron, P. (1989). The great crash, the oil price shock, and the unit root hypothesis. *Econometrica, 57*(6), 1361–1401. https://www.jstor.org/stable/1913712
+
+> **Verificación:** Metadatos (autor, título, volumen 57, número 6, noviembre de 1989, pp. 1361–1401) verificados en la página de la Econometric Society, editora de *Econometrica*, el 2026-10-20. La página da el enlace estable de JSTOR (1913712) y no un DOI. **Verificar si existe DOI** antes de la versión final (APA lo prefiere a la URL).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de raíz unitaria |
+| **Área secundaria** | Quiebres estructurales |
+| **Relevancia para la tesis** | **MEDIA.** Sostiene la advertencia del Rmd de que las pruebas de raíz unitaria pierden capacidad de discriminación ante quiebres. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el resumen: distinguir una raíz unitaria (tendencia estocástica) de la estacionariedad alrededor de una tendencia determinista cuando la tendencia tiene un quiebre.
+
+### Propuesta metodológica
+
+Según el resumen: se permite un quiebre único en el nivel o en la pendiente de la tendencia bajo ambas hipótesis; las pruebas convencionales pueden no rechazar la raíz unitaria cuando el proceso verdadero es estacionario alrededor de una tendencia con quiebre, y se derivan estadísticos nuevos. Con los datos de Nelson y Plosser (quiebre de nivel en 1929) se rechaza la raíz unitaria en 11 de 14 series; en el PNB real trimestral de posguerra (cambio de pendiente hacia 1973) también se rechaza.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Quiebre exógeno en la tendencia | Episodios de referencia (COVID-19, crisis global) como posibles quiebres en las series del BCRP |
+| Sesgo hacia no rechazar la raíz unitaria | Una clasificación DS en la regla D5 puede deberse a un quiebre |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Sostiene, para ADF, la frase del Rmd sobre quiebres estructurales (línea 1964).
+
+### Limitaciones (relevantes para la adaptación)
+
+- **Solo cubre las pruebas de raíz unitaria (ADF).** No puede sostener la afirmación sobre KPSS: es anterior (1989) a KPSS (1992). Para KPSS hace falta otra fuente; además, el efecto de un quiebre sobre KPSS se describe habitualmente como un rechazo excesivo de la estacionariedad, no como pérdida de potencia (por verificar).
+- Contenido conocido solo por el resumen.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del efecto de quiebres sobre KPSS | Media | Sin identificar |

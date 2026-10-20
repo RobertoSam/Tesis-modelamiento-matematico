@@ -1,0 +1,197 @@
+% =============================================================================
+% notacion.tex · Notación única de la tesis (macros y lista de símbolos)
+% Regla: antes de introducir un símbolo se comprueba que no exista aquí. Si se cambia
+% uno, se actualiza en toda la tesis y en el informe (tesis/), que deriva de esta lista.
+% =============================================================================
+
+% ---- Conjuntos y operadores --------------------------------------------------
+\newcommand{\RR}{\mathbb{R}}                       % números reales
+\newcommand{\NN}{\mathbb{N}}                       % números naturales
+\newcommand{\T}{\top}                              % transpuesta
+\DeclareMathOperator{\tr}{tr}                      % traza
+\DeclareMathOperator{\diag}{diag}                  % matriz diagonal / diagonal de una matriz
+\DeclareMathOperator{\rango}{rango}                % rango de una matriz
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\RV}{RV}                      % coeficiente RV
+\DeclareMathOperator{\CH}{CH}                      % índice de Caliński y Harabasz
+\DeclareMathOperator{\KMO}{KMO}                    % medida de Kaiser-Meyer-Olkin
+\DeclareMathOperator{\congr}{cong}                 % congruencia de Tucker
+\DeclareMathOperator{\ctr}{ctr}                    % contribución a un eje
+\DeclareMathOperator{\qlt}{cal}                    % calidad de representación en un plano
+\newcommand{\norm}[1]{\lVert #1\rVert}             % norma euclídea
+\newcommand{\normF}[1]{\lVert #1\rVert_{F}}        % norma de Frobenius
+\newcommand{\prodF}[2]{\langle #1,#2\rangle_{F}}   % producto interno de Frobenius
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\prom}[1]{\langle #1\rangle}           % media temporal de una sucesión en un tramo
+\DeclareMathOperator{\vart}{var}                   % varianza temporal de una sucesión en un tramo
+
+% ---- Datos -------------------------------------------------------------------
+\newcommand{\mX}{\mathbf{X}}       % matriz de datos observados, n x p
+\newcommand{\mZ}{\mathbf{Z}}       % matriz de datos centrados y estandarizados, n x p
+\newcommand{\vx}{\mathbf{x}}       % fila de X (vector del mes t)
+\newcommand{\vz}{\mathbf{z}}       % fila o columna de Z
+\newcommand{\mI}{\mathbf{I}}       % identidad
+\newcommand{\vuno}{\mathbf{1}}     % vector de unos
+
+% ---- PCA ----------------------------------------------------------------------
+\newcommand{\mR}{\mathbf{R}}           % matriz de correlaciones
+\newcommand{\mV}{\mathbf{V}}           % vectores propios de R
+\newcommand{\vv}{\mathbf{v}}           % vector propio
+\newcommand{\mLambda}{\boldsymbol{\Lambda}} % valores propios en diagonal
+\newcommand{\mE}{\mathbf{E}}           % matriz p x d con columnas ortonormales (candidata)
+\newcommand{\mP}{\mathbf{P}}           % proyector ortogonal
+\newcommand{\vc}{\mathbf{c}}           % componente principal (scores)
+\newcommand{\mM}{\mathbf{M}}           % aplicación lineal de reconstrucción (rango <= d)
+\newcommand{\mO}{\mathbf{O}}           % matriz ortogonal
+\newcommand{\mN}{\mathbf{N}}           % matriz genérica (teorema de Eckart-Young)
+
+% ---- EPCA ---------------------------------------------------------------------
+\newcommand{\nw}{n_{w}}                % ancho de la ventana
+\newcommand{\Wt}{\mathcal{W}}          % conjunto de meses de una ventana
+\newcommand{\vm}{\mathbf{m}}           % media ponderada de la ventana
+\newcommand{\mC}{\mathbf{C}}           % covarianza ponderada de la ventana
+\newcommand{\mD}{\mathbf{D}}           % diagonal de C
+
+% ---- HFC ----------------------------------------------------------------------
+\newcommand{\gA}{\mathcal{A}}          % grupo de variables
+\newcommand{\gB}{\mathcal{B}}          % grupo de variables
+\newcommand{\fac}{\boldsymbol{\varphi}}% factor (representante) de un grupo
+\newcommand{\dif}{\boldsymbol{\psi}}   % componente de diferencias de un nodo
+
+% ---- Partición y comparación -------------------------------------------------
+\newcommand{\vy}{\mathbf{y}}           % punto de una trayectoria a particionar
+\newcommand{\mF}{\mathbf{F}}           % configuración (RV, Procrustes)
+\newcommand{\estr}{\mathcal{S}}        % estructura estimada de un conjunto de meses
+\newcommand{\interv}{\mathcal{I}}      % intervalo de un régimen
+
+% ---- Aprendizaje profundo ----------------------------------------------------
+\newcommand{\mA}{\mathbf{A}}           % codificador lineal
+\newcommand{\mB}{\mathbf{B}}           % decodificador lineal
+\newcommand{\veta}{\boldsymbol{\eta}}  % código latente
+\newcommand{\vh}{\mathbf{h}}           % estado oculto del LSTM
+\newcommand{\vcel}{\mathbf{s}}         % estado de la celda de memoria del LSTM
+\newcommand{\vig}{\mathbf{g}^{\mathrm{e}}} % compuerta de entrada
+\newcommand{\vfg}{\mathbf{g}^{\mathrm{o}}} % compuerta de olvido
+\newcommand{\vog}{\mathbf{g}^{\mathrm{s}}} % compuerta de salida
+\newcommand{\mW}{\mathbf{W}}           % pesos de entrada del LSTM
+\newcommand{\mU}{\mathbf{U}}           % pesos recurrentes del LSTM
+\newcommand{\vb}{\mathbf{b}}           % sesgo
+
+% =============================================================================
+% Lista de símbolos (se imprime en las páginas preliminares con \listadesimbolos)
+% =============================================================================
+\newcommand{\gruposimbolos}[1]{\multicolumn{2}{@{}l}{\textbf{#1}}\\[2pt]}
+\newcommand{\listadesimbolos}{%
+\chapter*{Lista de símbolos}
+\addcontentsline{toc}{chapter}{Lista de símbolos}
+\markboth{Lista de símbolos}{Lista de símbolos}
+{\small
+\begin{longtable}{@{}p{0.24\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Símbolo & Significado \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\gruposimbolos{Generales}
+$\RR$, $\NN$, $\mathbb{Z}$ & Números reales, naturales y enteros. \\
+$\mI_p$, $\vuno$ & Matriz identidad de orden $p$; vector de unos. \\
+$\mathbf{a}^{\T}$, $\tr$, $\diag$, $\rango$ & Transpuesta, traza, matriz diagonal (o diagonal de una matriz) y rango. \\
+$\norm{\cdot}$, $\normF{\cdot}$, $\prodF{\cdot}{\cdot}$ & Norma euclídea; norma y producto interno de Frobenius, $\prodF{\mathbf{G}}{\mathbf{H}}=\tr(\mathbf{G}^{\T}\mathbf{H})$. \\
+$\lfloor\cdot\rfloor$, $\lceil\cdot\rceil$ & Parte entera inferior y superior. \\
+$\abs{\cdot}$, $\operatorname{sgn}$ & Valor absoluto o módulo de un número complejo; función signo. \\
+$\mathrm{i}$, $e$ & Unidad imaginaria; base de los logaritmos naturales ($\ln$). \\
+$O(\cdot)$ & Orden del número de operaciones de un algoritmo. \\
+$\mathbf{a}$, $\mathbf{b}$, $\xi$ & Vectores y escalares genéricos en enunciados y demostraciones. \\
+$\mathbf{G}\succeq 0$ & Matriz simétrica semidefinida positiva. \\
+$\odot$, $\sigma(\cdot)$, $\tanh$ & Producto elemento a elemento; función logística; tangente hiperbólica. \\[4pt]
+\gruposimbolos{Datos}
+$n$, $p$ & Número de meses (observaciones) y de series (variables). \\
+$t$, $s$ & Índices de mes, $t,s\in\{1,\dots,n\}$. \\
+$j$, $j'$ & Índices de serie, $j,j'\in\{1,\dots,p\}$. \\
+$\mX$, $\vx_t$, $x_{tj}$ & Matriz de datos $n\times p$ (series sin transformar o transformadas); su fila $t$; su elemento. \\
+$\mZ$, $\vz_t$, $\vz_j$, $z_{tj}$ & Datos centrados y estandarizados con divisor $n$; fila $t$; columna $j$; elemento. \\
+$\bar x_j$, $\hat\sigma_j$ & Media y desviación típica (divisor $n$) de la serie $j$. \\
+$\Delta$ & Primera diferencia, $\Delta x_t=x_t-x_{t-1}$. \\
+$P$, $\vartheta$, $\gamma(P)$ & Período de una oscilación en meses; frecuencia angular $2\pi/P$; ganancia de $\Delta$. \\
+$\varrho$, $\psi_0$ & Amplitud y fase de una oscilación. \\
+$t_0$, $T$ & Mes anterior al primero de un tramo de meses consecutivos y longitud del tramo (\cref{prop:ganancia}). \\
+$\prom{y}_{t_0,T}$, $\vart_{t_0,T}(y)$ & Media y varianza temporales de la sucesión $(y_t)$ en los meses $t_0+1,\dots,t_0+T$. \\
+$y$, $\varrho_y$, $\psi_y$ & Oscilación genérica, su amplitud y su fase, en la demostración de la \cref{prop:ganancia}. \\[4pt]
+\gruposimbolos{Análisis de componentes principales}
+$\mR$, $r_{jj'}$ & Matriz de correlaciones $\mZ^{\T}\mZ/n$ y su elemento. \\
+$\lambda_\ell$, $\vv_\ell$, $v_{j\ell}$ & Valor propio $\ell$ de $\mR$ (en orden decreciente), vector propio unitario asociado y su coordenada $j$. \\
+$\ell$, $d$ & Índice de componente; número de componentes retenidas. \\
+$\mV$, $\mLambda$, $\mV_d$ & Matriz de vectores propios; matriz diagonal de valores propios; primeras $d$ columnas de $\mV$. \\
+$\mE$, $\mP$ & Matriz $p\times d$ con columnas ortonormales; proyector ortogonal $\mE\mE^{\T}$. \\
+$J(\mE)$ & Error cuadrático medio de reconstrucción del PCA. \\
+$w_\ell$ & En la demostración de la \cref{prop:pca}, $\vv_\ell^{\T}\mP\vv_\ell$. \\
+$\vc_\ell$, $c_{t\ell}$ & Componente principal $\ell$ ($\mZ\vv_\ell$) y su valor en el mes $t$. \\
+$\rho_{j\ell}$ & Correlación entre la serie $j$ y la componente $\ell$. \\
+$\cos^2_{j\ell}$, $\ctr_{j\ell}$, $\ctr_{t\ell}$ & Calidad de representación de la serie $j$ en el eje $\ell$; contribución de la serie $j$ y del mes $t$ al eje $\ell$. \\
+$\qlt_j(\ell,\ell')$ & Calidad de representación de la serie $j$ en el plano $(\ell,\ell')$. \\
+$\mN$, $\varsigma_\ell$ & Matriz genérica que se aproxima (teorema de Eckart y Young) y sus valores singulares. \\
+$\mM$, $\mO$ & Aplicación lineal de reconstrucción de rango a lo sumo $d$; matriz ortogonal. \\
+$\lambda^{\mathrm{H}}_\ell$, $\beta_\ell$ & Umbral del análisis paralelo de Horn; valor esperado de la vara quebrada. \\
+$r^{jj'}$, $q_{jj'}$ & Elemento de $\mR^{-1}$; correlación anti-imagen (parcial) entre las series $j$ y $j'$. \\
+$\KMO$, $\KMO_j$ & Medida global e individual de Kaiser-Meyer-Olkin. \\
+$\chi^2_{\mathrm{B}}$ & Estadístico de esfericidad de Bartlett. \\[4pt]
+\gruposimbolos{Clasificación Factorial Jerárquica}
+$\gA$, $\gB$ & Grupos (clases) de variables. \\
+$\fac_{\gA}$ & Factor (representante) del grupo $\gA$, vector de $\RR^n$. \\
+$\dif_{\gA\cup\gB}$ & Componente de diferencias del nodo que fusiona $\gA$ y $\gB$. \\
+$\mu_1^{\gA\gB}\ge\mu_2^{\gA\gB}$ & Valores propios de la matriz de covarianzas de $[\fac_{\gA}\ \fac_{\gB}]$; $\mu_2^{\gA\gB}$ es el índice de fusión. \\
+$(\alpha,\beta)$ & Vector propio unitario asociado a $\mu_1^{\gA\gB}$ (coeficientes de la fusión). \\
+$\kappa_{\gA}$, $\kappa_{\gB}$, $\kappa_{\gA\gB}$, $\mathbf{K}_{\gA\gB}$ & Varianzas de $\fac_{\gA}$ y $\fac_{\gB}$, su covarianza y la matriz $2\times2$ que forman. \\
+$\mu_1^{\text{raíz}}$ & Primer valor propio de la última fusión. \\
+$\mR_{\gA}$, $\lambda_1(\mR_{\gA})$, $\mathbf{w}^{\gA}$ & Submatriz de $\mR$ de las series de $\gA$; su mayor valor propio; coeficientes de $\fac_{\gA}$ sobre las $\vz_j$, $j\in\gA$. \\[4pt]
+\gruposimbolos{Análisis evolutivo}
+$\nw$ & Ancho de la ventana móvil, en meses. \\
+$N$ & Número de ventanas, $N=n-\nw+1$; en general, longitud de una trayectoria. \\
+$i$, $t_i$ & Índice de la ventana que empieza en el mes $i$; mes al que se asigna, $t_i=i+\lfloor\nw/2\rfloor$. \\
+$\Wt_t$ & Conjunto de meses de la ventana asignada al mes $t$. \\
+$u$, $\omega_u$ & Posición dentro de la ventana, $u=1,\dots,\nw$, y su peso. \\
+$\nu$ & Parámetro de forma de los pesos gaussianos (argumento \texttt{nsd} de \texttt{aede}). \\
+$\vm_t$, $\mC_t$, $\mD_t$, $\mR_t$ & Media, covarianza, diagonal de la covarianza y correlación ponderadas de la ventana. \\
+$\lambda_\ell(t)$, $\vv_\ell(t)$ & Valor y vector propio $\ell$ de $\mR_t$. \\
+$\tilde\omega_u$, $\tilde\vz_s$ & Peso sin normalizar; mes $s$ estandarizado con la media y la varianza ponderadas. \\
+$\mathbf{G}_b$ & Matriz diagonal de factores de escala $b_j>0$ (con desplazamientos $a_j$). \\[4pt]
+\gruposimbolos{Partición de Fisher y número de clases}
+$\vy_t\in\RR^{q}$, $q$ & Punto $t$ de la trayectoria que se particiona; su dimensión. \\
+$K$, $k$ & Número de segmentos (clases); índice de segmento. \\
+$\tau_k$ & Último punto del segmento $k$, con $0=\tau_0<\tau_1<\dots<\tau_K=N$. \\
+$n_{\min}$ & Longitud mínima de un segmento. \\
+$Q(a,b)$, $\bar\vy_{a:b}$ & Suma de cuadrados intrasegmento de los puntos $a,\dots,b$ y su media. \\
+$Q^\ast_K(b)$ & Mínimo de la suma de cuadrados intra al dividir los puntos $1,\dots,b$ en $K$ segmentos. \\
+$T$ & Suma de cuadrados total de la trayectoria. \\
+$K_{\max}$, $Q_K$ & Número máximo de segmentos; $Q^\ast_K(N)$. \\
+$\CH^{\mathrm{h}}_K$, $\CH^{\mathrm{a}}_K$ & Índice de Caliński y Harabasz en su forma habitual y en la variante de \texttt{aede}. \\
+$K^{\mathrm h}$, $K^{\mathrm a}$ & Número de segmentos elegido por cada variante. \\[4pt]
+\gruposimbolos{Régimen, transición y comparación de estructuras}
+$\estr(\cdot)$ & Estructura estimada de un conjunto de meses. \\
+$\tau$ & Mes de una transición (\cref{def:transicion}); no confundir con $\tau_k$. \\
+$\Wt_\tau^{-}$, $\Wt_\tau^{+}$ & Conjuntos de meses contiguos adyacentes, antes y después de $\tau$. \\
+$\delta(\cdot,\cdot)$, $\varepsilon$ & Disimilitud entre estructuras; tolerancia. \\
+$\interv_k$, $\Wt$, $\Wt'$ & Intervalo de un régimen; conjuntos de meses contiguos (ventanas). \\
+$\mF_1$, $\mF_2$, $m$ & Configuraciones centradas de las mismas $m$ filas. \\
+$\RV(\mF_1,\mF_2)$ & Coeficiente RV. \\
+$c$ & Constante de proporcionalidad positiva en la \cref{prop:rv}(a). \\
+$a_1$, $a_2$ & Factores de escala no nulos en la \cref{prop:rv}(b). \\
+$\mathbf{G}$, $\mathbf{H}$ & En la demostración de la \cref{prop:rv}, $\mF_1\mF_1^{\T}$ y $\mF_2\mF_2^{\T}$. \\
+$\mO_1$, $\boldsymbol{\Sigma}$, $\mO_2$, $\boldsymbol{\Theta}$ & Descomposición en valores singulares de $\mF_1^{\T}\mF_2$; matriz ortogonal auxiliar de la \cref{prop:procrustes}. \\
+$\mO^\ast$ & Rotación de Procrustes. \\
+$\congr(\mathbf{a},\mathbf{b})$ & Coeficiente de congruencia de Tucker entre dos vectores. \\[4pt]
+\gruposimbolos{Aprendizaje profundo}
+$f_\theta$, $g_\phi$ & Codificador y decodificador, con parámetros $\theta$ y $\phi$. \\
+$\veta_t\in\RR^{d}$ & Código latente del mes $t$. \\
+$\Omega(\theta,\phi)$ & Término de regularización. \\
+$\mA$, $\mB$ & Codificador lineal $d\times p$ y decodificador lineal $p\times d$. \\
+$L$ & Longitud de la ventana que lee el LSTM. \\
+$\vh_t\in\RR^{n_h}$, $n_h$ & Estado oculto del LSTM y su dimensión. \\
+$\vcel_t$, $\tilde\vcel_t$ & Estado de la celda de memoria y candidato. \\
+$\vig_t$, $\vfg_t$, $\vog_t$ & Compuertas de entrada, de olvido y de salida. \\
+$\mW_\bullet$, $\mU_\bullet$, $\vb_\bullet$ & Pesos de entrada, pesos recurrentes y sesgos de cada compuerta. \\
+\end{longtable}
+}%
+}

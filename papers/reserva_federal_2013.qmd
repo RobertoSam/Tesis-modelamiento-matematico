@@ -1,0 +1,61 @@
+---
+title: "Reserva Federal (2013) — Comunicado del FOMC del 18 de diciembre de 2013"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-041 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Board of Governors of the Federal Reserve System. (2013, 18 de diciembre). *Federal Reserve issues FOMC statement* [Comunicado de prensa]. https://www.federalreserve.gov/newsevents/pressreleases/monetary20131218a.htm
+
+> **Verificación:** Leído en federalreserve.gov el 2026-10-20: «the Committee decided to modestly reduce the pace of its asset purchases»; desde enero, compras de MBS de agencias a 35 000 millones de dólares mensuales (antes 40 000) y de bonos del Tesoro a 40 000 millones (antes 45 000).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | *Taper tantrum* |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Decisión del FOMC de iniciar la reducción gradual de las compras de activos a partir de enero de 2014.
+
+### Fecha que respalda
+
+**18 de diciembre de 2013** (anuncio de la reducción efectiva). Respalda el fin en **2013-12** de todos los archivos, si el episodio se cierra con la decisión.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Fin del episodio con la convención de anuncio |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Que el episodio termine con esta decisión es una elección de fechado, no algo que el comunicado afirme.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

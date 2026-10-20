@@ -1,0 +1,168 @@
+% =============================================================================
+% Capítulo 1 · Introducción
+% Fuente: tesis/_capitulos/01_introduccion.qmd (aprobado en la iteración 2). Se traslada
+% sin afirmaciones nuevas; las cifras de los datos salen de cifras.tex.
+% =============================================================================
+\chapter{Introducción}
+\label{cap:introduccion}
+
+\section{Planteamiento y descripción del problema}
+\label{sec:planteamiento}
+
+El ciclo financiero es la fluctuación de mediano plazo entre fases de expansión y contracción
+del crédito, de los precios de activos y de la disposición a asumir riesgos.
+\textcite{drehmann_borio_tsatsaronis_2012} lo distinguen del ciclo económico por su duración, de
+8 a 30 años, y documentan que sus picos coinciden con las crisis bancarias sistémicas. No se
+observa de forma directa: se manifiesta en el movimiento conjunto de muchas variables, cuya
+estructura de relaciones puede cambiar en el tiempo. Medirlo es, por tanto, un problema de
+reducción dimensional sobre series de tiempo multivariadas.
+
+Para el Perú, el antecedente más directo es
+\textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026, sin
+datos de revista, volumen ni DOI; confirmar con el Dr.~Camiz su estado de publicación.}, que
+continúa la tesis de maestría de Atoche Murrieta \pendiente{Atoche Murrieta (2022), tesis de
+maestría, PUCP; sin ficha}. Ese trabajo aplica el Análisis de Componentes Principales (PCA), la
+Clasificación Factorial Jerárquica (HFC) y el Análisis Evolutivo de Componentes Principales
+(EPCA) a 17 indicadores mensuales del Banco Central de Reserva del Perú (BCRP). Deja abiertas,
+sin embargo, cuatro cuestiones: no evalúa el aprendizaje profundo, no clasifica fases del ciclo
+contrastadas con episodios fechados de forma independiente, su muestra termina en 2020 y fija
+el ancho de la ventana del EPCA sin un criterio objetivo.
+
+% Fuente de las cifras: cifras.tex (herramientas/generar_cifras.py), a partir de las
+% dimensiones que escribe notebooks/05_pca.ipynb en data/results/.
+Esta tesis analiza \nSeries{} series mensuales del BCRP de crédito, liquidez, tasas, precios,
+tipo de cambio, bolsa, riesgo soberano, actividad y reservas. El análisis oficial, sobre las
+series sin transformar (decisión D1), cubre \nMesesNiveles{} meses, de \fechaInicioNiveles{} a
+\fechaFinDatos{}. La vía transformada tiene \nMesesTransformadas{} meses, de
+\fechaInicioTransformadas{} a \fechaFinDatos{}, porque la diferenciación pierde el primer mes.
+Ambas vías se ejecutan con el mismo código (decisión D2), y la forma de combinarlas está
+pendiente de discusión con el asesor.
+
+\textbf{Problema de investigación:} ¿cómo identificar, fechar y caracterizar los regímenes del
+ciclo financiero peruano entre \anioInicioDatos{} y \anioFinDatos{} a partir de la estructura
+multivariada de los indicadores del BCRP, integrando los métodos exploratorios evolutivos de la
+escuela de Camiz con autoencoders y redes LSTM, sin renunciar a la interpretabilidad ni al
+principio de que la estructura emerge de los datos?
+
+\section{Justificación de la investigación}
+\label{sec:justificacion}
+
+\textbf{Metodológica.} La tesis amplía la cadena PCA--HFC--EPCA de tres maneras. Fecha los
+regímenes con la partición óptima de
+\textcite{fisher_1958}\verificar{páginas (789--798), solo en fuentes secundarias; número y
+DOI ya verificados. Ficha preliminar, texto no leído: solo se cita su aporte general.}, como hacen
+\textcite{camiz_roig_2011}\verificar{el nombre del editor de las actas (O.~Papú) se infirió por
+analogía; el año figura como 2010/2011 en la ficha.}. Propone un criterio objetivo para el ancho
+de la ventana del EPCA. E incorpora autoencoders y redes LSTM anidados en la cadena clásica,
+porque un autoencoder lineal con pérdida cuadrática genera el subespacio de los primeros
+componentes principales
+\parencite{bourlard_kamp_1988,baldi_hornik_1989}\verificar{Bourlard y Kamp (1988), número del
+fascículo; ficha preliminar, texto no consultado. Baldi y Hornik (1989), solo el DOI; el texto
+completo ya se leyó.}; véase la \cref{prop:ae-lineal}. Como los antecedentes de aprendizaje profundo
+usan conjuntos de datos mucho mayores
+\parencite{hinton_salakhutdinov_2006,tuhin_et_al_2025}\verificar{Hinton y Salakhutdinov (2006),
+se procesó el material suplementario; Tuhin et al. (2025), lista completa de autores.},
+documentar cómo se adaptan a series macrofinancieras cortas es en sí un resultado.
+
+\textbf{Económica y social.} \textcite{drehmann_borio_tsatsaronis_2012} acuñan la noción de
+«recesión inconclusa»: si la política ignora la expansión del crédito y de los precios de los
+inmuebles, el ajuste se posterga y la crisis posterior resulta más severa. Un indicador de
+régimen transparente y reproducible podría servir como insumo exploratorio para los análisis de
+estabilidad financiera del BCRP y de la SBS.
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+\subsection{Objetivo general}
+
+Formalizar y evaluar una metodología exploratoria evolutiva, que integre el Análisis de
+Componentes Principales, la Clasificación Factorial Jerárquica y el Análisis Evolutivo de
+Componentes Principales con autoencoders y redes LSTM, para detectar, fechar y caracterizar los
+regímenes del ciclo financiero peruano entre \anioInicioDatos{} y \anioFinDatos{} a partir de
+indicadores macrofinancieros del BCRP.
+
+\subsection{Objetivos específicos (compromisos firmes)}
+\label{sec:oe}
+
+\begin{enumerate}[label=\textbf{OE\arabic*.}, ref=OE\arabic*, leftmargin=*]
+  \item\label{oe:estado-arte} Sistematizar el estado del arte sobre el ciclo financiero y sobre
+    la reducción dimensional de series de tiempo multivariadas.
+  \item\label{oe:datos} Construir y versionar el conjunto de series mensuales del BCRP, con
+    trazabilidad de códigos, transformaciones y exclusiones.
+  \item\label{oe:clasicos} Aplicar PCA, HFC y EPCA en las dos vías del diseño y contrastar los
+    resultados con los de \textcite{camiz_cerda_atoche_2026}.
+  \item\label{oe:ventana} Formalizar un criterio objetivo para el ancho de ventana del EPCA,
+    basado en la similitud entre ventanas consecutivas (coeficiente RV o distancia de
+    Procrustes).
+  \item\label{oe:robustez-hfc} Evaluar la robustez de los grupos de la HFC mediante remuestreo
+    por bloques y correlación cofenética.
+  \item\label{oe:dimension} Triangular el número de componentes con la vara quebrada, el
+    criterio de Rencher y el análisis paralelo de Horn
+    \parencite{horn_1965}\verificar{ficha preliminar: se leyó el resumen, no el texto; solo se
+    cita el aporte general.} \pendiente{fuentes de la vara quebrada y del criterio de Rencher}.
+  \item\label{oe:dl} Diseñar autoencoders y redes LSTM adaptados a la escala de los datos, con
+    pesos atados, preentrenamiento por capas, regularización y validación por bloques temporales
+    y \emph{walk-forward}.
+  \item\label{oe:incertidumbre} Cuantificar la incertidumbre del error de reconstrucción
+    mediante Monte Carlo Dropout
+    \parencite{gal_ghahramani_2016}\verificar{editores del volumen; PDF no consultado.}.
+  \item\label{oe:datacion} Fechar regímenes con la partición óptima de Fisher sobre
+    trayectorias de representaciones (primer valor propio del EPCA, \emph{scores} del PCA o
+    códigos latentes) y clasificarlos en expansión, contracción o transición.
+  \item\label{oe:episodios} Contrastar regímenes y fases con episodios fechados por fuentes
+    externas, nunca por las propias series ni por un indicador derivado de ellas.
+  \item\label{oe:simulado} Comparar los métodos sobre un contexto simulado, con regímenes
+    conocidos por construcción, y calibrar con ello el número de factores y de clases, el ancho
+    de ventana y los pesos de los análisis evolutivos.
+  \item\label{oe:comparacion} Comparar los métodos clásicos y los de aprendizaje profundo según
+    interpretabilidad, estabilidad temporal, capacidad descriptiva y robustez.
+\end{enumerate}
+
+\subsection{Objetivos exploratorios condicionales}
+
+Se abordarán si los resultados de los objetivos firmes lo justifican:
+
+\begin{enumerate}[label=\textbf{OC\arabic*.}, ref=OC\arabic*, leftmargin=*]
+  \item\label{oc:ehfc} Evaluar la viabilidad de una HFC evolutiva (EHFC) que aplique la
+    jerarquía completa en cada ventana móvil, en lugar de la aplicación secuencial de HFC y EPCA
+    de la literatura.
+  \item\label{oc:statis} Explorar el STATIS dual como detector independiente de quiebres
+    estructurales, siguiendo a
+    \textcite{camiz_maulucci_roig_2010}\verificar{datos de edición de las actas (ISBN o DOI).}.
+  \item\label{oc:anticipar} Explorar la capacidad del LSTM para anticipar transiciones, con
+    validación estrictamente fuera de muestra y declarando su escaso poder estadístico.
+  \item\label{oc:extension} Extender la muestra a años anteriores a \anioInicioDatos{}, si la
+    homogeneidad de las series lo permite, para evaluar la crisis financiera global fuera de
+    muestra.
+\end{enumerate}
+
+\section{Hipótesis}
+\label{sec:hipotesis}
+
+El estudio es exploratorio y no formula hipótesis contrastables en sentido estricto, por tres
+razones. Los métodos centrales describen la muestra sin postular un modelo que la genere, de
+modo que no hay una hipótesis nula. Los pocos episodios de referencia no dan poder estadístico.
+Y los resultados no se generalizan a otras economías. Se formulan, en cambio, \textbf{hipótesis
+de trabajo}, que se evalúan por la convergencia de la evidencia en las dos vías. Cada una indica
+qué resultado contaría en su contra.
+
+\begin{description}[style=nextline, leftmargin=1.2em]
+  \item[HT1 (no estacionariedad estructural).] La estructura de correlación no es
+    constante entre \anioInicioDatos{} y \anioFinDatos{}: hay intervalos estables separados por
+    transiciones. \emph{En contra:} que las ventanas sucesivas resulten tan similares como
+    cabría esperar bajo una estructura constante.
+  \item[HT2 (organización en grupos).] Las series se organizan en pocos grupos
+    homogéneos que se corresponden con los bloques identificados por
+    \textcite{camiz_cerda_atoche_2026}: salud económica y financiera, tasas de interés y riesgo
+    del mercado financiero. Como el conjunto de series no es idéntico, la correspondencia se
+    evalúa por bloque. \emph{En contra:} grupos inestables bajo remuestreo o sin
+    correspondencia con esos bloques.
+  \item[HT3 (correspondencia con episodios).] Los regímenes se corresponden,
+    dentro de una tolerancia declarada de antemano, con episodios fechados externamente.
+    \emph{En contra:} cortes sin relación con ningún episodio, o que dependan de la regla que
+    fija su número.
+  \item[HT4 (complementariedad).] Los autoencoders y las redes LSTM aportan
+    información sobre la dinámica y la atipicidad del sistema que el PCA no capta por
+    construcción. \emph{En contra:} que no mejoren a su anclaje lineal en ningún criterio fuera
+    de muestra, o que sus resultados cambien con la semilla aleatoria.
+\end{description}

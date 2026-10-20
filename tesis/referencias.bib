@@ -1,7 +1,13 @@
-% referencias.bib — solo obras citadas en el borrador. Cada entrada tiene ficha en papers/
-% y sus metadatos se copiaron de la referencia APA escrita en esa ficha (iteración 1, 2026-10-18).
-% Las entradas con nota de verificación pendiente llevan note = {VERIFICAR: ...} y figuran en
-% registro_verificacion.md.
+% referencias.bib — fuente única de la bibliografía, compartida por la tesis LaTeX
+% (biblatex-apa + biber) y el informe Quarto (citeproc + apa.csl). Solo la modifica el
+% bibliotecario. Cada entrada tiene ficha en papers/.
+% Las entradas con verificación pendiente llevan el campo propio verificar = {VERIFICAR: ...}
+% y figuran en tesis/registro_verificacion.md. No se usa note ni annotation porque biblatex-apa
+% los imprime en la bibliografía del PDF (citeproc no); biber y citeproc ignoran el campo
+% verificar, de modo que la marca queda solo en el .bib, el registro y el texto.
+% Compatibilidad: campos journal/year/doi/url/date, que entienden biber y citeproc; fechas
+% completas en formato ISO (date = {AAAA-MM-DD}); números de artículo en eid.
+% Iteración 3a (2026-10-20): entradas nuevas de las prioridades 1 a 3 y fuentes de episodios.
 
 @article{baldi_hornik_1989,
   author  = {Baldi, P. and Hornik, K.},
@@ -12,7 +18,7 @@
   number  = {1},
   pages   = {53--58},
   doi     = {10.1016/0893-6080(89)90014-2},
-  note    = {VERIFICAR: ficha preliminar; texto completo no consultado}
+  verificar = {VERIFICAR: DOI no confirmado en doi.org ni en ScienceDirect (sitios no accesibles)}
 }
 
 @article{bourlard_kamp_1988,
@@ -24,7 +30,7 @@
   number  = {4--5},
   pages   = {291--294},
   doi     = {10.1007/BF00332918},
-  note    = {VERIFICAR: ficha preliminar; número del fascículo (4--5) y texto completo no consultado}
+  verificar = {VERIFICAR: ficha preliminar; número del fascículo (4--5) y texto completo no consultado}
 }
 
 @unpublished{camiz_cerda_atoche_2026,
@@ -32,7 +38,7 @@
   title   = {Exploratory procedure to identify financial cycle: An application to {Peruvian} data},
   year    = {2026},
   type    = {Manuscrito no publicado},
-  note    = {VERIFICAR: manuscrito del 25 de abril de 2026 sin revista, volumen ni DOI; confirmar con el Dr. Camiz su estado de publicación}
+  verificar = {VERIFICAR: manuscrito del 25 de abril de 2026 sin revista, volumen ni DOI; confirmar con el Dr. Camiz su estado de publicación}
 }
 
 @article{camiz_et_al_2020,
@@ -54,7 +60,7 @@
   year      = {2010},
   pages     = {61--67},
   publisher = {Comisión Nacional de Energía Atómica},
-  note      = {VERIFICAR: datos de edición de las actas (ISBN o DOI)}
+  verificar = {VERIFICAR: datos de edición de las actas (ISBN o DOI)}
 }
 
 @inproceedings{camiz_roig_2011,
@@ -66,7 +72,7 @@
   pages     = {30--37},
   publisher = {Comisión Nacional de Energía Atómica},
   isbn      = {978-987-1323-21-0},
-  note      = {VERIFICAR: editor (O. Papú) inferido por analogía con E-ICES 5}
+  verificar = {VERIFICAR: editor (O. Papú) inferido por analogía con E-ICES 5}
 }
 
 @techreport{drehmann_borio_tsatsaronis_2012,
@@ -74,7 +80,7 @@
   title       = {Characterising the financial cycle: Don't lose sight of the medium term!},
   institution = {Bank for International Settlements},
   type        = {BIS Working Paper},
-  number      = {No. 380},
+  number      = {380},
   year        = {2012},
   url         = {https://www.bis.org/publ/work380.pdf}
 }
@@ -88,7 +94,7 @@
   number  = {284},
   pages   = {789--798},
   doi     = {10.1080/01621459.1958.10501479},
-  note    = {VERIFICAR: ficha preliminar; número (284) y DOI en JSTOR o Taylor \& Francis; texto no consultado}
+  verificar = {VERIFICAR: páginas 789--798 solo en fuentes secundarias; texto no consultado (ficha preliminar)}
 }
 
 @inproceedings{gal_ghahramani_2016,
@@ -101,7 +107,7 @@
   pages     = {1050--1059},
   publisher = {PMLR},
   year      = {2016},
-  note      = {VERIFICAR: editores del volumen; PDF no consultado}
+  verificar = {VERIFICAR: editores del volumen; PDF no consultado}
 }
 
 @article{gers_schmidhuber_cummins_2000,
@@ -113,7 +119,7 @@
   number  = {10},
   pages   = {2451--2471},
   doi     = {10.1162/089976600300015015},
-  note    = {VERIFICAR: ficha preliminar; DOI contra el registro de MIT Press; texto no consultado}
+  verificar = {VERIFICAR: ficha preliminar; DOI contra el registro de MIT Press; texto no consultado}
 }
 
 @article{hinton_salakhutdinov_2006,
@@ -125,7 +131,7 @@
   number  = {5786},
   pages   = {504--507},
   doi     = {10.1126/science.1127647},
-  note    = {VERIFICAR: se procesó el material suplementario (SOM), no el artículo principal}
+  verificar = {VERIFICAR: se procesó el material suplementario (SOM), no el artículo principal}
 }
 
 @article{hochreiter_schmidhuber_1997,
@@ -137,7 +143,7 @@
   number  = {8},
   pages   = {1735--1780},
   doi     = {10.1162/neco.1997.9.8.1735},
-  note    = {VERIFICAR: se procesó el informe técnico FKI-207-95, no la versión publicada}
+  verificar = {VERIFICAR: se procesó el informe técnico FKI-207-95, no la versión publicada}
 }
 
 @misc{plaut_2018,
@@ -147,7 +153,7 @@
   number       = {arXiv:1804.10253},
   publisher    = {arXiv},
   doi          = {10.48550/arXiv.1804.10253},
-  note         = {VERIFICAR: preprint sin revisión por pares; fuente de exploración}
+  verificar = {VERIFICAR: preprint sin revisión por pares; fuente de exploración}
 }
 
 @article{robert_escoufier_1976,
@@ -159,7 +165,7 @@
   number  = {3},
   pages   = {257--265},
   doi     = {10.2307/2347233},
-  note    = {VERIFICAR: ficha preliminar; volumen, número, páginas y DOI en JSTOR; texto no consultado}
+  verificar = {VERIFICAR: ficha preliminar; volumen, número, páginas y DOI en JSTOR; texto no consultado}
 }
 
 @inproceedings{srivastava_mansimov_salakhutdinov_2015,
@@ -172,7 +178,7 @@
   pages     = {843--852},
   publisher = {PMLR},
   year      = {2015},
-  note      = {VERIFICAR: páginas 843--852 y editores del volumen en proceedings.mlr.press}
+  verificar = {VERIFICAR: páginas 843--852 y editores del volumen en proceedings.mlr.press}
 }
 
 @article{tuhin_et_al_2025,
@@ -183,10 +189,10 @@
   volume  = {12},
   pages   = {Artículo 100},
   doi     = {10.1057/s41599-025-04412-y},
-  note    = {VERIFICAR: lista completa de autores contra la fuente original}
+  verificar = {VERIFICAR: lista completa de autores contra la fuente original}
 }
 
-@incollection{vincent_et_al_2008,
+@inproceedings{vincent_et_al_2008,
   author    = {Vincent, P. and Larochelle, H. and Bengio, Y. and Manzagol, P.-A.},
   title     = {Extracting and composing robust features with denoising autoencoders},
   booktitle = {Proceedings of the 25th International Conference on Machine Learning},
@@ -194,5 +200,315 @@
   publisher = {Association for Computing Machinery},
   year      = {2008},
   doi       = {10.1145/1390156.1390294},
-  note      = {VERIFICAR: DOI en ACM Digital Library}
+  verificar = {VERIFICAR: DOI en ACM Digital Library}
+}
+
+% ---- Iteración 3a: obras metodológicas (prioridades 1 y 3) -------------------------------
+
+@article{bartlett_1950,
+  author  = {Bartlett, M. S.},
+  title   = {Tests of significance in factor analysis},
+  journal = {British Journal of Statistical Psychology},
+  year    = {1950},
+  volume  = {3},
+  number  = {2},
+  pages   = {77--85},
+  doi     = {10.1111/j.2044-8317.1950.tb00285.x},
+  verificar = {VERIFICAR: páginas 77--85 solo en fuentes secundarias; página de Wiley no accesible}
+}
+
+@article{bartlett_1951,
+  author  = {Bartlett, M. S.},
+  title   = {The effect of standardization on a $\chi^2$ approximation in factor analysis},
+  journal = {Biometrika},
+  year    = {1951},
+  volume  = {38},
+  number  = {3--4},
+  pages   = {337--344},
+  doi     = {10.1093/biomet/38.3-4.337}
+}
+
+@book{benzecri_1973,
+  author    = {Benzécri, J.-P.},
+  title     = {L'analyse des données: {T}. 2. {L}'analyse des correspondances},
+  publisher = {Dunod},
+  address   = {Paris},
+  year      = {1973},
+  isbn      = {978-2-04-007225-4},
+  verificar = {VERIFICAR: ficha preliminar; autoría del tomo 2 (el catálogo consultado añade a F. Benzécri), editorial (Dunod o Bordas) y tomo y página que sostienen el principio de dejar hablar a los datos}
+}
+
+@article{calinski_harabasz_1974,
+  author  = {Caliński, T. and Harabasz, J.},
+  title   = {A dendrite method for cluster analysis},
+  journal = {Communications in Statistics},
+  year    = {1974},
+  volume  = {3},
+  number  = {1},
+  pages   = {1--27},
+  doi     = {10.1080/03610927408827101},
+  verificar = {VERIFICAR: páginas 1--27 solo en fuentes secundarias; página de Taylor \& Francis no accesible}
+}
+
+@article{dickey_fuller_1979,
+  author  = {Dickey, D. A. and Fuller, W. A.},
+  title   = {Distribution of the estimators for autoregressive time series with a unit root},
+  journal = {Journal of the American Statistical Association},
+  year    = {1979},
+  volume  = {74},
+  number  = {366a},
+  pages   = {427--431},
+  doi     = {10.1080/01621459.1979.10482531},
+  verificar = {VERIFICAR: páginas 427--431 solo en fuentes secundarias; página de Taylor \& Francis no accesible}
+}
+
+@article{eckart_young_1936,
+  author  = {Eckart, C. and Young, G.},
+  title   = {The approximation of one matrix by another of lower rank},
+  journal = {Psychometrika},
+  year    = {1936},
+  volume  = {1},
+  number  = {3},
+  pages   = {211--218},
+  doi     = {10.1007/BF02288367}
+}
+
+@article{granger_newbold_1974,
+  author  = {Granger, C. W. J. and Newbold, P.},
+  title   = {Spurious regressions in econometrics},
+  journal = {Journal of Econometrics},
+  year    = {1974},
+  volume  = {2},
+  pages   = {111--120},
+  verificar = {VERIFICAR: número del fascículo y DOI; no figuran en la copia leída y la página de Elsevier no fue accesible}
+}
+
+@article{horn_1965,
+  author  = {Horn, J. L.},
+  title   = {A rationale and test for the number of factors in factor analysis},
+  journal = {Psychometrika},
+  year    = {1965},
+  volume  = {30},
+  number  = {2},
+  pages   = {179--185},
+  doi     = {10.1007/BF02289447}
+}
+
+@article{hubert_arabie_1985,
+  author  = {Hubert, L. and Arabie, P.},
+  title   = {Comparing partitions},
+  journal = {Journal of Classification},
+  year    = {1985},
+  volume  = {2},
+  number  = {1},
+  pages   = {193--218},
+  doi     = {10.1007/BF01908075},
+  verificar = {VERIFICAR: metadatos tomados de RePEc/IDEAS; contrastar con la página de Springer}
+}
+
+@article{kaiser_1960,
+  author  = {Kaiser, H. F.},
+  title   = {The application of electronic computers to factor analysis},
+  journal = {Educational and Psychological Measurement},
+  year    = {1960},
+  volume  = {20},
+  number  = {1},
+  pages   = {141--151},
+  doi     = {10.1177/001316446002000116},
+  verificar = {VERIFICAR: volumen, número y páginas solo en fuentes secundarias; página de SAGE no accesible}
+}
+
+@article{kaiser_1970,
+  author  = {Kaiser, H. F.},
+  title   = {A second generation little jiffy},
+  journal = {Psychometrika},
+  year    = {1970},
+  volume  = {35},
+  number  = {4},
+  pages   = {401--415},
+  doi     = {10.1007/BF02291817}
+}
+
+@article{kaiser_rice_1974,
+  author  = {Kaiser, H. F. and Rice, J.},
+  title   = {Little {Jiffy}, {Mark IV}},
+  journal = {Educational and Psychological Measurement},
+  year    = {1974},
+  volume  = {34},
+  number  = {1},
+  pages   = {111--117},
+  doi     = {10.1177/001316447403400115}
+}
+
+@book{kish_1965,
+  author    = {Kish, L.},
+  title     = {Survey sampling},
+  publisher = {John Wiley \& Sons},
+  address   = {New York},
+  year      = {1965},
+  verificar = {VERIFICAR: texto no consultado; capítulo y página de la fórmula del tamaño muestral efectivo con pesos}
+}
+
+@article{kunsch_1989,
+  author  = {Künsch, H. R.},
+  title   = {The jackknife and the bootstrap for general stationary observations},
+  journal = {The Annals of Statistics},
+  year    = {1989},
+  volume  = {17},
+  number  = {3},
+  pages   = {1217--1241},
+  doi     = {10.1214/aos/1176347265},
+  verificar = {VERIFICAR: páginas 1217--1241 solo en fuentes secundarias; Project Euclid no accesible; texto no consultado}
+}
+
+@article{lorenzo_seva_ten_berge_2006,
+  author  = {Lorenzo-Seva, U. and {ten Berge}, J. M. F.},
+  title   = {Tucker's congruence coefficient as a meaningful index of factor similarity},
+  journal = {Methodology: European Journal of Research Methods for the Behavioral and Social Sciences},
+  year    = {2006},
+  volume  = {2},
+  number  = {2},
+  pages   = {57--64},
+  doi     = {10.1027/1614-2241.2.2.57}
+}
+
+@article{perron_1989,
+  author  = {Perron, P.},
+  title   = {The great crash, the oil price shock, and the unit root hypothesis},
+  journal = {Econometrica},
+  year    = {1989},
+  volume  = {57},
+  number  = {6},
+  pages   = {1361--1401},
+  url     = {https://www.jstor.org/stable/1913712},
+  verificar = {VERIFICAR: DOI; la página de la Econometric Society solo da el enlace estable de JSTOR}
+}
+
+@article{phillips_1986,
+  author  = {Phillips, P. C. B.},
+  title   = {Understanding spurious regressions in econometrics},
+  journal = {Journal of Econometrics},
+  year    = {1986},
+  volume  = {33},
+  number  = {3},
+  pages   = {311--340},
+  verificar = {VERIFICAR: metadatos tomados de RePEc/IDEAS; DOI y contraste con Elsevier; texto no consultado}
+}
+
+@article{pyper_peterman_1998,
+  author  = {Pyper, B. J. and Peterman, R. M.},
+  title   = {Comparison of methods to account for autocorrelation in correlation analyses of fish data},
+  journal = {Canadian Journal of Fisheries and Aquatic Sciences},
+  year    = {1998},
+  volume  = {55},
+  pages   = {2127--2140},
+  doi     = {10.1139/f98-104},
+  verificar = {VERIFICAR: volumen 55 y páginas 2127--2140 solo en una fuente secundaria (arXiv:2401.02387); página de la editorial no accesible; existe una fe de erratas; no se comprobó que la fórmula del código (truncamiento J = n/5) sea la de este artículo}
+}
+
+% Iteración 3a, vuelta 1: autor, año, título y número verificados en el repositorio de ETS.
+@techreport{tucker_1951,
+  author    = {Tucker, L. R.},
+  title     = {A method for synthesis of factor analysis studies},
+  type      = {PRS Report},
+  number    = {984},
+  year      = {1951},
+  url       = {https://www.ets.org/research/policy_research_reports/publications/report/1951/avxw.html},
+  verificar = {VERIFICAR: entidad emisora y lugar (el registro de ETS no los indica); texto no consultado: no se comprobó que el informe defina el coeficiente de congruencia}
+}
+
+% ---- Iteración 3a: fuentes externas de los episodios de referencia (prioridad 2) -----------
+
+@online{bernanke_2013,
+  author       = {Bernanke, B. S.},
+  title        = {The economic outlook [Testimonio ante el {Joint Economic Committee} del {Congreso} de los {Estados Unidos}]},
+  date         = {2013-05-22},
+  organization = {{Bank for International Settlements}},
+  url          = {https://www.bis.org/speeches/20130523-economic-outlook}
+}
+
+@online{congreso_2016,
+  author       = {{Congreso de la República del Perú}},
+  title        = {Temas tratados: Sesión del Pleno del jueves 28 de julio de 2016. Juramentación y mensaje al Congreso del Presidente de la República},
+  date         = {2016-07-28},
+  url          = {https://www.congreso.gob.pe/Docs/legislativo/TemasTratados/files/pleno/ctt_28.jul.2016.pdf},
+  verificar = {VERIFICAR: título compuesto con el encabezado del documento; confirmar la denominación oficial}
+}
+
+@online{congreso_2018,
+  author       = {{Congreso de la República del Perú}},
+  title        = {Resolución Legislativa del Congreso 008-2017-2018-CR, por la que se acepta la renuncia del ciudadano {Pedro Pablo Kuczynski Godard} al cargo de Presidente de la República y se declara la vacancia de la Presidencia de la República},
+  date         = {2018-03-23},
+  url          = {https://comunicaciones.congreso.gob.pe/noticias/resolucion-legislativa-del-congreso-008-2017-2018-cr-por-la-que-se-acepta-la-renuncia-del-ciudadano-pedro-pablo-kuczynski-godard-al-cargo-de-presidente-de-la-republica-y-se-declara-la-vacancia-de-la}
+}
+
+@online{doj_2016,
+  author       = {{U.S. Department of Justice}},
+  title        = {Odebrecht and {Braskem} plead guilty and agree to pay at least \$3.5 billion in global penalties to resolve largest foreign bribery case in history [Comunicado de prensa]},
+  date         = {2016-12-21},
+  url          = {https://www.justice.gov/archives/opa/pr/odebrecht-and-braskem-plead-guilty-and-agree-pay-least-35-billion-global-penalties-resolve}
+}
+
+@incollection{fmi_2015,
+  author    = {{International Monetary Fund}},
+  title     = {Special feature: Commodity market developments and forecasts, with a focus on investment in an era of low oil prices},
+  booktitle = {World Economic Outlook, April 2015: Uneven growth: Short- and long-term factors},
+  publisher = {International Monetary Fund},
+  year      = {2015},
+  url       = {https://www.imf.org/external/np/res/commod/pdf/WEOSpecialAPR15.pdf},
+  verificar = {VERIFICAR: páginas del recuadro en el informe completo}
+}
+
+@online{lehman_brothers_2008,
+  author       = {{Lehman Brothers Holdings Inc.}},
+  title        = {Lehman {Brothers} {Holdings} {Inc.} announces it intends to file {Chapter} 11 bankruptcy petition [Comunicado de prensa, anexo 99.1 del formulario 8-K]},
+  date         = {2008-09-15},
+  organization = {{U.S. Securities and Exchange Commission}},
+  url          = {https://www.sec.gov/Archives/edgar/data/806085/000110465908059632/a08-22764_4ex99d1.htm}
+}
+
+@online{nber_2010,
+  author       = {{National Bureau of Economic Research}},
+  title        = {Business {Cycle} {Dating} {Committee} announcement {September} 20, 2010},
+  date         = {2010-09-20},
+  url          = {https://www.nber.org/news/business-cycle-dating-committee-announcement-september-20-2010}
+}
+
+@online{oms_2020a,
+  author       = {{World Health Organization}},
+  title        = {Statement on the second meeting of the {International Health Regulations} (2005) {Emergency Committee} regarding the outbreak of novel coronavirus (2019-{nCoV})},
+  date         = {2020-01-30},
+  url          = {https://extranet.who.int/sph/news-details/23805},
+  verificar = {VERIFICAR: se consultó una copia en el portal extranet de la OMS; ubicar la página en who.int}
+}
+
+@online{oms_2020b,
+  author       = {{World Health Organization}},
+  title        = {{WHO} {Director-General's} opening remarks at the media briefing on {COVID-19}, 11 {March} 2020},
+  date         = {2020-03-11},
+  url          = {https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020}
+}
+
+@online{reserva_federal_2013,
+  author       = {{Board of Governors of the Federal Reserve System}},
+  title        = {Federal {Reserve} issues {FOMC} statement [Comunicado de prensa]},
+  date         = {2013-12-18},
+  url          = {https://www.federalreserve.gov/newsevents/pressreleases/monetary20131218a.htm}
+}
+
+@report{stocker_et_al_2015,
+  author      = {Stocker, M. and Baffes, J. and Kose, M. A. and Ohnsorge, F.},
+  title       = {The great plunge in oil prices: Causes, consequences, and policy responses},
+  type        = {Policy Research Note},
+  number      = {PRN/15/01},
+  institution = {World Bank},
+  date        = {2015-03},
+  doi         = {10.1596/23611}
+}
+
+@online{ustr_2018,
+  author       = {{Office of the United States Trade Representative}},
+  title        = {{USTR} issues tariffs on {Chinese} products in response to unfair trade practices [Comunicado de prensa]},
+  date         = {2018-06-15},
+  url          = {https://ustr.gov/about-us/policy-offices/press-office/press-releases/2018/june/ustr-issues-tariffs-chinese-products}
 }

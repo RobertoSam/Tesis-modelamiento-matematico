@@ -1,0 +1,61 @@
+---
+title: "Congreso de la República (2016) — Juramentación de Pedro Pablo Kuczynski"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-045 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto leído (resumen de temas tratados del Pleno) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Congreso de la República del Perú. (2016, 28 de julio). *Temas tratados: Sesión del Pleno del jueves 28 de julio de 2016. Juramentación y mensaje al Congreso del Presidente de la República*. https://www.congreso.gob.pe/Docs/legislativo/TemasTratados/files/pleno/ctt_28.jul.2016.pdf
+
+> **Verificación:** Leído en congreso.gob.pe el 2026-10-20: punto 1, «Juramentación y Mensaje al Congreso del Presidente de la República»; el presidente Pedro Pablo Kuczynski Godard «procedió a pronunciar el juramento para asumir su cargo». El título de la referencia se compuso con el encabezado del documento; **verificar la denominación oficial exacta**.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Kuczynski / Odebrecht |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Asunción del cargo de presidente de la República por Pedro Pablo Kuczynski.
+
+### Fecha que respalda
+
+**28 de julio de 2016** (evento interno). Respalda el inicio en **2016-07** de `06b`.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio si este se define como el período de gobierno |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Define un período político, no un choque financiero; su pertinencia como episodio la decide Roberto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

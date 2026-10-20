@@ -1,0 +1,61 @@
+---
+title: "NBER (2010) — Fechado de la recesión de 2007–2009"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-039 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+National Bureau of Economic Research. (2010, 20 de septiembre). *Business Cycle Dating Committee announcement September 20, 2010*. https://www.nber.org/news/business-cycle-dating-committee-announcement-september-20-2010
+
+> **Verificación:** Leído en nber.org el 2026-10-20: «The committee designated June as the month of the trough» y «The trough marks the end of the recession that began in December 2007».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Crisis financiera global |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+El Comité de Fechado del Ciclo del NBER fija el valle de la recesión de los Estados Unidos en junio de 2009 y su pico en diciembre de 2007.
+
+### Fecha que respalda
+
+**Junio de 2009** (fin de la recesión en los EE. UU.) y **diciembre de 2007** (pico). Respalda el fin en **2009-06** que usan el Rmd, `modelos_dl.py`, `06a` y `06b`. Es una fecha del ciclo de los EE. UU., no del Perú.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Fin del episodio con la convención de evento externo |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Fecha el ciclo económico de los Estados Unidos, no el impacto financiero en el Perú.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

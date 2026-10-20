@@ -16,8 +16,8 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
    un resultado con data incompleta.
 4. **Decisiones metodológicas:** `decisiones.qmd` es la fuente de verdad. Vigentes: D1
    (niveles como análisis oficial), D2 (análisis en dos vías; la propuesta de la Parte C está
-   pendiente de discutir con el asesor) y D3 (solo frecuencia mensual; `06a` superado, `05` por
-   rehacer en mensual), D4 (datos congelados), D5 (regla de tendencia fijada de antemano) y D6
+   pendiente de discutir con el asesor) y D3 (solo frecuencia mensual; `06a` superado, `05` rehecho en
+   mensual en la iteración 3a), D4 (datos congelados), D5 (regla de tendencia fijada de antemano) y D6
    (`aede` y HFC también en Python). Si algo contradice una decisión, se avisa; no se corrige en
    silencio.
 5. **Epistemología:** posición del asesor «datos primero» (Benzécri, *laisser parler les
@@ -38,7 +38,7 @@ data/processed/   Datasets mensuales vigentes: niveles 228 meses × 17 series (2
                   total del SF y el IPC subyacente); transformadas 227 × 17 (2007-02 a 2025-12)
 data/results/     Salidas con prefijo del notebook que las genera
 papers/           Fichas bibliográficas apellido_año.qmd (Ficha Estándar)
-R/                Versión en R (fuera del sitio; requiere Rcamiz/AedeClahfac locales)
+R/                Versión en R (fuera del sitio; R puro + R/camiz_port.R; Rcamiz es opcional)
 tesis/            Informe del curso (Seminario de Tesis II, MMC102) en Quarto → HTML y .docx
 tesis_latex/      Tesis maestra en LaTeX → PDF
 asesoria/         Diagnósticos y planes de iteración del asesor de tesis

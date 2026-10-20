@@ -1,0 +1,61 @@
+---
+title: "Horn (1965) — A rationale and test for the number of factors in factor analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-020 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página de la editorial); texto no consultado |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Horn, J. L. (1965). A rationale and test for the number of factors in factor analysis. *Psychometrika, 30*(2), 179–185. https://doi.org/10.1007/BF02289447
+
+> **Verificación:** Metadatos (autor, título, volumen 30, número 2, junio de 1965, pp. 179–185, DOI) verificados en Cambridge Core y en SpringerLink el 2026-10-20.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Número de factores o componentes que retener |
+| **Área secundaria** | Simulación de datos aleatorios como referencia |
+| **Relevancia para la tesis** | **ALTA.** Fuente del análisis paralelo usado para triangular el número de componentes (objetivo específico 6). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el resumen: si se acepta la cota inferior de Guttman (raíz latente igual a uno) como cota psicométrica superior del rango de una matriz de correlaciones, el rango en una matriz muestral debe estimarse descontando la parte de las raíces latentes debida al error de muestreo.
+
+### Propuesta metodológica
+
+El resumen propone estimar esa parte mediante un procedimiento basado en generar variables aleatorias. Los detalles del procedimiento (número de réplicas, uso de la media o de un percentil) **no se verificaron**: la tesis usa el percentil 95 y debe declararlo como elección propia, no como regla de Horn, hasta leer el texto.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Raíces latentes atribuibles al error de muestreo | Valores propios de matrices de correlaciones de datos gaussianos independientes del mismo tamaño (228 × 17 o 227 × 17) |
+| Descontar esa parte | Retener las componentes cuyo valor propio supera al de referencia |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente fichada del análisis paralelo citado en el Rmd y en el capítulo 2.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El procedimiento supone observaciones independientes; con series muy autocorrelacionadas (NIV), la referencia gaussiana independiente subestima la variabilidad muestral de los valores propios.
+- Contenido conocido solo por el resumen.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Guttman (1954); Kaiser (1960) | Media — cota de la raíz latente uno | Kaiser (1960): ficha preliminar FB-026 |

@@ -1,0 +1,7 @@
+# latexmkrc · tesis maestra
+# Uso, desde la raíz del repositorio:  latexmk -lualatex -cd tesis_latex/tesis.tex
+$pdf_mode = 4;            # 4 = LuaLaTeX
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+$bibtex_use = 2;          # ejecuta biber y borra el .bbl con -c
+$biber = 'biber %O %S';
+@default_files = ('tesis.tex');

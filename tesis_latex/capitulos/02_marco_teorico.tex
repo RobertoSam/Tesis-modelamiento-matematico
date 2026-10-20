@@ -1,0 +1,1264 @@
+% =============================================================================
+% Capítulo 2 · Antecedentes y marco teórico
+% Fuente: tesis/_capitulos/02_marco_teorico.qmd (aprobado), llevado al rigor de la tesis:
+% definiciones, supuestos y proposiciones. Para la EPCA ponderada, la fuente de verdad es
+% R/camiz_port.R (aede_r, .bstatw_ac, .ustatw_ac). Las demostraciones marcadas como
+% propias no dependen de ninguna cita. Ninguna cifra de los datos figura en este capítulo.
+% =============================================================================
+\chapter{Antecedentes y marco teórico}
+\label{cap:marco}
+
+Este capítulo reúne los antecedentes y formaliza los métodos que usa la tesis. La
+\cref{sec:antecedentes} resume el antecedente peruano. Las
+\cref{sec:ciclo,sec:epistemologia} fijan el objeto de estudio y la posición epistemológica. Las
+\cref{sec:datos,sec:pca,sec:hfc,sec:epca,sec:fisher,sec:comparacion,sec:dl} formalizan los
+métodos: cada uno con su definición, sus supuestos y, cuando corresponde, una proposición. Las
+\cref{sec:criterios,sec:vacios} cierran con los criterios de comparación y los vacíos que
+justifican el aporte. Todas las demostraciones de este capítulo son propias, salvo que se indique
+la fuente; los resultados que se citan sin demostrar se señalan como tales.
+
+% -----------------------------------------------------------------------------
+\section{Antecedentes peruanos}
+\label{sec:antecedentes}
+
+El antecedente más directo es el de
+\textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026 sin datos
+de revista, volumen ni DOI. Debe confirmarse con el Dr.~Camiz su estado de publicación.}, que,
+según esa misma fuente, continúa la tesis de maestría de Atoche Murrieta \pendiente{Atoche
+Murrieta (2022), tesis de maestría, PUCP; sin ficha}. Los autores aplican PCA, HFC y EPCA a 17
+series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020.
+El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario
+y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del
+análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las
+otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos,
+circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales
+netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y
+extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima,
+EMBIG y coeficiente de dolarización)\verificar{la ficha distingue «reservas» (grupo de riesgo) de
+«reservas internacionales netas» (grupo de salud). Confirmar en la Tabla~1 del manuscrito a qué
+series del BCRP corresponden.}. A continuación, el EPCA se aplica al conjunto completo y a cada
+grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio
+se particiona en subperíodos de estabilidad mediante el algoritmo de
+\textcite{fisher_1958}\verificar{páginas (789--798), que constan solo en fuentes secundarias;
+volumen, número y DOI ya verificados. La ficha es preliminar: el texto no se ha leído y solo se
+cita su aporte general.}, y el número de cortes se
+elige con el criterio de \textcite{calinski_harabasz_1974}\verificar{ficha preliminar: texto no
+consultado; páginas 1--27 solo en fuentes secundarias. Solo se cita su aporte general.}.
+
+Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más
+estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que
+podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el
+más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos
+pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a
+cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos
+para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su
+ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de
+selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los
+resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases
+del ciclo.
+
+% -----------------------------------------------------------------------------
+\section{El ciclo financiero y los regímenes como objetos matemáticos}
+\label{sec:ciclo}
+
+\subsection{El ciclo financiero}
+
+Siguiendo a \textcite{drehmann_borio_tsatsaronis_2012}, el ciclo financiero se define como el
+componente de mediano plazo que comparten el crédito, la razón entre crédito y producto y los
+precios de los inmuebles, con oscilaciones de 8 a 30 años. Los autores lo caracterizan con dos
+métodos complementarios, los filtros de frecuencia y la datación de puntos de giro, y encuentran
+que los precios bursátiles siguen una dinámica distinta, más volátil y menos sincronizada con el
+crédito, por lo que los excluyen de la definición. La distinción respecto del ciclo económico, de
+1 a 8 años, es también de duración, y las recesiones que coinciden con la fase de contracción del
+ciclo financiero resultan, en promedio, más profundas.
+
+Esta definición plantea tres dificultades para el caso peruano. La primera es la longitud:
+identificar ciclos de 8 a 30 años exige series de varias décadas, y la muestra mensual disponible
+abarca menos de veinte años. Por ello, la tesis no pretende estimar ciclos completos, sino
+\textbf{regímenes}, entendidos como configuraciones estructurales dentro de la muestra. La
+segunda son los datos: el índice de precios de inmuebles del BCRP es trimestral y no forma parte
+del conjunto mensual, de modo que el crédito, la liquidez, las tasas y el riesgo soberano son las
+aproximaciones disponibles. La tercera es el enfoque: en lugar de fijar \emph{a priori} qué
+variables componen el ciclo, la escuela de Camiz deja que la estructura de correlación determine
+los grupos. Ese es el sentido de la exclusión de series en \textcite{camiz_cerda_atoche_2026},
+que responde a su comportamiento estadístico y no a un criterio temático.
+
+\subsection{Régimen, transición y detección}
+\label{sec:regimen}
+
+El sistema macrofinanciero se observa como una trayectoria $\{\vx_t\}_{t=1}^{n}$, con
+$\vx_t\in\RR^{p}$. Sea $\estr(\cdot)$ una función que asigna a un conjunto de meses una
+\textbf{estructura} estimada: la matriz de correlaciones, el subespacio principal, la jerarquía de
+la HFC o la configuración de códigos latentes. Sobre esta base se adoptan las siguientes
+definiciones de trabajo, desarrolladas en el marco conceptual del proyecto.
+
+\begin{definicion}[Régimen]\label{def:regimen}
+Sea $\delta$ una disimilitud entre estructuras (por ejemplo, $1-\RV$, \cref{def:rv}) y
+$\varepsilon>0$ una tolerancia. Un \emph{régimen} es un conjunto de meses consecutivos
+$\interv_k$ en el que la estructura del sistema es aproximadamente constante:
+\begin{equation}\label{eq:regimen}
+  \delta\bigl(\estr(\Wt),\estr(\Wt')\bigr)\le\varepsilon
+  \quad\text{para todo par de conjuntos de meses contiguos } \Wt,\Wt'\subset\interv_k .
+\end{equation}
+\end{definicion}
+
+Un régimen es, por tanto, una propiedad de la configuración conjunta de las variables y no del
+nivel de una variable aislada.
+
+\begin{definicion}[Transición]\label{def:transicion}
+Hay una \emph{transición} en el mes $\tau$ cuando la estructura cambia de manera significativa y
+persistente: $\delta\bigl(\estr(\Wt_\tau^{-}),\estr(\Wt_\tau^{+})\bigr)>\varepsilon$, donde
+$\Wt_\tau^{-}$ y $\Wt_\tau^{+}$ son conjuntos de meses contiguos adyacentes, antes y después de
+$\tau$, y la nueva estructura se mantiene en conjuntos posteriores. Según su forma, una
+transición puede ser abrupta o suave (una rotación progresiva de factores); según su alcance,
+total o parcial (cuando afecta solo a un bloque de variables).
+\end{definicion}
+
+\begin{definicion}[Detección]\label{def:deteccion}
+\emph{Detectar regímenes} es estimar la partición $0=\tau_0<\tau_1<\dots<\tau_K=N$ de una
+trayectoria de representaciones $\vy_1,\dots,\vy_N$ ---la serie de valores propios del EPCA, los
+\emph{scores} del PCA o los códigos latentes--- mediante el problema de la \cref{def:fisher}.
+\end{definicion}
+
+Así planteada, la detección es una clasificación con restricción de contigüidad temporal, que
+puede contrastarse con la HFC, una clasificación de variables sin esa restricción.
+
+\begin{definicion}[Fase]\label{def:fase}
+Una \emph{fase} es una etiqueta asignada a cada régimen detectado: expansión, contracción o
+transición. La segmentación usa toda la estructura multivariada, y la etiqueta se asigna después,
+a partir del comportamiento del crédito dentro de cada intervalo.
+\end{definicion}
+
+Esta separación evita que la clasificación se reduzca a una relectura del crecimiento del
+crédito. La regla concreta de etiquetado y sus umbrales son una propuesta preliminar del
+proyecto, que se presenta en la metodología y está pendiente de discusión con el asesor.
+
+\subsection{Validación externa}
+\label{sec:validacion}
+
+Los episodios con los que se contrastan los regímenes se fechan con fuentes externas al análisis,
+nunca a partir de las propias series ni de un indicador derivado de ellas. De lo contrario, la
+validación sería circular. La bibliografía revisada sirve aquí \textbf{solo para identificar
+eventos candidatos, no para fecharlos}. \textcite{tuhin_et_al_2025}\verificar{lista completa de
+autores contra la fuente original.} tratan la crisis financiera
+global y la pandemia de COVID-19 como crisis del mercado estadounidense.
+\textcite{camiz_cerda_atoche_2026} asocian a eventos como la renuncia de Kuczynski y la guerra
+comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de
+Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no
+pueden usarse como fechas externas. Cada evento se fechará con una cronología independiente:
+crisis financiera global \pendiente{fuente externa para fechar la crisis financiera global en el
+Perú}, \emph{taper tantrum} \pendiente{fuente externa para fechar el \emph{taper tantrum}},
+pandemia de COVID-19 \pendiente{fuente externa para fechar el choque de la COVID-19 en el Perú},
+renuncia de Kuczynski \pendiente{fuente externa para fechar la renuncia de Kuczynski} y guerra
+comercial entre Estados Unidos y China \pendiente{fuente externa para fechar la guerra comercial
+entre Estados Unidos y China}.
+
+% -----------------------------------------------------------------------------
+\section{Posición epistemológica: «datos primero»}
+\label{sec:epistemologia}
+
+La tesis se inscribe en la tradición del análisis de datos que sigue el asesor
+\parencite{benzecri_1973}\verificar{ficha preliminar: obra no leída. No se ha ubicado el pasaje
+que sostiene el principio de dejar hablar a los datos (\emph{laisser parler les données}), de
+modo que la fórmula no se atribuye textualmente a la obra; faltan además autoría del tomo,
+editorial, tomo y página.}, cuyo principio rector suele resumirse como dejar que los datos
+hablen. Según este principio, la estructura debe
+emerger de los datos con el mínimo de supuestos impuestos por el analista. El PCA solo exige
+elegir la métrica y la HFC solo exige elegir el criterio de fusión. Ninguno de los dos postula un
+modelo generador. Los antecedentes de la escuela se declaran explícitamente exploratorios, y sus
+resultados describen la muestra sin generalizarla
+\parencite{camiz_maulucci_roig_2010,camiz_et_al_2020}.
+
+Esta posición tiene dos consecuencias para el diseño. La primera se refiere a la transformación
+de las series. Diferenciar es un supuesto: la primera diferencia es un filtro lineal que atenúa
+las oscilaciones lentas, como precisa la proposición siguiente.
+
+\begin{proposicion}[Ganancia de la primera diferencia]\label{prop:ganancia}
+Sea $x_t=\varrho\cos(\vartheta t+\psi_0)$, con $t\in\mathbb{Z}$, amplitud $\varrho>0$, fase
+$\psi_0\in\RR$ y frecuencia angular $\vartheta=2\pi/P$, donde $P\ge 2$ es el período en meses.
+Entonces
+\begin{equation}\label{eq:ganancia}
+  \Delta x_t \;=\; \gamma(P)\,\varrho\cos\!\Bigl(\vartheta t+\psi_0+\frac{\pi-\vartheta}{2}\Bigr),
+  \qquad
+  \gamma(P)\;=\;\abs{1-e^{-2\pi\mathrm{i}/P}}\;=\;2\sin(\pi/P).
+\end{equation}
+Para una sucesión $(y_t)_{t\in\mathbb{Z}}$, un mes $t_0\in\mathbb{Z}$ y una longitud
+$T\in\NN$, sean $\prom{y}_{t_0,T}=\frac1T\sum_{t=t_0+1}^{t_0+T}y_t$ y
+$\vart_{t_0,T}(y)=\prom{y^2}_{t_0,T}-\prom{y}_{t_0,T}^2$ la media y la varianza temporales de
+$y$ en los $T$ meses consecutivos $t_0+1,\dots,t_0+T$. En consecuencia:
+\textup{(a)} si $P$ es entero, $\vart_{t_0,P}(\Delta x)=\gamma(P)^2\,\vart_{t_0,P}(x)$ para todo
+$t_0\in\mathbb{Z}$, es decir, sobre cualquier período completo de $P$ meses consecutivos la
+varianza temporal se multiplica por $\gamma(P)^2$; y, para todo $P\ge2$ real, los límites
+$\lim_{T\to\infty}\vart_{t_0,T}(x)$ y $\lim_{T\to\infty}\vart_{t_0,T}(\Delta x)$ existen, no
+dependen de $t_0$ y el segundo es $\gamma(P)^2$ veces el primero, que vale $\varrho^2/2$ si $P>2$
+y $\varrho^2\cos^2\psi_0$ si $P=2$. La razón de varianzas es, por tanto, $\gamma(P)^2$ en los dos
+sentidos, salvo en el caso degenerado $P=2$, $\cos\psi_0=0$, en que $x\equiv0$; \textup{(b)} $\gamma$ es decreciente en $P$ y
+$\gamma(P)\to 0$ cuando $P\to\infty$, con $\gamma(P)\sim 2\pi/P$; \textup{(c)} $\gamma(P)<1$
+si y solo si $P>6$.
+\end{proposicion}
+
+\begin{proof}
+Por la identidad $\cos\xi_1-\cos\xi_2=-2\sin\frac{\xi_1+\xi_2}{2}\sin\frac{\xi_1-\xi_2}{2}$,
+con $\xi_1=\vartheta t+\psi_0$ y $\xi_2=\vartheta(t-1)+\psi_0$,
+\[
+  \Delta x_t=-2\varrho\sin\frac{\vartheta}{2}\,\sin\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}\Bigr)
+  =2\varrho\sin\frac{\vartheta}{2}\,\cos\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}+\frac{\pi}{2}\Bigr),
+\]
+porque $-\sin\xi=\cos(\xi+\pi/2)$ para todo $\xi$. Como $P\ge2$, $\vartheta/2=\pi/P\in(0,\pi/2]$ y
+$\sin(\pi/P)>0$, de modo que la amplitud es $2\varrho\sin(\pi/P)=\gamma(P)\varrho$. Además,
+$\abs{1-e^{-\mathrm{i}\vartheta}}^2=(1-\cos\vartheta)^2+\sin^2\vartheta=2-2\cos\vartheta
+=4\sin^2(\vartheta/2)$, lo que prueba la segunda igualdad de \cref{eq:ganancia}.
+\textup{(a)} Por \cref{eq:ganancia}, $x$ y $\Delta x$ son de la forma
+$y_t=\varrho_y\cos(\vartheta t+\psi_y)$, con $(\varrho_y,\psi_y)=(\varrho,\psi_0)$ y
+$(\varrho_y,\psi_y)=\bigl(\gamma(P)\varrho,\,\psi_0+(\pi-\vartheta)/2\bigr)$, respectivamente.
+Para $k\in\{1,2\}$ y $\xi\in\RR$, si $e^{\mathrm{i}k\vartheta}\ne1$, la suma geométrica da
+\[
+  \Bigl\lvert\sum_{t=t_0+1}^{t_0+T}e^{\mathrm{i}(k\vartheta t+\xi)}\Bigr\rvert
+  =\frac{\abs{e^{\mathrm{i}k\vartheta T}-1}}{\abs{e^{\mathrm{i}k\vartheta}-1}}
+  \le\frac{2}{\abs{e^{\mathrm{i}k\vartheta}-1}},
+\]
+y la suma es nula si además $k\vartheta T\in2\pi\mathbb{Z}$. Tomando la parte real y usando
+$y_t^2=\frac{\varrho_y^2}{2}+\frac{\varrho_y^2}{2}\cos(2\vartheta t+2\psi_y)$ se distinguen dos
+casos. \emph{Caso $P>2$.} Entonces $\vartheta\in(0,\pi)$ y $2\vartheta\in(0,2\pi)$, de modo que
+$e^{\mathrm{i}\vartheta}\ne1$ y $e^{2\mathrm{i}\vartheta}\ne1$. Si $P$ es entero, $\vartheta P=2\pi$ y
+$2\vartheta P=4\pi$, las dos sumas sobre $T=P$ meses son nulas y
+$\prom{y}_{t_0,P}=0$, $\prom{y^2}_{t_0,P}=\varrho_y^2/2$, luego
+$\vart_{t_0,P}(y)=\varrho_y^2/2$ exactamente. Para $P$ real cualquiera, las sumas están acotadas
+uniformemente en $t_0$ y $T$, de modo que $\prom{y}_{t_0,T}\to0$ y
+$\prom{y^2}_{t_0,T}\to\varrho_y^2/2$, luego $\vart_{t_0,T}(y)\to\varrho_y^2/2$ sin depender de
+$t_0$. En ambos sentidos la varianza pasa de $\varrho^2/2$ a $\gamma(P)^2\varrho^2/2$.
+\emph{Caso $P=2$.} Entonces $\vartheta=\pi$, $e^{2\mathrm{i}\vartheta}=1$ y el promedio de
+$\cos^2$ ya no es $1/2$: $x_t=\varrho(-1)^t\cos\psi_0$, de modo que $x_t^2=\varrho^2\cos^2\psi_0$
+para todo $t$ y $\prom{x}_{t_0,T}$ vale $0$ si $T$ es par y tiende a $0$ en general; luego
+$\vart_{t_0,2}(x)=\varrho^2\cos^2\psi_0$ y $\vart_{t_0,T}(x)\to\varrho^2\cos^2\psi_0$. Además
+$x_{t-1}=-x_t$, de donde $\Delta x_t=2x_t=\gamma(2)\,x_t$ y
+$\vart_{t_0,T}(\Delta x)=\gamma(2)^2\vart_{t_0,T}(x)$ para todo $t_0$ y todo $T$.
+\textup{(b)} $\pi/P$ decrece en $P$ dentro de
+$(0,\pi/2]$, donde el seno es creciente; y $\sin x\sim x$ cuando $x\to0$. \textup{(c)}
+$2\sin(\pi/P)<1$ equivale a $\sin(\pi/P)<1/2$, es decir, a $\pi/P<\pi/6$ dentro de
+$(0,\pi/2]$, o sea, $P>6$.
+\end{proof}
+
+La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo
+financiero: todas las de período mayor de seis meses salen atenuadas, y tanto más cuanto más
+lentas. Trabajar sin transformar respeta los datos tal como los publica la fuente, pero mezcla la
+tendencia de profundización financiera con la estructura de régimen. Por eso el proyecto mantiene
+las series sin transformar como análisis oficial (decisión D1) y las analiza, junto con las
+transformadas, en \textbf{dos vías} con el mismo código y los mismos parámetros (decisión D2). D2
+no elige una vía como definitiva para la interpretación, y la propuesta de cómo combinarlas está
+pendiente de discusión con el asesor.
+
+La segunda consecuencia, y la tensión central del marco, se refiere a los autoencoders y las
+redes LSTM. Estos modelos introducen \textbf{supuestos arquitectónicos} que no provienen de los
+datos: el número de capas y su ancho, la función de activación, la dimensión latente, la longitud
+de la ventana, la regularización y la semilla aleatoria. Cada uno es una decisión del analista.
+La tesis no oculta esa tensión, sino que la acota con cuatro principios:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Anidamiento.} Por la \cref{prop:ae-lineal}, el PCA es un caso particular del
+    autoencoder. El aprendizaje profundo no sustituye el criterio de reconstrucción del análisis
+    de datos, sino que amplía la clase de funciones admitida.
+  \item \textbf{Anclaje lineal.} Cada modelo no lineal se reporta junto con su versión lineal,
+    con la misma dimensión y en la misma escala de error. La no linealidad se acepta solo si
+    mejora fuera de muestra.
+  \item \textbf{Estabilidad como condición de validez.} Una estructura que cambia con la semilla
+    aleatoria no puede considerarse emergida de los datos. Por eso se exige estabilidad entre
+    réplicas, medida con el coeficiente RV (\cref{def:rv}), y se reporta la réplica central, no
+    la de mejor ajuste.
+  \item \textbf{Subordinación a la evidencia.} El aprendizaje profundo se justifica por lo que el
+    PCA no puede hacer por construcción: representar la dinámica de las trayectorias (LSTM) y
+    señalar observaciones que no comparten la estructura típica (error de reconstrucción). No se
+    justifica por una supuesta superioridad general.
+\end{enumerate}
+
+Con estos principios, los autoencoders y las redes LSTM se presentan como un
+\textbf{complemento} de la cadena PCA--HFC--EPCA, no como su reemplazo.
+
+% -----------------------------------------------------------------------------
+\section{Datos y convenciones generales}
+\label{sec:datos}
+
+\begin{definicion}[Datos y estandarización]\label{def:datos}
+Los datos de una vía forman la matriz $\mX=(x_{tj})\in\RR^{n\times p}$, cuya fila
+$\vx_t^{\T}$ reúne las $p$ series en el mes $t$. Para cada serie se definen la media
+$\bar x_j=\frac1n\sum_{t}x_{tj}$ y la desviación típica con divisor $n$,
+$\hat\sigma_j=\bigl(\frac1n\sum_t(x_{tj}-\bar x_j)^2\bigr)^{1/2}$. La matriz estandarizada es
+$\mZ=(z_{tj})$, con $z_{tj}=(x_{tj}-\bar x_j)/\hat\sigma_j$; su fila $t$ es $\vz_t^{\T}$ y su
+columna $j$ es $\vz_j$. La matriz de correlaciones es $\mR=\mZ^{\T}\mZ/n$, con elementos
+$r_{jj'}$ y $r_{jj}=1$.
+\end{definicion}
+
+\begin{supuesto}[Datos completos y no degenerados]\label{sup:datos}
+La matriz $\mX$ no tiene valores faltantes, sus meses forman un calendario continuo y ninguna
+serie es constante ($\hat\sigma_j>0$ para todo $j$).
+\end{supuesto}
+
+Los métodos de la escuela de Camiz son descriptivos: no suponen un modelo probabilístico de los
+datos. Los supuestos distribucionales aparecen solo en las pruebas de la
+\cref{sec:adecuacion} y se declaran allí. El divisor $n$ es el del código del asesor y el de
+\texttt{StandardScaler}; las correlaciones no dependen del divisor.
+
+% -----------------------------------------------------------------------------
+\section{Análisis de componentes principales}
+\label{sec:pca}
+
+\subsection{Definición y propiedad de reconstrucción}
+
+\begin{definicion}[PCA de correlaciones]\label{def:pca}
+Sea $\mR=\mV\mLambda\mV^{\T}$ la descomposición espectral de $\mR$, con
+$\mLambda=\diag(\lambda_1,\dots,\lambda_p)$, $\lambda_1\ge\dots\ge\lambda_p\ge0$, y
+$\mV=[\vv_1\cdots\vv_p]$ ortogonal. La \emph{componente principal} $\ell$ es
+$\vc_\ell=\mZ\vv_\ell\in\RR^{n}$, de elementos $c_{t\ell}$. Para $d<p$, $\mV_d$ denota las
+primeras $d$ columnas de $\mV$. La \emph{inercia} retenida por las $d$ primeras componentes es
+$\sum_{\ell\le d}\lambda_\ell/p$, porque $\tr\mR=p$.
+\end{definicion}
+
+Para $\mE\in\RR^{p\times d}$ con $\mE^{\T}\mE=\mI_d$, sea $\mP=\mE\mE^{\T}$ el proyector ortogonal
+sobre las columnas de $\mE$, y sea
+\begin{equation}\label{eq:pca}
+  J(\mE)=\frac1n\sum_{t=1}^{n}\norm{\vz_t-\mE\mE^{\T}\vz_t}^2
+\end{equation}
+el error cuadrático medio de reconstrucción.
+
+\begin{proposicion}[Reconstrucción óptima]\label{prop:pca}
+Para todo $\mE$ con $\mE^{\T}\mE=\mI_d$,
+\[
+  J(\mE)=p-\tr(\mE^{\T}\mR\mE)\;\ge\;\sum_{\ell=d+1}^{p}\lambda_\ell ,
+\]
+con igualdad si $\mE=\mV_d$. Si además $\lambda_d>\lambda_{d+1}$, la igualdad se cumple si y solo
+si $\mE\mE^{\T}=\mV_d\mV_d^{\T}$, es decir, si las columnas de $\mE$ generan el subespacio de los
+$d$ primeros vectores propios. En particular, el error mínimo por celda es
+$J(\mV_d)/p=1-\sum_{\ell\le d}\lambda_\ell/p$.
+\end{proposicion}
+
+\begin{proof}
+Como $\mP$ es simétrico e idempotente, $\norm{\vz_t-\mP\vz_t}^2=\vz_t^{\T}\vz_t-\vz_t^{\T}\mP\vz_t$.
+Promediando en $t$ y usando $\frac1n\sum_t\vz_t\vz_t^{\T}=\mR$,
+$J(\mE)=\tr\mR-\tr(\mP\mR)=p-\tr(\mE^{\T}\mR\mE)$. Sean $w_\ell=\vv_\ell^{\T}\mP\vv_\ell
+=\norm{\mE^{\T}\vv_\ell}^2$. Como $\mP$ es un proyector, $0\le w_\ell\le1$, y
+$\sum_\ell w_\ell=\tr(\mP\mV\mV^{\T})=\tr\mP=d$. Además,
+$\tr(\mP\mR)=\sum_\ell\lambda_\ell\,\vv_\ell^{\T}\mP\vv_\ell=\sum_\ell\lambda_\ell w_\ell$. Entonces
+\begin{align*}
+  \sum_{\ell}\lambda_\ell w_\ell-\sum_{\ell\le d}\lambda_\ell
+  &=\sum_{\ell\le d}\lambda_\ell(w_\ell-1)+\sum_{\ell>d}\lambda_\ell w_\ell
+  \le\lambda_d\sum_{\ell\le d}(w_\ell-1)+\lambda_{d+1}\sum_{\ell>d}w_\ell\\
+  &=(\lambda_{d+1}-\lambda_d)\sum_{\ell>d}w_\ell\le0,
+\end{align*}
+donde se usó $w_\ell-1\le0$, $\lambda_\ell\ge\lambda_d$ para $\ell\le d$, $\lambda_\ell\le
+\lambda_{d+1}$ para $\ell>d$ y $\sum_{\ell\le d}(w_\ell-1)=-\sum_{\ell>d}w_\ell$. Luego
+$\tr(\mE^{\T}\mR\mE)\le\sum_{\ell\le d}\lambda_\ell$, que es la cota, y con $\mE=\mV_d$ se tiene
+$w_\ell=1$ para $\ell\le d$ y $0$ en otro caso, con igualdad. Si $\lambda_d>\lambda_{d+1}$, la
+igualdad exige $\sum_{\ell>d}w_\ell=0$, es decir, $\mP\vv_\ell=\mathbf{0}$ para $\ell>d$. Entonces la
+imagen de $\mP$ está contenida en el subespacio generado por $\vv_1,\dots,\vv_d$, y como
+$\rango\mP=d$, coincide con él; luego $\mP=\mV_d\mV_d^{\T}$. El recíproco es inmediato.
+\end{proof}
+
+La \cref{prop:pca} es un caso particular del teorema de aproximación de rango bajo, que se
+enuncia sin demostración porque la tesis no lo usa en ninguna prueba.
+
+\begin{teorema}[Eckart y Young; enunciado citado, no demostrado]\label{teo:eckart-young}
+Sea $\mN\in\RR^{n\times p}$ con valores singulares $\varsigma_1\ge\varsigma_2\ge\dots\ge0$. Para
+$d<\rango\mN$, el mínimo de $\normF{\mN-\mM}^2$ entre las matrices $\mM$ de rango a lo sumo $d$ es
+$\sum_{\ell>d}\varsigma_\ell^2$, y se alcanza con la descomposición en valores singulares
+truncada en $d$ términos; si $\varsigma_d>\varsigma_{d+1}$, el minimizador es único
+\parencite{eckart_young_1936}\verificar{texto leído parcialmente (copia con OCR defectuoso, falta
+la última página): confirmar en la fuente la formulación de la condición de unicidad.}.
+\pendiente{obra de referencia del PCA, por ejemplo Jolliffe (2002); sin ficha}
+\end{teorema}
+
+\begin{observacion}[Identificación y signo]\label{obs:signo-pca}
+$J$ depende de $\mE$ solo a través del proyector $\mE\mE^{\T}$: el PCA identifica un subespacio, y
+la base que lo genera, incluido el signo de cada eje, se fija por convención. Con valores propios
+simples, cada $\vv_\ell$ está determinado salvo el signo. La convención de esta tesis, que es la
+de \texttt{Rcamiz} y la de la función \texttt{pca\_basico} del documento en R, es la
+\emph{cuadrática}: se invierte $\vv_\ell$ si
+$\sum_{j:\,v_{j\ell}<0}v_{j\ell}^2>\sum_{j:\,v_{j\ell}>0}v_{j\ell}^2$. El EPCA del asesor usa otra
+regla (\cref{alg:aede}).
+\end{observacion}
+
+\subsection{Calidad de representación y contribuciones}
+\label{sec:cos2}
+
+La escuela francesa acompaña cada eje con dos tipos de ayudas a la interpretación: la calidad con
+que el eje representa cada variable y la contribución de cada variable o de cada observación a la
+construcción del eje \pendiente{fuente de la terminología de calidad de representación
+($\cos^2$) y contribuciones de la escuela francesa; sin ficha}.
+
+\begin{definicion}[Calidad y contribución]\label{def:cos2}
+Sea $\lambda_\ell>0$ y sea $\rho_{j\ell}$ la correlación entre la serie $\vz_j$ y la componente
+$\vc_\ell$. Se definen:
+\begin{enumerate}[label=(\alph*)]
+  \item la \emph{calidad de representación} de la serie $j$ en el eje $\ell$,
+    $\cos^2_{j\ell}=\rho_{j\ell}^2$, y en el plano $(\ell,\ell')$,
+    $\qlt_j(\ell,\ell')=\cos^2_{j\ell}+\cos^2_{j\ell'}$;
+  \item la \emph{contribución} de la serie $j$ al eje $\ell$, $\ctr_{j\ell}=v_{j\ell}^2$;
+  \item la \emph{contribución} del mes $t$ al eje $\ell$, $\ctr_{t\ell}=c_{t\ell}^2/(n\lambda_\ell)$.
+\end{enumerate}
+\end{definicion}
+
+\begin{proposicion}[Propiedades de $\cos^2$ y de las contribuciones]\label{prop:cos2}
+Si $\lambda_1,\dots,\lambda_p>0$:
+\begin{enumerate}[label=(\alph*)]
+  \item $\rho_{j\ell}=\sqrt{\lambda_\ell}\,v_{j\ell}$, de modo que $\cos^2_{j\ell}=\lambda_\ell
+    v_{j\ell}^2$ y $\ctr_{j\ell}=\cos^2_{j\ell}/\lambda_\ell$;
+  \item $\sum_{\ell=1}^{p}\cos^2_{j\ell}=1$ para cada serie $j$;
+  \item $\sum_{j=1}^{p}\ctr_{j\ell}=1$ y $\sum_{t=1}^{n}\ctr_{t\ell}=1$ para cada eje $\ell$;
+  \item $\cos^2_{j\ell}$ es el cuadrado del coseno del ángulo entre $\vz_j$ y $\vc_\ell$ en
+    $\RR^n$, y $\qlt_j(\ell,\ell')$ es el cuadrado de la norma de la proyección ortogonal de
+    $\vz_j/\norm{\vz_j}$ sobre el plano generado por $\vc_\ell$ y $\vc_{\ell'}$.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+Las columnas de $\mZ$ están centradas, luego también $\vc_\ell$; además
+$\frac1n\vc_\ell^{\T}\vc_\ell=\vv_\ell^{\T}\mR\vv_\ell=\lambda_\ell$ y
+$\frac1n\vz_j^{\T}\vz_j=1$. Por tanto
+$\rho_{j\ell}=\frac1n\vz_j^{\T}\mZ\vv_\ell/\sqrt{\lambda_\ell}=(\mR\vv_\ell)_j/\sqrt{\lambda_\ell}
+=\sqrt{\lambda_\ell}\,v_{j\ell}$, lo que prueba (a). (b): $\sum_\ell\lambda_\ell v_{j\ell}^2=
+(\mV\mLambda\mV^{\T})_{jj}=r_{jj}=1$. (c): $\norm{\vv_\ell}=1$ y
+$\sum_t c_{t\ell}^2=n\lambda_\ell$. (d): como ambos vectores están centrados, la correlación es
+el coseno del ángulo entre ellos. Para $\ell\ne\ell'$,
+$\vc_\ell^{\T}\vc_{\ell'}=n\,\vv_\ell^{\T}\mR\vv_{\ell'}=0$, de modo que
+$\{\vc_\ell/\norm{\vc_\ell},\vc_{\ell'}/\norm{\vc_{\ell'}}\}$ es una base ortonormal del plano y la
+norma al cuadrado de la proyección de un vector unitario es la suma de los cuadrados de sus
+cosenos con esa base.
+\end{proof}
+
+Una serie con $\qlt_j(1,2)$ baja está mal representada en el primer plano factorial, y su
+posición en ese plano no debe interpretarse.
+
+\subsection{Número de componentes}
+\label{sec:retencion}
+
+\Cref{oe:dimension} compromete triangular el número $d$ con tres criterios. Se formalizan los dos
+que tienen una definición operativa en el código; las fuentes están pendientes.
+
+\begin{definicion}[Vara quebrada y análisis paralelo]\label{def:retencion}
+\begin{enumerate}[label=(\alph*)]
+  \item \emph{Vara quebrada} \pendiente{fuente del modelo de vara quebrada; sin ficha}: la
+    proporción de inercia esperada de la componente $\ell$ cuando la inercia total se reparte al
+    azar entre $p$ componentes es $\beta_\ell=\frac1p\sum_{i=\ell}^{p}\frac1i$. Se retienen las
+    componentes iniciales consecutivas con $\lambda_\ell/p>\beta_\ell$.
+  \item \emph{Análisis paralelo de Horn} \parencite{horn_1965}\verificar{ficha preliminar: se
+    leyó el resumen, no el texto. El uso de un percentil, en lugar de la media de los valores
+    propios simulados, es una elección de la tesis y no se atribuye a la fuente.}: $\lambda^{\mathrm
+    H}_\ell$ es un percentil superior, fijado de antemano, de la distribución del valor propio
+    $\ell$ de la matriz de correlaciones de una tabla $n\times p$ de variables gaussianas
+    independientes, estimado por simulación. Se retienen las componentes iniciales consecutivas
+    con $\lambda_\ell>\lambda^{\mathrm H}_\ell$.
+\end{enumerate}
+\end{definicion}
+
+El criterio de Kaiser retiene las componentes con $\lambda_\ell>1$
+\parencite{kaiser_1960}\verificar{ficha preliminar: texto no consultado; la atribución del criterio
+a esta obra está por confirmar, y el volumen, el número y las páginas solo constan en fuentes
+secundarias.}. El criterio de Rencher no se formaliza hasta disponer de su fuente
+\pendiente{fuente del criterio de Rencher; sin ficha}. El análisis paralelo compara con un nulo
+de variables \emph{independientes en el tiempo}; con series autocorrelacionadas, ese nulo no es el
+pertinente, y la tesis lo declara al usarlo.
+
+\subsection{Adecuación muestral: medida KMO y prueba de esfericidad de Bartlett}
+\label{sec:adecuacion}
+
+Las dos medidas responden a preguntas distintas. La prueba de Bartlett pregunta si hay alguna
+correlación que resumir; la medida KMO, si las correlaciones son comunes al conjunto o se explican
+por pares de series. La prueba de esfericidad se remite a
+\textcite{bartlett_1950,bartlett_1951} y la medida de adecuación muestral, a
+\textcite{kaiser_1970} y \textcite{kaiser_rice_1974}\verificar{las cuatro fichas son preliminares y
+los textos no se han consultado: solo se cita el aporte general. Las fórmulas de las
+\cref{def:kmo,def:bartlett} son las del código y no se atribuyen a una de estas obras en
+particular; según una fuente secundaria, la forma de la \cref{eq:kmo} es la revisada de 1974.}.
+
+\begin{supuesto}[Matriz de correlaciones regular]\label{sup:regular}
+$\mR$ es invertible ($\lambda_p>0$). Se escribe $\mR^{-1}=(r^{jj'})$.
+\end{supuesto}
+
+\begin{definicion}[Correlación anti-imagen y medida KMO]\label{def:kmo}
+Bajo el \cref{sup:regular}, la correlación anti-imagen entre las series $j\ne j'$ es
+\[
+  q_{jj'}=-\frac{r^{jj'}}{\sqrt{r^{jj}\,r^{j'j'}}} .
+\]
+La medida global y la individual de Kaiser-Meyer-Olkin son
+\begin{equation}\label{eq:kmo}
+  \KMO=\frac{\sum_{j\ne j'}r_{jj'}^2}{\sum_{j\ne j'}r_{jj'}^2+\sum_{j\ne j'}q_{jj'}^2},
+  \qquad
+  \KMO_j=\frac{\sum_{j'\ne j}r_{jj'}^2}{\sum_{j'\ne j}r_{jj'}^2+\sum_{j'\ne j}q_{jj'}^2}.
+\end{equation}
+\end{definicion}
+
+Cuando sus denominadores no se anulan, ambas están en $[0,1]$. La correlación anti-imagen coincide con la correlación parcial entre las
+series $j$ y $j'$ dada el resto \pendiente{fuente de la relación entre la inversa de la matriz de
+correlaciones y las correlaciones parciales; sin ficha}. Un $\KMO$ cercano a uno indica que las
+correlaciones parciales son pequeñas frente a las totales, es decir, que la correlación entre dos
+series se explica por lo que comparten con las demás. Es la fórmula de la función \texttt{kmo} del
+documento en R.
+
+\begin{definicion}[Prueba de esfericidad de Bartlett]\label{def:bartlett}
+El estadístico de esfericidad es
+\begin{equation}\label{eq:bartlett}
+  \chi^2_{\mathrm B}=-\Bigl(n-1-\frac{2p+5}{6}\Bigr)\ln\det\mR ,
+\end{equation}
+que se compara con una distribución ji cuadrado con $p(p-1)/2$ grados de libertad. Es la fórmula
+de la función \texttt{bartlett\_esfericidad} del documento en R.
+\end{definicion}
+
+\begin{supuesto}[Supuestos de la prueba de Bartlett]\label{sup:bartlett}
+La distribución de referencia de $\chi^2_{\mathrm B}$ supone que las filas $\vx_t$ son
+observaciones independientes e idénticamente distribuidas de una normal multivariada, y que la
+hipótesis nula es que la matriz de correlaciones poblacional es $\mI_p$; la aproximación es
+asintótica en $n$.
+\end{supuesto}
+
+\begin{lema}[Signo del estadístico]\label{lem:det}
+Para toda matriz de correlaciones $\mR$, $0\le\det\mR\le1$, con $\det\mR=1$ si y solo si
+$\mR=\mI_p$. En consecuencia, si $n-1>(2p+5)/6$, $\chi^2_{\mathrm B}\ge0$, con igualdad si y
+solo si $\mR=\mI_p$.
+\end{lema}
+
+\begin{proof}
+Los valores propios son no negativos y suman $\tr\mR=p$. Por la desigualdad entre las medias
+aritmética y geométrica, $\det\mR=\prod_\ell\lambda_\ell\le\bigl(\frac1p\sum_\ell\lambda_\ell
+\bigr)^p=1$, con igualdad si y solo si todos los $\lambda_\ell$ valen uno, es decir, si y solo si
+$\mR=\mV\mI_p\mV^{\T}=\mI_p$. La afirmación sobre $\chi^2_{\mathrm B}$ se sigue de que
+$-\ln\det\mR\ge0$.
+\end{proof}
+
+\begin{observacion}[Lectura con series de tiempo]\label{obs:bartlett-series}
+Como $\ln\det\mR=\sum_\ell\ln\lambda_\ell$, el estadístico está dominado por los valores propios
+más pequeños: un par de series casi colineales lleva $\lambda_p$ cerca de cero y
+$\chi^2_{\mathrm B}$ a valores grandes con independencia del resto de la estructura. Por eso
+conviene informarlo junto con $\ln\det\mR$ y con el número de condición
+$\lambda_1/\lambda_p$. Con series autocorrelacionadas, el \cref{sup:bartlett} no se cumple y la
+distribución ji cuadrado no es la de referencia; reemplazar $n$ por un tamaño muestral efectivo
+es una sensibilidad que se apoya en el ajuste de los grados de libertad de una correlación entre
+series autocorrelacionadas de \textcite{pyper_peterman_1998}\verificar{ficha preliminar: texto no
+consultado; no se ha comprobado que la fórmula de $n$ efectivo del código sea la de este artículo,
+que además tiene una fe de erratas. Solo se cita el aporte general.}. En esas condiciones,
+$\chi^2_{\mathrm B}$ y $\KMO$ se leen como descripciones de $\mR$, no como pruebas.
+\end{observacion}
+
+% -----------------------------------------------------------------------------
+\section{Clasificación Factorial Jerárquica}
+\label{sec:hfc}
+
+La HFC, cuya formulación original los autores atribuyen a Denimal
+\parencite[2007, como se cita en][]{camiz_et_al_2020}\footnote{La fuente primaria de la HFC no
+tiene ficha en el proyecto: \textcite{camiz_et_al_2020} citan a Denimal (2007), y
+\textcite{camiz_roig_2011}, a Denimal (2001). Se cita de forma secundaria.
+\pendiente{Denimal (2001, 2007); sin ficha}}, es una clasificación jerárquica ascendente de las
+\textbf{variables}, no de las observaciones. Cada grupo de variables tiene un representante, su
+\emph{factor}, y las fusiones se deciden con el PCA de dos factores.
+
+\begin{definicion}[Clasificación Factorial Jerárquica]\label{def:hfc}
+Para dos vectores centrados $\fac_{\gA},\fac_{\gB}\in\RR^n$, sean
+$\kappa_{\gA}=\frac1n\fac_{\gA}^{\T}\fac_{\gA}$, $\kappa_{\gB}=\frac1n\fac_{\gB}^{\T}\fac_{\gB}$ y
+$\kappa_{\gA\gB}=\frac1n\fac_{\gA}^{\T}\fac_{\gB}$, y sean $\mu_1^{\gA\gB}\ge\mu_2^{\gA\gB}$ los
+valores propios de la matriz
+$\mathbf{K}_{\gA\gB}=\bigl(\begin{smallmatrix}\kappa_{\gA}&\kappa_{\gA\gB}\\ \kappa_{\gA\gB}&\kappa_{\gB}
+\end{smallmatrix}\bigr)$, con $(\alpha,\beta)$ un vector propio unitario asociado a
+$\mu_1^{\gA\gB}$. La HFC procede así:
+\begin{enumerate}[label=\arabic*.]
+  \item \emph{Inicio.} Cada serie es un grupo, $\gA=\{j\}$, con factor $\fac_{\{j\}}=\vz_j$.
+  \item \emph{Fusión.} Entre los pares de grupos vigentes se fusiona
+    \begin{equation}\label{eq:hfc}
+      (\gA^\ast,\gB^\ast)=\argmin_{\gA\ne\gB}\;\mu_2^{\gA\gB}.
+    \end{equation}
+    El nuevo grupo $\gA^\ast\cup\gB^\ast$ tiene factor
+    $\fac_{\gA^\ast\cup\gB^\ast}=\alpha\fac_{\gA^\ast}+\beta\fac_{\gB^\ast}$ y componente de
+    diferencias $\dif_{\gA^\ast\cup\gB^\ast}=-\beta\fac_{\gA^\ast}+\alpha\fac_{\gB^\ast}$, ambas
+    definidas salvo el signo. El \emph{índice} del nodo es $\mu_2^{\gA^\ast\gB^\ast}$.
+  \item \emph{Fin.} Se repite el paso 2 hasta que queda un solo grupo; la jerarquía tiene $p-1$
+    nodos.
+\end{enumerate}
+\end{definicion}
+
+El índice de fusión mide la heterogeneidad del grupo resultante: cuanto menor es, mayor es la
+parte de la varianza conjunta que recoge un único eje. El factor funciona como \textbf{cronología
+representativa} de lo que el grupo comparte, y la componente de diferencias mide las divergencias
+internas. \textcite{camiz_et_al_2020} cortan la jerarquía cuando el segundo valor propio supera
+0,7, umbral que remiten a Jolliffe \parencite[2002, como se cita en][]{camiz_et_al_2020}. Muestran
+también, en series dendrocronológicas, que la HFC aproxima de cerca la solución global del PCA y
+que, a diferencia de este, entrega una partición explícita de las series en grupos con
+representantes propios. Ese caso de estudio, sin embargo, tiene pocas series, que además son
+aproximadamente estacionarias.
+
+\begin{lema}[PCA de dos factores]\label{lem:pca2}
+Con la notación de la \cref{def:hfc},
+\[
+  \mu_{1,2}^{\gA\gB}=\frac{\kappa_{\gA}+\kappa_{\gB}\pm
+  \sqrt{(\kappa_{\gA}-\kappa_{\gB})^2+4\kappa_{\gA\gB}^2}}{2}.
+\]
+Si $\kappa_{\gA\gB}\ne0$, $(\alpha,\beta)$ es proporcional a
+$\bigl(\kappa_{\gA\gB},\,\mu_1^{\gA\gB}-\kappa_{\gA}\bigr)$. Si $\kappa_{\gA\gB}=0$,
+$\mu_1^{\gA\gB}=\max(\kappa_{\gA},\kappa_{\gB})$ y el factor fusionado es el de mayor varianza.
+Además, $\frac1n\norm{\fac_{\gA\cup\gB}}^2=\mu_1^{\gA\gB}$,
+$\frac1n\norm{\dif_{\gA\cup\gB}}^2=\mu_2^{\gA\gB}$ y $\mu_1^{\gA\gB}+\mu_2^{\gA\gB}=\kappa_{\gA}+
+\kappa_{\gB}$.
+\end{lema}
+
+\begin{proof}
+Los valores propios son las raíces de
+$\mu^2-(\kappa_{\gA}+\kappa_{\gB})\mu+\kappa_{\gA}\kappa_{\gB}-\kappa_{\gA\gB}^2=0$. La primera
+fila de $(\mathbf{K}_{\gA\gB}-\mu_1\mI_2)(\alpha,\beta)^{\T}=\mathbf{0}$ da $(\kappa_{\gA}-\mu_1)\alpha+\kappa_{\gA\gB}\beta=0$, de donde se obtiene
+la dirección si $\kappa_{\gA\gB}\ne0$; si $\kappa_{\gA\gB}=0$, la matriz es diagonal. La varianza de
+$\alpha\fac_{\gA}+\beta\fac_{\gB}$ es la forma cuadrática de $\mathbf{K}_{\gA\gB}$ en el vector propio
+unitario, es decir, $\mu_1$; la de la componente de diferencias, que usa el vector propio
+ortogonal, es $\mu_2$; la suma de los valores propios es la traza.
+\end{proof}
+
+Las fórmulas del \cref{lem:pca2} son las de la función \texttt{distancia\_hfc} de
+\texttt{R/camiz\_port.R}, y la actualización del factor es la de \texttt{agrega\_r}.
+
+\begin{proposicion}[Fusión de dos variables estandarizadas]\label{prop:hfc-hojas}
+Sean $j\ne j'$ dos series con $r=r_{jj'}$. Su PCA de dos factores tiene
+\[
+  \mu_1^{\{j\}\{j'\}}=1+\abs{r},\qquad\mu_2^{\{j\}\{j'\}}=1-\abs{r},
+\]
+y, si $r\ne0$, factor $\fac_{\{j,j'\}}=(\vz_j+\operatorname{sgn}(r)\,\vz_{j'})/\sqrt2$ (salvo el
+signo). En particular, la primera fusión de la HFC une el par de series con mayor
+$\abs{r_{jj'}}$, y su índice es $1-\max_{j\ne j'}\abs{r_{jj'}}$.
+\end{proposicion}
+
+\begin{proof}
+Con $\kappa_{\gA}=\kappa_{\gB}=1$ y $\kappa_{\gA\gB}=r$, el \cref{lem:pca2} da
+$\mu_{1,2}=(2\pm\sqrt{4r^2})/2=1\pm\abs{r}$ y la dirección $(r,\abs{r})\propto(1,\operatorname{sgn}
+r)$, de norma $\sqrt2$ tras normalizar. En el primer paso todos los grupos son hojas, y
+$1-\abs{r}$ es mínimo donde $\abs{r}$ es máximo.
+\end{proof}
+
+\begin{proposicion}[Descomposición de la inercia y cota del factor]\label{prop:hfc-inercia}
+Sea $\mu_1^{\text{raíz}}$ el primer valor propio de la última fusión. Entonces:
+\begin{enumerate}[label=(\alph*)]
+  \item $p=\mu_1^{\text{raíz}}+\sum_{\text{nodos}}\mu_2^{\text{nodo}}$: la inercia total se
+    reparte entre la varianza del factor raíz y los índices de los $p-1$ nodos;
+  \item el factor de todo grupo $\gA$ es $\fac_{\gA}=\sum_{j\in\gA}w^{\gA}_j\vz_j$ con
+    $\sum_{j\in\gA}(w^{\gA}_j)^2=1$; por tanto, si $\mR_{\gA}$ es la submatriz de $\mR$ de
+    las series de $\gA$, $\frac1n\norm{\fac_{\gA}}^2\le\lambda_1(\mR_{\gA})$, con igualdad cuando
+    $\gA$ tiene dos series.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+(a) Sea $V_s$ la suma de las varianzas de los factores vigentes tras $s$ fusiones. Al inicio,
+$V_0=\sum_j\frac1n\norm{\vz_j}^2=p$. Por el \cref{lem:pca2}, cada fusión reemplaza
+$\kappa_{\gA}+\kappa_{\gB}$ por $\mu_1^{\gA\gB}$, de modo que $V_{s}=V_{s-1}-\mu_2^{\text{nodo }s}$.
+Tras $p-1$ fusiones queda solo el factor raíz, con $V_{p-1}=\mu_1^{\text{raíz}}$.
+(b) Por inducción: es cierto para las hojas, con coeficiente uno. Si $\fac_{\gA}$ y $\fac_{\gB}$
+tienen coeficientes de norma unitaria con soportes disjuntos, los de
+$\alpha\fac_{\gA}+\beta\fac_{\gB}$ tienen norma al cuadrado $\alpha^2+\beta^2=1$. Entonces
+$\frac1n\norm{\fac_{\gA}}^2=(\mathbf{w}^{\gA})^{\T}\mR_{\gA}\mathbf{w}^{\gA}$ con
+$\norm{\mathbf{w}^{\gA}}=1$, que es a lo sumo $\lambda_1(\mR_{\gA})$ por el cociente de Rayleigh.
+Con dos series, la \cref{prop:hfc-hojas} y la matriz $\bigl(\begin{smallmatrix}1&r\\r&1
+\end{smallmatrix}\bigr)$ dan la igualdad.
+\end{proof}
+
+\begin{observacion}[Correspondencia con el código]\label{obs:hfc-codigo}
+(a) La descomposición (a) es la tabla de inercia de \texttt{clahfac} (columnas
+\texttt{Hierarchy}, \texttt{Repr\_Var} y \texttt{Total}). (b) La implementación no recorre todos
+los pares en cada paso, como sugiere \cref{eq:hfc}, sino que usa un grafo de vecinos reducibles
+con un umbral \pendiente{fuente de la técnica de vecinos reducibles (Bruynooghe); sin ficha}. Su
+equivalencia con \cref{eq:hfc} depende de una propiedad de reducibilidad del índice que no se
+demuestra en esta tesis. (c) Por la \cref{prop:hfc-inercia}(b), la varianza del factor de un grupo
+de más de dos series no es, en general, el primer valor propio de la submatriz de correlaciones del
+grupo; la salida \texttt{eigentab\_convergido} de \texttt{clahfacsub\_r} es este último.
+(d) El signo de cada factor se orienta de modo que domine la suma de los cuadrados de las
+correlaciones positivas con las series del grupo.
+\end{observacion}
+
+% -----------------------------------------------------------------------------
+\section{Análisis evolutivo de componentes principales}
+\label{sec:epca}
+
+El PCA y la HFC suponen implícitamente que la estructura de correlación es la misma en toda la
+muestra. \textcite{camiz_maulucci_roig_2010}\verificar{datos de edición de las actas (ISBN o
+DOI).} relajan ese supuesto con el EPCA: un PCA
+independiente sobre cada subtabla de una ventana móvil. La versión que se formaliza aquí es la
+función \texttt{aede} del paquete \texttt{AedeClahfac} del asesor, traducida a R en
+\texttt{R/camiz\_port.R} (funciones \texttt{aede\_r}, \texttt{.bstatw\_ac} y \texttt{.ustatw\_ac}),
+que es la fuente de verdad de esta sección.
+
+\subsection{Ventanas, fechado y pesos}
+
+\begin{definicion}[Ventanas y convención de fechado]\label{def:ventana}
+Sea $\nw\le n$ el ancho de la ventana y $N=n-\nw+1$ el número de ventanas. La ventana
+$i\in\{1,\dots,N\}$ contiene los meses $i,i+1,\dots,i+\nw-1$ y se asigna al mes
+\begin{equation}\label{eq:fechado}
+  t_i=i+\lfloor\nw/2\rfloor .
+\end{equation}
+Equivalentemente, la ventana asignada al mes $t$ es
+$\Wt_t=\{t-\lfloor\nw/2\rfloor,\dots,t+\lceil\nw/2\rceil-1\}$, para
+$t=1+\lfloor\nw/2\rfloor,\dots,n-\lceil\nw/2\rceil+1$. La posición del mes $s\in\Wt_t$ dentro de
+la ventana es $u=s-t+\lfloor\nw/2\rfloor+1\in\{1,\dots,\nw\}$.
+\end{definicion}
+
+Si $\nw$ es impar, $t_i$ es el mes central de la ventana. Si es par, la ventana no tiene un mes
+central y $t_i$ es el posterior de los dos centrales, la posición $\nw/2+1$. La
+\cref{eq:fechado} reproduce la asignación de nombres de fila de \texttt{aede\_r}
+(\texttt{rownames(serie)[(1 + nw/2):(wn + nw/2)]}), en la que R trunca los índices no enteros.
+Los meses iniciales y finales de la muestra no reciben ninguna ventana.
+
+\begin{definicion}[Pesos de la ventana]\label{def:pesos}
+Para $\nu\ge0$, los pesos gaussianos son
+\begin{equation}\label{eq:pesos}
+  \omega_u=\frac{\tilde\omega_u}{\sum_{u'=1}^{\nw}\tilde\omega_{u'}},\qquad
+  \tilde\omega_u=\exp\!\Bigl[-\frac12\Bigl(\nu\,\frac{u-(\nw+1)/2}{(\nw-1)/\sqrt2}\Bigr)^{2}\Bigr],
+  \qquad u=1,\dots,\nw .
+\end{equation}
+El parámetro $\nu$ es el argumento \texttt{nsd} de \texttt{aede}. Con $\nu=0$ se obtienen los
+pesos uniformes, $\omega_u=1/\nw$.
+\end{definicion}
+
+Los pesos son positivos, suman uno y son simétricos respecto del centro $(\nw+1)/2$. En los
+extremos, $u-(\nw+1)/2=\pm(\nw-1)/2$, de modo que $\tilde\omega_1=\tilde\omega_{\nw}=e^{-\nu^2/4}$,
+mientras que el máximo de $\tilde\omega$ es uno, en el centro. El parámetro $\nu$ fija, pues, el
+cociente entre el peso de los extremos y el del centro, con independencia de $\nw$. Los pesos
+uniformes corresponden a la ventana rectangular del trabajo de 2010. La alternativa que siguen
+\textcite{camiz_cerda_atoche_2026} privilegia el centro de la ventana \pendiente{Camiz y Diblasi
+(2013), fuente del esquema de ponderación gaussiana; sin ficha}.
+
+\subsection{Correlación ponderada}
+
+\begin{definicion}[Estadísticos ponderados de la ventana]\label{def:epca}
+Para la ventana $\Wt_t$, con el peso $\omega_s$ del mes $s$ dado por su posición, se definen
+\begin{equation}\label{eq:epca}
+\begin{aligned}
+  \vm_t&=\sum_{s\in\Wt_t}\omega_s\vx_s, &
+  \mC_t&=\sum_{s\in\Wt_t}\omega_s(\vx_s-\vm_t)(\vx_s-\vm_t)^{\T},\\
+  \mD_t&=\diag(\mC_t), &
+  \mR_t&=\mD_t^{-1/2}\mC_t\mD_t^{-1/2}.
+\end{aligned}
+\end{equation}
+Los valores y vectores propios de $\mR_t$ se denotan $\lambda_\ell(t)$ y $\vv_\ell(t)$.
+\end{definicion}
+
+\begin{supuesto}[Ninguna serie constante en la ventana]\label{sup:ventana}
+Para todo $j$, $(\mC_t)_{jj}>0$. Con pesos positivos, como los de \cref{eq:pesos}, esto equivale a
+que ninguna serie sea constante dentro de la ventana.
+\end{supuesto}
+
+\begin{proposicion}[La correlación ponderada es una matriz de correlaciones]\label{prop:epca}
+Sean $\omega_s\ge0$ con $\sum_{s\in\Wt_t}\omega_s=1$ y supóngase el \cref{sup:ventana}. Sea
+$\tilde\vz_s=\mD_t^{-1/2}(\vx_s-\vm_t)$ la estandarización \emph{ponderada} de cada mes de la
+ventana. Entonces:
+\begin{enumerate}[label=(\alph*)]
+  \item $\sum_s\omega_s\tilde\vz_s=\mathbf{0}$, $\sum_s\omega_s\tilde z_{sj}^2=1$ para todo $j$, y
+    $\mR_t=\sum_s\omega_s\tilde\vz_s\tilde\vz_s^{\T}$;
+  \item $\mR_t$ es simétrica, semidefinida positiva, con diagonal unitaria y elementos en
+    $[-1,1]$: es una matriz de correlaciones;
+  \item $\lambda_\ell(t)\ge0$ y $\sum_{\ell=1}^{p}\lambda_\ell(t)=p$ en toda ventana;
+  \item $\mR_t$ no cambia si cada serie se transforma como $x_{sj}\mapsto a_j+b_jx_{sj}$ con
+    $b_j>0$; en particular, es la misma con $\mX$ que con $\mZ$.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+(a) $\sum_s\omega_s(\vx_s-\vm_t)=\vm_t-\vm_t=\mathbf{0}$ porque los pesos suman uno. La
+igualdad $\mR_t=\sum_s\omega_s\tilde\vz_s\tilde\vz_s^{\T}$ es \cref{eq:epca} con el factor
+$\mD_t^{-1/2}$ a cada lado, y su diagonal es $(\mC_t)_{jj}/(\mC_t)_{jj}=1$, que es la varianza
+ponderada de $\tilde z_{sj}$. (b) La simetría es clara. Para $\mathbf{a}\in\RR^p$,
+$\mathbf{a}^{\T}\mR_t\mathbf{a}=\sum_s\omega_s(\mathbf{a}^{\T}\tilde\vz_s)^2\ge0$. La submatriz
+principal de orden dos de las series $j$ y $j'$ es semidefinida positiva con diagonal unitaria,
+luego su determinante $1-(\mR_t)_{jj'}^2$ es no negativo. (c) Los valores propios de una matriz
+semidefinida positiva son no negativos y suman la traza, que es $p$ por (b). (d) La media se
+transforma en $a_j+b_j(\vm_t)_j$, de modo que $x_{sj}-(\vm_t)_j$ se multiplica por $b_j$. Con
+$\mathbf{G}_b=\diag(b_1,\dots,b_p)$, $\mC_t$ pasa a $\mathbf{G}_b\mC_t\mathbf{G}_b$ y $\mD_t$ a
+$\mathbf{G}_b^2\mD_t$, y los factores se cancelan en $\mR_t$.
+\end{proof}
+
+\begin{observacion}[Por qué la estandarización debe ser ponderada]\label{obs:m1}
+Si la ventana se estandariza con la media y la varianza \emph{sin ponderar} y después se toma el
+producto cruzado ponderado, la diagonal resultante es la varianza ponderada de la serie dividida
+entre su varianza sin ponderar, que en general no vale uno. Basta un ejemplo de tres meses con
+valores $-1,0,1$ y pesos $1/4,1/2,1/4$: la media sin ponderar es cero, la varianza sin ponderar es
+$2/3$, el segundo momento ponderado es $1/2$ y el elemento diagonal vale $3/4$. Por eso la
+\cref{eq:epca} define la media, la covarianza y la correlación ponderadas, que son las de
+\texttt{.bstatw\_ac}. Con pesos uniformes ambas versiones coinciden; el notebook
+\texttt{06\_epca.ipynb}, que estandariza cada ventana sin ponderar, corresponde a ese caso.
+\end{observacion}
+
+\subsection{El algoritmo \texttt{aede}}
+
+\begin{algoritmo}[EPCA con datación, \texttt{aede}]\label{alg:aede}
+Entradas (con la opción \texttt{standard = TRUE}): la matriz $\mX$, el ancho $\nw$, el parámetro de forma $\nu$, el número $d$ de ejes y
+el número máximo de clases $K_{\max}$. Para cada ventana $i=1,\dots,N$:
+\begin{enumerate}[label=\arabic*.]
+  \item calcular $\mR_{t_i}$ por \cref{eq:epca} con los pesos \cref{eq:pesos};
+  \item obtener $\lambda_\ell(t_i)$ y $\vv_\ell(t_i)$, $\ell=1,\dots,d$;
+  \item orientar cada $\vv_\ell(t_i)$ con la regla \emph{lineal}: invertirlo si
+    $\abs{\sum_{j:\,v_{j\ell}<0}v_{j\ell}}>\sum_{j:\,v_{j\ell}>0}v_{j\ell}$, y guardar
+    $\sqrt{\lambda_\ell(t_i)}\,\vv_\ell(t_i)$ (salida \texttt{correlationsgn});
+  \item si $i>1$, invertir además $\vv_\ell(t_i)$ cuando
+    $\norm{\vv_\ell(t_i)+\vv_\ell(t_{i-1})}<\norm{\vv_\ell(t_i)-\vv_\ell(t_{i-1})}$, donde
+    $\vv_\ell(t_{i-1})$ es el vector ya alineado de la ventana anterior, y guardar
+    $\sqrt{\lambda_\ell(t_i)}\,\vv_\ell(t_i)$ (salida \texttt{correlationlsq}).
+\end{enumerate}
+Por último, aplicar la partición de Fisher (\cref{def:fisher}) a la trayectoria univariada
+$y_i=\lambda_1(t_i)$, $i=1,\dots,N$, con $n_{\min}=1$, para $K=1,\dots,K_{\max}$, y calcular el
+índice $\CH^{\mathrm a}_K$ de la \cref{def:ch}. Un corte tras la ventana $\tau_k$ se fecha en
+$t_{\tau_k+1}$, el mes asignado a la primera ventana del segmento siguiente.
+\end{algoritmo}
+
+\begin{observacion}[Alcance de las convenciones]\label{obs:aede}
+(a) Los valores propios no dependen del signo de los vectores, de modo que las reglas de los pasos
+3 y 4 no afectan a la datación, que solo usa $\lambda_1$. (b) La alineación del paso 4 compara el
+vector $\ell$ con el vector $\ell$ de la ventana anterior. Si $\lambda_\ell(t)$ y
+$\lambda_{\ell+1}(t)$ se cruzan entre dos ventanas, el orden de los ejes cambia y la alineación
+de signo no lo detecta. (c) La regla lineal del paso 3 no es la regla cuadrática del PCA global
+(\cref{obs:signo-pca}): los dos signos pueden diferir en un mismo eje. (d) La partición de
+\texttt{aede} no impone longitud mínima de segmento; la datación con la partición de Fisher sobre
+otras trayectorias sí la impone (\cref{sec:fisher}).
+\end{observacion}
+
+La descomposición espectral de cada $\mR_t$ produce series temporales de valores propios
+$\lambda_\ell(t)$ y de correlaciones entre variables y componentes. Que el primer valor propio
+descienda significa que el conjunto pierde coherencia unidimensional; que cambien las
+correlaciones indica qué series provocan la reconfiguración.
+\textcite{camiz_maulucci_roig_2010} enmarcan el procedimiento en el análisis exploratorio: sus
+resultados describen la muestra y no se generalizan a una población \pendiente{Tukey (1977); sin
+ficha}. En el mismo trabajo, el análisis STATIS dual, que compara las matrices de correlación de
+todas las ventanas en un espacio común, identifica años de quiebre coherentes con el EPCA.
+
+Un problema que estos trabajos no resuelven es la elección de $\nw$.
+\textcite{camiz_maulucci_roig_2010} fijan la ventana sin un criterio estadístico explícito,
+\textcite{camiz_roig_2011}\verificar{el nombre del editor de las actas (O.~Papú) se infirió por
+analogía; el año figura como 2010/2011 en la ficha.} comparan dos anchos de manera informal y, como se señaló,
+\textcite{camiz_cerda_atoche_2026} eligen la ventana por experimentación. El ancho regula un
+compromiso: una ventana corta estima mal las matrices de correlación cuando $p$ se acerca a $\nw$,
+y una ventana larga atenúa la sensibilidad al cambio estructural. Si $\nw\le p$ y los pesos son positivos, además,
+$\rango\mR_t\le\nw-1<p$ y la matriz es singular, porque los $\nw$ vectores
+$\tilde\vz_s$ de la \cref{prop:epca}(a) satisfacen la relación lineal
+$\sum_s\omega_s\tilde\vz_s=\mathbf{0}$.
+
+% -----------------------------------------------------------------------------
+\section{Partición óptima de Fisher y número de clases}
+\label{sec:fisher}
+
+\textcite{camiz_roig_2011} completan la cadena con un procedimiento de datación. Sobre la serie del
+primer valor propio del EPCA aplican el algoritmo de \textcite{fisher_1958}, que divide una
+sucesión ordenada en intervalos contiguos de máxima homogeneidad interna, y luego realizan un PCA
+independiente en cada período.
+
+\begin{definicion}[Partición óptima de una trayectoria]\label{def:fisher}
+Sea $\vy_1,\dots,\vy_N\in\RR^{q}$ una trayectoria y $n_{\min}\ge1$ una longitud mínima. Para
+$1\le a\le b\le N$, sean $\bar\vy_{a:b}$ la media de $\vy_a,\dots,\vy_b$ y
+\[
+  Q(a,b)=\sum_{t=a}^{b}\norm{\vy_t-\bar\vy_{a:b}}^2 .
+\]
+Una partición admisible de $\{1,\dots,b\}$ en $K$ segmentos es una sucesión
+$0=\tau_0<\tau_1<\dots<\tau_K=b$ con $\tau_k-\tau_{k-1}\ge n_{\min}$. El problema de Fisher es
+\begin{equation}\label{eq:fisher}
+  Q^\ast_K(b)=\min_{\text{admisibles}}\;\sum_{k=1}^{K}Q(\tau_{k-1}+1,\tau_k),
+\end{equation}
+con $Q^\ast_K(b)=+\infty$ si no hay particiones admisibles ($b<Kn_{\min}$). La partición óptima
+de la trayectoria en $K$ segmentos es la que alcanza $Q^\ast_K(N)$.
+\end{definicion}
+
+El aporte general de \textcite{fisher_1958} consiste en mostrar que, cuando los datos están
+ordenados, la partición óptima puede hallarse exactamente. A diferencia de los algoritmos de
+clasificación sin restricción, el resultado no depende de una inicialización. El método no
+determina $K$, que requiere un criterio adicional. La formulación con $q>1$ y con longitud mínima
+se declara como adaptación mientras no se verifique el alcance del artículo original; la
+\cref{prop:fisher} la justifica sin depender de él. En \texttt{aede}, $q=1$ y $n_{\min}=1$
+(\texttt{fisher\_r}); en la datación del documento en R, $q\ge1$ y $n_{\min}$ es un parámetro
+(\texttt{particion\_fisher}).
+
+\begin{lema}[Costo de un segmento]\label{lem:costo}
+$Q(a,b)=\sum_{t=a}^{b}\norm{\vy_t}^2-\frac{1}{b-a+1}\Bigl\lVert\sum_{t=a}^{b}\vy_t\Bigr\rVert^2$.
+Con sumas acumuladas de $\vy_t$ y de $\norm{\vy_t}^2$, cada $Q(a,b)$ se calcula en $O(q)$
+operaciones.
+\end{lema}
+
+\begin{proof}
+Como $\sum_{t=a}^{b}\vy_t=(b-a+1)\bar\vy_{a:b}$, al desarrollar el cuadrado se obtiene
+$\sum_t\norm{\vy_t-\bar\vy_{a:b}}^2=\sum_t\norm{\vy_t}^2-(b-a+1)\norm{\bar\vy_{a:b}}^2$, que es la
+expresión del enunciado. Las dos sumas son diferencias de sumas acumuladas.
+\end{proof}
+
+\begin{proposicion}[Subestructura óptima]\label{prop:fisher}
+Para $b\ge n_{\min}$, $Q^\ast_1(b)=Q(1,b)$, y para $K\ge2$ y $b\ge Kn_{\min}$,
+\begin{equation}\label{eq:bellman}
+  Q^\ast_K(b)=\min_{(K-1)n_{\min}\le a\le b-n_{\min}}\Bigl[\,Q^\ast_{K-1}(a)+Q(a+1,b)\,\Bigr].
+\end{equation}
+Además, si $a^\ast$ alcanza el mínimo, una partición óptima de $\{1,\dots,b\}$ en $K$ segmentos
+se obtiene agregando el segmento $\{a^\ast+1,\dots,b\}$ a una partición óptima de
+$\{1,\dots,a^\ast\}$ en $K-1$ segmentos. En consecuencia, \cref{eq:bellman} calcula la solución
+exacta de \cref{eq:fisher} en $O(K_{\max}N^2q)$ operaciones, sin inicialización.
+\end{proposicion}
+
+\begin{proof}
+El caso $K=1$ es la definición. Sea $K\ge2$. ($\ge$) Tómese una partición admisible óptima de
+$\{1,\dots,b\}$ y sea $a=\tau_{K-1}$. Sus primeros $K-1$ segmentos forman una partición admisible
+de $\{1,\dots,a\}$, de modo que $a\ge(K-1)n_{\min}$, y el último tiene longitud $b-a\ge n_{\min}$.
+Como el objetivo es aditivo por segmentos,
+$Q^\ast_K(b)=\sum_{k<K}Q(\tau_{k-1}+1,\tau_k)+Q(a+1,b)\ge Q^\ast_{K-1}(a)+Q(a+1,b)$, que es al
+menos el mínimo de \cref{eq:bellman}. ($\le$) Para cada $a$ del rango, una partición óptima de
+$\{1,\dots,a\}$ en $K-1$ segmentos seguida del segmento $\{a+1,\dots,b\}$ es admisible en $K$
+segmentos, de modo que $Q^\ast_K(b)\le Q^\ast_{K-1}(a)+Q(a+1,b)$ para todo $a$. Las dos
+desigualdades dan \cref{eq:bellman}, y la construcción de ($\le$) con $a=a^\ast$ alcanza el
+óptimo. Para la complejidad, se calculan $Q^\ast_K(b)$ para $K\le K_{\max}$ y $b\le N$, cada uno
+como un mínimo sobre a lo sumo $N$ valores de $a$, y cada $Q(a+1,b)$ cuesta $O(q)$ por el
+\cref{lem:costo}; los cortes se recuperan guardando el $a^\ast$ de cada par $(K,b)$.
+\end{proof}
+
+La recurrencia \cref{eq:bellman} es la que implementan las funciones
+\texttt{fisher\_r} y \texttt{particion\_fisher}. Cuando el mínimo se alcanza en varios $a$, ambas eligen el primero.
+
+\subsection{Índice de Caliński y Harabasz}
+
+\begin{definicion}[Índice de Caliński y Harabasz en dos variantes]\label{def:ch}
+Sea $T=Q(1,N)$ la suma de cuadrados total de la trayectoria y $Q_K=Q^\ast_K(N)$ la intrasegmento
+de la partición óptima en $K$ segmentos, $2\le K<N$. Se definen
+\[
+  \CH^{\mathrm h}_K=\frac{(T-Q_K)/(K-1)}{Q_K/(N-K)}
+  \qquad\text{y}\qquad
+  \CH^{\mathrm a}_K=\frac{(T-Q_K)/K}{Q_K/(N-K)} .
+\]
+$\CH^{\mathrm h}_K$ es la forma habitual del índice de
+\textcite{calinski_harabasz_1974}\verificar{texto no consultado: contrastar en la fuente los grados
+de libertad ($K-1$ y $N-K$) de la forma original antes de atribuírsela.}; $\CH^{\mathrm a}_K$ es la que calcula
+\texttt{aede}, con $K$ y $N-K$ grados de libertad. El número de segmentos elegido es el menor
+$K\in\{2,\dots,K_{\max}\}$ que maximiza el índice.
+\end{definicion}
+
+\begin{proposicion}[La variante de \texttt{aede} no elige menos segmentos]\label{prop:ch}
+Para $2\le K<N$, $\CH^{\mathrm a}_K=\frac{K-1}{K}\,\CH^{\mathrm h}_K$. Sean $K^{\mathrm h}$ y
+$K^{\mathrm a}$ los números de segmentos que eligen $\CH^{\mathrm h}$ y $\CH^{\mathrm a}$ en
+$\{2,\dots,K_{\max}\}$. Si $Q_K<T$ y $Q_K>0$ para todo $K$ de la grilla, entonces
+$K^{\mathrm a}\ge K^{\mathrm h}$.
+\end{proposicion}
+
+\begin{proof}
+La identidad es inmediata. Las hipótesis garantizan que $\CH^{\mathrm h}_K$ está definido y es
+positivo en la grilla. Supóngase $K^{\mathrm a}<K^{\mathrm h}$. Como $K^{\mathrm a}$ maximiza
+$\CH^{\mathrm a}$,
+\[
+  \CH^{\mathrm a}_{K^{\mathrm a}}\ge\CH^{\mathrm a}_{K^{\mathrm h}}
+  =\frac{K^{\mathrm h}-1}{K^{\mathrm h}}\CH^{\mathrm h}_{K^{\mathrm h}}
+  \ge\frac{K^{\mathrm h}-1}{K^{\mathrm h}}\CH^{\mathrm h}_{K^{\mathrm a}}
+  >\frac{K^{\mathrm a}-1}{K^{\mathrm a}}\CH^{\mathrm h}_{K^{\mathrm a}}
+  =\CH^{\mathrm a}_{K^{\mathrm a}},
+\]
+donde la segunda desigualdad usa que $K^{\mathrm h}$ maximiza $\CH^{\mathrm h}$, y la tercera, que
+$K\mapsto(K-1)/K$ es estrictamente creciente y que $\CH^{\mathrm h}_{K^{\mathrm a}}>0$. La
+contradicción prueba la afirmación.
+\end{proof}
+
+\begin{observacion}[Supuestos del índice]\label{obs:ch}
+El índice de Caliński y Harabasz compara la dispersión entre e intra segmentos con los grados de
+libertad de observaciones independientes. Los puntos de la trayectoria de \texttt{aede}
+provienen de ventanas consecutivas que comparten $\nw-1$ meses, de modo que valores consecutivos
+de $\lambda_1$ se calculan con casi los mismos datos y no son independientes. En esas
+condiciones, ninguna de las dos formas tiene la distribución de referencia de observaciones
+independientes, y la \cref{prop:ch} muestra que la variante desplaza la elección hacia más
+segmentos. La elección entre las dos variantes y su uso como selector están pendientes de
+decisión.
+\end{observacion}
+
+% -----------------------------------------------------------------------------
+\section{Comparación de configuraciones}
+\label{sec:comparacion}
+
+\begin{definicion}[Coeficiente RV]\label{def:rv}
+Para dos configuraciones centradas $\mF_1\in\RR^{m\times q}$ y $\mF_2\in\RR^{m\times q'}$ de las
+mismas $m$ filas, no nulas,
+\textcite{robert_escoufier_1976}\verificar{volumen, número, páginas y DOI en JSTOR. La ficha es
+preliminar: el texto no se ha leído y solo se cita su aporte general.} definen
+\begin{equation}\label{eq:rv}
+  \RV(\mF_1,\mF_2)=\frac{\tr\bigl(\mF_1\mF_1^{\T}\mF_2\mF_2^{\T}\bigr)}
+  {\sqrt{\tr\bigl[(\mF_1\mF_1^{\T})^2\bigr]\,\tr\bigl[(\mF_2\mF_2^{\T})^2\bigr]}} .
+\end{equation}
+\end{definicion}
+
+\begin{proposicion}[Propiedades del coeficiente RV]\label{prop:rv}
+\begin{enumerate}[label=(\alph*)]
+  \item $0\le\RV(\mF_1,\mF_2)\le1$, y $\RV=1$ si y solo si $\mF_1\mF_1^{\T}=c\,\mF_2\mF_2^{\T}$
+    para algún $c>0$.
+  \item Si $a_1,a_2\ne0$ y $\mO_1$, $\mO_2$ son ortogonales, entonces
+    \[\RV(a_1\mF_1\mO_1,a_2\mF_2\mO_2)=\RV(\mF_1,\mF_2).\]
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+Sean $\mathbf{G}=\mF_1\mF_1^{\T}$ y $\mathbf{H}=\mF_2\mF_2^{\T}$, simétricas, semidefinidas
+positivas y no nulas. El numerador es
+$\prodF{\mathbf{G}}{\mathbf{H}}=\tr(\mF_1\mF_1^{\T}\mF_2\mF_2^{\T})=\normF{\mF_1^{\T}\mF_2}^2\ge0$, y
+el denominador es $\normF{\mathbf{G}}\normF{\mathbf{H}}>0$. Por la desigualdad de Cauchy-Schwarz,
+$\prodF{\mathbf{G}}{\mathbf{H}}\le\normF{\mathbf{G}}\normF{\mathbf{H}}$, con igualdad si y solo si
+$\mathbf{G}$ y $\mathbf{H}$ son proporcionales; la constante es positiva porque ambas tienen traza
+positiva. (b) $(a_1\mF_1\mO_1)(a_1\mF_1\mO_1)^{\T}=a_1^2\mathbf{G}$, y el factor $a_1^2$ se cancela;
+igual con $\mF_2$.
+\end{proof}
+
+La invariancia de la \cref{prop:rv}(b) es la adecuada cuando las coordenadas solo están
+identificadas salvo una transformación ortogonal, como ocurre con los signos de los ejes en el EPCA
+o con los códigos de un autoencoder \textbf{lineal} (\cref{prop:ae-lineal}). En un autoencoder no
+lineal, los códigos están identificados, a lo sumo, salvo transformaciones no lineales invertibles,
+frente a las que el RV no es invariante. En ese caso, el RV mide solo la concordancia lineal entre
+configuraciones y debe interpretarse como una cota de su similitud, no como una medida invariante.
+Es también la medida que subyace a STATIS \pendiente{Lavit (1988), fuente primaria de STATIS; sin
+ficha}. En esta tesis, el RV permite usar una misma métrica para comparar ventanas sucesivas del
+EPCA, réplicas de un autoencoder y configuraciones de métodos distintos, con la salvedad anterior.
+Queda por verificar en la fuente cómo se comporta cuando $m$ es pequeño respecto del número de
+columnas.
+
+\begin{definicion}[Rotación y distancia de Procrustes]\label{def:procrustes}
+Para $\mF_1,\mF_2\in\RR^{m\times q}$ centradas, la rotación de Procrustes de $\mF_1$ hacia
+$\mF_2$ es una matriz ortogonal $\mO^\ast\in\argmin_{\mO^{\T}\mO=\mI_q}\normF{\mF_1\mO-\mF_2}$, y
+$\normF{\mF_1\mO^\ast-\mF_2}$ es la distancia de Procrustes.
+\end{definicion}
+
+\begin{proposicion}[Solución de Procrustes]\label{prop:procrustes}
+Si $\mF_1^{\T}\mF_2=\mO_1\boldsymbol{\Sigma}\mO_2^{\T}$ es una descomposición en valores singulares,
+con $\mO_1,\mO_2$ ortogonales y $\boldsymbol{\Sigma}$ diagonal no negativa, entonces
+$\mO^\ast=\mO_1\mO_2^{\T}$ y
+$\normF{\mF_1\mO^\ast-\mF_2}^2=\normF{\mF_1}^2+\normF{\mF_2}^2-2\tr\boldsymbol{\Sigma}$.
+\end{proposicion}
+
+\begin{proof}
+$\normF{\mF_1\mO-\mF_2}^2=\normF{\mF_1}^2+\normF{\mF_2}^2-2\tr(\mO^{\T}\mF_1^{\T}\mF_2)$, porque
+$\normF{\mF_1\mO}=\normF{\mF_1}$. Con $\boldsymbol{\Theta}=\mO_2^{\T}\mO^{\T}\mO_1$, que es ortogonal,
+$\tr(\mO^{\T}\mO_1\boldsymbol{\Sigma}\mO_2^{\T})=\tr(\boldsymbol{\Sigma}\boldsymbol{\Theta})=
+\sum_i\Sigma_{ii}\Theta_{ii}\le\sum_i\Sigma_{ii}$, porque $\abs{\Theta_{ii}}\le1$. La igualdad se alcanza con
+$\boldsymbol{\Theta}=\mI_q$, es decir, con $\mO=\mO_1\mO_2^{\T}$.
+\end{proof}
+
+Es la rotación de la función \texttt{procrustes} del documento en R. La normalización de la
+distancia para el criterio de ventana (\cref{oe:ventana}) queda por definir.
+
+\begin{definicion}[Coeficiente de congruencia de Tucker]\label{def:tucker}
+Para dos vectores de cargas no nulos $\mathbf{a},\mathbf{b}\in\RR^{p}$,
+$\congr(\mathbf{a},\mathbf{b})=\mathbf{a}^{\T}\mathbf{b}/(\norm{\mathbf{a}}\norm{\mathbf{b}})$
+\parencite{tucker_1951}\verificar{ficha preliminar: entidad emisora y lugar del informe sin
+confirmar en fuente oficial; texto no consultado, de modo que no se ha comprobado que el informe
+defina el coeficiente. Se cita solo como su fuente habitual.}. Su uso como índice de
+similitud entre factores y los umbrales de interpretación se discuten en
+\textcite{lorenzo_seva_ten_berge_2006}.
+\end{definicion}
+
+A diferencia de la correlación, la congruencia no centra los vectores, y su valor absoluto no
+depende del signo con que se oriente cada eje.
+
+% -----------------------------------------------------------------------------
+\section[Aprendizaje profundo]{Aprendizaje profundo: autoencoders, LSTM y\texorpdfstring{\\}{} LSTM-autoencoder}
+\label{sec:dl}
+
+\subsection{Autoencoders}
+
+\begin{definicion}[Autoencoder]\label{def:ae}
+Un autoencoder es un par formado por un codificador $f_\theta:\RR^p\to\RR^d$ y un decodificador
+$g_\phi:\RR^d\to\RR^p$, con $d<p$, que se entrenan para reconstruir la entrada:
+\begin{equation}\label{eq:ae}
+  (\hat\theta,\hat\phi)\in\argmin_{\theta,\phi}\;\frac1n\sum_{t=1}^{n}
+  \bigl\lVert\vz_t-g_\phi\bigl(f_\theta(\vz_t)\bigr)\bigr\rVert^2+\Omega(\theta,\phi),
+\end{equation}
+donde $\Omega$ es un término de regularización. El código del mes $t$ es
+$\veta_t=f_{\hat\theta}(\vz_t)$. El autoencoder es \emph{lineal} si $f(\vz)=\mA\vz$ y
+$g(\veta)=\mB\veta$, con $\mA\in\RR^{d\times p}$ y $\mB\in\RR^{p\times d}$, y tiene \emph{pesos
+atados} si $\mB=\mA^{\T}$.
+\end{definicion}
+
+El vínculo con el PCA es formal. \textcite{bourlard_kamp_1988}\verificar{Bourlard y Kamp (1988),
+número del fascículo y alcance exacto del resultado sobre las no linealidades; ficha preliminar,
+texto no consultado.} muestran que la solución
+óptima de un perceptrón autoasociativo en el sentido de mínimos cuadrados se obtiene por
+descomposición en valores singulares. \textcite{baldi_hornik_1989}\verificar{solo el DOI; el texto completo ya se leyó.} muestran que, en el caso lineal,
+el mínimo global proyecta sobre el subespacio de los primeros componentes principales y que la
+superficie de error no tiene mínimos locales espurios. La proposición siguiente demuestra la
+primera parte en la forma que usa la tesis; la ausencia de mínimos locales espurios se cita sin
+demostrar.
+
+\begin{proposicion}[Autoencoder lineal y PCA]\label{prop:ae-lineal}
+Considérese \cref{eq:ae} sin regularización ($\Omega=0$) y con codificador y decodificador
+lineales. Entonces:
+\begin{enumerate}[label=(\alph*)]
+  \item para todo $\mA,\mB$, el error es al menos $\sum_{\ell>d}\lambda_\ell$, y la cota se
+    alcanza con $\mA=\mV_d^{\T}$, $\mB=\mV_d$;
+  \item si se cumplen el \cref{sup:regular} y $\lambda_d>\lambda_{d+1}$, todo minimizador
+    satisface $\mB\mA=\mV_d\mV_d^{\T}$;
+  \item bajo las mismas condiciones, con pesos atados, todo minimizador es de la forma
+    $\mA=\mO\mV_d^{\T}$ con $\mO\in\RR^{d\times d}$ ortogonal; en particular,
+    $\mA^{\T}\mA=\mV_d\mV_d^{\T}$ y el código $\veta_t=\mO\mV_d^{\T}\vz_t$ es el vector de las $d$
+    primeras componentes principales del mes $t$, rotado por $\mO$.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+(a) Sea $\mM=\mB\mA$, de rango a lo sumo $d$. Elíjase $\mE\in\RR^{p\times d}$ con columnas
+ortonormales cuyo rango contenga la imagen de $\mM$. Para cada $t$, $\mM\vz_t$ pertenece a ese
+subespacio, y la proyección ortogonal $\mE\mE^{\T}\vz_t$ es el punto del subespacio más cercano a
+$\vz_t$; luego $\norm{\vz_t-\mM\vz_t}\ge\norm{\vz_t-\mE\mE^{\T}\vz_t}$. Promediando y aplicando la
+\cref{prop:pca}, el error es al menos $J(\mE)\ge\sum_{\ell>d}\lambda_\ell$. Con $\mA=\mV_d^{\T}$ y
+$\mB=\mV_d$, $\mM=\mV_d\mV_d^{\T}$ y el error es $J(\mV_d)=\sum_{\ell>d}\lambda_\ell$.
+(b) En un minimizador, las dos desigualdades de (a) son igualdades. La segunda, por la
+\cref{prop:pca} y $\lambda_d>\lambda_{d+1}$, da $\mE\mE^{\T}=\mV_d\mV_d^{\T}$; la primera exige
+$\mM\vz_t=\mV_d\mV_d^{\T}\vz_t$ para todo $t$, por la unicidad del punto más cercano, es decir, $\mM\mZ^{\T}=\mV_d\mV_d^{\T}\mZ^{\T}$.
+Multiplicando por $\mZ/n$ a la derecha, $\mM\mR=\mV_d\mV_d^{\T}\mR$, y como $\mR$ es invertible,
+$\mM=\mV_d\mV_d^{\T}$. (c) Con $\mB=\mA^{\T}$, la cota de (a) se alcanza con $\mA=\mV_d^{\T}$, de
+modo que los minimizadores con pesos atados son minimizadores del problema general, y por (b)
+$\mA^{\T}\mA=\mV_d\mV_d^{\T}=:\mP$. Entonces $\rango\mA=d$, de modo que $\mA\mA^{\T}$ es invertible.
+De $\mP^2=\mP$ se sigue $\mA^{\T}(\mA\mA^{\T}-\mI_d)\mA=\mathbf{0}$, y multiplicando por $\mA$ a
+la izquierda y por $\mA^{\T}$ a la derecha, $(\mA\mA^{\T})(\mA\mA^{\T}-\mI_d)(\mA\mA^{\T})=
+\mathbf{0}$, de donde $\mA\mA^{\T}=\mI_d$. Sea $\mO=\mA\mV_d$. Las filas de $\mA$ son ortonormales y
+generan la imagen de $\mA^{\T}$, que es la de $\mP$, es decir, la de $\mV_d$; luego
+$\mA=\mA\mV_d\mV_d^{\T}=\mO\mV_d^{\T}$ y $\mO\mO^{\T}=\mA\mV_d\mV_d^{\T}\mA^{\T}=\mA\mA^{\T}=\mI_d$.
+\end{proof}
+
+De este resultado se sigue que el PCA es el caso particular del autoencoder con activación
+identidad. Las filas de $\mA$ forman una base del subespacio principal, pero solo salvo una
+rotación $\mO$ arbitraria. Como apoyo técnico,
+\textcite{plaut_2018}\verificar{\emph{preprint} sin revisión por pares (fuente de exploración);
+se cita solo como apoyo técnico secundario de Baldi y Hornik (1989).}, en un \emph{preprint},
+muestra que las direcciones principales pueden recuperarse con una descomposición en valores
+singulares de los pesos aprendidos. La \cref{prop:ae-lineal} caracteriza el mínimo global; que el
+entrenamiento por gradiente lo alcance es un resultado distinto, el de ausencia de mínimos locales
+espurios de \textcite{baldi_hornik_1989}, que no se demuestra aquí y que no se extiende a los
+autoencoders no lineales.
+
+\textcite{hinton_salakhutdinov_2006}\verificar{la ficha se elaboró con el material suplementario y
+no con el artículo principal de \emph{Science}.} mostraron que los autoencoders profundos, con
+preentrenamiento capa por capa y ajuste fino posterior, pueden producir códigos de baja dimensión
+mejores que los del PCA cuando la estructura de los datos no es lineal. Sus aplicaciones (imágenes
+y documentos) usan, no obstante, conjuntos de datos grandes, y el sobreajuste solo se observó en el
+conjunto de rostros, pequeño en relación con la capacidad del modelo.
+\textcite{vincent_et_al_2008}\verificar{DOI en ACM Digital Library.} proponen el autoencoder con
+eliminación de ruido, que reconstruye la entrada limpia a partir de una versión corrompida. Los
+autores ofrecen una lectura geométrica: la red aprende a proyectar los puntos perturbados de vuelta
+hacia la región que ocupan los datos. A partir de esa lectura, esta tesis infiere que una
+observación alejada de la estructura típica tendría un error de reconstrucción alto. La inferencia
+es propia, no de los autores. \textcite{gal_ghahramani_2016}\verificar{editores del volumen; se
+leyó el resumen oficial, pero no el PDF.} interpretan el entrenamiento con \emph{dropout} como
+inferencia variacional aproximada, de modo que mantener el \emph{dropout} activo durante la
+inferencia y promediar varias pasadas estocásticas produce una medida de la incertidumbre del
+modelo.
+
+\subsection{Redes LSTM}
+
+Una red recurrente procesa la secuencia $\vz_1,\dots,\vz_L$ y mantiene un estado oculto
+$\vh_t\in\RR^{n_h}$. \textcite{hochreiter_schmidhuber_1997}\verificar{se procesó el informe
+técnico FKI-207-95 y no la versión publicada en \emph{Neural Computation}.} introdujeron la celda
+de memoria LSTM para resolver el problema del gradiente que se desvanece o explota en las
+dependencias temporales largas. Su núcleo es un «carrusel de error constante», una autoconexión
+lineal que deja fluir el error sin atenuarse, protegido por compuertas multiplicativas de entrada y
+de salida. \textcite{gers_schmidhuber_cummins_2000}\verificar{DOI contra el registro de MIT Press.
+La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general (la compuerta de
+olvido).} añadieron la compuerta de olvido, que permite a la red reiniciar su memoria en secuencias
+continuas.
+
+\begin{definicion}[Celda LSTM con compuerta de olvido]\label{def:lstm}
+Dados $\vh_{t-1}$ y $\vcel_{t-1}$, la celda calcula
+\begin{equation}\label{eq:lstm}
+\begin{aligned}
+  \vig_t&=\sigma(\mW_{\mathrm e}\vz_t+\mU_{\mathrm e}\vh_{t-1}+\vb_{\mathrm e}), &
+  \vfg_t&=\sigma(\mW_{\mathrm o}\vz_t+\mU_{\mathrm o}\vh_{t-1}+\vb_{\mathrm o}),\\
+  \vog_t&=\sigma(\mW_{\mathrm s}\vz_t+\mU_{\mathrm s}\vh_{t-1}+\vb_{\mathrm s}), &
+  \tilde\vcel_t&=\tanh(\mW_{\mathrm c}\vz_t+\mU_{\mathrm c}\vh_{t-1}+\vb_{\mathrm c}),\\
+  \vcel_t&=\vfg_t\odot\vcel_{t-1}+\vig_t\odot\tilde\vcel_t, &
+  \vh_t&=\vog_t\odot\tanh(\vcel_t),
+\end{aligned}
+\end{equation}
+donde $\vig_t$, $\vfg_t$ y $\vog_t$ son las compuertas de entrada, de olvido y de salida, $\sigma$
+es la función logística aplicada elemento a elemento y $\odot$ es el producto elemento a elemento.
+Es la forma que implementan las bibliotecas actuales.
+\end{definicion}
+
+La forma aditiva de $\vcel_t$ hace que $\partial\vcel_t/\partial\vcel_{t-1}=\diag(\vfg_t)$, si se
+omiten las dependencias indirectas a través de $\vh_{t-1}$: cuando $\vfg_t\approx\vuno$ la memoria
+persiste, y cuando $\vfg_t\approx\mathbf{0}$ se reinicia. Este segundo comportamiento es relevante
+cuando la serie cruza un cambio de régimen. \textcite{hochreiter_schmidhuber_1997} no aplican la
+arquitectura a series económicas: sus experimentos son tareas sintéticas que requieren muchas
+repeticiones de entrenamiento.
+
+\subsection{LSTM-autoencoder}
+
+\textcite{srivastava_mansimov_salakhutdinov_2015}\verificar{páginas 843--852 y editores del
+volumen en PMLR.} combinan ambas ideas. Un LSTM codificador lee una secuencia, y su estado final
+constituye la representación. Un LSTM decodificador reconstruye la secuencia en orden inverso. Los
+autores comparan decodificadores condicionados, que reciben su salida previa, y no condicionados,
+y proponen además un modelo compuesto que reconstruye el pasado y predice el futuro.
+
+\begin{definicion}[Código de un LSTM-autoencoder]\label{def:lstm-ae}
+En la adaptación de esta tesis, el codificador lee la ventana $(\vz_{t-L+1},\dots,\vz_t)$ y su
+estado final $\vh_t$ se proyecta a un código $\veta_t\in\RR^{d}$, que se fecha en el mes $t$, el
+último de la ventana.
+\end{definicion}
+
+A diferencia del PCA o de un autoencoder estático, el código $\veta_t$ resume una
+\textbf{trayectoria}: dos meses con el mismo vector $\vz_t$ pero historias distintas pueden recibir
+códigos distintos. Con el fechado de la \cref{def:lstm-ae}, el código solo usa información
+disponible hasta $t$, a diferencia de las ventanas del EPCA, que se fechan en su centro
+(\cref{def:ventana}).
+
+\textcite{tuhin_et_al_2025}\verificar{lista completa de autores contra la fuente original.}
+constituyen el precedente reciente más cercano en el dominio financiero. Entrenan un
+LSTM-autoencoder sobre los retornos diarios de acciones del S\&P 500 entre 2000 y 2022, interpretan
+los pesos de la capa central como una matriz de influencia direccional entre series y construyen con
+ella redes de umbral por año. Las métricas topológicas de esas redes cambian de manera distintiva en
+las crisis estudiadas, con mayor claridad que las redes construidas por métodos clásicos. Los
+propios autores reconocen dos limitaciones que importan aquí: el enfoque exige muchos datos y su
+interpretación económica es difícil.
+
+% -----------------------------------------------------------------------------
+\section{Criterios de comparación entre métodos}
+\label{sec:criterios}
+
+La comparación entre métodos no busca determinar cuál «funciona mejor», sino qué tipo de estructura
+revela cada uno y bajo qué criterio resulta útil. Se adoptan los tres criterios de la ficha de
+inscripción (interpretabilidad, estabilidad temporal y capacidad descriptiva), ampliados con la
+robustez:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Interpretabilidad.} Indica si el resultado puede asociarse a dimensiones económicas
+    comprensibles. Se evalúa con la concentración de cargas o correlaciones con las variables
+    originales, la coherencia económica de los grupos y la posibilidad de explicar episodios sin
+    forzar la interpretación. En los modelos no lineales, que carecen de cargas constantes, se usan
+    las correlaciones entre cada variable y cada eje latente tras una rotación de Procrustes
+    (\cref{def:procrustes}) hacia los \emph{scores} del PCA.
+  \item \textbf{Estabilidad temporal.} Indica si la estructura se mantiene dentro de un régimen y
+    cambia en las transiciones. Se evalúa con el coeficiente RV y la distancia entre subespacios de
+    ventanas sucesivas, y con la persistencia de los grupos.
+  \item \textbf{Capacidad descriptiva.} Indica cuánto de la información original conserva la
+    representación. Se evalúa con la inercia retenida en el PCA y el error de reconstrucción,
+    medido fuera de muestra con validación por bloques temporales contiguos.
+  \item \textbf{Robustez.} Indica si los resultados resisten variaciones razonables del diseño:
+    ancho de ventana, conjunto de variables, transformación (las dos vías de D2), semilla aleatoria
+    y regla de selección del número de regímenes.
+\end{itemize}
+
+Además de estos criterios, la ficha de inscripción compromete una comparación \textbf{sobre un
+contexto simulado}, con regímenes conocidos por construcción, que permita medir la capacidad de
+recuperación de cada método y calibrar sus parámetros: número de factores, número de clases, ancho
+de ventana y pesos de los análisis evolutivos. Es el único escenario en el que la «verdad» del
+régimen está disponible sin circularidad. Por ello, complementa y no sustituye la validación con
+episodios externos.
+
+% -----------------------------------------------------------------------------
+\section{Vacíos identificados y aporte de la tesis}
+\label{sec:vacios}
+
+La revisión permite identificar cinco vacíos:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Ausencia de aprendizaje profundo en el antecedente peruano.}
+    \textcite{camiz_cerda_atoche_2026} se mantiene dentro del marco exploratorio clásico.
+  \item \textbf{Ausencia de una HFC evolutiva unificada.} No existe en la literatura revisada un
+    algoritmo EHFC publicado. \textcite{camiz_roig_2011} y \textcite{camiz_cerda_atoche_2026}
+    aplican la HFC y el EPCA de forma secuencial, y la integración se produce en la interpretación
+    conjunta, no en un algoritmo.
+  \item \textbf{Ausencia de una clasificación explícita de fases.}
+    \textcite{camiz_cerda_atoche_2026} interpretan indicadores por grupo, pero no clasifican
+    intervalos en expansión, contracción o transición ni los contrastan con episodios fechados de
+    manera independiente.
+  \item \textbf{Muestra anterior a la pospandemia.} La muestra de
+    \textcite{camiz_cerda_atoche_2026} termina en 2020.
+  \item \textbf{Ausencia de un criterio objetivo para el ancho de ventana del EPCA.} Las tres
+    aplicaciones de la escuela fijan el ancho de manera informal.
+\end{enumerate}
+
+El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la
+incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la
+\cref{prop:ae-lineal}; (2) la clasificación explícita de fases, validada contra episodios fechados
+con fuentes externas; (3) la actualización de la muestra hasta \fechaFinDatos{}, que cubre la
+dinámica pospandemia; y (4) un criterio objetivo para el ancho de ventana del EPCA, basado en la
+similitud entre ventanas consecutivas, medida con el coeficiente RV (\cref{def:rv}) o con la
+distancia de Procrustes (\cref{def:procrustes}). La formalización de una EHFC queda como objetivo
+exploratorio condicional, porque no existe una especificación previa contra la cual validarla.

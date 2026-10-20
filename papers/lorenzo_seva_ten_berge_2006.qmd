@@ -1,0 +1,63 @@
+---
+title: "Lorenzo-Seva & ten Berge (2006) — Tucker's congruence coefficient as a meaningful index of factor similarity"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-034 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página de la editorial); texto no consultado |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lorenzo-Seva, U., & ten Berge, J. M. F. (2006). Tucker's congruence coefficient as a meaningful index of factor similarity. *Methodology: European Journal of Research Methods for the Behavioral and Social Sciences, 2*(2), 57–64. https://doi.org/10.1027/1614-2241.2.2.57
+
+> **Verificación:** Autores, título, revista, volumen 2, páginas 57–64 y año verificados en el portal de investigación de la Universidad de Groningen (repositorio institucional) el 2026-10-20. Número 2 y DOI según la página de la editorial (Hogrefe, econtent.hogrefe.com/doi/10.1027/1614-2241.2.2.57), cuyo resumen se leyó ese día.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Comparación de soluciones factoriales |
+| **Área secundaria** | Coeficiente de congruencia de Tucker |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Fuente de los umbrales de 0,85 y 0,95 usados en el apunte 5 y en el Rmd. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Resumen: al usar el coeficiente de congruencia de Tucker para juzgar la similitud de interpretaciones factoriales, conviene un nivel crítico menor que uno que indique identidad de los factores; la literatura solo ofrece reglas prácticas.
+
+### Propuesta metodológica
+
+Resumen: se repite y amplía el enfoque de Haven y ten Berge (1977), buscando un nivel crítico a partir de juicios de similitud de factores de usuarios del análisis factorial. Resultado textual: «a value in the range .85-.94 corresponds to a fair similarity, while a value higher than .95 implies that the two factors or components compared can be considered equal».
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| 0,85–0,94: similitud aceptable (*fair similarity*) | Componentes bootstrap «similares» a la de referencia |
+| > 0,95: componentes iguales | Componentes «reproducidas» por el bootstrap o entre vías |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente fichada de los dos umbrales.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Los umbrales provienen de juicios de expertos sobre factores, no de una distribución muestral: no son una prueba de significación.
+- Precisión para el texto: 0,85 es «similitud aceptable», no «equivalencia»; el umbral de igualdad es «mayor que 0,95».
+- El coeficiente original se atribuye a Tucker (1951); ficha preliminar `tucker_1951` (iteración 3a, vuelta 1).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Tucker (1951) | Media — fuente del coeficiente | Ficha preliminar `papers/tucker_1951.qmd` |
+| Haven y ten Berge (1977) | Media — fuente del enfoque | Sin ficha |

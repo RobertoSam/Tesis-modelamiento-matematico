@@ -1,0 +1,65 @@
+---
+title: "Benzécri (1973) — L'analyse des données"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con un registro de catálogo, sin acceso a la obra. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-029 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Benzécri, J.-P. (1973). *L'analyse des données: T. 2. L'analyse des correspondances*. Dunod.
+
+> **Verificación:** Datos del tomo 2 tomados de Open Library (registro OL35735067M, con OCLC 34619039) el 2026-10-20: *L'Analyse des données*, tomo 2, *L'Analyse des correspondances*, Dunod, París, 1973, vi + 619 p., ISBN 978-2-04-007225-4. **Discrepancias por resolver:** (i) el registro de Open Library lista como autores a «J.-P. Benzécri and F. Benzécri»; (ii) Armatte (2008, *JEHPS*, 4[2]) da en el texto la editorial Dunod (1973, reedición 1976) y en su bibliografía Bordas; (iii) el tomo 1 (*La taxinomie*) no se verificó en ningún catálogo. No se consultó la BnF ni el SUDOC (no aparecieron en la búsqueda).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis de datos (escuela francesa) |
+| **Área secundaria** | Análisis de correspondencias y clasificación |
+| **Relevancia para la tesis** | **ALTA.** Se cita como origen del principio «datos primero» (*laisser parler les données*) de la posición del asesor (regla 5 de `CLAUDE.md`). |
+| **Frente de la tesis al que aporta** | Marco epistemológico (cap. 2) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. **No se localizó en ninguna fuente consultada el pasaje de Benzécri (1973) que formule el principio.** Armatte (2008) no lo cita; atribuye ideas afines a *Histoire et préhistoire de l'analyse des données* (1982). Hasta ubicar tomo y página, la tesis no debe presentar la frase como cita textual de Benzécri (1973).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Principio «datos primero» (atribución por verificar) | Posición del asesor: PCA, HFC y EPCA como métodos exploratorios sin modelo *a priori* |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia canónica de la tradición del asesor.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar; atribución del principio pendiente de tomo y página.
+- Conviene preguntar al Dr. Camiz qué tomo y pasaje considera la fuente del principio.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Benzécri (1982), *Histoire et préhistoire de l'analyse des données* | Media — posible fuente alternativa del principio | Sin ficha |

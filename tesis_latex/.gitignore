@@ -1,0 +1,15 @@
+# El PDF y los auxiliares no se versionan (se publican solo con el conforme de Roberto)
+build/
+*.pdf
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.toc
+*.lof
+*.lot

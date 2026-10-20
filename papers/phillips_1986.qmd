@@ -1,0 +1,64 @@
+---
+title: "Phillips (1986) — Understanding spurious regressions in econometrics"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con el resumen de una fuente secundaria (RePEc/IDEAS). No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-028 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (RePEc/IDEAS, con advertencia de texto alterado); texto no consultado |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Phillips, P. C. B. (1986). Understanding spurious regressions in econometrics. *Journal of Econometrics, 33*(3), 311–340.
+
+> **Verificación:** Autor, título, volumen 33, número 3, páginas 311–340 y fecha (diciembre de 1986) tomados de RePEc/IDEAS (fuente secundaria alimentada por la editorial) el 2026-10-20; la página da el identificador PII 0304-4076(86)90001-1 de ScienceDirect, pero no el DOI. EconPapers registra la versión previa como Cowles Foundation Discussion Paper 757 (julio de 1985). **Verificar contra Elsevier y añadir el DOI.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Econometría de series de tiempo |
+| **Área secundaria** | Teoría asintótica de la regresión espuria |
+| **Relevancia para la tesis** | **ALTA.** Complementa a Granger y Newbold (1974) en la advertencia del apunte 11. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el resumen: regresiones con niveles de series económicas, estudiadas con una teoría asintótica de regresiones entre paseos aleatorios independientes.
+
+### Propuesta metodológica
+
+Según el resumen: los cocientes t no tienen distribución límite y divergen al crecer la muestra; el Durbin-Watson converge en probabilidad a cero. Se desarrolla además una teoría asintótica alternativa basada en registro continuo de datos, que ayuda a explicar los resultados experimentales de Granger y Newbold. IDEAS advierte que el resumen proviene de otra versión y está alterado en partes.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Divergencia de los cocientes t | Los t de la pendiente de la regresión sobre el tiempo no son válidos con residuos integrados (apunte 11) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Justifica que en el apunte 11 solo se interprete la clasificación TS/DS y no los t.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Contenido conocido solo por un resumen secundario.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Granger y Newbold (1974) | Alta | Ficha FB-027 |

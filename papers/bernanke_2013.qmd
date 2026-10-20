@@ -1,0 +1,61 @@
+---
+title: "Bernanke (2013) — Testimonio ante el Joint Economic Committee"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-040 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Ficha de la página del BIS; texto del testimonio no leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bernanke, B. S. (2013, 22 de mayo). *The economic outlook* [Testimonio ante el Joint Economic Committee del Congreso de los Estados Unidos]. Bank for International Settlements. https://www.bis.org/speeches/20130523-economic-outlook
+
+> **Verificación:** Página del BIS (*Central bankers' speeches*) leída el 2026-10-20: título «The economic outlook» y descripción «Testimony by Mr Ben S Bernanke, Chairman of the Board of Governors of the Federal Reserve System, before the Joint Economic Committee, US Congress, Washington DC, 22 May 2013». Los metadatos de la página dan como fecha de publicación el 23 de mayo; se usa la del testimonio. **El pasaje sobre reducir el ritmo de compras no se leyó** (está en el PDF de la página).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | *Taper tantrum* |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Testimonio del presidente de la Reserva Federal sobre las perspectivas económicas, que la literatura asocia con el inicio del *taper tantrum*.
+
+### Fecha que respalda
+
+**22 de mayo de 2013** (anuncio; evento externo). Respalda un inicio en **2013-05** (Rmd, `modelos_dl.py`), no en 2013-04 (`06a`, `06b`).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio con la convención de anuncio |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Falta leer el pasaje del testimonio que menciona la posible reducción de las compras de activos para citarlo con página.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

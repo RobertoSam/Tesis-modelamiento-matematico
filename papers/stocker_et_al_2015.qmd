@@ -1,0 +1,62 @@
+---
+title: "Stocker, Baffes, Kose & Ohnsorge (2015) — The great plunge in oil prices"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-048 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (Open Knowledge Repository del Banco Mundial) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Stocker, M., Baffes, J., Kose, M. A., & Ohnsorge, F. (2015). *The great plunge in oil prices: Causes, consequences, and policy responses* (Policy Research Note PRN/15/01). World Bank. https://doi.org/10.1596/23611
+
+> **Verificación:** Metadatos y resumen leídos en el Open Knowledge Repository del Banco Mundial (repositorio institucional; handle 10986/23611) el 2026-10-20: «oil prices have declined sharply since June 2014», tras cuatro años de relativa estabilidad en torno a 105 dólares por barril.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Colapso de los precios de las materias primas |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2) y la datación (3b). |
+| **Frente de la tesis al que aporta** | Validación externa; notebooks 06–09 y Rmd |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Caída del precio del petróleo desde junio de 2014: causas, consecuencias y respuestas de política.
+
+### Fecha que respalda
+
+**Junio de 2014** (inicio de la caída del petróleo). Respalda el inicio en **2014-06** de `06b`, pero solo para el petróleo; el Perú es exportador de metales.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fecha del evento o anuncio | Inicio del episodio (evento externo) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente externa citable para una de las fechas del episodio, independiente de las series de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- Trata el petróleo, no los metales que exporta el Perú.
+- No da fecha de fin; ninguna fuente hallada respalda el fin en 2016-03 de `06b`.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Fuente del impacto en el Perú (BCRP: Reporte de Inflación, Memoria o notas informativas) | Alta | Localizada, no accesible (bcrp.gob.pe bloquea el acceso automatizado) |

@@ -1,0 +1,64 @@
+---
+title: "Bartlett (1950) — Tests of significance in factor analysis"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-022 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bartlett, M. S. (1950). Tests of significance in factor analysis. *British Journal of Statistical Psychology, 3*(2), 77–85. https://doi.org/10.1111/j.2044-8317.1950.tb00285.x
+
+> **Verificación:** La página de Wiley Online Library aparece en el buscador con el título «Tests of significance in factor analysis - Bartlett - 1950 - British Journal of Statistical Psychology» y el DOI en su dirección; el índice del volumen 3, número 2, también figura en Wiley. Ninguna de las dos páginas se pudo abrir (2026-10-20). Las páginas 77–85 solo constan en fuentes secundarias. **Verificar las páginas.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de significación en análisis factorial |
+| **Área secundaria** | Esfericidad de la matriz de correlaciones |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Candidata a fuente de la prueba de esfericidad (apunte 4), junto con Bartlett (1951). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. **No se verificó** que la prueba de esfericidad sobre la matriz de correlaciones se formule en este artículo y no solo en Bartlett (1951).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Prueba de esfericidad (atribución por verificar) | $H_0$: la matriz de correlaciones es la identidad |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Candidata a fuente primaria de la prueba de esfericidad.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar; la atribución de la fórmula está por verificar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Bartlett (1951) | Alta | Ficha preliminar FB-023 |

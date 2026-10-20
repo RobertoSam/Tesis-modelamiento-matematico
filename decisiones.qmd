@@ -78,9 +78,9 @@ las 17 series de D1 y en las dos vías de D2.
 
 **Alternativa.** Mantener las dos frecuencias en paralelo.
 
-**Rastro.** Los resultados trimestrales siguen en el repositorio (`data/results/05_*`,
-`06a_*`) hasta que se rehaga `05`. El estado anterior se puede recuperar desde el tag
-`v0.2-niveles`.
+**Rastro.** `05_pca.ipynb` se rehízo en frecuencia mensual en la iteración 3a (20 de octubre de
+2026). El estado trimestral anterior se conserva en la rama `archivo/v0.3-trimestral`; el estado
+previo a D1–D2, en el tag `v0.2-niveles`.
 
 ## D2 · 16 de octubre de 2026 · Análisis completo en dos vías
 

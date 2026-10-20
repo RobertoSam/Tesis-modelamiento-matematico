@@ -9,3 +9,7 @@ crossref:
   tbl-title: "Tabla"
   fig-prefix: "figura"
   tbl-prefix: "tabla"
+# Cifras generadas por herramientas/generar_cifras.py (no editar _cifras.yml a mano).
+# Uso en el texto: shortcode meta con la clave cifras.<clave> (ver herramientas/README.md).
+metadata-files:
+  - _cifras.yml

@@ -1,0 +1,65 @@
+---
+title: "Künsch (1989) — The jackknife and the bootstrap for general stationary observations"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto ni al resumen. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-030 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Künsch, H. R. (1989). The jackknife and the bootstrap for general stationary observations. *The Annals of Statistics, 17*(3), 1217–1241. https://doi.org/10.1214/aos/1176347265
+
+> **Verificación:** La dirección de la página de Project Euclid (editorial) contiene el volumen 17, el número 3 y el DOI; la página está bloqueada por un control antibots y no se pudo abrir (2026-10-20). Las páginas 1217–1241 solo constan en fuentes secundarias. **Verificar las páginas.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Remuestreo para series dependientes |
+| **Área secundaria** | Bootstrap y *jackknife* por bloques |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Atribución habitual del bootstrap por bloques móviles usado en el apunte 5 (`src/remuestreo.py`, Rmd). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. **No se verificó** que el artículo defina el esquema de bloques móviles solapados que implementa el código ni sus condiciones sobre la longitud del bloque.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Bootstrap para observaciones estacionarias (por el título) | Bootstrap por bloques con $L \in \{12, 24, 36\}$ |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata del método de remuestreo del apunte 5.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El método supone estacionariedad; en NIV ese supuesto no se cumple (riesgo 1 del plan).
+- Ficha preliminar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

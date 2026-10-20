@@ -1,0 +1,64 @@
+---
+title: "Pyper & Peterman (1998) — Comparison of methods to account for autocorrelation in correlation analyses of fish data"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR"}
+Elaborada con los metadatos localizados, sin acceso al texto ni al resumen. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-037 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 20 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Pyper, B. J., & Peterman, R. M. (1998). Comparison of methods to account for autocorrelation in correlation analyses of fish data. *Canadian Journal of Fisheries and Aquatic Sciences, 55*, 2127–2140. https://doi.org/10.1139/f98-104
+
+> **Verificación:** La página de la editorial (Canadian Science Publishing, cdnsciencepub.com/doi/10.1139/f98-104) aparece en el buscador con este título y el DOI en su dirección; no se pudo abrir (2026-10-20). Autores y año según FishBase; volumen 55 y páginas 2127–2140 según la bibliografía de arXiv:2401.02387 (fuente secundaria). Existe una fe de erratas del artículo (título localizado en ResearchGate, no consultado). **Verificar volumen, páginas y la fe de erratas.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Correlación entre series autocorrelacionadas |
+| **Área secundaria** | Tamaño muestral efectivo |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Candidata a fuente de la fórmula de $n_{\text{ef}}$ del apunte 3 (`src/series_tiempo.py`, Rmd). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+No consultado en esta iteración.
+
+### Propuesta metodológica
+
+No consultado en esta iteración. **No se comprobó** que la fórmula del código, $1/n_{\text{ef}} = 1/n + (2/n)\sum_{j=1}^{J}\frac{n-j}{n}\rho_x(j)\rho_y(j)$ con $J=\lfloor n/5\rfloor$, sea la de este artículo. Una fuente secundaria (arXiv:2401.02387, ec. 3) atribuye a Quenouille (1947) una expresión de la misma estructura sumada sobre todos los rezagos, sin el truncamiento en $n/5$, y cita a Pyper y Peterman (1998) solo como extensión del enfoque de Bartlett (1946).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| $n$ efectivo de una correlación (por verificar) | $n_{\text{ef}}$ por par de series y prueba t con $n_{\text{ef}}-2$ grados de libertad |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata del truncamiento $J=\lfloor n/5\rfloor$; si no lo contiene, el truncamiento es una elección propia y debe declararse así.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar; revisar también la fe de erratas, que podría afectar la fórmula.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Quenouille (1947), *Biometrika*, 34; Bartlett (1946); Bayley y Hammersley (1946) | Media — fuentes primarias del enfoque (citadas en arXiv:2401.02387) | Sin ficha; no verificadas |
