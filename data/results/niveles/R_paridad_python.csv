@@ -1,0 +1,8 @@
+"via","seccion","criterio","valor_r","valor_python","archivo_python","dif_max","coincide"
+"niveles","PCA","Inercia acumulada d = 1..5 (puntos %)","67,159 85,416 92,533 95,436 97,549","67,159 85,416 92,533 95,436 97,549","data/results/niveles/08_ae_anclaje_lineal.csv",2.8421709430404e-14,"sí"
+"niveles","Horn","Componentes retenidos","2","2","data/results/niveles/08_ae_horn.csv",NA,"sí"
+"niveles","EPCA regla 06 (PC2, 17 series)","Transiciones detectadas","2012-01 2013-10 2015-10 2017-10 2018-01","2012-01 2013-10 2015-10 2017-10 2018-01","data/results/06_epca_transiciones_detectadas_niveles.csv",NA,"sí"
+"niveles","Datación PCA-MM12 (09)","Número de regímenes","6","6","data/results/niveles/09_regimenes_pca.csv",NA,"sí"
+"niveles","Datación PCA-MM12 (09)","Inicio de cada régimen nuevo","2008-12 2010-03 2014-04 2020-06 2022-11","2008-12 2010-03 2014-04 2020-06 2022-11","data/results/niveles/09_regimenes_pca.csv",NA,"sí"
+"niveles","Fases (09)","Fase de cada régimen","Transición Transición Contracción Transición Expansión Expansión","Transición Transición Contracción Transición Expansión Expansión","data/results/niveles/09_regimenes_pca.csv",NA,"sí"
+"niveles","Fases (09)","Componente de crédito medio (2 decimales)","-1,45 -1,30 -0,79 0,17 0,97 1,39","-1.45 -1.3 -0.79 0.17 0.97 1.39","data/results/niveles/09_regimenes_pca.csv",0,"sí"

@@ -749,10 +749,14 @@ resumen <- data.frame(
   )
 )
 resumen
-write.csv(resumen, "data/results/R_paridad_python.csv", row.names = FALSE)
+# Versión archivada: ya no escribe en data/results/.
+# Los R_*.csv vigentes los escribe R/tesis_ciclo_financiero.Rmd (anexo de paridad).
+# write.csv(resumen, "data/results/R_paridad_python.csv", row.names = FALSE)
 ```
 
-```{r guardar, eval = tiene_aede}
+```{r guardar, eval = FALSE}
+# Versión archivada: este bloque ya no se evalúa, para no sobrescribir data/results/.
+# Original: eval = tiene_aede.
 # Resultados nuevos de la variante del asesor
 write.csv(jerarquia, "data/results/R_hfc_jerarquia.csv")
 write.csv(data.frame(fecha = format(fechas_ehfc[-1], "%Y-%m"), cofenetica = cofen),

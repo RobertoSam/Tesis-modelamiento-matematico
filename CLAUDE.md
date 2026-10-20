@@ -14,10 +14,10 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
 3. **Cifras:** ninguna cifra se escribe a mano en el borrador. Se leen de `data/results/`
    (código inline de Quarto) o se citan con su archivo de origen. Nunca se corre ni se reporta
    un resultado con data incompleta.
-4. **Decisiones metodológicas:** `decisiones.qmd` es la fuente de verdad. Vigente: D1
-   (niveles como análisis oficial) y D2 (análisis en dos vías; la propuesta de la Parte C está
-   pendiente de discutir con el asesor). Si algo contradice una decisión, se avisa; no se
-   corrige en silencio.
+4. **Decisiones metodológicas:** `decisiones.qmd` es la fuente de verdad. Vigentes: D1
+   (niveles como análisis oficial), D2 (análisis en dos vías; la propuesta de la Parte C está
+   pendiente de discutir con el asesor) y D3 (solo frecuencia mensual; `06a` superado, `05` por
+   rehacer en mensual). Si algo contradice una decisión, se avisa; no se corrige en silencio.
 5. **Epistemología:** posición del asesor «datos primero» (Benzécri, *laisser parler les
    données*). Los Autoencoders/LSTM se presentan como complemento, con discusión explícita de
    los supuestos que imponen.
@@ -32,7 +32,8 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
 notebooks/        Pipeline numerada 01–09 (prefijo 999 = desarrollo)
 src/              Funciones reutilizables
 data/processed/   Datasets mensuales vigentes: niveles 228 meses × 17 series (2007-01 a 2025-12,
-                  análisis oficial D1); transformadas 227 × 17 (2007-02 a 2025-12)
+                  análisis oficial D1; el archivo trae 19 columnas y se excluyen el crédito
+                  total del SF y el IPC subyacente); transformadas 227 × 17 (2007-02 a 2025-12)
 data/results/     Salidas con prefijo del notebook que las genera
 papers/           Fichas bibliográficas apellido_año.qmd (Ficha Estándar)
 R/                Versión en R (fuera del sitio; requiere Rcamiz/AedeClahfac locales)

@@ -19,6 +19,23 @@ params:
 ---
 
 ```{r configuracion, include = FALSE}
+# Codificación de caracteres: el Rmd y los CSV están en UTF-8 y los nombres de las series llevan
+# tildes («Crédito ...», «Índice BVL»). En una sesión con locale no UTF-8 (p. ej. "C"/POSIX en
+# servidores Linux), R convierte esos literales en secuencias "<U+00E9>" al evaluar cada bloque
+# y dejan de coincidir con las columnas de los CSV (falla el control de b1-datos). Se fija aquí
+# un locale UTF-8 para la clasificación de caracteres antes de evaluar el resto del documento.
+# Se guarda el locale de la sesión que llama para restaurarlo al final (chunk anexo-locale)
+locale_previo <- Sys.getlocale("LC_CTYPE")
+if (!isTRUE(l10n_info()[["UTF-8"]])) {
+  for (loc in c("C.UTF-8", "C.utf8", "en_US.UTF-8", "es_PE.UTF-8", "es_ES.UTF-8")) {
+    if (nzchar(suppressWarnings(Sys.setlocale("LC_CTYPE", loc)))) break
+  }
+  if (!isTRUE(l10n_info()[["UTF-8"]])) {
+    stop("El documento requiere un locale UTF-8 y no se encontró ninguno en el sistema ",
+         "(locale actual: ", Sys.getlocale("LC_CTYPE"), ").")
+  }
+}
+
 # Raíz del repositorio: params$raiz_repo o se sube desde la carpeta del Rmd hasta _quarto.yml
 buscar_raiz <- function(desde) {
   actual <- normalizePath(desde, mustWork = FALSE)
@@ -38,7 +55,7 @@ if (is.na(raiz)) {
        "la carpeta R/ del repositorio clonado, o usa params = list(raiz_repo = '/ruta/al/repo').")
 }
 knitr::opts_knit$set(root.dir = raiz)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = TRUE,   # avisos visibles en el documento
                       fig.width = 10, fig.height = 5, dpi = 110, fig.align = "center")
 ```
 
@@ -134,6 +151,11 @@ verificar_calendario <- function(d) {
 }
 
 # Episodios de referencia (solo para validación ex post; mismas fechas que modelos_dl.py)
+# [VERIFICAR: fuente externa para fechar el episodio] Las tres fechas están escritas a mano y no
+# citan fuente externa (los episodios deben fecharse con fuentes externas, nunca a partir de las
+# propias series). Además difieren de las de notebooks/06a y 06b (crisis global desde 2008-07;
+# taper tantrum desde 2013-04; COVID-19 de 2020-01 a 2020-09). Hace falta una sola definición,
+# con fuente y convención de fechado (decisión pendiente). No se cambian hasta fijar la fuente.
 episodios <- data.frame(
   nombre = c("Crisis financiera global", "Taper tantrum", "COVID-19"),
   inicio = as.Date(c("2008-09-01", "2013-05-01", "2020-03-01")),
@@ -263,12 +285,32 @@ tema_tesis <- function() {
 }
 
 # Bandas grises con los episodios de referencia
-capa_episodios <- function() {
-  geom_rect(data = episodios, inherit.aes = FALSE,
-            aes(xmin = inicio, xmax = fin, ymin = -Inf, ymax = Inf),
+# En escala logarítmica, ymin = -Inf se vuelve NaN y ggplot descarta las bandas: para esos
+# gráficos se pasan límites finitos y positivos (y_lim) y
+# el rango de fechas del gráfico (x_lim), para dibujar solo los episodios que caen en él.
+episodios_en <- function(x_lim = NULL) {
+  if (is.null(x_lim)) return(episodios)
+  episodios[episodios$fin >= x_lim[1] & episodios$inicio <= x_lim[2], , drop = FALSE]
+}
+capa_episodios <- function(y_lim = NULL, x_lim = NULL) {
+  e <- episodios_en(x_lim)
+  if (is.null(y_lim)) { e$ymin <- -Inf; e$ymax <- Inf } else { e$ymin <- y_lim[1]; e$ymax <- y_lim[2] }
+  geom_rect(data = e, inherit.aes = FALSE,
+            aes(xmin = inicio, xmax = fin, ymin = ymin, ymax = ymax),
             fill = gris_episodio, alpha = 0.8)
 }
-nota_episodios <- "Bandas grises: crisis financiera global (2008-09 a 2009-06), taper tantrum (2013-05 a 2013-12) y COVID-19 (2020-03 a 2020-12)."
+# Rango de un episodio en texto ("2008-09 a 2009-06"), leído de `episodios`
+rango_epi <- function(i) paste(format(episodios$inicio[i], "%Y-%m"), "a", format(episodios$fin[i], "%Y-%m"))
+nota_episodios <- paste0("Bandas grises: crisis financiera global (", rango_epi(1), "), taper tantrum (",
+                         rango_epi(2), ") y COVID-19 (", rango_epi(3), ") ",
+                         "[VERIFICAR: fuente externa para fechar el episodio].")
+# Pie para gráficos que solo muestran los episodios dentro de su rango de fechas
+nota_episodios_en <- function(x_lim) {
+  e <- episodios_en(x_lim)
+  if (!nrow(e)) return("Ningún episodio de referencia cae en el rango del gráfico.")
+  paste0("Bandas grises: ", paste0(e$nombre, " (", sapply(match(e$nombre, episodios$nombre), rango_epi), ")", collapse = ", "),
+         " [VERIFICAR: fuente externa para fechar el episodio].")
+}
 # Estandarización con desviación poblacional (divisor n), igual que StandardScaler
 estandarizar <- function(X) {
   X <- as.matrix(X)
@@ -288,7 +330,25 @@ pca_basico <- function(Z, d = ncol(Z)) {
   list(valores = e$values, vectores = V, scores = Z %*% V)
 }
 
-# Análisis paralelo de Horn (1965): percentil 95 de autovalores con datos gaussianos
+# Reglas de orientación del signo de un vector propio:
+#  - lineal (aede_r de AedeClahfac, R/camiz_port.R): se invierte si |suma de los negativos| > suma de los positivos
+#  - cuadrática (Rcamiz::pca y pca_basico): se invierte si suma de cuadrados de los negativos > la de los positivos
+invierte_lineal <- function(v) abs(sum(v[v < 0])) > sum(v[v > 0])
+invierte_cuadr  <- function(v) sum(v[v < 0]^2) > sum(v[v > 0]^2)
+# Número de ventanas (paso 1, pesos uniformes) en que ambas reglas orientan distinto cada eje 1..d,
+# y ejes del PCA global en que difieren
+signo_difiere <- function(M, w, d = 3) {
+  wn <- nrow(M) - w + 1
+  por_ventana <- t(sapply(seq_len(wn), function(i) {
+    V <- eigen(cor(M[i:(i + w - 1), ]), symmetric = TRUE)$vectors[, 1:d, drop = FALSE]
+    apply(V, 2, function(v) invierte_lineal(v) != invierte_cuadr(v))
+  }))
+  Vg <- eigen(cor(M), symmetric = TRUE)$vectors
+  list(ventanas = wn, por_dim = colSums(por_ventana),
+       ejes_globales = which(apply(Vg, 2, function(v) invierte_lineal(v) != invierte_cuadr(v))))
+}
+
+# Análisis paralelo de Horn (1965) [VERIFICAR: sin ficha]: percentil 95 de autovalores con datos gaussianos
 horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
   set.seed(semilla)
   obs <- eigen(cor(X), symmetric = TRUE, only.values = TRUE)$values
@@ -300,7 +360,7 @@ horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
   list(observados = obs, umbral = umbral, retener = retener)
 }
 
-# Coeficiente RV de Robert & Escoufier (1976) entre dos configuraciones de las mismas filas
+# Coeficiente RV de Robert y Escoufier (1976) entre dos configuraciones de las mismas filas
 coef_rv <- function(X, Y) {
   X <- scale(as.matrix(X), scale = FALSE); Y <- scale(as.matrix(Y), scale = FALSE)
   Sx <- tcrossprod(X); Sy <- tcrossprod(Y)
@@ -354,13 +414,29 @@ datar <- function(Y, k_max = 10, tam_min = 12, umbral = 0.10) {
   # Si ninguna lo es, codo por caída máxima de la reducción (misma regla que para aede)
   k_codo <- if (length(bajo)) min(ks0[bajo]) else ks0[which.max(c(NA, head(reduccion, -1)) - reduccion)]
   regla_codo <- if (length(bajo)) "umbral" else "caida"
-  # Variante del asesor: Calinski-Harabász con la misma fórmula de aede()
-  # (grados de libertad k y n - k, como en el código del asesor)
+  # Calinski-Harabász en dos variantes:
+  #  - ch:  fórmula del código del asesor en aede(), grados de libertad k y n - k
+  #  - ch1: forma habitual de Calinski y Harabász [VERIFICAR: sin ficha], k - 1 y n - k
+  # La elección entre ambas queda pendiente; se informan las dos.
   nk <- nrow(Y); ks <- as.integer(names(sce))
-  ch <- ((sce[1] - sce) / ks) / (sce / (nk - ks)); ch[1] <- NA
-  list(res = res, tabla = data.frame(k = ks, sce = sce, reduccion = reduccion, ch = ch),
-       k_codo = k_codo, regla_codo = regla_codo, k_ch = ks[which.max(ch)])
+  ch <- ch_variantes(sce, nk)
+  list(res = res, tabla = data.frame(k = ks, sce = sce, reduccion = reduccion, ch = ch$k, ch1 = ch$k1),
+       k_codo = k_codo, regla_codo = regla_codo,
+       k_ch = ks[which.max(ch$k)], k_ch1 = ks[which.max(ch$k1)])
 }
+
+# Índice de Calinski-Harabász a partir de las sumas de cuadrados intra (sce[1] = total) para
+# k = 1..K clases, en las dos variantes de grados de libertad. k = 1 no está definido (NA).
+ch_variantes <- function(sce, n) {
+  k <- seq_along(sce); tss <- sce[1]
+  ch_k  <- ((tss - sce) / k) / (sce / (n - k))
+  ch_k1 <- ((tss - sce) / (k - 1)) / (sce / (n - k))
+  ch_k[1] <- NA; ch_k1[1] <- NA
+  list(k = unname(ch_k), k1 = unname(ch_k1))
+}
+# Posición del k elegido en la grilla k = 2..k_max (para el texto)
+tipo_k <- function(k, k_max = 10) if (k == k_max) "borde superior de la grilla: favorece más cortes" else
+  if (k == 2) "el menor número admisible, en el borde inferior de la grilla" else "un óptimo interior"
 
 # Segmentos (inicio, fin) a partir de los cortes de Fisher
 segmentos <- function(cortes, fechas_serie) {
@@ -461,13 +537,13 @@ análisis** (PCA, EPCA, HFC y redes); las otras dos se usan como referencia (sec
 [Qué entra al análisis](#que-entra)).
 
 ::: {.hallazgo}
-**Las series desestacionalizadas se revisan.** Al verificar los datos contra la API del BCRP
-(08/10/2026), el PBI desestacionalizado de diciembre de 2025 figura en 194,00 y en el dataset
-de la tesis en `r num(tail(niv[["PBI desestacionalizado"]], 1), 2)`; la demanda interna, en
-242,86 frente a `r num(tail(niv[["Demanda interna"]], 1), 2)`. El BCRP recalcula el ajuste
-estacional al incorporar meses nuevos, por lo que estas dos series cambian levemente según la
-fecha de descarga. Conviene **fijar y declarar la fecha de corte de los datos** en la tesis.
-Las demás series coinciden con el BCRP.
+**Las series desestacionalizadas se revisan.** El BCRP recalcula el ajuste estacional del PBI
+desestacionalizado y de la demanda interna al incorporar meses nuevos, por lo que estas dos
+series cambian levemente según la fecha de descarga. En el dataset de la tesis, sus valores de
+`r format(max(niv$fecha), "%m/%Y")` son `r num(tail(niv[["PBI desestacionalizado"]], 1), 2)` y
+`r num(tail(niv[["Demanda interna"]], 1), 2)`, respectivamente; una descarga posterior puede
+dar valores algo distintos. Conviene **fijar y declarar la fecha de corte de los datos** en la
+tesis.
 :::
 
 ## Ficha de las series
@@ -951,8 +1027,8 @@ en menor grado, para M1, el crédito empresarial y el IPC.
 
 El argumento clásico para diferenciar es que dos series con tendencia estocástica (integradas)
 pueden estar muy correlacionadas sin tener relación alguna; la correlación entre sus niveles es
-**espuria**. El resultado se suele atribuir a Granger y Newbold (1974) y a Phillips (1986)
-(**verificar ambas referencias antes de citarlas**). La prueba directa con estos datos es
+**espuria**. El resultado se suele atribuir a Granger y Newbold (1974) [VERIFICAR: sin ficha] y a Phillips
+(1986) [VERIFICAR: sin ficha]. La prueba directa con estos datos es
 preguntarse qué PCA darían 17 series **independientes** con las mismas tendencias que las
 observadas:
 
@@ -965,7 +1041,7 @@ observadas:
   tendencia determinística.
 
 Se repite `r params$reps_nulo` veces y se compara la inercia observada con la distribución que
-generan series independientes. Es el equivalente del análisis paralelo de Horn para series
+generan series independientes. Es el equivalente del análisis paralelo de Horn (1965) [VERIFICAR: sin ficha] para series
 integradas: Horn compara con ruido gaussiano independiente en el tiempo, una referencia que no
 corresponde a series con tendencia.
 
@@ -1020,9 +1096,9 @@ que es donde está el ciclo en la Parte A.
 
 Se aplican dos pruebas con hipótesis opuestas a cada serie:
 
-- **ADF** (Dickey-Fuller aumentada, con constante y tendencia): hipótesis nula de raíz
+- **ADF** (Dickey-Fuller aumentada [VERIFICAR: sin ficha de la fuente de la prueba], con constante y tendencia): hipótesis nula de raíz
   unitaria (no estacionaria).
-- **KPSS**: hipótesis nula de estacionariedad en nivel.
+- **KPSS** [VERIFICAR: sin ficha de la fuente de la prueba]: hipótesis nula de estacionariedad en nivel.
 
 Una serie se considera estacionaria cuando la ADF rechaza (p < 0,05) y la KPSS no rechaza
 (p > 0,05). Ambas pruebas reportan p-valores interpolados en tablas: 0,01 significa "0,01 o
@@ -1067,8 +1143,8 @@ muestra de las redes (A.5).
 | Frecuencias del ciclo | — | La diferencia atenúa las oscilaciones de mediano plazo (8 años: `r num(100 * (2 * sin(pi / 96))^2, 1)` % de su varianza) | Mediana de varianza en períodos ≥ 2 años: `r num(100 * median(espectro$niv_det), 0)` % sin transformar frente a `r num(100 * median(espectro$tr), 0)` % transformadas |
 | Qué representa cada mes | Variación: dirección de movimiento, cercana a la noción de fase | Estado: posición del sistema en el ciclo | Ver Parte C: las dos vías no encuentran los mismos ejes |
 | Estacionariedad e inferencia | Validez de pruebas y de la evaluación fuera de muestra | El PCA es descriptivo y no la necesita | `r cuenta(est, "No estacionaria")` series no estacionarias sin transformar; `r cuenta(est_t, "No estacionaria")` transformadas |
-| Principio de la tradición del asesor | — | Trabajar con los datos como los publica la fuente; estandarizar es la única operación necesaria (unidades distintas) | Coherente con Benzécri (1973) y el marco conceptual de la tesis |
-| Relaciones de largo plazo | — | Diferenciar descarta la información de niveles; si hay cointegración, se pierde (Engle y Granger, 1987: **verificar antes de citar**) | No evaluado en este documento |
+| Principio de la tradición del asesor | — | Trabajar con los datos como los publica la fuente; estandarizar es la única operación necesaria (unidades distintas) | Coherente con Benzécri (1973) [VERIFICAR: sin ficha] y el marco conceptual de la tesis |
+| Relaciones de largo plazo | — | Diferenciar descarta la información de niveles; si hay cointegración, se pierde (Engle y Granger, 1987 [VERIFICAR: sin ficha]) | No evaluado en este documento |
 | Ruido de corto plazo | — | La diferencia amplifica choques de un mes y estacionalidad residual | Estacionalidad visible en `r sum(estac_t$a12 > umbral_acf)` series transformadas |
 
 El documento **no elige una vía de antemano**. Las Partes A y B aplican la misma cadena completa
@@ -1079,7 +1155,7 @@ datación de regímenes y fases coherente.
 ::: {.pregunta}
 Entre las dos vías hay una tercera que la literatura de ciclo financiero usa con frecuencia: la
 **brecha** respecto de una tendencia de largo plazo (por ejemplo, con filtros pasa-banda o de
-Hodrick-Prescott; **verificar las referencias antes de citarlas**). También es una
+Hodrick-Prescott [VERIFICAR: sin ficha de las fuentes de los filtros]). También es una
 transformación, pero retira la tendencia sin atenuar las frecuencias medias. ¿La planteas al
 asesor como alternativa intermedia, o prefieres cerrar la discusión con las dos vías actuales?
 :::
@@ -1188,7 +1264,7 @@ ggplot(mapa_z, aes(fecha, serie, fill = z)) +
 ```{r b2-inercia-meses}
 inercia_mes <- rowSums(Z^2)                       # distancia al cuadrado de cada mes al mes promedio
 part_mes <- 100 * inercia_mes / sum(inercia_mes)
-covid <- fechas >= as.Date("2020-03-01") & fechas <= as.Date("2020-12-01")
+covid <- fechas >= episodios$inicio[3] & fechas <= episodios$fin[3]   # mismas fechas que `episodios`
 anio <- as.integer(format(fechas, "%Y"))
 extremos <- anio == 2007 | anio >= 2024
 crisis <- fechas >= episodios$inicio[1] & fechas <= episodios$fin[1]
@@ -1204,10 +1280,10 @@ knitr::kable(data.frame(Mes = format(fechas[top_meses], "%Y-%m"),
 Sin transformar, dos tipos de meses se alejan del promedio. Los **extremos de la muestra**
 (2007 y 2024-2025) son el `r num(100 * mean(extremos), 1)` % de los meses y aportan el
 `r num(sum(part_mes[extremos]), 1)` % de la variabilidad total: ahí las series con tendencia
-están más lejos de su media. La **crisis financiera global** (2008-09 a 2009-06) es el
+están más lejos de su media. La **crisis financiera global** (`r rango_epi(1)` [VERIFICAR: fuente externa para fechar el episodio]) es el
 `r num(100 * mean(crisis), 1)` % de los meses y aporta el `r num(sum(part_mes[crisis]), 1)` %:
 tasas altas, bolsa baja y el EMBIG en su máximo (z = `r num(max(Z[, "EMBIG Perú"]), 1)`),
-cuando las series con tendencia todavía estaban en niveles bajos. Los diez meses del COVID-19
+cuando las series con tendencia todavía estaban en niveles bajos. Los `r sum(covid)` meses del COVID-19
 aportan el `r num(sum(part_mes[covid]), 1)` % (son el `r num(100 * mean(covid), 1)` % de la
 muestra): la pandemia, que dominaba la variabilidad de las series transformadas (Parte B), aquí
 pesa poco más que un periodo cualquiera.
@@ -1404,11 +1480,11 @@ km <- kmo(R)
 
 Un PCA solo resume bien si las series están correlacionadas. Dos pruebas lo verifican:
 
-- **Esfericidad de Bartlett**: la hipótesis nula es que la matriz de correlaciones es la
+- **Esfericidad de Bartlett** [VERIFICAR: sin ficha de la fuente de la prueba]: la hipótesis nula es que la matriz de correlaciones es la
   identidad (series no correlacionadas). Estadístico chi-cuadrado
   `r num(bt$estadistico, 0)` con `r bt$gl` grados de libertad, p-valor
   `r format.pval(bt$p_valor, digits = 2)`.
-- **KMO** (Kaiser-Meyer-Olkin): compara las correlaciones con las correlaciones parciales.
+- **KMO** (Kaiser-Meyer-Olkin) [VERIFICAR: sin ficha de la fuente de la medida]: compara las correlaciones con las correlaciones parciales.
   Valores sobre 0,6 se consideran aceptables y sobre 0,8, buenos. KMO global:
   **`r num(km$global, 2)`**.
 
@@ -1474,7 +1550,8 @@ ggplot(sc, aes(k)) +
 ```
 
 ::: {.lectura}
-Kaiser retiene `r k_kaiser` componentes, Horn `r k_horn` y la vara quebrada `r k_vara`. Las
+Kaiser retiene `r k_kaiser` componentes, Horn `r k_horn` y la vara quebrada `r k_vara`
+[VERIFICAR: sin ficha de las fuentes del criterio de Kaiser y de la vara quebrada]. Las
 dos primeras explican `r num(sum(inercia[1:2]), 1)` % de la variabilidad y las tres primeras
 `r num(sum(inercia[1:3]), 1)` %. `r if (inercia[1] > 50) paste0("El primer componente domina: explica por sí solo ", num(inercia[1], 1), " %, más del triple que el segundo (", num(inercia[2], 1), " %).") else paste0("Ningún componente domina: el primero explica ", num(inercia[1], 1), " %.")`
 :::
@@ -1735,7 +1812,8 @@ ggplot(ic_df, aes(r, serie)) +
 #### Sensibilidad a los episodios extremos
 
 Se repite el PCA retirando, por separado, los meses de la crisis financiera global
-(2008-09 a 2009-06) y los de la pandemia (2020-03 a 2020-12), y se busca la componente
+(`r rango_epi(1)`) y los de la pandemia (`r rango_epi(3)`)
+[VERIFICAR: fuente externa para fechar el episodio], y se busca la componente
 equivalente a cada original.
 
 ```{r b3-sin-covid}
@@ -1790,6 +1868,13 @@ rc <- Rcamiz::pca(as.data.frame(X), st = TRUE, nd = p, r = 10)
 cat(sprintf("\n**Verificación con Rcamiz.** Diferencia máxima en valores propios: %s; en cargas: %s.\n",
             format(max(abs(rc$eigenvalues[, "eigen"] - vp)), digits = 2),
             format(max(abs(abs(rc$coord$var) - abs(cargas))), digits = 2)))
+```
+
+```{r b3-rcamiz-omitido, eval = !tiene_rcamiz, echo = FALSE, results = "asis"}
+# Se deja constancia visible cuando la verificación no puede ejecutarse
+cat("\n**Rcamiz no disponible: verificación no ejecutada.** El bloque anterior solo corre si el",
+    "paquete `Rcamiz` está instalado. La correspondencia del PCA con Rcamiz se apoya, en la vía",
+    "transformada, en las salidas guardadas `data/results/07_rcamiz_*.csv` (ver el anexo de paridad).\n")
 ```
 
 ### Síntesis del bloque
@@ -1919,9 +2004,11 @@ seg_pc1 <- seguir_cargas(cargas_ventana(X, 1))
 seg_pc2 <- seguir_cargas(cargas_ventana(X, 2))
 transiciones_epca <- seg_pc2$transiciones
 
-# Verificación: con las 19 series que usa el notebook 06 en niveles se reproducen sus fechas
-X19 <- as.matrix(niv[, setdiff(names(niv), "fecha")])
+# Paridad con el notebook 06, que usa también las 17 series (D1)
 trans_py <- format(as.Date(read.csv("data/results/06_epca_transiciones_detectadas_niveles.csv")[[1]]), "%Y-%m")
+trans_r17 <- format(transiciones_epca, "%Y-%m")
+# Contraste: con las 19 columnas del archivo (incluye las dos series de referencia), como hacía antes el notebook
+X19 <- as.matrix(niv[, setdiff(names(niv), "fecha")])
 trans_r19 <- format(seguir_cargas(cargas_ventana(X19, 2))$transiciones, "%Y-%m")
 ```
 
@@ -1943,24 +2030,33 @@ ggplot(estab_df, aes(fecha, r)) +
 Siguiendo PC2 se detectan `r length(transiciones_epca)` transiciones:
 `r paste(format(transiciones_epca, "%Y-%m"), collapse = ", ")`. Siguiendo PC1, la estabilidad
 `r if (min(seg_pc1$estabilidad) > 0.9) paste0("no baja de ", num(min(seg_pc1$estabilidad), 2), ": la tendencia común se mantiene en todas las ventanas") else paste0("baja hasta ", num(min(seg_pc1$estabilidad), 2), " y marca ", length(seg_pc1$transiciones), " transiciones (", paste(format(seg_pc1$transiciones, "%Y-%m"), collapse = ", "), ")")`.
-Las fechas son el centro de la ventana: una transición en 2013-05 compara ventanas que van
-aproximadamente de 2010 a 2015.
+Las fechas son el centro de la ventana: la transición de
+`r format(transiciones_epca[1], "%Y-%m")` compara ventanas que van aproximadamente de
+`r format(mover_meses(transiciones_epca[1], -(VENTANA %/% 2) - PASO), "%Y-%m")` a
+`r format(mover_meses(transiciones_epca[1], VENTANA - 1 - VENTANA %/% 2), "%Y-%m")`.
 :::
 
 ::: {.hallazgo}
-**El notebook `06` corre la EPCA en niveles con 19 series, no con 17.** Incluye el crédito
-total y el IPC subyacente, que la tesis deja fuera del análisis (sección 1). Con esas 19 series,
-este documento reproduce sus transiciones
-(`r if (identical(trans_r19, trans_py)) paste("idénticas:", paste(trans_py, collapse = ", ")) else paste("R:", paste(trans_r19, collapse = ", "), "; Python:", paste(trans_py, collapse = ", "))`);
-con las 17 de este documento, las fechas cambian. Al pasar a Python conviene alinear el
-notebook con las 17 series.
+**Paridad con el notebook `06` en niveles.** Una versión anterior del notebook corría la EPCA
+en niveles con las 19 columnas del archivo, incluidos el crédito total y el IPC subyacente, que
+la tesis deja fuera del análisis (sección 1). Ahora usa las mismas 17 series que este
+documento, y sus transiciones son
+`r if (identical(trans_r17, trans_py)) paste("idénticas a las de R:", paste(trans_py, collapse = ", ")) else paste("R:", paste(trans_r17, collapse = ", "), "; Python:", paste(trans_py, collapse = ", "))`.
+Con las 19 columnas la misma regla daría `r paste(trans_r19, collapse = ", ")`: la fecha
+`r paste(setdiff(trans_r17, trans_r19), collapse = ", ")` solo aparece con las 17 series.
 :::
 
 ### EPCA del asesor (`aede`)
 
-`aede()` usa todas las ventanas (paso de un mes), orienta cada eje con la regla de Rcamiz y lo
-alinea además con la ventana anterior, y segmenta la serie del **primer valor propio** con la
-partición óptima de Fisher, informando el índice de Calinski-Harabász para cada número de
+`aede()` usa todas las ventanas (paso de un mes) y orienta cada eje en dos pasos: primero
+invierte el vector propio si la **suma** de sus coeficientes negativos supera en valor absoluto a
+la de los positivos, y después lo alinea con el de la ventana anterior (elige el signo que
+minimiza la suma de cuadrados de la diferencia). La primera regla **no es la de `Rcamiz::pca`**,
+que compara las **sumas de cuadrados** de los coeficientes positivos y negativos (la que usa
+`pca_basico` en A.2). Como la alineación con la ventana anterior se aplica después, en `aede`
+la regla inicial solo fija el signo de la primera ventana de las correlaciones evolutivas; no
+afecta los valores propios ni los cortes de Fisher. Por último, `aede()` segmenta la serie del **primer valor propio** con la
+partición óptima de Fisher, informando el índice de Calinski-Harabász (con la fórmula de su código, ver abajo) para cada número de
 clases. Se corre con pesos uniformes y con pesos gaussianos (`nsd = 3`), que dan más peso a los
 meses del centro de la ventana.
 
@@ -1975,17 +2071,35 @@ correr_aede <- function(nsd) {
   caida <- red[1:(length(red) - 2)] - red[2:(length(red) - 1)]
   k_codo <- which.max(caida) + 1
   limites <- function(k) { l <- part[k, grep("^v_", colnames(part))]; l <- l[l > 0 & l < nrow(a$eigenvalues)]; fv[l + 1] }
-  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, k_ch = which.max(part[, 3]),
-       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])))
+  # Calinski-Harabász en las dos variantes: la de aede (k, n - k) es part[, 3];
+  # la habitual usa k - 1 en el numerador. Se comprueba que la primera reproduce la del port.
+  ch <- ch_variantes(wss, nrow(a$eigenvalues))
+  stopifnot(isTRUE(all.equal(ch$k[-1], unname(part[-1, 3]))))
+  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, ch1 = ch$k1,
+       k_ch = which.max(part[, 3]), k_ch1 = which.max(ch$k1),
+       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])),
+       cortes_ch1 = limites(which.max(ch$k1)))
 }
 aede_u <- correr_aede(0); aede_g <- correr_aede(3)
 knitr::kable(data.frame(Clases = 1:10,
                         `SC intra (uniforme)` = num(aede_u$part[, 2], 2), `Reducción al agregar una clase` = num(100 * aede_u$red, 0),
-                        `Calinski-Harabász (uniforme)` = num(aede_u$part[, 3], 0),
-                        `SC intra (gaussiana)` = num(aede_g$part[, 2], 2), `Calinski-Harabász (gaussiana)` = num(aede_g$part[, 3], 0),
+                        `CH, k gl (uniforme)` = num(aede_u$part[, 3], 0), `CH, k − 1 gl (uniforme)` = num(aede_u$ch1, 0),
+                        `SC intra (gaussiana)` = num(aede_g$part[, 2], 2),
+                        `CH, k gl (gaussiana)` = num(aede_g$part[, 3], 0), `CH, k − 1 gl (gaussiana)` = num(aede_g$ch1, 0),
                         check.names = FALSE), row.names = FALSE,
-             caption = "Partición de Fisher de la serie del primer valor propio. SC intra: suma de cuadrados dentro de las clases. Reducción en %.")
+             caption = "Partición de Fisher de la serie del primer valor propio. SC intra: suma de cuadrados dentro de las clases. Reducción en %. CH: índice de Calinski-Harabász; «k gl», fórmula del código de aede (grados de libertad k y n − k); «k − 1 gl», forma habitual (k − 1 y n − k) [VERIFICAR: sin ficha de Calinski y Harabász, 1974].")
 ```
+
+```{r b4-signo}
+sd_niv <- signo_difiere(X, VENTANA)
+```
+
+::: {.lectura}
+Las dos reglas de signo orientan distinto el eje 1, 2 y 3 en
+`r paste(sd_niv$por_dim, collapse = ", ")` de las `r sd_niv$ventanas` ventanas de 60 meses,
+respectivamente. En el PCA global de las 17 series difieren en los ejes
+`r if (length(sd_niv$ejes_globales)) paste(sd_niv$ejes_globales, collapse = ", ") else "ninguno"`.
+:::
 
 ```{r b4-g-aede, fig.height = 4.5}
 vp_ev <- rbind(
@@ -2008,9 +2122,15 @@ ggplot(vp_ev, aes(fecha, valor, color = dim)) +
 ```
 
 ::: {.lectura}
-El índice de Calinski-Harabász crece de forma `r if (all(diff(aede_u$part[-1, 3]) > 0)) "monótona" else "casi monótona"`
-con el número de clases (máximo en `r aede_u$k_ch` clases con pesos uniformes), así que no
-ofrece un óptimo interior: siempre favorece más cortes. La regla de codo usada en `09`
+El índice de Calinski-Harabász **depende de la fórmula**. Con la del código de `aede`
+(grados de libertad $k$ y $n-k$) crece de forma
+`r if (all(diff(aede_u$part[-1, 3]) > 0)) "monótona" else "casi monótona"` con el número de
+clases y alcanza su máximo en el borde de la grilla: `r aede_u$k_ch` clases con pesos uniformes
+y `r aede_g$k_ch` con pesos gaussianos (de un máximo de 10). Con la forma habitual
+($k-1$ y $n-k$) el máximo está en `r aede_u$k_ch1` clases con pesos uniformes
+(`r tipo_k(aede_u$k_ch1)`) y en `r aede_g$k_ch1` con pesos gaussianos (`r tipo_k(aede_g$k_ch1)`).
+La conclusión «el CH siempre favorece más cortes» vale, por tanto, solo con la fórmula de
+`aede``r if (aede_u$k_ch1 < 10 && aede_g$k_ch1 < 10) " y no con la habitual" else if (aede_u$k_ch1 < 10) "; con la habitual deja de valer con pesos uniformes, aunque se mantiene con pesos gaussianos" else if (aede_g$k_ch1 < 10) "; con la habitual deja de valer con pesos gaussianos, aunque se mantiene con pesos uniformes" else "; con la habitual también se mantiene en esta serie"`. La regla de codo usada en `09`
 (detenerse cuando agregar una clase reduce la suma de cuadrados en menos de 10 %)
 `r if (all(aede_u$red[1:9] >= 0.10)) "tampoco funciona aquí, porque las reducciones no bajan de 10 % hasta 10 clases" else paste("daría", min(which(aede_u$red < 0.10)), "clases")`. Se usa entonces el codo
 como el número de clases a partir del cual más cae la ganancia de agregar otra: se eligen
@@ -2020,6 +2140,16 @@ cortes en `r paste(format(aede_u$cortes_codo, "%Y-%m"), collapse = ", ")`, y
 `r paste(format(aede_g$cortes_codo, "%Y-%m"), collapse = ", ")`. La inercia del primer
 componente varía entre `r num(min(100 * aede_u$a$eigenvalues[, 1] / p), 0)` % y
 `r num(max(100 * aede_u$a$eigenvalues[, 1] / p), 0)` % según la ventana.
+:::
+
+::: {.pregunta}
+**¿Qué fórmula del índice de Calinski-Harabász se adopta?** El código de `aede` divide la suma de
+cuadrados entre clases por $k$; la forma habitual del índice la divide por $k-1$
+[VERIFICAR: sin ficha de Calinski y Harabász (1974)]. Con pesos uniformes, la primera elige
+`r aede_u$k_ch` clases y la segunda `r aede_u$k_ch1`
+(`r tipo_k(aede_u$k_ch1)``r if (aede_u$k_ch1 == aede_u$k_codo) "; el mismo número que la regla de codo" else ""`). Antes de
+usar el CH como criterio conviene confirmar con el Dr. Camiz si la elección de $k$ es deliberada.
+La decisión es tuya y del asesor; este documento informa ambas.
 :::
 
 ::: {.pregunta}
@@ -2071,7 +2201,7 @@ tt$`Episodio a ±12 meses` <- sapply(tt$Fecha, function(f) {
   if (length(e)) paste(e, collapse = ", ") else "—" })
 tt$`Borde de ventana (±3 meses)` <- sapply(tt$Fecha, borde_ventana)
 tt$Fecha <- format(tt$Fecha, "%Y-%m")
-knitr::kable(tt, row.names = FALSE, caption = "Fechas: centro de la ventana. Con ventanas de 60 meses, un cambio puede reflejar meses hasta 30 meses antes o después de la fecha.")
+knitr::kable(tt, row.names = FALSE, caption = "Fechas: centro de la ventana. Con ventanas de 60 meses, un cambio puede reflejar meses hasta 30 meses antes o después de la fecha. Episodios: fechas de `episodios` [VERIFICAR: fuente externa para fechar el episodio].")
 ```
 
 ::: {.lectura}
@@ -2097,8 +2227,12 @@ ventana, no un cambio de régimen.
 - La estructura de correlaciones no es estable: estimada en un periodo, no reproduce bien otro.
 - La EPCA detecta transiciones, pero su número y sus fechas dependen de la ventana, de la
   noción de cambio (cargas o valor propio) y del criterio para elegir el número de clases.
-- Calinski-Harabász no da un óptimo interior en esta serie; la regla de codo sí, pero es
-  frágil. La datación de regímenes necesita un criterio de estabilidad (Parte B).
+- Con la fórmula del código de `aede` ($k$ grados de libertad), Calinski-Harabász favorece
+  siempre más cortes en esta serie (`r aede_u$k_ch` y `r aede_g$k_ch` clases); con la forma
+  habitual ($k-1$) elige `r aede_u$k_ch1` y `r aede_g$k_ch1` clases (pesos uniformes y
+  gaussianos). La
+  conclusión depende de la fórmula, cuya elección queda pendiente (pregunta de A.3). La regla de
+  codo da un número interior, pero es frágil. La datación de regímenes necesita un criterio de estabilidad (Parte B).
 
 
 ## A.4 Clasificación Factorial Jerárquica (HFC)
@@ -2238,7 +2372,7 @@ con el asesor.
 
 Se aplica la HFC en cada ventana de 60 meses (paso de 3) y se compara cada jerarquía con la de
 la ventana anterior de dos formas: la **correlación cofenética** entre dendrogramas (¿se
-parecen las distancias a las que se unen las series?) y el **índice de Rand ajustado** entre
+parecen las distancias a las que se unen las series?) y el **índice de Rand ajustado** [VERIFICAR: sin ficha de la fuente del índice] entre
 las particiones en 4 grupos (¿se forman los mismos grupos?).
 
 ```{r b5-ehfc}
@@ -2371,7 +2505,7 @@ ggplot() +
 | Ruido en la entrada | Gaussiano, desviación 0,10 | La red aprende a reconstruir el dato limpio a partir de uno perturbado (autoencoder *denoising*): evita copiar la entrada y la hace robusta | Sin ruido: tiende a memorizar meses atípicos |
 | Dropout | 10 % en la capa oculta | Apaga neuronas al azar al entrenar; regulariza y permite medir incertidumbre (Monte Carlo Dropout) | Sin dropout: no hay medida de incertidumbre del error |
 | Penalización de pesos | L2, 0,001 | Mantiene los pesos pequeños y la función suave | Mayor: se acerca a un modelo lineal; menor: más sobreajuste |
-| Optimización | Adam, tasa 0,005; parada temprana con el 15 % final de la muestra como validación (paciencia 200 épocas) | Detiene el entrenamiento cuando el error de validación deja de bajar | Validación aleatoria: mezclaría meses futuros en el entrenamiento |
+| Optimización | Adam [VERIFICAR: sin ficha], tasa 0,005; parada temprana con el 15 % final de la muestra como validación (paciencia 200 épocas) | Detiene el entrenamiento cuando el error de validación deja de bajar | Validación aleatoria: mezclaría meses futuros en el entrenamiento |
 | Réplicas | 10 semillas | Las redes llegan a soluciones distintas según la inicialización; se mide cuánto difieren | Una sola semilla: no hay forma de saber si el resultado es estable |
 
 ```{r b6-parametros}
@@ -2428,7 +2562,7 @@ muestra, la regularización y la evaluación fuera de muestra no son opcionales.
 | Red convolucional temporal (TCN) o *transformer* | Capturan dependencias largas | Necesitan muestras mucho mayores que `r n` meses |
 | PCA con núcleo (*kernel PCA*) | PCA no lineal sin red neuronal | Sin reconstrucción explícita ni código para meses nuevos; difícil de interpretar |
 | Modelo de factores dinámicos | Factores latentes con dinámica autorregresiva explícita | Alternativa estadística natural al LSTM; supone una estructura constante |
-| Modelos de cambio de régimen de Markov | Estiman regímenes y probabilidades de transición | Responden directamente a la pregunta de regímenes; son supervisados por un modelo paramétrico (verificar referencias antes de citarlos) |
+| Modelos de cambio de régimen de Markov | Estiman regímenes y probabilidades de transición | Responden directamente a la pregunta de regímenes; son supervisados por un modelo paramétrico [VERIFICAR: sin ficha de la fuente] |
 
 ### Resultados
 
@@ -2468,13 +2602,14 @@ del rango de entrenamiento.
 ```{r b6-g-error, fig.height = 4}
 err_df <- rbind(data.frame(fecha = r08_err$fecha, metodo = "Autoencoder", error = r08_err$error_ae),
                 data.frame(fecha = r08_err$fecha, metodo = "PCA (3 componentes)", error = r08_err$error_pca))
+lim_y_err_df <- range(err_df$error[err_df$error > 0], na.rm = TRUE); lim_x_err_df <- range(err_df$fecha)
 ggplot(err_df, aes(fecha, error, color = metodo)) +
-  capa_episodios() +
+  capa_episodios(y_lim = lim_y_err_df, x_lim = lim_x_err_df) +
   geom_line(linewidth = 0.5) +
   scale_color_manual(NULL, values = colores_cat[1:2]) +
   scale_y_log10() +
   labs(x = NULL, y = "Error de reconstrucción (escala log)", title = "Error de reconstrucción por mes, en muestra",
-       subtitle = "Un error alto indica un mes que no se parece a la estructura típica.", caption = nota_episodios) +
+       subtitle = "Un error alto indica un mes que no se parece a la estructura típica.", caption = nota_episodios_en(lim_x_err_df)) +
   tema_tesis()
 ```
 
@@ -2482,15 +2617,16 @@ ggplot(err_df, aes(fecha, error, color = metodo)) +
 wf_df <- rbind(data.frame(fecha = r09_wf$fecha, metodo = "LSTM-AE", valor = r09_wf$lstm),
                data.frame(fecha = r09_wf$fecha, metodo = "Autoencoder", valor = r09_wf$ae),
                data.frame(fecha = r09_wf$fecha, metodo = "PCA", valor = r09_wf$pca))
+lim_y_wf_df <- range(wf_df$valor[wf_df$valor > 0], na.rm = TRUE); lim_x_wf_df <- range(wf_df$fecha)
 ggplot(wf_df, aes(fecha, valor, color = metodo)) +
-  capa_episodios() +
+  capa_episodios(y_lim = lim_y_wf_df, x_lim = lim_x_wf_df) +
   geom_hline(yintercept = 1, color = "#52514e", linetype = 2, linewidth = 0.4) +
   geom_line(linewidth = 0.5) +
   scale_color_manual(NULL, values = colores_cat) +
   scale_y_log10() +
   labs(x = NULL, y = "Error / percentil 95 del entrenamiento", title = "Evaluación fuera de muestra (walk-forward, 2011–2025)",
        subtitle = "Sobre la línea punteada: el mes es más atípico que el 95 % de los meses con que se entrenó el modelo (alarma).",
-       caption = nota_episodios) +
+       caption = nota_episodios_en(lim_x_wf_df)) +
   tema_tesis()
 ```
 
@@ -2569,12 +2705,14 @@ cortes23 <- dat23$res[[as.character(dat23$k_codo)]]$cortes
 regla <- function(d) if (d$regla_codo == "umbral") "umbral 10 %" else "caída máxima"
 reg_py <- read.csv("data/results/niveles/09_regimenes_pca.csv")
 knitr::kable(data.frame(
-  Variante = c(paste0("PC1 a PC3, codo (", regla(dat3), ")"), "PC1 a PC3, Calinski-Harabász",
+  Variante = c(paste0("PC1 a PC3, codo (", regla(dat3), ")"), "PC1 a PC3, Calinski-Harabász (k gl, aede)",
+               "PC1 a PC3, Calinski-Harabász (k − 1 gl, forma habitual)",
                paste0("PC1 a PC4, codo (", regla(dat4), ")"), paste0("PC2 y PC3, codo (", regla(dat23), ")"),
                "Python (copia de 09 sin transformar)"),
-  Regímenes = c(dat3$k_codo, dat3$k_ch, dat4$k_codo, dat23$k_codo, nrow(reg_py)),
+  Regímenes = c(dat3$k_codo, dat3$k_ch, dat3$k_ch1, dat4$k_codo, dat23$k_codo, nrow(reg_py)),
   `Inicio de cada régimen nuevo` = c(paste(fechas_corte(cortes3, fechas_z), collapse = ", "),
                                      paste(fechas_corte(dat3$res[[as.character(dat3$k_ch)]]$cortes, fechas_z), collapse = ", "),
+                                     paste(fechas_corte(dat3$res[[as.character(dat3$k_ch1)]]$cortes, fechas_z), collapse = ", "),
                                      paste(fechas_corte(dat4$res[[as.character(dat4$k_codo)]]$cortes, fechas_z), collapse = ", "),
                                      paste(fechas_corte(cortes23, fechas_z), collapse = ", "),
                                      paste(reg_py$inicio[-1], collapse = ", ")), check.names = FALSE), row.names = FALSE)
@@ -2606,7 +2744,8 @@ knitr::kable(data.frame(`Inicio del régimen` = estab_cortes$Corte,
 réplicas (`r paste(estab_cortes$Corte[frecuencia >= 0.8], collapse = ", ")`)`r if (any(frecuencia < 0.8)) paste0("; el menos estable es ", estab_cortes$Corte[which.min(frecuencia)], " (", num(100 * min(frecuencia), 0), " %)") else ""`.
 Esta prueba mide la estabilidad de las fechas ante la incertidumbre de las **cargas**, con el
 número de regímenes fijo; no mide qué pasa si cambia ese número, que es lo menos robusto: la
-regla de codo da `r dat3$k_codo` regímenes, Calinski-Harabász `r dat3$k_ch`, con 4
+regla de codo da `r dat3$k_codo` regímenes, Calinski-Harabász `r dat3$k_ch` con la fórmula de `aede`
+y `r dat3$k_ch1` con la habitual`r if (dat3$k_ch == 10 && dat3$k_ch1 == 10) ' (las dos en el borde superior de la grilla)' else ''`, con 4
 componentes se obtienen `r dat4$k_codo` y sin la tendencia (PC2 y PC3), `r dat23$k_codo`.
 :::
 
@@ -2637,7 +2776,7 @@ clasificar <- function(seg, umbral = 0.25, dur_min = 18) {
   }))
 }
 fases <- clasificar(segmentos(cortes3, fechas_z))
-knitr::kable(fases, row.names = FALSE)
+knitr::kable(fases, row.names = FALSE, caption = "Episodios contenidos: fechas de `episodios` [VERIFICAR: fuente externa para fechar el episodio].")
 r_credito_tiempo <- cor(comp_credito, seq_len(n))
 ```
 
@@ -2670,7 +2809,7 @@ corresponden a A.1 a A.6.
 
 ```{r bB-datos}
 Zt <- estandarizar(Xt)
-covid_t <- fechas_t >= as.Date("2020-03-01") & fechas_t <= as.Date("2020-12-01")
+covid_t <- fechas_t >= episodios$inicio[3] & fechas_t <= episodios$fin[3]
 crisis_t <- fechas_t >= episodios$inicio[1] & fechas_t <= episodios$fin[1]
 anio_t <- as.integer(format(fechas_t, "%Y"))
 ```
@@ -3282,17 +3421,37 @@ correr_aede_t <- function(nsd) {
   caida <- red[1:(length(red) - 2)] - red[2:(length(red) - 1)]
   k_codo <- which.max(caida) + 1
   limites <- function(k) { l <- part[k, grep("^v_", colnames(part))]; l <- l[l > 0 & l < nrow(a$eigenvalues)]; fv[l + 1] }
-  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, k_ch = which.max(part[, 3]),
-       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])))
+  # Calinski-Harabász en las dos variantes: la de aede (k, n - k) es part[, 3];
+  # la habitual usa k - 1 en el numerador. Se comprueba que la primera reproduce la del port.
+  ch <- ch_variantes(wss, nrow(a$eigenvalues))
+  stopifnot(isTRUE(all.equal(ch$k[-1], unname(part[-1, 3]))))
+  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, ch1 = ch$k1,
+       k_ch = which.max(part[, 3]), k_ch1 = which.max(ch$k1),
+       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])),
+       cortes_ch1 = limites(which.max(ch$k1)))
 }
 aede_ut <- correr_aede_t(0); aede_gt <- correr_aede_t(3)
 knitr::kable(data.frame(Clases = 1:10,
                         `SC intra (uniforme)` = num(aede_ut$part[, 2], 2), `Reducción al agregar una clase` = num(100 * aede_ut$red, 0),
-                        `Calinski-Harabász (uniforme)` = num(aede_ut$part[, 3], 0),
-                        `SC intra (gaussiana)` = num(aede_gt$part[, 2], 2), `Calinski-Harabász (gaussiana)` = num(aede_gt$part[, 3], 0),
+                        `CH, k gl (uniforme)` = num(aede_ut$part[, 3], 0), `CH, k − 1 gl (uniforme)` = num(aede_ut$ch1, 0),
+                        `SC intra (gaussiana)` = num(aede_gt$part[, 2], 2),
+                        `CH, k gl (gaussiana)` = num(aede_gt$part[, 3], 0), `CH, k − 1 gl (gaussiana)` = num(aede_gt$ch1, 0),
                         check.names = FALSE), row.names = FALSE,
-             caption = "Series transformadas. Partición de Fisher de la serie del primer valor propio. Reducción en %.")
+             caption = "Series transformadas. Partición de Fisher de la serie del primer valor propio. Reducción en %. CH: Calinski-Harabász con k o k − 1 grados de libertad en el numerador (ver A.3).")
 ```
+
+```{r bB3-signo}
+sd_tr <- signo_difiere(Xt, VENTANA)
+```
+
+::: {.lectura}
+Como en A.3, `aede` orienta primero cada eje con la suma lineal de sus coeficientes y no con la
+regla de sumas de cuadrados de `Rcamiz::pca`. En las series transformadas ambas reglas difieren
+en el eje 1, 2 y 3 en `r paste(sd_tr$por_dim, collapse = ", ")` de las `r sd_tr$ventanas`
+ventanas, respectivamente, y en los ejes
+`r if (length(sd_tr$ejes_globales)) paste(sd_tr$ejes_globales, collapse = ", ") else "ninguno"`
+del PCA global.
+:::
 
 ```{r bB3-g-aede, fig.height = 4.5}
 vp_evt <- rbind(
@@ -3322,7 +3481,9 @@ Sin transformar se obtenían `r aede_u$k_codo` y `r aede_g$k_codo` clases. La in
 componente por ventana varía entre `r num(min(100 * aede_ut$a$eigenvalues[, 1] / p), 0)` % y
 `r num(max(100 * aede_ut$a$eigenvalues[, 1] / p), 0)` %: sube con fuerza cuando la ventana
 incluye la crisis o la pandemia, porque un episodio extremo concentra la variabilidad en un solo
-eje. Calinski-Harabász vuelve a crecer sin óptimo interior (máximo en `r aede_ut$k_ch` clases).
+eje. Calinski-Harabász alcanza su máximo en `r aede_ut$k_ch` clases con la fórmula de `aede` y en
+`r aede_ut$k_ch1` con la habitual (pesos uniformes; `r aede_gt$k_ch` y `r aede_gt$k_ch1` con pesos
+gaussianos)`r if (max(aede_ut$k_ch, aede_ut$k_ch1, aede_gt$k_ch, aede_gt$k_ch1) == 10 && min(aede_ut$k_ch, aede_ut$k_ch1, aede_gt$k_ch, aede_gt$k_ch1) == 10) ': aquí las dos variantes favorecen el mayor número de clases de la grilla' else ''`.
 :::
 
 ### Cargas evolutivas
@@ -3362,7 +3523,7 @@ tt_t$`Episodio a ±12 meses` <- sapply(tt_t$Fecha, function(f) {
   if (length(e)) paste(e, collapse = ", ") else "—" })
 tt_t$`Borde de ventana (±3 meses)` <- sapply(tt_t$Fecha, borde_ventana)
 tt_t$Fecha <- format(tt_t$Fecha, "%Y-%m")
-knitr::kable(tt_t, row.names = FALSE, caption = "Series transformadas. Fechas: centro de la ventana de 60 meses.")
+knitr::kable(tt_t, row.names = FALSE, caption = "Series transformadas. Fechas: centro de la ventana de 60 meses. Episodios: fechas de `episodios` [VERIFICAR: fuente externa para fechar el episodio].")
 ```
 
 ::: {.lectura}
@@ -3574,13 +3735,14 @@ transformar (`r num(r08_cv[[5]][3], 1)` %): sin la tendencia, la saturación de 
 ```{r bB5-g-error, fig.height = 4}
 err_dft <- rbind(data.frame(fecha = t08_err$fecha, metodo = "Autoencoder", error = t08_err$error_ae),
                  data.frame(fecha = t08_err$fecha, metodo = "PCA (3 componentes)", error = t08_err$error_pca))
+lim_y_err_dft <- range(err_dft$error[err_dft$error > 0], na.rm = TRUE); lim_x_err_dft <- range(err_dft$fecha)
 ggplot(err_dft, aes(fecha, error, color = metodo)) +
-  capa_episodios() +
+  capa_episodios(y_lim = lim_y_err_dft, x_lim = lim_x_err_dft) +
   geom_line(linewidth = 0.5) +
   scale_color_manual(NULL, values = colores_cat[1:2]) +
   scale_y_log10() +
   labs(x = NULL, y = "Error de reconstrucción (escala log)", title = "Error de reconstrucción por mes, en muestra (series transformadas)",
-       caption = nota_episodios) +
+       caption = nota_episodios_en(lim_x_err_dft)) +
   tema_tesis()
 ```
 
@@ -3588,15 +3750,16 @@ ggplot(err_dft, aes(fecha, error, color = metodo)) +
 wf_dft <- rbind(data.frame(fecha = t09_wf$fecha, metodo = "LSTM-AE", valor = t09_wf$lstm),
                 data.frame(fecha = t09_wf$fecha, metodo = "Autoencoder", valor = t09_wf$ae),
                 data.frame(fecha = t09_wf$fecha, metodo = "PCA", valor = t09_wf$pca))
+lim_y_wf_dft <- range(wf_dft$valor[wf_dft$valor > 0], na.rm = TRUE); lim_x_wf_dft <- range(wf_dft$fecha)
 ggplot(wf_dft, aes(fecha, valor, color = metodo)) +
-  capa_episodios() +
+  capa_episodios(y_lim = lim_y_wf_dft, x_lim = lim_x_wf_dft) +
   geom_hline(yintercept = 1, color = "#52514e", linetype = 2, linewidth = 0.4) +
   geom_line(linewidth = 0.5) +
   scale_color_manual(NULL, values = colores_cat) +
   scale_y_log10() +
   labs(x = NULL, y = "Error / percentil 95 del entrenamiento", title = "Evaluación fuera de muestra (walk-forward, series transformadas)",
        subtitle = "Sobre la línea punteada: el mes es más atípico que el 95 % de los meses de entrenamiento (alarma).",
-       caption = nota_episodios) +
+       caption = nota_episodios_en(lim_x_wf_dft)) +
   tema_tesis()
 ```
 
@@ -3646,11 +3809,13 @@ dat4t <- datar(mm_scores_t(scores_t[, 1:4]))
 cortes3t <- dat3t$res[[as.character(dat3t$k_codo)]]$cortes
 reg_py_t <- read.csv("data/results/09_regimenes_pca.csv")
 knitr::kable(data.frame(
-  Variante = c(paste0("PC1 a PC3, codo (", regla(dat3t), ")"), "PC1 a PC3, Calinski-Harabász",
+  Variante = c(paste0("PC1 a PC3, codo (", regla(dat3t), ")"), "PC1 a PC3, Calinski-Harabász (k gl, aede)",
+               "PC1 a PC3, Calinski-Harabász (k − 1 gl, forma habitual)",
                paste0("PC1 a PC4, codo (", regla(dat4t), ")"), "Python (notebook 09)"),
-  Regímenes = c(dat3t$k_codo, dat3t$k_ch, dat4t$k_codo, nrow(reg_py_t)),
+  Regímenes = c(dat3t$k_codo, dat3t$k_ch, dat3t$k_ch1, dat4t$k_codo, nrow(reg_py_t)),
   `Inicio de cada régimen nuevo` = c(paste(fechas_corte(cortes3t, fechas_zt), collapse = ", "),
                                      paste(fechas_corte(dat3t$res[[as.character(dat3t$k_ch)]]$cortes, fechas_zt), collapse = ", "),
+                                     paste(fechas_corte(dat3t$res[[as.character(dat3t$k_ch1)]]$cortes, fechas_zt), collapse = ", "),
                                      paste(fechas_corte(dat4t$res[[as.character(dat4t$k_codo)]]$cortes, fechas_zt), collapse = ", "),
                                      paste(reg_py_t$inicio[-1], collapse = ", ")), check.names = FALSE), row.names = FALSE)
 ```
@@ -3677,7 +3842,8 @@ La datación da `r dat3t$k_codo` regímenes
 frente a `r dat3$k_codo` sin transformar. `r sum(frecuencia_t >= 0.8)` de `r length(frecuencia_t)`
 cortes aparecen en al menos el 80 % de las réplicas
 (`r if (any(frecuencia_t >= 0.8)) paste(estab_cortes_t$Corte[frecuencia_t >= 0.8], collapse = ", ") else "ninguno"`).
-La regla de codo eligió con `r if (dat3t$regla_codo == "umbral") "el umbral de 10 %" else "la caída máxima"``r if (dat3t$regla_codo != dat3$regla_codo) paste0(", a diferencia de A.6, donde se usó ", if (dat3$regla_codo == "umbral") "el umbral" else "la caída máxima") else ", igual que en A.6"`; Calinski-Harabász da `r dat3t$k_ch` y con 4 componentes se obtienen
+La regla de codo eligió con `r if (dat3t$regla_codo == "umbral") "el umbral de 10 %" else "la caída máxima"``r if (dat3t$regla_codo != dat3$regla_codo) paste0(", a diferencia de A.6, donde se usó ", if (dat3$regla_codo == "umbral") "el umbral" else "la caída máxima") else ", igual que en A.6"`; Calinski-Harabász da `r dat3t$k_ch` con la fórmula de `aede` y `r dat3t$k_ch1` con la habitual
+`r if (dat3t$k_ch1 == dat3t$k_codo) '(el mismo número que la regla de codo)' else ''`, y con 4 componentes se obtienen
 `r dat4t$k_codo`.
 :::
 
@@ -3697,7 +3863,10 @@ clasificar_t <- function(seg, umbral = 0.25, dur_min = 18) {
   }))
 }
 fases_t <- clasificar_t(segmentos(cortes3t, fechas_zt))
-knitr::kable(fases_t, row.names = FALSE)
+# Primera expansión de la vía transformada (para el texto)
+exp_t <- fases_t[fases_t$Fase == "Expansión", , drop = FALSE]
+anios_exp_t <- if (nrow(exp_t)) paste0(substr(exp_t$Inicio[1], 1, 4), "–", substr(exp_t$Fin[1], 1, 4)) else NA
+knitr::kable(fases_t, row.names = FALSE, caption = "Episodios contenidos: fechas de `episodios` [VERIFICAR: fuente externa para fechar el episodio].")
 r_credito_tiempo_t <- cor(comp_credito_t, seq_len(nt))
 ```
 
@@ -3705,7 +3874,7 @@ r_credito_tiempo_t <- cor(comp_credito_t, seq_len(nt))
 Con las series transformadas, el componente de crédito mide el **ritmo** de crecimiento del
 crédito respecto de su ritmo promedio. La clasificación da
 `r paste(table(fases_t$Fase), tolower(names(table(fases_t$Fase))), collapse = ", ")`. La
-expansión de 2010–2013 y la contracción desde la pandemia corresponden a un crédito que crece más
+expansión de `r anios_exp_t` (`r exp_t$Inicio[1]` a `r exp_t$Fin[1]`) y la contracción desde la pandemia corresponden a un crédito que crece más
 y menos rápido que su promedio, no a saldos altos o bajos. Pero el componente también tiene
 tendencia: su correlación con el tiempo es `r num(r_credito_tiempo_t, 2)`, porque el ritmo de
 crecimiento del crédito fue bajando a lo largo de la muestra. Los regímenes recientes salen como
@@ -3826,7 +3995,7 @@ ggplot(seg_AB) +
 ::: {.lectura}
 Las fases no coinciden: sin transformar, la muestra va de contracción (saldos bajos al inicio) a
 expansión (saldos altos al final); transformadas, de expansión (crédito creciendo rápido hasta
-2013) a contracción (crédito creciendo cada vez más lento). Las dos clasificaciones heredan la
+`r substr(exp_t$Fin[1], 1, 4)`) a contracción (crédito creciendo cada vez más lento). Las dos clasificaciones heredan la
 tendencia de su componente de crédito (A.6 y B.6), en sentidos opuestos. **Ninguna vía resuelve
 todavía la contribución (2)**: la regla de fases necesita otra formulación.
 :::
@@ -3896,7 +4065,7 @@ deteccion <- sapply(metodos, function(m) sapply(seq_len(nrow(episodios)), functi
 }))
 rownames(deteccion) <- episodios$nombre
 knitr::kable(data.frame(Método = rev(metodos), t(ifelse(deteccion[, rev(metodos)], "Sí", "—")), check.names = FALSE),
-             row.names = FALSE, caption = "¿Hay al menos una señal del método entre 12 meses antes del inicio y 12 meses después del fin del episodio? Las alarmas del LSTM fuera de muestra empiezan en 2011.")
+             row.names = FALSE, caption = "¿Hay al menos una señal del método entre 12 meses antes del inicio y 12 meses después del fin del episodio? Las alarmas del LSTM fuera de muestra empiezan en 2011. Episodios: fechas de `episodios` [VERIFICAR: fuente externa para fechar el episodio].")
 det_via <- sapply(c("A · ", "B · "), function(v) rowSums(deteccion[, startsWith(metodos, v), drop = FALSE]))
 n_via <- sapply(c("A · ", "B · "), function(v) sum(startsWith(metodos, v)))
 ```
@@ -4016,6 +4185,135 @@ condicionan el análisis:
    dos vías.
 9. **Redes neuronales**: detector complementario de episodios con las series transformadas, o
    línea futura.
-10. **Python**: alinear el notebook `06` con las 17 series en niveles, llevar las copias de `08`
-    y `09` sin transformar a los notebooks, y reflejar en el sitio la decisión que se tome en el
-    punto 1.
+10. **Python**: el notebook `06` ya usa las 17 series en niveles (sus transiciones cambian,
+    ver A.3). Falta llevar las copias de `08` y `09` sin transformar a
+    los notebooks y reflejar en el sitio la decisión que se tome en el punto 1 y las nuevas
+    fechas de la EPCA en niveles.
+11. **Episodios de referencia**: una sola definición de las fechas (hoy el Rmd y `modelos_dl.py`
+    usan unas y `06a`/`06b` otras), con fuente externa fichada y convención de fechado.
+12. **Calinski-Harabász**: fórmula con $k$ (código de `aede`) o con $k-1$ (forma habitual)
+    grados de libertad en el numerador (A.3).
+
+# Anexo · Archivos de resultados y paridad con Python {-}
+
+Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
+**vía sin transformar** (análisis oficial, D1) van en `data/results/niveles/` y los de la **vía
+transformada**, en `data/results/`, con el mismo nombre. Cada `R_paridad_python.csv` compara las
+cifras de R con los CSV de Python de su vía e indica el archivo de origen.
+
+```{r anexo-paridad}
+# ---- Paridad con Python, por vía --------------------------------------------
+fila_par <- function(via, seccion, criterio, valor_r, valor_py, archivo, dif = NA_real_, coincide) {
+  data.frame(via = via, seccion = seccion, criterio = criterio, valor_r = valor_r,
+             valor_python = valor_py, archivo_python = archivo, dif_max = dif,
+             coincide = if (coincide) "sí" else "no", stringsAsFactors = FALSE)
+}
+# Componentes retenidos por Horn en un CSV de 08 (autovalor observado mayor que el umbral, en orden)
+horn_py <- function(f) { h <- read.csv(f, row.names = 1, check.names = FALSE)
+  r <- h[["autovalor_observado"]] > h[["umbral_aleatorio_p95"]]; if (all(r)) length(r) else which(!r)[1] - 1 }
+num_tabla <- function(x) as.numeric(gsub(",", ".", gsub(" ", "", x)))
+# Segunda copia de la datación por vía: k, inicios de régimen, fases y componente de crédito
+paridad_datacion <- function(via, dat, cortes, fechas_seg, fases_r, f_py) {
+  py <- read.csv(f_py)
+  ini_r <- fechas_corte(cortes, fechas_seg)
+  rbind(
+    fila_par(via, "Datación PCA-MM12 (09)", "Número de regímenes", dat$k_codo, nrow(py), f_py,
+             coincide = dat$k_codo == nrow(py)),
+    fila_par(via, "Datación PCA-MM12 (09)", "Inicio de cada régimen nuevo", paste(ini_r, collapse = " "),
+             paste(py$inicio[-1], collapse = " "), f_py, coincide = identical(ini_r, py$inicio[-1])),
+    fila_par(via, "Fases (09)", "Fase de cada régimen", paste(fases_r$Fase, collapse = " "),
+             paste(py$fase, collapse = " "), f_py, coincide = identical(fases_r$Fase, py$fase)),
+    fila_par(via, "Fases (09)", "Componente de crédito medio (2 decimales)",
+             paste(fases_r[["Componente de crédito"]], collapse = " "), paste(py$componente_credito_medio, collapse = " "), f_py,
+             dif = if (nrow(fases_r) == nrow(py)) max(abs(num_tabla(fases_r[["Componente de crédito"]]) - py$componente_credito_medio)) else NA,
+             coincide = nrow(fases_r) == nrow(py) &&
+               max(abs(num_tabla(fases_r[["Componente de crédito"]]) - py$componente_credito_medio)) < 0.0051))
+}
+
+# Vía sin transformar (niveles)
+f_anc <- "data/results/niveles/08_ae_anclaje_lineal.csv"
+anc_n <- read.csv(f_anc, check.names = FALSE)
+dif_in_n <- max(abs(cumsum(inercia)[1:5] - anc_n[["inercia_pca_%"]][1:5]))
+f_06n <- "data/results/06_epca_transiciones_detectadas_niveles.csv"
+par_niv <- rbind(
+  fila_par("niveles", "PCA", "Inercia acumulada d = 1..5 (puntos %)", paste(num(cumsum(inercia)[1:5], 3), collapse = " "),
+           paste(num(anc_n[["inercia_pca_%"]][1:5], 3), collapse = " "), f_anc, dif_in_n, dif_in_n < 1e-6),
+  fila_par("niveles", "Horn", "Componentes retenidos", k_horn, horn_py("data/results/niveles/08_ae_horn.csv"),
+           "data/results/niveles/08_ae_horn.csv", coincide = k_horn == horn_py("data/results/niveles/08_ae_horn.csv")),
+  fila_par("niveles", "EPCA regla 06 (PC2, 17 series)", "Transiciones detectadas", paste(trans_r17, collapse = " "),
+           paste(trans_py, collapse = " "), f_06n, coincide = identical(trans_r17, trans_py)),
+  paridad_datacion("niveles", dat3, cortes3, fechas_z, fases, "data/results/niveles/09_regimenes_pca.csv"))
+
+# Vía transformada
+f_vp <- "data/results/07_rcamiz_valores_propios.csv"
+vp_rc <- read.csv(f_vp, row.names = 1)
+dif_vp_t <- max(abs(vpt - vp_rc$eigen))
+f_05b <- "data/results/05b_scores_suavizados.csv"
+s05b <- read.csv(f_05b, check.names = FALSE)
+# Scores PC1-PC3 y MM12 causal; se compara con el signo de cada columna alineado (el signo de un
+# eje es convencional: pca_basico usa la regla de Rcamiz y sklearn la suya)
+sgn <- sapply(1:3, function(k) sign(cor(scores_t[, k], s05b[[paste0("PC", k)]])))
+dif_sc <- max(sapply(1:3, function(k) max(abs(sgn[k] * scores_t[, k] - s05b[[paste0("PC", k)]]))),
+              sapply(1:3, function(k) max(abs(sgn[k] * mm_causal(scores_t[, k], 12) - s05b[[paste0("PC", k, "_mm12_causal")]]), na.rm = TRUE)))
+f_06t <- "data/results/06_epca_transiciones_detectadas.csv"
+par_tr <- rbind(
+  fila_par("transformadas", "PCA", "Valores propios d = 1..17 frente a Rcamiz", paste(num(vpt[1:5], 4), collapse = " "),
+           paste(num(vp_rc$eigen[1:5], 4), collapse = " "), f_vp, dif_vp_t, dif_vp_t < 1e-6),
+  fila_par("transformadas", "Horn", "Componentes retenidos", k_horn_t, horn_py("data/results/08_ae_horn.csv"),
+           "data/results/08_ae_horn.csv", coincide = hrt$retener == horn_py("data/results/08_ae_horn.csv")),
+  fila_par("transformadas", "Scores y MM12 (05b)", "Dif. máx. scores PC1-PC3 y MM12 causal (signo alineado)",
+           paste0("signos ", paste(sgn, collapse = " ")), "—", f_05b, dif_sc, dif_sc < 1e-8),
+  fila_par("transformadas", "EPCA regla 06 (PC1, 17 series)", "Transiciones detectadas",
+           paste(format(transiciones_t, "%Y-%m"), collapse = " "), paste(trans_py_t, collapse = " "), f_06t,
+           coincide = identical(format(transiciones_t, "%Y-%m"), trans_py_t)),
+  paridad_datacion("transformadas", dat3t, cortes3t, fechas_zt, fases_t, "data/results/09_regimenes_pca.csv"))
+
+# ---- Resultados propios del port del asesor, por vía ------------------------
+tabla_aede <- function(u, g) {
+  fila <- function(x, pesos, criterio, k, cortes) data.frame(pesos = pesos, criterio = criterio, k = k,
+                                                              cortes = paste(format(cortes, "%Y-%m"), collapse = " "))
+  rbind(fila(u, "uniformes", "codo (caída máxima)", u$k_codo, u$cortes_codo),
+        fila(u, "uniformes", "Calinski-Harabász k gl (aede)", u$k_ch, u$cortes_ch),
+        fila(u, "uniformes", "Calinski-Harabász k-1 gl (habitual)", u$k_ch1, u$cortes_ch1),
+        fila(g, "gaussianos_nsd3", "codo (caída máxima)", g$k_codo, g$cortes_codo),
+        fila(g, "gaussianos_nsd3", "Calinski-Harabász k gl (aede)", g$k_ch, g$cortes_ch),
+        fila(g, "gaussianos_nsd3", "Calinski-Harabász k-1 gl (habitual)", g$k_ch1, g$cortes_ch1))
+}
+# Jerarquía de la HFC con las hojas identificadas: los nodos 1..p son las series en el orden de
+# meta_an (columnas de X y Xt); los nodos > p son fusiones. Se agregan el nombre y el código BCRP
+# de cada hoja para que el archivo pueda compararse entre versiones aunque cambie la numeración.
+jerarquia_con_series <- function(jer_v) {
+  etiqueta <- function(k) ifelse(k <= p, as.character(meta_an$nombre_corto)[pmin(k, p)], paste0("Nodo ", k))
+  codigo <- function(k) ifelse(k <= p, as.character(meta_an$codigo)[pmin(k, p)], NA_character_)
+  stopifnot(identical(colnames(X), as.character(meta_an$nombre_corto)), identical(colnames(Xt), colnames(X)),
+            setequal(c(jer_v$N1, jer_v$N2)[c(jer_v$N1, jer_v$N2) <= p], seq_len(p)))
+  pos <- match("N2", names(jer_v))
+  cbind(jer_v[, 1:pos], N1_serie = etiqueta(jer_v$N1), N1_codigo = codigo(jer_v$N1),
+        N2_serie = etiqueta(jer_v$N2), N2_codigo = codigo(jer_v$N2),
+        jer_v[, (pos + 1):ncol(jer_v)])
+}
+escribir_via <- function(dir, par, jer_v, fechas_e, cofen_v, ari_v, u, g, dat_v) {
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  write.csv(par, file.path(dir, "R_paridad_python.csv"), row.names = FALSE)
+  write.csv(jerarquia_con_series(jer_v), file.path(dir, "R_hfc_jerarquia.csv"))
+  write.csv(data.frame(fecha = format(fechas_e[-1], "%Y-%m"), cofenetica = cofen_v, rand_ajustado_4g = ari_v),
+            file.path(dir, "R_ehfc_cofenetica.csv"), row.names = FALSE)
+  write.csv(tabla_aede(u, g), file.path(dir, "R_aede_cortes.csv"), row.names = FALSE)
+  write.csv(dat_v$tabla, file.path(dir, "R_regimenes_criterios.csv"), row.names = FALSE)
+}
+escribir_via("data/results/niveles", par_niv, jer, fechas_epca, cofen, ari, aede_u, aede_g, dat3)
+escribir_via("data/results", par_tr, jer_t, fechas_epca_t, cofen_t, ari_t, aede_ut, aede_gt, dat3t)
+knitr::kable(rbind(par_niv, par_tr)[, c("via", "seccion", "criterio", "archivo_python", "dif_max", "coincide")],
+             row.names = FALSE, caption = "Paridad R–Python por vía. Escrito en data/results/niveles/R_paridad_python.csv y data/results/R_paridad_python.csv.")
+```
+
+::: {.lectura}
+`r sum(rbind(par_niv, par_tr)$coincide == "sí")` de `r nrow(rbind(par_niv, par_tr))` comprobaciones
+de paridad coinciden`r if (any(rbind(par_niv, par_tr)$coincide == "no")) paste0("; difieren: ", paste(with(rbind(par_niv, par_tr), paste(via, seccion, criterio, sep = " · ")[coincide == "no"]), collapse = "; ")) else ""`.
+:::
+
+```{r anexo-locale, include = FALSE}
+# Se restaura el LC_CTYPE con que se llamó al render (relevante si se renderiza desde una
+# sesión interactiva de R; con Rscript el cambio no sale del proceso)
+if (!identical(Sys.getlocale("LC_CTYPE"), locale_previo)) invisible(suppressWarnings(Sys.setlocale("LC_CTYPE", locale_previo)))
+```

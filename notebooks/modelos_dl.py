@@ -530,8 +530,11 @@ def particion_fisher(Y, k_max=8, tam_min=6):
 # validar ex post (nunca como insumo del entrenamiento). Las fechas son
 # aproximaciones a nivel de mes y deben sustentarse con fuente en el marco
 # teórico antes de publicarse como resultado.
+# [VERIFICAR: fuente externa para fechar el episodio] Ninguna de las tres fechas cita aún una
+# fuente externa con ficha en papers/ (los episodios se fechan con fuentes externas, nunca a
+# partir de las propias series).
 EPISODIOS_REFERENCIA = {
-    'Crisis financiera global': ('2008-09-01', '2009-06-01'),
-    'Taper tantrum':            ('2013-05-01', '2013-12-01'),
-    'COVID-19':                 ('2020-03-01', '2020-12-01'),
+    'Crisis financiera global': ('2008-09-01', '2009-06-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
+    'Taper tantrum':            ('2013-05-01', '2013-12-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
+    'COVID-19':                 ('2020-03-01', '2020-12-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
 }
