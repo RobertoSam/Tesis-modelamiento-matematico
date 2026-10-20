@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Roberto Carlos Samaniego Salcedo">
+
+<title>Detección evolutiva de regímenes del ciclo financiero peruano mediante Clasificación Factorial Jerárquica y aprendizaje automático – Tesis — Ciclo Financiero Perú</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-98bc5e15ca00986a511e66da801f1277.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Tesis — Ciclo Financiero Perú</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-borrador-de-tesis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Borrador de tesis</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-borrador-de-tesis">    
+        <li>
+    <a class="dropdown-item" href="../tesis/index.html">
+ <span class="dropdown-text">Estado del borrador</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/01_introduccion.html">
+ <span class="dropdown-text">1 · Introducción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/02_marco_teorico.html">
+ <span class="dropdown-text">2 · Antecedentes y marco teórico</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/03_metodologia.html">
+ <span class="dropdown-text">3 · Metodología</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/04_resultados.html">
+ <span class="dropdown-text">4 · Resultados y discusión</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/05_conclusiones.html">
+ <span class="dropdown-text">5 · Conclusiones</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/06_referencias.html">
+ <span class="dropdown-text">Referencias</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/borrador_completo.html">
+ <span class="dropdown-text">Borrador completo (HTML y Word)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_conceptual.html"> 
+<span class="menu-text">Marco conceptual</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marco_matematico_ae_lstm.html"> 
+<span class="menu-text">Marco matemático AE/LSTM</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../linea_temporal.html"> 
+<span class="menu-text">Línea temporal</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../decisiones.html"> 
+<span class="menu-text">Decisiones</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../glosario.html"> 
+<span class="menu-text">Glosario</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../papers/diccionario_datos.html"> 
+<span class="menu-text">Diccionario de datos</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-papers" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Papers</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-papers">    
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_et_al_2020.html">
+ <span class="dropdown-text">Camiz et al.&nbsp;(2020)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_maulucci_roig_2010.html">
+ <span class="dropdown-text">Camiz, Maulucci &amp; Roig (2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_roig_2011.html">
+ <span class="dropdown-text">Camiz &amp; Roig (2011)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/camiz_cerda_atoche_2026.html">
+ <span class="dropdown-text">Camiz, Cerda Hernández &amp; Atoche Murrieta (2026)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/drehmann_borio_tsatsaronis_2012.html">
+ <span class="dropdown-text">Drehmann, Borio &amp; Tsatsaronis (2012)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/hochreiter_schmidhuber_1997.html">
+ <span class="dropdown-text">Hochreiter &amp; Schmidhuber (1997)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/hinton_salakhutdinov_2006.html">
+ <span class="dropdown-text">Hinton &amp; Salakhutdinov (2006)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/tuhin_et_al_2025.html">
+ <span class="dropdown-text">Tuhin et al.&nbsp;(2025)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/vincent_et_al_2008.html">
+ <span class="dropdown-text">Vincent et al.&nbsp;(2008)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/srivastava_mansimov_salakhutdinov_2015.html">
+ <span class="dropdown-text">Srivastava, Mansimov &amp; Salakhutdinov (2015)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">Fichas preliminares</li>
+        <li>
+    <a class="dropdown-item" href="../papers/baldi_hornik_1989.html">
+ <span class="dropdown-text">Baldi &amp; Hornik (1989)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/bourlard_kamp_1988.html">
+ <span class="dropdown-text">Bourlard &amp; Kamp (1988)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gers_schmidhuber_cummins_2000.html">
+ <span class="dropdown-text">Gers, Schmidhuber &amp; Cummins (2000)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/gal_ghahramani_2016.html">
+ <span class="dropdown-text">Gal &amp; Ghahramani (2016)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/fisher_1958.html">
+ <span class="dropdown-text">Fisher (1958)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/robert_escoufier_1976.html">
+ <span class="dropdown-text">Robert &amp; Escoufier (1976)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../papers/plaut_2018.html">
+ <span class="dropdown-text">Plaut (2018) — exploración</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../papers/ciclo_economico.html">
+ <span class="dropdown-text">Ciclo económico</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-bcrp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data BCRP</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-bcrp">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/01_extraccion_bcrp.html">
+ <span class="dropdown-text">01 · Extracción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/01b_extraccion_extendida_1985.html">
+ <span class="dropdown-text">01b · Extracción extendida (desde 1985)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/02_carga_y_verificacion.html">
+ <span class="dropdown-text">02 · Carga y verificación</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/03_analisis_exploratorio.html">
+ <span class="dropdown-text">03 · Análisis exploratorio</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04_preprocesamiento.html">
+ <span class="dropdown-text">04 · Preprocesamiento (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04b_preprocesamiento_mensual.html">
+ <span class="dropdown-text">04b · Preprocesamiento (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/04c_preprocesamiento_extendido.html">
+ <span class="dropdown-text">04c · Preprocesamiento extendido (1985+)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-modelamiento" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Modelamiento</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-modelamiento">    
+        <li>
+    <a class="dropdown-item" href="../notebooks/05_pca.html">
+ <span class="dropdown-text">05 · PCA (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/05b_pca_componentes_suavizadas.html">
+ <span class="dropdown-text">05b · Componentes en el tiempo y suavizado (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06a_seleccion_ventana_epca.html">
+ <span class="dropdown-text">06a · Selección de ventana (trimestral)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06b_seleccion_ventana_epca_mensual.html">
+ <span class="dropdown-text">06b · Selección de ventana (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/06_epca.html">
+ <span class="dropdown-text">06 · EPCA (mensual)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/07_verificacion_rcamiz.html">
+ <span class="dropdown-text">07 · Verificación Rcamiz ↔︎ scikit-learn</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/08_autoencoder.html">
+ <span class="dropdown-text">08 · Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../notebooks/09_lstm_autoencoder.html">
+ <span class="dropdown-text">09 · LSTM-Autoencoder y regímenes</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice de contenidos</h2>
+   
+  <ul>
+  <li><a href="#resumen" id="toc-resumen" class="nav-link active" data-scroll-target="#resumen">Resumen</a></li>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link" data-scroll-target="#introducción"><span class="header-section-number">1</span> Introducción</a>
+  <ul class="collapse">
+  <li><a href="#planteamiento-y-descripción-del-problema" id="toc-planteamiento-y-descripción-del-problema" class="nav-link" data-scroll-target="#planteamiento-y-descripción-del-problema"><span class="header-section-number">1.1</span> Planteamiento y descripción del problema</a></li>
+  <li><a href="#justificación-de-la-investigación" id="toc-justificación-de-la-investigación" class="nav-link" data-scroll-target="#justificación-de-la-investigación"><span class="header-section-number">1.2</span> Justificación de la investigación</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">1.3</span> Objetivos</a>
+  <ul class="collapse">
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general"><span class="header-section-number">1.3.1</span> Objetivo general</a></li>
+  <li><a href="#objetivos-específicos-compromisos-firmes" id="toc-objetivos-específicos-compromisos-firmes" class="nav-link" data-scroll-target="#objetivos-específicos-compromisos-firmes"><span class="header-section-number">1.3.2</span> Objetivos específicos (compromisos firmes)</a></li>
+  <li><a href="#objetivos-exploratorios-condicionales" id="toc-objetivos-exploratorios-condicionales" class="nav-link" data-scroll-target="#objetivos-exploratorios-condicionales"><span class="header-section-number">1.3.3</span> Objetivos exploratorios condicionales</a></li>
+  </ul></li>
+  <li><a href="#hipótesis" id="toc-hipótesis" class="nav-link" data-scroll-target="#hipótesis"><span class="header-section-number">1.4</span> Hipótesis</a></li>
+  </ul></li>
+  <li><a href="#antecedentes-y-marco-teórico" id="toc-antecedentes-y-marco-teórico" class="nav-link" data-scroll-target="#antecedentes-y-marco-teórico"><span class="header-section-number">2</span> Antecedentes y marco teórico</a>
+  <ul class="collapse">
+  <li><a href="#antecedentes-y-estado-del-arte" id="toc-antecedentes-y-estado-del-arte" class="nav-link" data-scroll-target="#antecedentes-y-estado-del-arte"><span class="header-section-number">2.1</span> Antecedentes y estado del arte</a>
+  <ul class="collapse">
+  <li><a href="#antecedentes-peruanos" id="toc-antecedentes-peruanos" class="nav-link" data-scroll-target="#antecedentes-peruanos"><span class="header-section-number">2.1.1</span> Antecedentes peruanos</a></li>
+  <li><a href="#marco-metodológico-de-la-escuela-de-camiz" id="toc-marco-metodológico-de-la-escuela-de-camiz" class="nav-link" data-scroll-target="#marco-metodológico-de-la-escuela-de-camiz"><span class="header-section-number">2.1.2</span> Marco metodológico de la escuela de Camiz</a></li>
+  <li><a href="#aprendizaje-profundo-autoencoders-lstm-y-lstm-autoencoder" id="toc-aprendizaje-profundo-autoencoders-lstm-y-lstm-autoencoder" class="nav-link" data-scroll-target="#aprendizaje-profundo-autoencoders-lstm-y-lstm-autoencoder"><span class="header-section-number">2.1.3</span> Aprendizaje profundo: autoencoders, LSTM y LSTM-autoencoder</a></li>
+  <li><a href="#vacíos-identificados-y-aporte-de-la-tesis" id="toc-vacíos-identificados-y-aporte-de-la-tesis" class="nav-link" data-scroll-target="#vacíos-identificados-y-aporte-de-la-tesis"><span class="header-section-number">2.1.4</span> Vacíos identificados y aporte de la tesis</a></li>
+  </ul></li>
+  <li><a href="#marco-teórico" id="toc-marco-teórico" class="nav-link" data-scroll-target="#marco-teórico"><span class="header-section-number">2.2</span> Marco teórico</a>
+  <ul class="collapse">
+  <li><a href="#el-ciclo-financiero" id="toc-el-ciclo-financiero" class="nav-link" data-scroll-target="#el-ciclo-financiero"><span class="header-section-number">2.2.1</span> El ciclo financiero</a></li>
+  <li><a href="#régimen-transición-y-detección-como-objetos-matemáticos" id="toc-régimen-transición-y-detección-como-objetos-matemáticos" class="nav-link" data-scroll-target="#régimen-transición-y-detección-como-objetos-matemáticos"><span class="header-section-number">2.2.2</span> Régimen, transición y detección como objetos matemáticos</a></li>
+  <li><a href="#posición-epistemológica-datos-primero" id="toc-posición-epistemológica-datos-primero" class="nav-link" data-scroll-target="#posición-epistemológica-datos-primero"><span class="header-section-number">2.2.3</span> Posición epistemológica: «datos primero»</a></li>
+  <li><a href="#criterios-de-comparación-entre-métodos" id="toc-criterios-de-comparación-entre-métodos" class="nav-link" data-scroll-target="#criterios-de-comparación-entre-métodos"><span class="header-section-number">2.2.4</span> Criterios de comparación entre métodos</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#metodología-y-desarrollo-del-modelo" id="toc-metodología-y-desarrollo-del-modelo" class="nav-link" data-scroll-target="#metodología-y-desarrollo-del-modelo"><span class="header-section-number">3</span> Metodología y desarrollo del modelo</a>
+  <ul class="collapse">
+  <li><a href="#metodología" id="toc-metodología" class="nav-link" data-scroll-target="#metodología"><span class="header-section-number">3.1</span> Metodología</a></li>
+  <li><a href="#desarrollo-del-modelo-matemático-y-computacional" id="toc-desarrollo-del-modelo-matemático-y-computacional" class="nav-link" data-scroll-target="#desarrollo-del-modelo-matemático-y-computacional"><span class="header-section-number">3.2</span> Desarrollo del modelo matemático y computacional</a></li>
+  </ul></li>
+  <li><a href="#resultados-y-discusión" id="toc-resultados-y-discusión" class="nav-link" data-scroll-target="#resultados-y-discusión"><span class="header-section-number">4</span> Resultados y discusión</a>
+  <ul class="collapse">
+  <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados"><span class="header-section-number">4.1</span> Resultados</a></li>
+  <li><a href="#discusión-de-resultados" id="toc-discusión-de-resultados" class="nav-link" data-scroll-target="#discusión-de-resultados"><span class="header-section-number">4.2</span> Discusión de resultados</a></li>
+  </ul></li>
+  <li><a href="#conclusiones-y-recomendaciones" id="toc-conclusiones-y-recomendaciones" class="nav-link" data-scroll-target="#conclusiones-y-recomendaciones"><span class="header-section-number">5</span> Conclusiones y recomendaciones</a>
+  <ul class="collapse">
+  <li><a href="#conclusiones-preliminares" id="toc-conclusiones-preliminares" class="nav-link" data-scroll-target="#conclusiones-preliminares"><span class="header-section-number">5.1</span> Conclusiones preliminares</a></li>
+  <li><a href="#recomendaciones-y-trabajos-futuros" id="toc-recomendaciones-y-trabajos-futuros" class="nav-link" data-scroll-target="#recomendaciones-y-trabajos-futuros"><span class="header-section-number">5.2</span> Recomendaciones y trabajos futuros</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Otros formatos</h2><ul><li><a href="borrador_completo.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Detección evolutiva de regímenes del ciclo financiero peruano mediante Clasificación Factorial Jerárquica y aprendizaje automático</h1>
+<p class="subtitle lead">Borrador de tesis — MMC102 Seminario de Tesis II</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-contents">
+             <p>Roberto Carlos Samaniego Salcedo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18 de octubre de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="resumen" class="level1 unnumbered">
+<h1 class="unnumbered">Resumen</h1>
+<div class="callout callout-style-default callout-note callout-titled" title="Pendiente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pendiente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El resumen (máximo 250 palabras, un solo párrafo, con 2 a 4 palabras clave) y el abstract se redactan cuando los capítulos 1 a 5 estén aprobados.</p>
+</div>
+</div>
+</section>
+<section id="introducción" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introducción</h1>
+<section id="planteamiento-y-descripción-del-problema" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="planteamiento-y-descripción-del-problema"><span class="header-section-number">1.1</span> Planteamiento y descripción del problema</h2>
+<p>El ciclo financiero es la fluctuación de mediano plazo entre fases de expansión y contracción del crédito, de los precios de activos y de la disposición a asumir riesgos. <span class="citation" data-cites="drehmann_borio_tsatsaronis_2012">Drehmann et&nbsp;al. (<a href="#ref-drehmann_borio_tsatsaronis_2012" role="doc-biblioref">2012</a>)</span> lo distinguen del ciclo económico por su duración, de 8 a 30 años, y documentan que sus picos coinciden con las crisis bancarias sistémicas. No se observa de forma directa: se manifiesta en el movimiento conjunto de muchas variables, cuya estructura de relaciones puede cambiar en el tiempo. Medirlo es, por tanto, un problema de reducción dimensional sobre series de tiempo multivariadas.</p>
+<p>Para el Perú, el antecedente más directo es <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, que continúa la tesis de maestría de Atoche Murrieta [CITA PENDIENTE: Atoche Murrieta (2022), tesis de maestría, PUCP; sin ficha]. Ese trabajo aplica el Análisis de Componentes Principales (PCA), la Clasificación Factorial Jerárquica (HFC) y el Análisis Evolutivo de Componentes Principales (EPCA) a 17 indicadores mensuales del Banco Central de Reserva del Perú (BCRP). Deja abiertas, sin embargo, cuatro cuestiones: no evalúa el aprendizaje profundo, no clasifica fases del ciclo contrastadas con episodios fechados de forma independiente, su muestra termina en 2020 y fija el ancho de la ventana del EPCA sin un criterio objetivo.</p>
+<!-- fuente: data/processed/dataset_niveles_mensual.csv (228 filas, 2007-01-01 a 2025-12-01; 19 columnas, de las que se usan 17 tras excluir «Crédito SF sector privado» e «IPC Subyacente», R/tesis_ciclo_financiero.Rmd, objeto `entra`) y data/processed/dataset_transformado_mensual.csv (227 filas × 17 columnas, 2007-02-01 a 2025-12-01); ambos verificados con pandas -->
+<p>Esta tesis analiza 17 series mensuales del BCRP de crédito, liquidez, tasas, precios, tipo de cambio, bolsa, riesgo soberano, actividad y reservas. El análisis oficial, sobre las series sin transformar (decisión D1), cubre 228 meses, de enero de 2007 a diciembre de 2025. La vía transformada tiene 227 meses, porque la diferenciación pierde enero de 2007. Ambas vías se ejecutan con el mismo código (decisión D2), y la forma de combinarlas está pendiente de discusión con el asesor.</p>
+<p><strong>Problema de investigación:</strong> ¿cómo identificar, fechar y caracterizar los regímenes del ciclo financiero peruano entre 2007 y 2025 a partir de la estructura multivariada de los indicadores del BCRP, integrando los métodos exploratorios evolutivos de la escuela de Camiz con autoencoders y redes LSTM, sin renunciar a la interpretabilidad ni al principio de que la estructura emerge de los datos?</p>
+</section>
+<section id="justificación-de-la-investigación" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="justificación-de-la-investigación"><span class="header-section-number">1.2</span> Justificación de la investigación</h2>
+<p><strong>Metodológica.</strong> La tesis amplía la cadena PCA–HFC–EPCA de tres maneras. Fecha los regímenes con la partición óptima de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, como hacen <span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Propone un criterio objetivo para el ancho de la ventana del EPCA. E incorpora autoencoders y redes LSTM anidados en la cadena clásica, porque un autoencoder lineal con pérdida cuadrática genera el subespacio de los primeros componentes principales <span class="citation" data-cites="bourlard_kamp_1988 baldi_hornik_1989">(<a href="#ref-baldi_hornik_1989" role="doc-biblioref">Baldi &amp; Hornik, 1989</a>; <a href="#ref-bourlard_kamp_1988" role="doc-biblioref">Bourlard &amp; Kamp, 1988</a>)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Como los antecedentes de aprendizaje profundo usan conjuntos de datos mucho mayores <span class="citation" data-cites="hinton_salakhutdinov_2006 tuhin_et_al_2025">(<a href="#ref-hinton_salakhutdinov_2006" role="doc-biblioref">Hinton &amp; Salakhutdinov, 2006</a>; <a href="#ref-tuhin_et_al_2025" role="doc-biblioref">Tuhin et&nbsp;al., 2025</a>)</span><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, documentar cómo se adaptan a series macrofinancieras cortas es en sí un resultado.</p>
+<p><strong>Económica y social.</strong> <span class="citation" data-cites="drehmann_borio_tsatsaronis_2012">Drehmann et&nbsp;al. (<a href="#ref-drehmann_borio_tsatsaronis_2012" role="doc-biblioref">2012</a>)</span> acuñan la noción de «recesión inconclusa»: si la política ignora la expansión del crédito y de los precios de los inmuebles, el ajuste se posterga y la crisis posterior resulta más severa. Un indicador de régimen transparente y reproducible podría servir como insumo exploratorio para los análisis de estabilidad financiera del BCRP y de la SBS.</p>
+</section>
+<section id="objetivos" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="objetivos"><span class="header-section-number">1.3</span> Objetivos</h2>
+<section id="objetivo-general" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="objetivo-general"><span class="header-section-number">1.3.1</span> Objetivo general</h3>
+<p>Formalizar y evaluar una metodología exploratoria evolutiva, que integre el Análisis de Componentes Principales, la Clasificación Factorial Jerárquica y el Análisis Evolutivo de Componentes Principales con autoencoders y redes LSTM, para detectar, fechar y caracterizar los regímenes del ciclo financiero peruano entre 2007 y 2025 a partir de indicadores macrofinancieros del BCRP.</p>
+</section>
+<section id="objetivos-específicos-compromisos-firmes" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="objetivos-específicos-compromisos-firmes"><span class="header-section-number">1.3.2</span> Objetivos específicos (compromisos firmes)</h3>
+<ol type="1">
+<li>Sistematizar el estado del arte sobre el ciclo financiero y sobre la reducción dimensional de series de tiempo multivariadas.</li>
+<li>Construir y versionar el conjunto de series mensuales del BCRP, con trazabilidad de códigos, transformaciones y exclusiones.</li>
+<li>Aplicar PCA, HFC y EPCA en las dos vías del diseño y contrastar los resultados con los de <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span>.</li>
+<li>Formalizar un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas (coeficiente RV o distancia de Procrustes).</li>
+<li>Evaluar la robustez de los grupos de la HFC mediante remuestreo por bloques y correlación cofenética.</li>
+<li>Triangular el número de componentes con la vara quebrada, el criterio de Rencher y el análisis paralelo de Horn [CITA PENDIENTE: Horn (1965) y fuentes de la vara quebrada y del criterio de Rencher].</li>
+<li>Diseñar autoencoders y redes LSTM adaptados a la escala de los datos, con pesos atados, preentrenamiento por capas, regularización y validación por bloques temporales y <em>walk-forward</em>.</li>
+<li>Cuantificar la incertidumbre del error de reconstrucción mediante Monte Carlo Dropout <span class="citation" data-cites="gal_ghahramani_2016">(<a href="#ref-gal_ghahramani_2016" role="doc-biblioref">Gal &amp; Ghahramani, 2016</a>)</span><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</li>
+<li>Fechar regímenes con la partición óptima de Fisher sobre trayectorias de representaciones (primer valor propio del EPCA, <em>scores</em> del PCA o códigos latentes) y clasificarlos en expansión, contracción o transición.</li>
+<li>Contrastar regímenes y fases con episodios fechados por fuentes externas, nunca por las propias series ni por un indicador derivado de ellas.</li>
+<li>Comparar los métodos sobre un contexto simulado, con regímenes conocidos por construcción, y calibrar con ello el número de factores y de clases, el ancho de ventana y los pesos de los análisis evolutivos.</li>
+<li>Comparar los métodos clásicos y los de aprendizaje profundo según interpretabilidad, estabilidad temporal, capacidad descriptiva y robustez.</li>
+</ol>
+</section>
+<section id="objetivos-exploratorios-condicionales" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="objetivos-exploratorios-condicionales"><span class="header-section-number">1.3.3</span> Objetivos exploratorios condicionales</h3>
+<p>Se abordarán si los resultados de los objetivos firmes lo justifican:</p>
+<ol type="1">
+<li>Evaluar la viabilidad de una HFC evolutiva (EHFC) que aplique la jerarquía completa en cada ventana móvil, en lugar de la aplicación secuencial de HFC y EPCA de la literatura.</li>
+<li>Explorar el STATIS dual como detector independiente de quiebres estructurales, siguiendo a <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</li>
+<li>Explorar la capacidad del LSTM para anticipar transiciones, con validación estrictamente fuera de muestra y declarando su escaso poder estadístico.</li>
+<li>Extender la muestra a años anteriores a 2007, si la homogeneidad de las series lo permite, para evaluar la crisis financiera global fuera de muestra.</li>
+</ol>
+</section>
+</section>
+<section id="hipótesis" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="hipótesis"><span class="header-section-number">1.4</span> Hipótesis</h2>
+<p>El estudio es exploratorio y no formula hipótesis contrastables en sentido estricto, por tres razones. Los métodos centrales describen la muestra sin postular un modelo que la genere, de modo que no hay una hipótesis nula. Los pocos episodios de referencia no dan poder estadístico. Y los resultados no se generalizan a otras economías. Se formulan, en cambio, <strong>hipótesis de trabajo</strong>, que se evalúan por la convergencia de la evidencia en las dos vías. Cada una indica qué resultado contaría en su contra.</p>
+<ul>
+<li><strong>HT1 (no estacionariedad estructural).</strong> La estructura de correlación no es constante entre 2007 y 2025: hay intervalos estables separados por transiciones. <em>En contra:</em> que las ventanas sucesivas resulten tan similares como cabría esperar bajo una estructura constante.</li>
+<li><strong>HT2 (organización en grupos).</strong> Las series se organizan en pocos grupos homogéneos que se corresponden con los bloques identificados por <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span>: salud económica y financiera, tasas de interés y riesgo del mercado financiero. Como el conjunto de series no es idéntico, la correspondencia se evalúa por bloque. <em>En contra:</em> grupos inestables bajo remuestreo o sin correspondencia con esos bloques.</li>
+<li><strong>HT3 (correspondencia con episodios).</strong> Los regímenes se corresponden, dentro de una tolerancia declarada de antemano, con episodios fechados externamente. <em>En contra:</em> cortes sin relación con ningún episodio, o que dependan de la regla que fija su número.</li>
+<li><strong>HT4 (complementariedad).</strong> Los autoencoders y las redes LSTM aportan información sobre la dinámica y la atipicidad del sistema que el PCA no capta por construcción. <em>En contra:</em> que no mejoren a su anclaje lineal en ningún criterio fuera de muestra, o que sus resultados cambien con la semilla aleatoria.</li>
+</ul>
+</section>
+</section>
+<section id="antecedentes-y-marco-teórico" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Antecedentes y marco teórico</h1>
+<section id="antecedentes-y-estado-del-arte" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="antecedentes-y-estado-del-arte"><span class="header-section-number">2.1</span> Antecedentes y estado del arte</h2>
+<p>Los antecedentes se organizan en cuatro bloques: los estudios sobre el ciclo financiero peruano, el marco metodológico de la escuela de Camiz, los métodos de aprendizaje profundo para representar series multivariadas y, por último, los vacíos que justifican el aporte de la tesis.</p>
+<section id="antecedentes-peruanos" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="antecedentes-peruanos"><span class="header-section-number">2.1.1</span> Antecedentes peruanos</h3>
+<p>El antecedente más directo es el de <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, que, según esa misma fuente, continúa la tesis de maestría de Atoche Murrieta [CITA PENDIENTE: Atoche Murrieta (2022), tesis de maestría, PUCP; sin ficha]. Los autores aplican PCA, HFC y EPCA a 17 series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020. El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima, EMBIG y coeficiente de dolarización)<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. A continuación, el EPCA se aplica al conjunto completo y a cada grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio se particiona en subperíodos de estabilidad mediante el algoritmo de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, y el número de cortes se elige con el criterio de Calinski y Harabász [CITA PENDIENTE: Calinski y Harabász (1974); sin ficha].</p>
+<p>Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases del ciclo.</p>
+</section>
+<section id="marco-metodológico-de-la-escuela-de-camiz" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="marco-metodológico-de-la-escuela-de-camiz"><span class="header-section-number">2.1.2</span> Marco metodológico de la escuela de Camiz</h3>
+<section id="análisis-de-componentes-principales" class="level4" data-number="2.1.2.1">
+<h4 data-number="2.1.2.1" class="anchored" data-anchor-id="análisis-de-componentes-principales"><span class="header-section-number">2.1.2.1</span> Análisis de Componentes Principales</h4>
+<p>Sea <span class="math inline">\(\mathbf{X}\in\mathbb{R}^{n\times p}\)</span> la matriz de datos centrados y estandarizados, cuyas filas <span class="math inline">\(X_t^\top\)</span> son los vectores de indicadores del mes <span class="math inline">\(t\)</span>, y sea <span class="math inline">\(\mathbf{R}=\mathbf{X}^\top\mathbf{X}/n\)</span> su matriz de correlaciones. El PCA busca las direcciones <span class="math inline">\(v_1,\dots,v_d\)</span> que maximizan sucesivamente la varianza proyectada. De forma equivalente, busca la matriz <span class="math inline">\(V\in\mathbb{R}^{p\times d}\)</span> con columnas ortonormales que minimiza el error de reconstrucción:</p>
+<p><span id="eq-pca"><span class="math display">\[
+J(V)=\frac{1}{n}\sum_{t=1}^{n}\bigl\lVert X_t-VV^\top X_t\bigr\rVert^2 .
+\tag{1}\]</span></span></p>
+<p>Si los valores propios de <span class="math inline">\(\mathbf{R}\)</span> cumplen <span class="math inline">\(\lambda_d&gt;\lambda_{d+1}\)</span>, el mínimo se alcanza cuando las columnas de <span class="math inline">\(V\)</span> generan el subespacio de los <span class="math inline">\(d\)</span> vectores propios asociados a los mayores valores propios. Ese subespacio se denota <span class="math inline">\(W_d\)</span>, siguiendo la notación de la descomposición en valores singulares <span class="math inline">\(\mathbf{X}=U\Sigma W^\top\)</span>. Con datos estandarizados, el error mínimo por celda es igual a uno menos la proporción de inercia retenida, <span class="math inline">\(\sum_{j\le d}\lambda_j/p\)</span> [CITA PENDIENTE: teorema de Eckart y Young (1936) y obra de referencia del PCA, por ejemplo Jolliffe (2002); sin ficha]. La formulación (<a href="#eq-pca" class="quarto-xref">Ecuación&nbsp;1</a>) importa para la tesis porque es el mismo criterio que optimiza un autoencoder. Además, <span class="math inline">\(J\)</span> depende de <span class="math inline">\(V\)</span> solo a través del proyector <span class="math inline">\(VV^\top\)</span>: el PCA identifica un subespacio, y la base que lo genera, incluido el signo de cada eje, se fija por convención.</p>
+</section>
+<section id="clasificación-factorial-jerárquica" class="level4" data-number="2.1.2.2">
+<h4 data-number="2.1.2.2" class="anchored" data-anchor-id="clasificación-factorial-jerárquica"><span class="header-section-number">2.1.2.2</span> Clasificación Factorial Jerárquica</h4>
+<p>La HFC, cuya formulación original los autores atribuyen a Denimal <span class="citation" data-cites="camiz_et_al_2020">(2007, como se cita en <a href="#ref-camiz_et_al_2020" role="doc-biblioref">Camiz et&nbsp;al., 2020</a>)</span><a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>, es una clasificación jerárquica ascendente de las <strong>variables</strong>, no de las observaciones. Cada grupo <span class="math inline">\(G\)</span> de variables tiene un representante <span class="math inline">\(y_G\in\mathbb{R}^n\)</span>. Al inicio, cada variable estandarizada es su propio representante. En cada paso, para cada par de grupos candidatos <span class="math inline">\((A,B)\)</span> se calcula el PCA bivariado de <span class="math inline">\([\,y_A\;\;y_B\,]\)</span>, con valores propios <span class="math inline">\(\mu_1^{AB}\ge\mu_2^{AB}\)</span>, y se fusiona el par que minimiza el segundo valor propio:</p>
+<p><span id="eq-hfc"><span class="math display">\[
+(A^\ast,B^\ast)=\arg\min_{A\neq B}\;\mu_2^{AB}.
+\tag{2}\]</span></span></p>
+<p>El índice de fusión <span class="math inline">\(\mu_2^{AB}\)</span> mide la heterogeneidad del grupo resultante: cuanto menor es, mayor es la parte de la varianza conjunta que recoge un único eje. Cada nodo produce dos series: el primer componente del PCA bivariado, que funciona como <strong>cronología representativa</strong> de lo que el grupo comparte, y el segundo, o <strong>componente de diferencias</strong>, que mide las divergencias internas. <span class="citation" data-cites="camiz_et_al_2020">Camiz et&nbsp;al. (<a href="#ref-camiz_et_al_2020" role="doc-biblioref">2020</a>)</span> cortan la jerarquía cuando el segundo valor propio supera 0,7, umbral que remiten a Jolliffe <span class="citation" data-cites="camiz_et_al_2020">(2002, como se cita en <a href="#ref-camiz_et_al_2020" role="doc-biblioref">Camiz et&nbsp;al., 2020</a>)</span>. Muestran también, en series dendrocronológicas, que la HFC aproxima de cerca la solución global del PCA y que, a diferencia de este, entrega una partición explícita de las series en grupos con representantes propios. Ese caso de estudio, sin embargo, tiene pocas series, que además son aproximadamente estacionarias.</p>
+</section>
+<section id="análisis-evolutivo-de-componentes-principales" class="level4" data-number="2.1.2.3">
+<h4 data-number="2.1.2.3" class="anchored" data-anchor-id="análisis-evolutivo-de-componentes-principales"><span class="header-section-number">2.1.2.3</span> Análisis evolutivo de componentes principales</h4>
+<p>El PCA y la HFC suponen implícitamente que la estructura de correlación es la misma en toda la muestra. <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> relajan ese supuesto con el EPCA: un PCA independiente sobre cada subtabla de una ventana móvil. Sea <span class="math inline">\(\mathcal{W}_t=\{t-\lfloor w/2\rfloor,\dots,t+\lceil w/2\rceil-1\}\)</span> la ventana de ancho <span class="math inline">\(w\)</span> asociada al mes <span class="math inline">\(t\)</span>, y sean <span class="math inline">\(\omega_s\ge0\)</span>, <span class="math inline">\(s\in\mathcal{W}_t\)</span>, pesos que suman uno. La versión que se implementa en la tesis<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> calcula, para cada ventana, la media, la covarianza y la correlación <strong>ponderadas</strong>:</p>
+<p><span id="eq-epca"><span class="math display">\[
+\begin{aligned}
+m_t&amp;=\sum_{s\in\mathcal{W}_t}\omega_s X_s, &amp;
+\mathbf{C}_t&amp;=\sum_{s\in\mathcal{W}_t}\omega_s\,(X_s-m_t)(X_s-m_t)^\top,\\
+\mathbf{D}_t&amp;=\operatorname{diag}(\mathbf{C}_t), &amp;
+\mathbf{R}_t^{(w)}&amp;=\mathbf{D}_t^{-1/2}\,\mathbf{C}_t\,\mathbf{D}_t^{-1/2}.
+\end{aligned}
+\tag{3}\]</span></span></p>
+<p>Por construcción, la diagonal de <span class="math inline">\(\mathbf{R}_t^{(w)}\)</span> es igual a uno y la matriz es una correlación ponderada para cualquier elección de pesos. Los pesos uniformes, <span class="math inline">\(\omega_s=1/w\)</span>, corresponden a la ventana rectangular del trabajo de 2010. La alternativa que siguen <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> privilegia el centro de la ventana [CITA PENDIENTE: Camiz y Diblasi (2013), fuente del esquema de ponderación gaussiana; sin ficha]. En la implementación, con <span class="math inline">\(i=1,\dots,w\)</span> como posición dentro de la ventana y <span class="math inline">\(\nu\)</span> como parámetro de forma, esos pesos son</p>
+<p><span id="eq-pesos"><span class="math display">\[
+\omega_i\propto\exp\!\left[-\tfrac12\left(\nu\,\frac{i-(w+1)/2}{(w-1)/\sqrt2}\right)^{2}\right],\qquad \sum_{i=1}^{w}\omega_i=1,
+\tag{4}\]</span></span></p>
+<p>y <span class="math inline">\(\nu=0\)</span> recupera los pesos uniformes. La descomposición espectral de cada <span class="math inline">\(\mathbf{R}_t^{(w)}\)</span> produce series temporales de valores propios <span class="math inline">\(\lambda_j(t)\)</span> y de correlaciones entre variables y componentes. Que el primer valor propio descienda significa que el conjunto pierde coherencia unidimensional; que cambien las correlaciones indica qué series provocan la reconfiguración. <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span> enmarcan el procedimiento en el análisis exploratorio: sus resultados describen la muestra y no se generalizan a una población [CITA PENDIENTE: Tukey (1977); sin ficha]. En el mismo trabajo, el análisis STATIS dual, que compara las matrices de correlación de todas las ventanas en un espacio común, identifica años de quiebre coherentes con el EPCA.</p>
+<p>Un problema que estos trabajos no resuelven es la elección de <span class="math inline">\(w\)</span>. <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span> fijan la ventana sin un criterio estadístico explícito, <span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> comparan dos anchos de manera informal y, como se señaló, <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> eligen la ventana por experimentación. El ancho regula un compromiso: una ventana corta estima mal las matrices de correlación cuando <span class="math inline">\(p\)</span> se acerca a <span class="math inline">\(w\)</span>, y una ventana larga atenúa la sensibilidad al cambio estructural.</p>
+</section>
+<section id="partición-óptima-de-fisher-y-datación-de-regímenes" class="level4" data-number="2.1.2.4">
+<h4 data-number="2.1.2.4" class="anchored" data-anchor-id="partición-óptima-de-fisher-y-datación-de-regímenes"><span class="header-section-number">2.1.2.4</span> Partición óptima de Fisher y datación de regímenes</h4>
+<p><span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span> completan la cadena con un procedimiento de datación. Sobre la serie del primer valor propio del EPCA aplican el algoritmo de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span>, que divide una sucesión ordenada en intervalos contiguos de máxima homogeneidad interna, y luego realizan un PCA independiente en cada período. En términos generales, dada una trayectoria <span class="math inline">\(Y_1,\dots,Y_n\in\mathbb{R}^q\)</span>, se busca la partición en <span class="math inline">\(k\)</span> segmentos contiguos que minimiza la suma de cuadrados intrasegmento:</p>
+<p><span id="eq-fisher"><span class="math display">\[
+\min_{0=\tau_0&lt;\tau_1&lt;\dots&lt;\tau_k=n}\;\sum_{j=1}^{k}\;\sum_{t=\tau_{j-1}+1}^{\tau_j}\bigl\lVert Y_t-\bar Y_{(\tau_{j-1},\tau_j]}\bigr\rVert^2 .
+\tag{5}\]</span></span></p>
+<p>El aporte general de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span> consiste en mostrar que, cuando los datos están ordenados, la partición óptima puede hallarse exactamente. A diferencia de los algoritmos de clasificación sin restricción, el resultado no depende de una inicialización. El método no determina <span class="math inline">\(k\)</span>, que requiere un criterio adicional. En el trabajo peruano ese criterio fue el de Calinski y Harabász [CITA PENDIENTE: Calinski y Harabász (1974)]. La extensión de (<a href="#eq-fisher" class="quarto-xref">Ecuación&nbsp;5</a>) al caso <span class="math inline">\(q&gt;1\)</span> es directa, pero debe declararse como adaptación mientras no se verifique el alcance del artículo original.</p>
+</section>
+<section id="coeficiente-rv" class="level4" data-number="2.1.2.5">
+<h4 data-number="2.1.2.5" class="anchored" data-anchor-id="coeficiente-rv"><span class="header-section-number">2.1.2.5</span> Coeficiente RV</h4>
+<p>Para comparar dos configuraciones <strong>centradas</strong> <span class="math inline">\(\mathbf{Y}\in\mathbb{R}^{n\times q}\)</span> y <span class="math inline">\(\mathbf{Z}\in\mathbb{R}^{n\times r}\)</span> de las mismas <span class="math inline">\(n\)</span> observaciones, <span class="citation" data-cites="robert_escoufier_1976">Robert &amp; Escoufier (<a href="#ref-robert_escoufier_1976" role="doc-biblioref">1976</a>)</span><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> definen el coeficiente RV como una correlación entre sus matrices de productos escalares:</p>
+<p><span id="eq-rv"><span class="math display">\[
+\mathrm{RV}(\mathbf{Y},\mathbf{Z})=\frac{\operatorname{tr}\!\left(\mathbf{Y}\mathbf{Y}^\top\mathbf{Z}\mathbf{Z}^\top\right)}{\sqrt{\operatorname{tr}\!\left[(\mathbf{Y}\mathbf{Y}^\top)^2\right]\operatorname{tr}\!\left[(\mathbf{Z}\mathbf{Z}^\top)^2\right]}}\in[0,1].
+\tag{6}\]</span></span></p>
+<p>El coeficiente es invariante a rotaciones y homotecias. Esa invariancia es la adecuada cuando las coordenadas solo están identificadas salvo una transformación ortogonal, como ocurre con los signos de los ejes en el EPCA o con los códigos de un autoencoder <strong>lineal</strong>. En un autoencoder no lineal, los códigos están identificados, a lo sumo, salvo transformaciones no lineales invertibles, frente a las que el RV no es invariante. En ese caso, el RV mide solo la concordancia lineal entre configuraciones y debe interpretarse como una cota de su similitud, no como una medida invariante. Es también la medida que subyace a STATIS [CITA PENDIENTE: Lavit (1988), fuente primaria de STATIS; sin ficha]. En esta tesis, el RV permite usar una misma métrica para comparar ventanas sucesivas del EPCA, réplicas de un autoencoder y configuraciones de métodos distintos, con la salvedad anterior. Queda por verificar en la fuente cómo se comporta cuando <span class="math inline">\(n\)</span> es pequeño respecto de <span class="math inline">\(p\)</span>.</p>
+</section>
+</section>
+<section id="aprendizaje-profundo-autoencoders-lstm-y-lstm-autoencoder" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="aprendizaje-profundo-autoencoders-lstm-y-lstm-autoencoder"><span class="header-section-number">2.1.3</span> Aprendizaje profundo: autoencoders, LSTM y LSTM-autoencoder</h3>
+<section id="autoencoders" class="level4" data-number="2.1.3.1">
+<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="autoencoders"><span class="header-section-number">2.1.3.1</span> Autoencoders</h4>
+<p>Un autoencoder es un par formado por un codificador <span class="math inline">\(f_\theta:\mathbb{R}^p\to\mathbb{R}^d\)</span> y un decodificador <span class="math inline">\(g_\phi:\mathbb{R}^d\to\mathbb{R}^p\)</span>, con <span class="math inline">\(d&lt;p\)</span>, que se entrenan para reconstruir la entrada:</p>
+<p><span id="eq-ae"><span class="math display">\[
+(\hat\theta,\hat\phi)=\arg\min_{\theta,\phi}\;\frac{1}{n}\sum_{t=1}^{n}\bigl\lVert X_t-g_\phi\bigl(f_\theta(X_t)\bigr)\bigr\rVert^2+\Omega(\theta,\phi),
+\tag{7}\]</span></span></p>
+<p>donde <span class="math inline">\(\Omega\)</span> es un término de regularización. El vínculo con el PCA es formal. <span class="citation" data-cites="bourlard_kamp_1988">Bourlard &amp; Kamp (<a href="#ref-bourlard_kamp_1988" role="doc-biblioref">1988</a>)</span><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> muestran que la solución óptima de un perceptrón autoasociativo en el sentido de mínimos cuadrados se obtiene por descomposición en valores singulares. <span class="citation" data-cites="baldi_hornik_1989">Baldi &amp; Hornik (<a href="#ref-baldi_hornik_1989" role="doc-biblioref">1989</a>)</span> muestran que, en el caso lineal, el mínimo global proyecta sobre el subespacio de los primeros componentes principales y que la superficie de error no tiene mínimos locales espurios. Si <span class="math inline">\(f(X)=AX\)</span> y <span class="math inline">\(g(z)=A^\top z\)</span>, con <span class="math inline">\(A\in\mathbb{R}^{d\times p}\)</span>, y los valores propios de <span class="math inline">\(\mathbf{R}\)</span> cumplen <span class="math inline">\(\lambda_d&gt;\lambda_{d+1}\)</span> (condición que garantiza que el subespacio principal sea único), la condición de óptimo es</p>
+<p><span id="eq-ae-pca"><span class="math display">\[
+A^\top A=W_dW_d^\top ,
+\tag{8}\]</span></span></p>
+<p>con <span class="math inline">\(W_d\)</span> los <span class="math inline">\(d\)</span> primeros vectores propios de <span class="math inline">\(\mathbf{R}\)</span>. De este resultado se sigue que el PCA es el caso particular del autoencoder con activación identidad. Las filas de <span class="math inline">\(A\)</span> forman una base del subespacio principal, pero solo salvo una rotación <span class="math inline">\(Q\)</span> arbitraria. Como apoyo técnico, <span class="citation" data-cites="plaut_2018">Plaut (<a href="#ref-plaut_2018" role="doc-biblioref">2018</a>)</span><a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a>, en un <em>preprint</em>, muestra que las direcciones principales pueden recuperarse con una descomposición en valores singulares de los pesos aprendidos.</p>
+<p><span class="citation" data-cites="hinton_salakhutdinov_2006">Hinton &amp; Salakhutdinov (<a href="#ref-hinton_salakhutdinov_2006" role="doc-biblioref">2006</a>)</span><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> mostraron que los autoencoders profundos, con preentrenamiento capa por capa y ajuste fino posterior, pueden producir códigos de baja dimensión mejores que los del PCA cuando la estructura de los datos no es lineal. Sus aplicaciones (imágenes y documentos) usan, no obstante, conjuntos de datos grandes, y el sobreajuste solo se observó en el conjunto de rostros, pequeño en relación con la capacidad del modelo. <span class="citation" data-cites="vincent_et_al_2008">Vincent et&nbsp;al. (<a href="#ref-vincent_et_al_2008" role="doc-biblioref">2008</a>)</span><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> proponen el autoencoder con eliminación de ruido, que reconstruye la entrada limpia a partir de una versión corrompida. Los autores ofrecen una lectura geométrica: la red aprende a proyectar los puntos perturbados de vuelta hacia la región que ocupan los datos. A partir de esa lectura, esta tesis infiere que una observación alejada de la estructura típica tendría un error de reconstrucción alto. La inferencia es propia, no de los autores. <span class="citation" data-cites="gal_ghahramani_2016">Gal &amp; Ghahramani (<a href="#ref-gal_ghahramani_2016" role="doc-biblioref">2016</a>)</span><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> interpretan el entrenamiento con <em>dropout</em> como inferencia variacional aproximada, de modo que mantener el <em>dropout</em> activo durante la inferencia y promediar varias pasadas estocásticas produce una medida de la incertidumbre del modelo.</p>
+</section>
+<section id="redes-lstm" class="level4" data-number="2.1.3.2">
+<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="redes-lstm"><span class="header-section-number">2.1.3.2</span> Redes LSTM</h4>
+<p>Una red recurrente procesa la secuencia <span class="math inline">\(X_1,\dots,X_T\)</span> y mantiene un estado oculto <span class="math inline">\(h_t\in\mathbb{R}^m\)</span>. <span class="citation" data-cites="hochreiter_schmidhuber_1997">Hochreiter &amp; Schmidhuber (<a href="#ref-hochreiter_schmidhuber_1997" role="doc-biblioref">1997</a>)</span><a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> introdujeron la celda de memoria LSTM para resolver el problema del gradiente que se desvanece o explota en las dependencias temporales largas. Su núcleo es un «carrusel de error constante», una autoconexión lineal que deja fluir el error sin atenuarse, protegido por compuertas multiplicativas de entrada y de salida. <span class="citation" data-cites="gers_schmidhuber_cummins_2000">Gers et&nbsp;al. (<a href="#ref-gers_schmidhuber_cummins_2000" role="doc-biblioref">2000</a>)</span><a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a> añadieron la compuerta de olvido, que permite a la red reiniciar su memoria en secuencias continuas. La forma con compuerta de olvido, que es la que implementan las bibliotecas actuales, es</p>
+<p><span id="eq-lstm"><span class="math display">\[
+\begin{aligned}
+i_t &amp;= \sigma(W_iX_t+U_ih_{t-1}+b_i), &amp;
+f_t &amp;= \sigma(W_fX_t+U_fh_{t-1}+b_f), &amp;
+o_t &amp;= \sigma(W_oX_t+U_oh_{t-1}+b_o),\\
+\tilde c_t &amp;= \tanh(W_cX_t+U_ch_{t-1}+b_c), &amp;
+c_t &amp;= f_t\odot c_{t-1}+i_t\odot\tilde c_t, &amp;
+h_t &amp;= o_t\odot\tanh(c_t),
+\end{aligned}
+\tag{9}\]</span></span></p>
+<p>donde <span class="math inline">\(\sigma\)</span> es la función logística y <span class="math inline">\(\odot\)</span> el producto elemento a elemento. La forma aditiva de <span class="math inline">\(c_t\)</span> hace que <span class="math inline">\(\partial c_t/\partial c_{t-1}=\operatorname{diag}(f_t)\)</span>, si se omiten las dependencias indirectas: cuando <span class="math inline">\(f_t\approx 1\)</span> la memoria persiste, y cuando <span class="math inline">\(f_t\approx 0\)</span> se reinicia. Este segundo comportamiento es relevante cuando la serie cruza un cambio de régimen. <span class="citation" data-cites="hochreiter_schmidhuber_1997">Hochreiter &amp; Schmidhuber (<a href="#ref-hochreiter_schmidhuber_1997" role="doc-biblioref">1997</a>)</span> no aplican la arquitectura a series económicas: sus experimentos son tareas sintéticas que requieren muchas repeticiones de entrenamiento.</p>
+</section>
+<section id="lstm-autoencoder" class="level4" data-number="2.1.3.3">
+<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="lstm-autoencoder"><span class="header-section-number">2.1.3.3</span> LSTM-autoencoder</h4>
+<p><span class="citation" data-cites="srivastava_mansimov_salakhutdinov_2015">Srivastava et&nbsp;al. (<a href="#ref-srivastava_mansimov_salakhutdinov_2015" role="doc-biblioref">2015</a>)</span><a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a> combinan ambas ideas. Un LSTM codificador lee una secuencia, y su estado final constituye la representación. Un LSTM decodificador reconstruye la secuencia en orden inverso. Los autores comparan decodificadores condicionados, que reciben su salida previa, y no condicionados, y proponen además un modelo compuesto que reconstruye el pasado y predice el futuro. En la adaptación de esta tesis, el codificador lee una ventana <span class="math inline">\((X_{t-L+1},\dots,X_t)\)</span> y su estado final se proyecta a un código <span class="math inline">\(z_t\in\mathbb{R}^d\)</span>. A diferencia del PCA o de un autoencoder estático, el código <span class="math inline">\(z_t\)</span> resume una <strong>trayectoria</strong>: dos meses con el mismo vector <span class="math inline">\(X_t\)</span> pero historias distintas pueden recibir códigos distintos. Si <span class="math inline">\(z_t\)</span> se fecha en el último mes de la ventana, solo usa información disponible hasta <span class="math inline">\(t\)</span>.</p>
+<p><span class="citation" data-cites="tuhin_et_al_2025">Tuhin et&nbsp;al. (<a href="#ref-tuhin_et_al_2025" role="doc-biblioref">2025</a>)</span><a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a> constituyen el precedente reciente más cercano en el dominio financiero. Entrenan un LSTM-autoencoder sobre los retornos diarios de acciones del S&amp;P 500 entre 2000 y 2022, interpretan los pesos de la capa central como una matriz de influencia direccional entre series y construyen con ella redes de umbral por año. Las métricas topológicas de esas redes cambian de manera distintiva en las crisis estudiadas, con mayor claridad que las redes construidas por métodos clásicos. Los propios autores reconocen dos limitaciones que importan aquí: el enfoque exige muchos datos y su interpretación económica es difícil.</p>
+</section>
+</section>
+<section id="vacíos-identificados-y-aporte-de-la-tesis" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="vacíos-identificados-y-aporte-de-la-tesis"><span class="header-section-number">2.1.4</span> Vacíos identificados y aporte de la tesis</h3>
+<p>La revisión permite identificar cinco vacíos:</p>
+<ol type="1">
+<li><strong>Ausencia de aprendizaje profundo en el antecedente peruano.</strong> <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> se mantiene dentro del marco exploratorio clásico.</li>
+<li><strong>Ausencia de una HFC evolutiva unificada.</strong> No existe en la literatura revisada un algoritmo EHFC publicado. <span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span> y <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> aplican la HFC y el EPCA de forma secuencial, y la integración se produce en la interpretación conjunta, no en un algoritmo.</li>
+<li><strong>Ausencia de una clasificación explícita de fases.</strong> <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> interpretan indicadores por grupo, pero no clasifican intervalos en expansión, contracción o transición ni los contrastan con episodios fechados de manera independiente.</li>
+<li><strong>Muestra anterior a la pospandemia.</strong> La muestra de <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> termina en 2020.</li>
+<li><strong>Ausencia de un criterio objetivo para el ancho de ventana del EPCA.</strong> Las tres aplicaciones de la escuela fijan el ancho de manera informal.</li>
+</ol>
+<p>El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante (<a href="#eq-ae-pca" class="quarto-xref">Ecuación&nbsp;8</a>); (2) la clasificación explícita de fases, validada contra episodios fechados con fuentes externas; (3) la actualización de la muestra hasta diciembre de 2025, que cubre la dinámica pospandemia; y (4) un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas, medida con el coeficiente RV (<a href="#eq-rv" class="quarto-xref">Ecuación&nbsp;6</a>) o con la distancia de Procrustes. La formalización de una EHFC queda como objetivo exploratorio condicional, porque no existe una especificación previa contra la cual validarla.</p>
+</section>
+</section>
+<section id="marco-teórico" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="marco-teórico"><span class="header-section-number">2.2</span> Marco teórico</h2>
+<section id="el-ciclo-financiero" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="el-ciclo-financiero"><span class="header-section-number">2.2.1</span> El ciclo financiero</h3>
+<p>Siguiendo a <span class="citation" data-cites="drehmann_borio_tsatsaronis_2012">Drehmann et&nbsp;al. (<a href="#ref-drehmann_borio_tsatsaronis_2012" role="doc-biblioref">2012</a>)</span>, el ciclo financiero se define como el componente de mediano plazo que comparten el crédito, la razón entre crédito y producto y los precios de los inmuebles, con oscilaciones de 8 a 30 años. Los autores lo caracterizan con dos métodos complementarios, los filtros de frecuencia y la datación de puntos de giro, y encuentran que los precios bursátiles siguen una dinámica distinta, más volátil y menos sincronizada con el crédito, por lo que los excluyen de la definición. La distinción respecto del ciclo económico, de 1 a 8 años, es también de duración, y las recesiones que coinciden con la fase de contracción del ciclo financiero resultan, en promedio, más profundas.</p>
+<p>Esta definición plantea tres dificultades para el caso peruano. La primera es la longitud: identificar ciclos de 8 a 30 años exige series de varias décadas, y la muestra mensual disponible abarca menos de veinte años. Por ello, la tesis no pretende estimar ciclos completos, sino <strong>regímenes</strong>, entendidos como configuraciones estructurales dentro de la muestra. La segunda son los datos: el índice de precios de inmuebles del BCRP es trimestral y no forma parte del conjunto mensual, de modo que el crédito, la liquidez, las tasas y el riesgo soberano son las aproximaciones disponibles. La tercera es el enfoque: en lugar de fijar <em>a priori</em> qué variables componen el ciclo, la escuela de Camiz deja que la estructura de correlación determine los grupos. Ese es el sentido de la exclusión de series en <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span>, que responde a su comportamiento estadístico y no a un criterio temático.</p>
+</section>
+<section id="régimen-transición-y-detección-como-objetos-matemáticos" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="régimen-transición-y-detección-como-objetos-matemáticos"><span class="header-section-number">2.2.2</span> Régimen, transición y detección como objetos matemáticos</h3>
+<p>El sistema macrofinanciero se observa como una trayectoria <span class="math inline">\(\{X_t\}_{t=1}^{n}\)</span>, con <span class="math inline">\(X_t\in\mathbb{R}^p\)</span>. Sea <span class="math inline">\(S(\cdot)\)</span> una función que asigna a un conjunto de meses una <strong>estructura</strong> estimada: la matriz de correlaciones, el subespacio principal, la jerarquía de la HFC o la configuración de códigos latentes. Sobre esta base se adoptan las siguientes definiciones de trabajo, desarrolladas en el marco conceptual del proyecto.</p>
+<p><strong>Definición 1 (régimen).</strong> Un régimen es un intervalo de meses <span class="math inline">\(I_k=[t_a,t_b]\)</span> en el que la estructura del sistema es aproximadamente constante:</p>
+<p><span id="eq-regimen"><span class="math display">\[
+d\bigl(S(W),S(W')\bigr)\le\varepsilon\quad\text{para toda ventana } W,W'\subset I_k ,
+\tag{10}\]</span></span></p>
+<p>donde <span class="math inline">\(d\)</span> es una disimilitud entre estructuras (por ejemplo, <span class="math inline">\(1-\mathrm{RV}\)</span>) y <span class="math inline">\(\varepsilon\)</span> una tolerancia. Un régimen es, por tanto, una propiedad de la configuración conjunta de las variables y no del nivel de una variable aislada.</p>
+<p><strong>Definición 2 (transición).</strong> Hay una transición en <span class="math inline">\(\tau\)</span> cuando la estructura cambia de manera significativa y persistente: <span class="math inline">\(d\bigl(S(W_{\tau}^{-}),S(W_{\tau}^{+})\bigr)&gt;\varepsilon\)</span>, donde <span class="math inline">\(W_\tau^-\)</span> y <span class="math inline">\(W_\tau^+\)</span> son ventanas adyacentes antes y después de <span class="math inline">\(\tau\)</span>, y la nueva estructura se mantiene en ventanas posteriores. Según su forma, una transición puede ser abrupta o suave (una rotación progresiva de factores), y según su alcance, total o parcial (cuando afecta solo a un bloque de variables).</p>
+<p><strong>Definición 3 (detección).</strong> Detectar regímenes es estimar la partición <span class="math inline">\(0=\tau_0&lt;\tau_1&lt;\dots&lt;\tau_k=n\)</span> de una trayectoria de representaciones <span class="math inline">\(Y_t\)</span>, ya sean la serie de valores propios del EPCA, los <em>scores</em> del PCA o los códigos latentes, mediante (<a href="#eq-fisher" class="quarto-xref">Ecuación&nbsp;5</a>). Así planteada, la detección es una clasificación con restricción de contigüidad temporal, que puede contrastarse con la HFC, una clasificación de variables sin esa restricción.</p>
+<p><strong>Definición 4 (fase).</strong> Una fase es una etiqueta asignada a cada régimen detectado: expansión, contracción o transición. La segmentación usa toda la estructura multivariada, y la etiqueta se asigna después, a partir del comportamiento del crédito dentro de cada intervalo. Esta separación evita que la clasificación se reduzca a una relectura del crecimiento del crédito. La regla concreta de etiquetado y sus umbrales son una propuesta preliminar del proyecto, que se presenta en la metodología y está pendiente de discusión con el asesor.</p>
+<p><strong>Validación externa.</strong> Los episodios con los que se contrastan los regímenes se fechan con fuentes externas al análisis, nunca a partir de las propias series ni de un indicador derivado de ellas. De lo contrario, la validación sería circular. La bibliografía revisada sirve aquí <strong>solo para identificar eventos candidatos, no para fecharlos</strong>. <span class="citation" data-cites="tuhin_et_al_2025">Tuhin et&nbsp;al. (<a href="#ref-tuhin_et_al_2025" role="doc-biblioref">2025</a>)</span> tratan la crisis financiera global y la pandemia de COVID-19 como crisis del mercado estadounidense. <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span> asocian a eventos como la renuncia de Kuczynski y la guerra comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no pueden usarse como fechas externas. Cada evento se fechará con una cronología independiente: crisis financiera global [CITA PENDIENTE: fuente externa para fechar la crisis financiera global en el Perú], <em>taper tantrum</em> [CITA PENDIENTE: fuente externa para fechar el <em>taper tantrum</em> de 2013], pandemia de COVID-19 [CITA PENDIENTE: fuente externa para fechar el choque de la COVID-19 en el Perú], renuncia de Kuczynski [CITA PENDIENTE: fuente externa para fechar la renuncia de Kuczynski] y guerra comercial entre Estados Unidos y China [CITA PENDIENTE: fuente externa para fechar la guerra comercial entre Estados Unidos y China].</p>
+</section>
+<section id="posición-epistemológica-datos-primero" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="posición-epistemológica-datos-primero"><span class="header-section-number">2.2.3</span> Posición epistemológica: «datos primero»</h3>
+<p>La tesis se inscribe en la tradición del análisis de datos que sigue el asesor, cuyo principio rector es dejar que los datos hablen [CITA PENDIENTE: Benzécri (1973), <em>L’analyse des données</em>; principio <em>laisser parler les données</em>; sin ficha]. Según este principio, la estructura debe emerger de los datos con el mínimo de supuestos impuestos por el analista. El PCA solo exige elegir la métrica y la HFC solo exige elegir el criterio de fusión. Ninguno de los dos postula un modelo generador. Los antecedentes de la escuela se declaran explícitamente exploratorios, y sus resultados describen la muestra sin generalizarla <span class="citation" data-cites="camiz_maulucci_roig_2010 camiz_et_al_2020">(<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">Camiz et&nbsp;al., 2010</a>; <a href="#ref-camiz_et_al_2020" role="doc-biblioref">Camiz et&nbsp;al., 2020</a>)</span>.</p>
+<p>Esta posición tiene dos consecuencias para el diseño. La primera se refiere a la transformación de las series. Diferenciar es un supuesto: la primera diferencia es un filtro lineal cuya ganancia para una oscilación de período <span class="math inline">\(P\)</span> meses es</p>
+<p><span id="eq-filtro"><span class="math display">\[
+G(P)=\bigl|1-e^{-2\pi i/P}\bigr|=2\sin(\pi/P),
+\tag{11}\]</span></span></p>
+<p>que se anula cuando <span class="math inline">\(P\to\infty\)</span>. La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo financiero. Trabajar sin transformar respeta los datos tal como los publica la fuente, pero mezcla la tendencia de profundización financiera con la estructura de régimen. Por eso el proyecto mantiene las series sin transformar como análisis oficial (decisión D1) y las analiza, junto con las transformadas, en <strong>dos vías</strong> con el mismo código y los mismos parámetros (decisión D2). D2 no elige una vía como definitiva para la interpretación, y la propuesta de cómo combinarlas está pendiente de discusión con el asesor.</p>
+<p>La segunda consecuencia, y la tensión central del marco, se refiere a los autoencoders y las redes LSTM. Estos modelos introducen <strong>supuestos arquitectónicos</strong> que no provienen de los datos: el número de capas y su ancho, la función de activación, la dimensión latente, la longitud de la ventana, la regularización y la semilla aleatoria. Cada uno es una decisión del analista. La tesis no oculta esa tensión, sino que la acota con cuatro principios:</p>
+<ol type="1">
+<li><strong>Anidamiento.</strong> Por (<a href="#eq-ae-pca" class="quarto-xref">Ecuación&nbsp;8</a>), el PCA es un caso particular del autoencoder. El aprendizaje profundo no sustituye el criterio de reconstrucción del análisis de datos, sino que amplía la clase de funciones admitida.</li>
+<li><strong>Anclaje lineal.</strong> Cada modelo no lineal se reporta junto con su versión lineal, con la misma dimensión y en la misma escala de error. La no linealidad se acepta solo si mejora fuera de muestra.</li>
+<li><strong>Estabilidad como condición de validez.</strong> Una estructura que cambia con la semilla aleatoria no puede considerarse emergida de los datos. Por eso se exige estabilidad entre réplicas, medida con (<a href="#eq-rv" class="quarto-xref">Ecuación&nbsp;6</a>), y se reporta la réplica central, no la de mejor ajuste.</li>
+<li><strong>Subordinación a la evidencia.</strong> El aprendizaje profundo se justifica por lo que el PCA no puede hacer por construcción: representar la dinámica de las trayectorias (LSTM) y señalar observaciones que no comparten la estructura típica (error de reconstrucción). No se justifica por una supuesta superioridad general.</li>
+</ol>
+<p>Con estos principios, los autoencoders y las redes LSTM se presentan como un <strong>complemento</strong> de la cadena PCA–HFC–EPCA, no como su reemplazo.</p>
+</section>
+<section id="criterios-de-comparación-entre-métodos" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="criterios-de-comparación-entre-métodos"><span class="header-section-number">2.2.4</span> Criterios de comparación entre métodos</h3>
+<p>La comparación entre métodos no busca determinar cuál «funciona mejor», sino qué tipo de estructura revela cada uno y bajo qué criterio resulta útil. Se adoptan los tres criterios de la ficha de inscripción (interpretabilidad, estabilidad temporal y capacidad descriptiva), ampliados con la robustez:</p>
+<ul>
+<li><strong>Interpretabilidad.</strong> Indica si el resultado puede asociarse a dimensiones económicas comprensibles. Se evalúa con la concentración de cargas o correlaciones con las variables originales, la coherencia económica de los grupos y la posibilidad de explicar episodios sin forzar la interpretación. En los modelos no lineales, que carecen de cargas constantes, se usan las correlaciones entre cada variable y cada eje latente tras una rotación de Procrustes hacia los <em>scores</em> del PCA.</li>
+<li><strong>Estabilidad temporal.</strong> Indica si la estructura se mantiene dentro de un régimen y cambia en las transiciones. Se evalúa con el coeficiente RV y la distancia entre subespacios de ventanas sucesivas, y con la persistencia de los grupos.</li>
+<li><strong>Capacidad descriptiva.</strong> Indica cuánto de la información original conserva la representación. Se evalúa con la inercia retenida en el PCA y el error de reconstrucción, medido fuera de muestra con validación por bloques temporales contiguos.</li>
+<li><strong>Robustez.</strong> Indica si los resultados resisten variaciones razonables del diseño: ancho de ventana, conjunto de variables, transformación (las dos vías de D2), semilla aleatoria y regla de selección del número de regímenes.</li>
+</ul>
+<p>Además de estos criterios, la ficha de inscripción compromete una comparación <strong>sobre un contexto simulado</strong>, con regímenes conocidos por construcción, que permita medir la capacidad de recuperación de cada método y calibrar sus parámetros: número de factores, número de clases, ancho de ventana y pesos de los análisis evolutivos. Es el único escenario en el que la «verdad» del régimen está disponible sin circularidad. Por ello, complementa y no sustituye la validación con episodios externos.</p>
+</section>
+</section>
+</section>
+<section id="metodología-y-desarrollo-del-modelo" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Metodología y desarrollo del modelo</h1>
+<section id="metodología" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="metodología"><span class="header-section-number">3.1</span> Metodología</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Pendiente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pendiente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Iteración posterior: diseño, datos (227 meses × 17 series del BCRP), preprocesamiento y análisis en dos vías (decisiones D1 y D2).</p>
+</div>
+</div>
+</section>
+<section id="desarrollo-del-modelo-matemático-y-computacional" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="desarrollo-del-modelo-matemático-y-computacional"><span class="header-section-number">3.2</span> Desarrollo del modelo matemático y computacional</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Pendiente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pendiente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Iteración posterior: formalización de PCA, HFC, EPCA, autoencoders y LSTM a partir de <code>marco_matematico_ae_lstm.qmd</code>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="resultados-y-discusión" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Resultados y discusión</h1>
+<section id="resultados" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="resultados"><span class="header-section-number">4.1</span> Resultados</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Pendiente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pendiente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Se redacta después de discutir con el asesor la propuesta de la Parte C (decisión D2). No se publican resultados sin aprobación de Roberto.</p>
+</div>
+</div>
+</section>
+<section id="discusión-de-resultados" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="discusión-de-resultados"><span class="header-section-number">4.2</span> Discusión de resultados</h2>
+</section>
+</section>
+<section id="conclusiones-y-recomendaciones" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Conclusiones y recomendaciones</h1>
+<section id="conclusiones-preliminares" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="conclusiones-preliminares"><span class="header-section-number">5.1</span> Conclusiones preliminares</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Pendiente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pendiente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Se redactan a partir del capítulo 4.</p>
+</div>
+</div>
+</section>
+<section id="recomendaciones-y-trabajos-futuros" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="recomendaciones-y-trabajos-futuros"><span class="header-section-number">5.2</span> Recomendaciones y trabajos futuros</h2>
+</section>
+</section>
+<section id="referencias" class="level1 unnumbered">
+<h1 class="unnumbered">Referencias</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-baldi_hornik_1989" class="csl-entry" role="listitem">
+Baldi, P., &amp; Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. <em>Neural Networks</em>, <em>2</em>(1), 53-58. <a href="https://doi.org/10.1016/0893-6080(89)90014-2">https://doi.org/10.1016/0893-6080(89)90014-2</a>
+</div>
+<div id="ref-bourlard_kamp_1988" class="csl-entry" role="listitem">
+Bourlard, H., &amp; Kamp, Y. (1988). Auto-association by multilayer perceptrons and singular value decomposition. <em>Biological Cybernetics</em>, <em>59</em>(4–5), 291-294. <a href="https://doi.org/10.1007/BF00332918">https://doi.org/10.1007/BF00332918</a>
+</div>
+<div id="ref-camiz_cerda_atoche_2026" class="csl-entry" role="listitem">
+Camiz, S., Cerda Hernández, J. J., &amp; Atoche Murrieta, L. K. (2026). <em>Exploratory procedure to identify financial cycle: An application to <span>Peruvian</span> data</em> [Manuscrito no publicado].
+</div>
+<div id="ref-camiz_maulucci_roig_2010" class="csl-entry" role="listitem">
+Camiz, S., Maulucci, R., &amp; Roig, F. A. (2010). Exploratory analysis methods applied to dendrochronological series. En O. Papu (Ed.), <em>Actas E-ICES 5: Proceedings of the Fifth Meeting on Nuclear and Environmental Studies</em> (pp. 61-67). Comisión Nacional de Energía Atómica.
+</div>
+<div id="ref-camiz_roig_2011" class="csl-entry" role="listitem">
+Camiz, S., &amp; Roig, F. A. (2011). Evolutionary analysis applied to tree-ring series. En O. Papú (Ed.), <em>Actas E-ICES 6</em> (pp. 30-37). Comisión Nacional de Energía Atómica.
+</div>
+<div id="ref-camiz_et_al_2020" class="csl-entry" role="listitem">
+Camiz, S., Spada, F., Denimal, J.-J., &amp; Piraino, S. (2020). Hierarchical Factor Classification of Dendrochronological Time-Series. <em>Annals of Silvicultural Research</em>, <em>45</em>(1), 62-75. <a href="https://doi.org/10.12899/asr-1968">https://doi.org/10.12899/asr-1968</a>
+</div>
+<div id="ref-drehmann_borio_tsatsaronis_2012" class="csl-entry" role="listitem">
+Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012). <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> (BIS Working Paper No. 380). Bank for International Settlements. <a href="https://www.bis.org/publ/work380.pdf">https://www.bis.org/publ/work380.pdf</a>
+</div>
+<div id="ref-fisher_1958" class="csl-entry" role="listitem">
+Fisher, W. D. (1958). On grouping for maximum homogeneity. <em>Journal of the American Statistical Association</em>, <em>53</em>(284), 789-798. <a href="https://doi.org/10.1080/01621459.1958.10501479">https://doi.org/10.1080/01621459.1958.10501479</a>
+</div>
+<div id="ref-gal_ghahramani_2016" class="csl-entry" role="listitem">
+Gal, Y., &amp; Ghahramani, Z. (2016). Dropout as a <span>Bayesian</span> approximation: Representing model uncertainty in deep learning. En M. F. Balcan &amp; K. Q. Weinberger (Eds.), <em>Proceedings of the 33rd International Conference on Machine Learning</em> (Vol. 48, pp. 1050-1059). PMLR.
+</div>
+<div id="ref-gers_schmidhuber_cummins_2000" class="csl-entry" role="listitem">
+Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (2000). Learning to forget: Continual prediction with <span>LSTM</span>. <em>Neural Computation</em>, <em>12</em>(10), 2451-2471. <a href="https://doi.org/10.1162/089976600300015015">https://doi.org/10.1162/089976600300015015</a>
+</div>
+<div id="ref-hinton_salakhutdinov_2006" class="csl-entry" role="listitem">
+Hinton, G. E., &amp; Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. <em>Science</em>, <em>313</em>(5786), 504-507. <a href="https://doi.org/10.1126/science.1127647">https://doi.org/10.1126/science.1127647</a>
+</div>
+<div id="ref-hochreiter_schmidhuber_1997" class="csl-entry" role="listitem">
+Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, <em>9</em>(8), 1735-1780. <a href="https://doi.org/10.1162/neco.1997.9.8.1735">https://doi.org/10.1162/neco.1997.9.8.1735</a>
+</div>
+<div id="ref-plaut_2018" class="csl-entry" role="listitem">
+Plaut, E. (2018). <em>From principal subspaces to principal components with linear autoencoders</em> (arXiv:1804.10253). arXiv. <a href="https://doi.org/10.48550/arXiv.1804.10253">https://doi.org/10.48550/arXiv.1804.10253</a>
+</div>
+<div id="ref-robert_escoufier_1976" class="csl-entry" role="listitem">
+Robert, P., &amp; Escoufier, Y. (1976). A unifying tool for linear multivariate statistical methods: The <span>RV</span>-coefficient. <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em>, <em>25</em>(3), 257-265. <a href="https://doi.org/10.2307/2347233">https://doi.org/10.2307/2347233</a>
+</div>
+<div id="ref-srivastava_mansimov_salakhutdinov_2015" class="csl-entry" role="listitem">
+Srivastava, N., Mansimov, E., &amp; Salakhutdinov, R. (2015). Unsupervised learning of video representations using <span>LSTMs</span>. En F. Bach &amp; D. Blei (Eds.), <em>Proceedings of the 32nd International Conference on Machine Learning</em> (Vol. 37, pp. 843-852). PMLR.
+</div>
+<div id="ref-tuhin_et_al_2025" class="csl-entry" role="listitem">
+Tuhin, K. H., Nobi, A., Rakib, M. H., &amp; Lee, J. W. (2025). Long short-term memory autoencoder based network of financial indices. <em>Humanities and Social Sciences Communications</em>, <em>12</em>, Artículo 100. <a href="https://doi.org/10.1057/s41599-025-04412-y">https://doi.org/10.1057/s41599-025-04412-y</a>
+</div>
+<div id="ref-vincent_et_al_2008" class="csl-entry" role="listitem">
+Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extracting and composing robust features with denoising autoencoders. En <em>Proceedings of the 25th International Conference on Machine Learning</em> (pp. 1096-1103). Association for Computing Machinery. <a href="https://doi.org/10.1145/1390156.1390294">https://doi.org/10.1145/1390156.1390294</a>
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Notas</h2>
+
+<ol>
+<li id="fn1"><p>VERIFICAR: manuscrito fechado el 25 de abril de 2026, sin datos de revista, volumen ni DOI; confirmar con el Dr.&nbsp;Camiz su estado de publicación.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>VERIFICAR: número (284) y DOI. Ficha preliminar: solo se cita su aporte general.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>VERIFICAR: el nombre del editor de las actas (O. Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>VERIFICAR: Bourlard y Kamp (1988), número del fascículo; Baldi y Hornik (1989), texto completo no consultado. Ambas fichas son preliminares.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>VERIFICAR: Hinton y Salakhutdinov (2006), se procesó el material suplementario; Tuhin et al.&nbsp;(2025), lista completa de autores.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>VERIFICAR: editores del volumen; PDF no consultado.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>VERIFICAR: datos de edición de las actas (ISBN o DOI).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>VERIFICAR: manuscrito fechado el 25 de abril de 2026 sin datos de revista, volumen ni DOI. Debe confirmarse con el Dr.&nbsp;Camiz su estado de publicación.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>VERIFICAR: la ficha distingue «reservas» (grupo de riesgo) de «reservas internacionales netas» (grupo de salud). Confirmar en la Tabla 1 del manuscrito a qué series del BCRP corresponden.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>VERIFICAR: número (284) y DOI en JSTOR o Taylor &amp; Francis. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>La fuente primaria de la HFC no tiene ficha en el proyecto: Camiz et al.&nbsp;(2020) citan a Denimal (2007), y Camiz y Roig (2011), a Denimal (2001). Se cita de forma secundaria.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>VERIFICAR: datos de edición de las actas (ISBN o DOI).<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>La ecuación reproduce la función <code>aede</code> del paquete AedeClahfac 1.2 del asesor, traducida a R en el repositorio de la tesis (<code>R/camiz_port.R</code>, funciones <code>aede_r</code>, <code>.bstatw_ac</code> y <code>.ustatw_ac</code>). El notebook de Python <code>06_epca.ipynb</code> estandariza cada ventana sin ponderar, lo que corresponde al caso de pesos uniformes.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>VERIFICAR: el nombre del editor de las actas (O. Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>VERIFICAR: volumen, número, páginas y DOI en JSTOR. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>VERIFICAR: Bourlard y Kamp (1988), número del fascículo y alcance exacto del resultado sobre las no linealidades; Baldi y Hornik (1989), enunciados y supuestos exactos. Ambas fichas son preliminares.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>VERIFICAR: <em>preprint</em> sin revisión por pares (fuente de exploración); se cita solo como apoyo técnico secundario de Baldi y Hornik (1989).<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>VERIFICAR: la ficha se elaboró con el material suplementario y no con el artículo principal de <em>Science</em>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>VERIFICAR: DOI en ACM Digital Library.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>VERIFICAR: editores del volumen; se leyó el resumen oficial, pero no el PDF.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>VERIFICAR: se procesó el informe técnico FKI-207-95 y no la versión publicada en <em>Neural Computation</em>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>VERIFICAR: DOI contra el registro de MIT Press. La ficha es preliminar: el texto no se ha leído y solo se cita su aporte general (la compuerta de olvido).<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>VERIFICAR: páginas 843–852 y editores del volumen en PMLR.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>VERIFICAR: lista completa de autores contra la fuente original.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

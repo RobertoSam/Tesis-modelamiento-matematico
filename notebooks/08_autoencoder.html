@@ -2,16 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>08 · Autoencoders — del PCA lineal a la reducción no lineal – Tesis — Ciclo Financiero Perú</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -24,9 +21,8 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -37,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -61,23 +57,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-98bc5e15ca00986a511e66da801f1277.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -113,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -134,6 +129,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Inicio</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-borrador-de-tesis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Borrador de tesis</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-borrador-de-tesis">    
+        <li>
+    <a class="dropdown-item" href="../tesis/index.html">
+ <span class="dropdown-text">Estado del borrador</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/01_introduccion.html">
+ <span class="dropdown-text">1 · Introducción</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/02_marco_teorico.html">
+ <span class="dropdown-text">2 · Antecedentes y marco teórico</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/03_metodologia.html">
+ <span class="dropdown-text">3 · Metodología</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/04_resultados.html">
+ <span class="dropdown-text">4 · Resultados y discusión</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/05_conclusiones.html">
+ <span class="dropdown-text">5 · Conclusiones</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/06_referencias.html">
+ <span class="dropdown-text">Referencias</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tesis/borrador_completo.html">
+ <span class="dropdown-text">Borrador completo (HTML y Word)</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../marco_conceptual.html"> 
 <span class="menu-text">Marco conceptual</span></a>
@@ -385,8 +419,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <section id="librerías-y-datos" class="level2">
 <h2 class="anchored" data-anchor-id="librerías-y-datos">1. Librerías y datos</h2>
-<div id="2fbd9710" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:57.301948Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:57.301575Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.152740Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.152432Z&quot;}}" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, sys, time, warnings</span>
+<div id="2fbd9710" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:37:57.301948Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:37:57.301575Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.152740Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.152432Z&quot;}" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, sys, time, warnings</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>, <span class="st">'notebooks'</span>) <span class="cf">if</span> os.path.basename(os.getcwd()) <span class="op">!=</span> <span class="st">'notebooks'</span> <span class="cf">else</span> sys.path.insert(<span class="dv">0</span>, <span class="st">'.'</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modelos_dl <span class="im">import</span> <span class="op">*</span></span>
@@ -410,7 +444,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> StandardScaler().fit_transform(df.values)   <span class="co"># misma estandarización que 05/06</span></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>n, p <span class="op">=</span> X.shape</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> meses x </span><span class="sc">{</span>p<span class="sc">}</span><span class="ss"> variables | </span><span class="sc">{</span>df<span class="sc">.</span>index<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="sc">}</span><span class="ss"> a </span><span class="sc">{</span>df<span class="sc">.</span>index<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Torch </span><span class="sc">{</span>torch<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Torch </span><span class="sc">{</span>torch<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>227 meses x 17 variables | 2007-02 a 2025-12
 Torch 2.2.2</code></pre>
@@ -422,42 +456,42 @@ Torch 2.2.2</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Continuidad mensual verificada
+Continuidad mensual verificada
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>El dataset mensual cubre 2007-02 a 2025-12 (227 meses × 17 variables). La celda siguiente verifica que el calendario esté completo y detiene la ejecución si falta cualquier mes.</p>
 </div>
 </div>
-<div id="ec199a79" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.154549Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.154428Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.160296Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.160074Z&quot;}}" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificación de continuidad mensual: no se trabaja con meses faltantes</span></span>
+<div id="ec199a79" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.154549Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.154428Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.160296Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.160074Z&quot;}" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificación de continuidad mensual: no se trabaja con meses faltantes</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>calendario <span class="op">=</span> pd.date_range(df.index.<span class="bu">min</span>(), df.index.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">'MS'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>faltantes <span class="op">=</span> calendario.difference(df.index)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Meses esperados: </span><span class="sc">{</span><span class="bu">len</span>(calendario)<span class="sc">}</span><span class="ss"> | presentes: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> | faltantes: </span><span class="sc">{</span><span class="bu">len</span>(faltantes)<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(faltantes):</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Meses faltantes:'</span>, <span class="st">', '</span>.join(f.strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> f <span class="kw">in</span> faltantes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Meses faltantes:'</span>, <span class="st">', '</span>.join(f.strftime(<span class="st">'%Y-%m'</span>) <span class="cf">for</span> f <span class="kw">in</span> faltantes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Meses esperados: 227 | presentes: 227 | faltantes: 0</code></pre>
 </div>
 </div>
-<div id="b31de095" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.161849Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.161733Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.163903Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.163641Z&quot;}}" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sombrear_episodios(ax):</span>
+<div id="b31de095" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.161849Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.161733Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.163903Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.163641Z&quot;}" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sombrear_episodios(ax):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Sombrea los episodios de referencia (solo para validación visual ex post)."""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> nombre, (ini, fin) <span class="kw">in</span> EPISODIOS_REFERENCIA.items():</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        ax.axvspan(pd.Timestamp(ini), pd.Timestamp(fin), color<span class="op">=</span><span class="st">'grey'</span>, alpha<span class="op">=</span><span class="fl">0.18</span>, lw<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        ax.text(pd.Timestamp(ini), ax.get_ylim()[<span class="dv">1</span>], nombre, fontsize<span class="op">=</span><span class="dv">7</span>, va<span class="op">=</span><span class="st">'top'</span>, rotation<span class="op">=</span><span class="dv">90</span>, color<span class="op">=</span><span class="st">'dimgrey'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        ax.text(pd.Timestamp(ini), ax.get_ylim()[<span class="dv">1</span>], nombre, fontsize<span class="op">=</span><span class="dv">7</span>, va<span class="op">=</span><span class="st">'top'</span>, rotation<span class="op">=</span><span class="dv">90</span>, color<span class="op">=</span><span class="st">'dimgrey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="dimensión-latente-análisis-paralelo-de-horn" class="level2">
 <h2 class="anchored" data-anchor-id="dimensión-latente-análisis-paralelo-de-horn">2. Dimensión latente: análisis paralelo de Horn</h2>
 <p>Se retienen los componentes cuyo autovalor supera el percentil 95 de los autovalores obtenidos con datos gaussianos independientes de igual tamaño (n × p). Es el criterio de retención que la tesis tiene como objetivo firme; aquí fija la dimensión latente del autoencoder con el mismo criterio que se usaría para el PCA.</p>
-<div id="79713cff" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.165557Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.165442Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.310224Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.309914Z&quot;}}" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>obs, umbral, d_horn <span class="op">=</span> analisis_paralelo_horn(X, n_sim<span class="op">=</span><span class="dv">1000</span>, percentil<span class="op">=</span><span class="dv">95</span>)</span>
+<div id="79713cff" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.165557Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.165442Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.310224Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.309914Z&quot;}" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>obs, umbral, d_horn <span class="op">=</span> analisis_paralelo_horn(X, n_sim<span class="op">=</span><span class="dv">1000</span>, percentil<span class="op">=</span><span class="dv">95</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tabla_horn <span class="op">=</span> pd.DataFrame({<span class="st">'autovalor_observado'</span>: obs, <span class="st">'umbral_aleatorio_p95'</span>: umbral,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'inercia_acumulada_%'</span>: <span class="dv">100</span> <span class="op">*</span> np.cumsum(obs) <span class="op">/</span> p},</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                          index<span class="op">=</span>[<span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(p)]).<span class="bu">round</span>(<span class="dv">3</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Componentes retenidos por Horn: </span><span class="sc">{</span>d_horn<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tabla_horn.head(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tabla_horn.head(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Componentes retenidos por Horn: 4</code></pre>
 </div>
@@ -465,7 +499,7 @@ Torch 2.2.2</code></pre>
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -476,37 +510,37 @@ Torch 2.2.2</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">PC1</th>
+<td data-quarto-table-cell-role="th">PC1</td>
 <td>3.956</td>
 <td>1.624</td>
 <td>23.273</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">PC2</th>
+<td data-quarto-table-cell-role="th">PC2</td>
 <td>2.712</td>
 <td>1.478</td>
 <td>39.223</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">PC3</th>
+<td data-quarto-table-cell-role="th">PC3</td>
 <td>1.896</td>
 <td>1.380</td>
 <td>50.375</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">PC4</th>
+<td data-quarto-table-cell-role="th">PC4</td>
 <td>1.466</td>
 <td>1.304</td>
 <td>59.000</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">PC5</th>
+<td data-quarto-table-cell-role="th">PC5</td>
 <td>1.033</td>
 <td>1.241</td>
 <td>65.077</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">PC6</th>
+<td data-quarto-table-cell-role="th">PC6</td>
 <td>1.006</td>
 <td>1.175</td>
 <td>70.995</td>
@@ -517,15 +551,15 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 </div>
-<div id="148b1c57" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.312142Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.312009Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.495525Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.495087Z&quot;}}" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
+<div id="148b1c57" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.312142Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.312009Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:01.495525Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:01.495087Z&quot;}" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> np.arange(<span class="dv">1</span>, p <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax.plot(k, obs, <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Autovalores observados'</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ax.plot(k, umbral, <span class="st">'s--'</span>, label<span class="op">=</span><span class="st">'Percentil 95 aleatorio (Horn)'</span>)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ax.axvline(d_horn <span class="op">+</span> <span class="fl">0.5</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">':'</span>, label<span class="op">=</span><span class="ss">f'Retener </span><span class="sc">{</span>d_horn<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Componente'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Autovalor'</span>)<span class="op">;</span> ax.legend()</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Análisis paralelo de Horn — dataset transformado mensual'</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_horn.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_horn.png'</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -543,8 +577,8 @@ Torch 2.2.2</code></pre>
 <li>el <strong>error cuadrático medio</strong> de reconstrucción debe coincidir con el del PCA (= 1 − inercia retenida, porque los datos están estandarizados);</li>
 <li>las <strong>coordenadas</strong> del AE no coinciden con los scores del PCA (son una rotación arbitraria de ellos); la SVD dentro del subespacio aprendido (Plaut, 2018 — <em>preprint</em>) recupera las direcciones principales.</li>
 </ul>
-<div id="1a8e04f4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.497618Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.497454Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:03.766964Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:03.766622Z&quot;}}" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>filas <span class="op">=</span> []</span>
+<div id="1a8e04f4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:01.497618Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:01.497454Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:38:03.766964Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:38:03.766622Z&quot;}" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>filas <span class="op">=</span> []</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    ae_lin <span class="op">=</span> AutoencoderAtado([p, d], activacion<span class="op">=</span><span class="st">'lineal'</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> entrenar(ae_lin, X, epocas<span class="op">=</span><span class="dv">6000</span>, lr<span class="op">=</span><span class="fl">1e-2</span>, weight_decay<span class="op">=</span><span class="fl">0.0</span>, paciencia<span class="op">=</span><span class="dv">400</span>, semilla<span class="op">=</span>d)</span>
@@ -558,12 +592,12 @@ Torch 2.2.2</code></pre>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'angulo_max_°'</span>: ang.<span class="bu">max</span>(), <span class="st">'min_|cos|_direcciones_recuperadas'</span>: coseno.<span class="bu">min</span>()})</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>anclaje <span class="op">=</span> pd.DataFrame(filas).set_index(<span class="st">'d'</span>)</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>anclaje[<span class="st">'inercia_pca_%'</span>] <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> anclaje[<span class="st">'mse_pca'</span>])</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>anclaje.<span class="bu">round</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>anclaje.<span class="bu">round</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -584,7 +618,7 @@ Torch 2.2.2</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1</th>
+<td data-quarto-table-cell-role="th">1</td>
 <td>0.76727</td>
 <td>0.76727</td>
 <td>0.01604</td>
@@ -592,7 +626,7 @@ Torch 2.2.2</code></pre>
 <td>23.27328</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2</th>
+<td data-quarto-table-cell-role="th">2</td>
 <td>0.60777</td>
 <td>0.60777</td>
 <td>0.05760</td>
@@ -600,7 +634,7 @@ Torch 2.2.2</code></pre>
 <td>39.22340</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">3</th>
+<td data-quarto-table-cell-role="th">3</td>
 <td>0.49625</td>
 <td>0.49625</td>
 <td>0.04017</td>
@@ -608,7 +642,7 @@ Torch 2.2.2</code></pre>
 <td>50.37493</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">4</th>
+<td data-quarto-table-cell-role="th">4</td>
 <td>0.41000</td>
 <td>0.41000</td>
 <td>0.03820</td>
@@ -616,7 +650,7 @@ Torch 2.2.2</code></pre>
 <td>59.00036</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">5</th>
+<td data-quarto-table-cell-role="th">5</td>
 <td>0.34923</td>
 <td>0.34923</td>
 <td>0.21087</td>
@@ -635,8 +669,8 @@ Torch 2.2.2</code></pre>
 <h2 class="anchored" data-anchor-id="aporta-la-no-linealidad-validación-cruzada-por-bloques-temporales">4. ¿Aporta la no linealidad? Validación cruzada por bloques temporales</h2>
 <p>Con n = 227 la pregunta decisiva es si un AE no lineal <strong>generaliza</strong> mejor que el PCA o solo memoriza. Se divide la muestra en 5 bloques <strong>contiguos</strong> (no se baraja el tiempo); cada bloque se reconstruye con modelos entrenados en los otros cuatro. La estandarización se recalcula con los datos de entrenamiento de cada pliegue para no filtrar información.</p>
 <p>Arquitectura no lineal: 17 → 8 → d, tanh en la capa intermedia, cuello de botella lineal, pesos atados, dropout 0,10, ruido de entrada 0,10 (denoising) y weight decay 10⁻³. Se promedian 3 semillas.</p>
-<div id="fd3b49d0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:03.769403Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:03.769210Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.639447Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.638840Z&quot;}}" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_bloques(df_valores, d, n_bloques<span class="op">=</span><span class="dv">5</span>, semillas<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), preentreno<span class="op">=</span><span class="va">False</span>):</span>
+<div id="fd3b49d0" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:38:03.769403Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:38:03.769210Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.639447Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.638840Z&quot;}" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_bloques(df_valores, d, n_bloques<span class="op">=</span><span class="dv">5</span>, semillas<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), preentreno<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Devuelve MSE fuera de muestra (promedio de pliegues) para PCA y AE no lineal."""</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> np.array_split(np.arange(<span class="bu">len</span>(df_valores)), n_bloques)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    mse_pca, mse_ae <span class="op">=</span> [], []</span>
@@ -670,7 +704,7 @@ Torch 2.2.2</code></pre>
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'mejora_ae_vs_pca_%'</span>: <span class="dv">100</span> <span class="op">*</span> (m_pca <span class="op">-</span> <span class="bu">min</span>(m_ae, m_ae_pre)) <span class="op">/</span> m_pca})</span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> pd.DataFrame(filas).set_index(<span class="st">'d'</span>)</span>
 <span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Tiempo: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s'</span>)</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>cv.<span class="bu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>cv.<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Tiempo: 98 s</code></pre>
 </div>
@@ -678,7 +712,7 @@ Torch 2.2.2</code></pre>
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -697,35 +731,35 @@ Torch 2.2.2</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">1</th>
+<td data-quarto-table-cell-role="th">1</td>
 <td>1.4026</td>
 <td>1.4682</td>
 <td>1.4652</td>
 <td>-4.4619</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2</th>
+<td data-quarto-table-cell-role="th">2</td>
 <td>1.2285</td>
 <td>1.3289</td>
 <td>1.3454</td>
 <td>-8.1746</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">3</th>
+<td data-quarto-table-cell-role="th">3</td>
 <td>1.0755</td>
 <td>1.2223</td>
 <td>1.2578</td>
 <td>-13.6477</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">4</th>
+<td data-quarto-table-cell-role="th">4</td>
 <td>0.8800</td>
 <td>1.1662</td>
 <td>1.1863</td>
 <td>-32.5224</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">5</th>
+<td data-quarto-table-cell-role="th">5</td>
 <td>0.8041</td>
 <td>1.1312</td>
 <td>1.1413</td>
@@ -737,15 +771,15 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 </div>
-<div id="e9bdcf62" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.641709Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.641564Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.799737Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.799390Z&quot;}}" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
+<div id="e9bdcf62" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.641709Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.641564Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.799737Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.799390Z&quot;}" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ax.plot(cv.index, cv[<span class="st">'mse_pca_fuera_muestra'</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'PCA'</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.plot(cv.index, cv[<span class="st">'mse_ae_tanh'</span>], <span class="st">'s-'</span>, label<span class="op">=</span><span class="st">'AE no lineal (tanh)'</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ax.plot(cv.index, cv[<span class="st">'mse_ae_tanh_preentrenado'</span>], <span class="st">'^--'</span>, label<span class="op">=</span><span class="st">'AE no lineal + pre-entrenamiento'</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>ax.axvline(d_horn, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">':'</span>, label<span class="op">=</span><span class="ss">f'd de Horn = </span><span class="sc">{</span>d_horn<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Dimensión latente d'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'MSE fuera de muestra (bloques)'</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Error de reconstrucción fuera de muestra: PCA vs. autoencoder'</span>)<span class="op">;</span> ax.legend()</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_cv_pca_vs_ae.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_cv_pca_vs_ae.png'</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -754,10 +788,10 @@ Torch 2.2.2</code></pre>
 </div>
 </div>
 </div>
-<div id="22c5c49d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.801660Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.801523Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.806354Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.806048Z&quot;}}" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cv.to_csv(<span class="st">'data/results/08_ae_cv_bloques.csv'</span>)</span>
+<div id="22c5c49d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.801660Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.801523Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:41.806354Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:41.806048Z&quot;}" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cv.to_csv(<span class="st">'data/results/08_ae_cv_bloques.csv'</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>anclaje.to_csv(<span class="st">'data/results/08_ae_anclaje_lineal.csv'</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tabla_horn.to_csv(<span class="st">'data/results/08_ae_horn.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tabla_horn.to_csv(<span class="st">'data/results/08_ae_horn.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="modelo-final-y-estabilidad-frente-a-la-semilla" class="level2">
@@ -767,8 +801,8 @@ Torch 2.2.2</code></pre>
 <li><strong>RV entre réplicas</strong>: si la geometría de la nube latente depende de la semilla, el modelo no es interpretable;</li>
 <li><strong>RV con los scores del PCA</strong>: cuánto de la configuración no lineal ya está en el PCA.</li>
 </ul>
-<div id="9bdd86b2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.808222Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.808085Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.171407Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.171049Z&quot;}}" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>D_FINAL <span class="op">=</span> <span class="dv">3</span></span>
+<div id="9bdd86b2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:41.808222Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:41.808085Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.171407Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.171049Z&quot;}" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>D_FINAL <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>corte <span class="op">=</span> <span class="bu">int</span>(n <span class="op">*</span> <span class="fl">0.85</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>replicas, codigos <span class="op">=</span> [], []</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
@@ -790,7 +824,7 @@ Torch 2.2.2</code></pre>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'RV réplica vs PCA (mediana)'</span>: np.median(rv_pca),</span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'MSE en muestra AE (mediana)'</span>: np.median(mse_full),</span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'MSE en muestra PCA'</span>: np.mean((X <span class="op">-</span> PCA(D_FINAL).fit(X).inverse_transform(scores_pca)) <span class="op">**</span> <span class="dv">2</span>)})</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>estab.<span class="bu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>estab.<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>RV entre réplicas (mediana)    0.9387
 RV entre réplicas (mínimo)     0.8718
@@ -801,8 +835,8 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>Se elige como representativa la réplica con mayor RV promedio respecto de las demás (la más “central” de la distribución de soluciones), en vez de la de menor error, para no premiar una solución atípica.</p>
-<div id="2fc8beb4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.173512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.173360Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.268715Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.268296Z&quot;}}" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rv_mat <span class="op">=</span> np.ones((<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<div id="2fc8beb4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.173512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.173360Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.268715Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.268296Z&quot;}" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rv_mat <span class="op">=</span> np.ones((<span class="dv">10</span>, <span class="dv">10</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">!=</span> j:</span>
@@ -816,7 +850,7 @@ dtype: float64</code></pre>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>corr_ejes <span class="op">=</span> pd.DataFrame(np.corrcoef(Z_rot.T, scores_pca.T)[:D_FINAL, D_FINAL:],</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                         index<span class="op">=</span>[<span class="ss">f'AE</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (rotado)'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)],</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                         columns<span class="op">=</span>[<span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)]).<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>corr_ejes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>corr_ejes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Réplica central: 5 | RV con PCA: 0.821</code></pre>
 </div>
@@ -824,7 +858,7 @@ dtype: float64</code></pre>
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -835,19 +869,19 @@ dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">AE1 (rotado)</th>
+<td data-quarto-table-cell-role="th">AE1 (rotado)</td>
 <td>0.925</td>
 <td>0.023</td>
 <td>0.087</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">AE2 (rotado)</th>
+<td data-quarto-table-cell-role="th">AE2 (rotado)</td>
 <td>0.022</td>
 <td>0.873</td>
 <td>0.065</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">AE3 (rotado)</th>
+<td data-quarto-table-cell-role="th">AE3 (rotado)</td>
 <td>0.078</td>
 <td>0.059</td>
 <td>0.905</td>
@@ -861,18 +895,18 @@ dtype: float64</code></pre>
 <section id="interpretación-de-los-ejes-latentes" class="level3">
 <h3 class="anchored" data-anchor-id="interpretación-de-los-ejes-latentes">5.1 Interpretación de los ejes latentes</h3>
 <p>Para un AE no lineal no existen “cargas” constantes. Se usa la <strong>correlación entre cada variable original y cada eje latente rotado</strong> (análogo al círculo de correlaciones del PCA), que es la lectura habitual en la tradición del análisis de datos.</p>
-<div id="32813369" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.270993Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.270849Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.281092Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.280713Z&quot;}}" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>corr_var <span class="op">=</span> pd.DataFrame(np.corrcoef(X.T, Z_rot.T)[:p, p:], index<span class="op">=</span>nombres,</span>
+<div id="32813369" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.270993Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.270849Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.281092Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.280713Z&quot;}" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>corr_var <span class="op">=</span> pd.DataFrame(np.corrcoef(X.T, Z_rot.T)[:p, p:], index<span class="op">=</span>nombres,</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                        columns<span class="op">=</span>[<span class="ss">f'AE</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)])</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>corr_pca <span class="op">=</span> pd.DataFrame(np.corrcoef(X.T, scores_pca.T)[:p, p:], index<span class="op">=</span>nombres,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                        columns<span class="op">=</span>[<span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)])</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> pd.concat([corr_var, corr_pca], axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>interp.sort_values(<span class="st">'AE1'</span>, key<span class="op">=</span>np.<span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>interp.sort_values(<span class="st">'AE1'</span>, key<span class="op">=</span>np.<span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -886,7 +920,7 @@ dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Liquidez M2</th>
+<td data-quarto-table-cell-role="th">Liquidez M2</td>
 <td>0.78</td>
 <td>0.48</td>
 <td>0.03</td>
@@ -895,7 +929,7 @@ dtype: float64</code></pre>
 <td>-0.04</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Liquidez M3</th>
+<td data-quarto-table-cell-role="th">Liquidez M3</td>
 <td>0.74</td>
 <td>0.48</td>
 <td>0.15</td>
@@ -904,7 +938,7 @@ dtype: float64</code></pre>
 <td>0.12</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Tasa pasiva TIPMN</th>
+<td data-quarto-table-cell-role="th">Tasa pasiva TIPMN</td>
 <td>-0.65</td>
 <td>0.40</td>
 <td>-0.24</td>
@@ -913,7 +947,7 @@ dtype: float64</code></pre>
 <td>-0.18</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Tasa interbancaria</th>
+<td data-quarto-table-cell-role="th">Tasa interbancaria</td>
 <td>-0.54</td>
 <td>0.55</td>
 <td>-0.01</td>
@@ -922,7 +956,7 @@ dtype: float64</code></pre>
 <td>0.01</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Tasa referencia BCRP</th>
+<td data-quarto-table-cell-role="th">Tasa referencia BCRP</td>
 <td>-0.54</td>
 <td>0.54</td>
 <td>-0.06</td>
@@ -931,7 +965,7 @@ dtype: float64</code></pre>
 <td>-0.05</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Liquidez M1</th>
+<td data-quarto-table-cell-role="th">Liquidez M1</td>
 <td>0.52</td>
 <td>0.33</td>
 <td>0.53</td>
@@ -940,7 +974,7 @@ dtype: float64</code></pre>
 <td>0.52</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Índice BVL</th>
+<td data-quarto-table-cell-role="th">Índice BVL</td>
 <td>0.49</td>
 <td>0.29</td>
 <td>-0.40</td>
@@ -949,7 +983,7 @@ dtype: float64</code></pre>
 <td>-0.47</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">IPC Lima</th>
+<td data-quarto-table-cell-role="th">IPC Lima</td>
 <td>-0.41</td>
 <td>0.37</td>
 <td>0.19</td>
@@ -958,7 +992,7 @@ dtype: float64</code></pre>
 <td>0.16</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">embi_peru</th>
+<td data-quarto-table-cell-role="th">embi_peru</td>
 <td>-0.39</td>
 <td>-0.14</td>
 <td>0.32</td>
@@ -967,7 +1001,7 @@ dtype: float64</code></pre>
 <td>0.49</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Tasa activa TAMN</th>
+<td data-quarto-table-cell-role="th">Tasa activa TAMN</td>
 <td>-0.39</td>
 <td>0.25</td>
 <td>-0.36</td>
@@ -976,7 +1010,7 @@ dtype: float64</code></pre>
 <td>-0.31</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Tipo de cambio</th>
+<td data-quarto-table-cell-role="th">Tipo de cambio</td>
 <td>-0.29</td>
 <td>-0.22</td>
 <td>0.34</td>
@@ -985,7 +1019,7 @@ dtype: float64</code></pre>
 <td>0.42</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Reservas internacionales</th>
+<td data-quarto-table-cell-role="th">Reservas internacionales</td>
 <td>0.27</td>
 <td>0.32</td>
 <td>-0.01</td>
@@ -994,7 +1028,7 @@ dtype: float64</code></pre>
 <td>-0.10</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Crédito consumo</th>
+<td data-quarto-table-cell-role="th">Crédito consumo</td>
 <td>-0.22</td>
 <td>0.46</td>
 <td>0.05</td>
@@ -1003,7 +1037,7 @@ dtype: float64</code></pre>
 <td>-0.02</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Demanda interna</th>
+<td data-quarto-table-cell-role="th">Demanda interna</td>
 <td>0.22</td>
 <td>0.28</td>
 <td>0.49</td>
@@ -1012,7 +1046,7 @@ dtype: float64</code></pre>
 <td>0.42</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Crédito empresarial</th>
+<td data-quarto-table-cell-role="th">Crédito empresarial</td>
 <td>0.12</td>
 <td>0.14</td>
 <td>0.57</td>
@@ -1021,7 +1055,7 @@ dtype: float64</code></pre>
 <td>0.68</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">PBI desestacionalizado</th>
+<td data-quarto-table-cell-role="th">PBI desestacionalizado</td>
 <td>0.08</td>
 <td>0.17</td>
 <td>0.15</td>
@@ -1030,7 +1064,7 @@ dtype: float64</code></pre>
 <td>0.14</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Crédito hipotecario</th>
+<td data-quarto-table-cell-role="th">Crédito hipotecario</td>
 <td>0.03</td>
 <td>0.33</td>
 <td>0.35</td>
@@ -1044,15 +1078,15 @@ dtype: float64</code></pre>
 </div>
 </div>
 </div>
-<div id="21355a87" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.283047Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.282923Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.898975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.898656Z&quot;}}" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(D_FINAL, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<div id="21355a87" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.283047Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.282923Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:47.898975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:47.898656Z&quot;}" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(D_FINAL, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ax <span class="kw">in</span> <span class="bu">enumerate</span>(axes):</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    ax.plot(df.index, scores_pca[:, i], color<span class="op">=</span><span class="st">'tab:blue'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(df.index, Z_rot[:, i], color<span class="op">=</span><span class="st">'tab:red'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'AE</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (rotado)'</span>)</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="ss">f'Eje </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span>)<span class="op">;</span> ax.legend(loc<span class="op">=</span><span class="st">'lower left'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    sombrear_episodios(ax)</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Ejes latentes del autoencoder (rotados por Procrustes) vs. scores del PCA'</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_ejes_latentes.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_ejes_latentes.png'</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1067,8 +1101,8 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="error-de-reconstrucción-como-indicador-de-anomalía-estructural">6. Error de reconstrucción como indicador de anomalía estructural</h2>
 <p>Un mes con error de reconstrucción alto es un mes que <strong>no se ajusta a la estructura de covariación típica</strong> aprendida por el modelo: candidato a episodio de estrés o a cambio de régimen. La incertidumbre se cuantifica con Monte Carlo Dropout (T = 300 pasadas estocásticas con dropout activo).</p>
 <p><em>Advertencia</em>: este error es <strong>en muestra</strong> (el modelo vio esos meses). La versión estrictamente fuera de muestra, con validación walk-forward, está en <code>09_lstm_autoencoder</code>.</p>
-<div id="d50058c0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.901173Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.901041Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.304959Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.304619Z&quot;}}" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mc <span class="op">=</span> mc_dropout(ae_final, X, T<span class="op">=</span><span class="dv">300</span>, funcion<span class="op">=</span><span class="st">'error'</span>, semilla<span class="op">=</span><span class="dv">7</span>)</span>
+<div id="d50058c0" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:47.901173Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:47.901041Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.304959Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.304619Z&quot;}" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mc <span class="op">=</span> mc_dropout(ae_final, X, T<span class="op">=</span><span class="dv">300</span>, funcion<span class="op">=</span><span class="st">'error'</span>, semilla<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> pd.DataFrame({<span class="st">'error_ae'</span>: error_reconstruccion(ae_final, X),</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'error_mc_media'</span>: mc.mean(axis<span class="op">=</span><span class="dv">0</span>),</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'error_mc_p05'</span>: np.percentile(mc, <span class="dv">5</span>, axis<span class="op">=</span><span class="dv">0</span>),</span>
@@ -1083,7 +1117,7 @@ dtype: float64</code></pre>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">'log'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'MSE por mes (escala log)'</span>)</span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>sombrear_episodios(ax)</span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Error de reconstrucción mensual'</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_error_reconstruccion.png'</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="st">'reports/figures/08_error_reconstruccion.png'</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1092,18 +1126,18 @@ dtype: float64</code></pre>
 </div>
 </div>
 </div>
-<div id="d10bb580" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.306966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.306833Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.317068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.316793Z&quot;}}" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>top <span class="op">=</span> err.sort_values(<span class="st">'error_ae'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">12</span>).copy()</span>
+<div id="d10bb580" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.306966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.306833Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.317068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.316793Z&quot;}" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>top <span class="op">=</span> err.sort_values(<span class="st">'error_ae'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">12</span>).copy()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>E_var <span class="op">=</span> pd.DataFrame(error_reconstruccion(ae_final, X, por_variable<span class="op">=</span><span class="va">True</span>), index<span class="op">=</span>df.index, columns<span class="op">=</span>nombres)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>top[<span class="st">'variable_dominante'</span>] <span class="op">=</span> E_var.loc[top.index].idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>top[<span class="st">'participacion_%'</span>] <span class="op">=</span> (<span class="dv">100</span> <span class="op">*</span> E_var.loc[top.index].<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> E_var.loc[top.index].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">round</span>(<span class="dv">1</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>top.index <span class="op">=</span> top.index.strftime(<span class="st">'%Y-%m'</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>top[[<span class="st">'error_ae'</span>, <span class="st">'error_pca'</span>, <span class="st">'variable_dominante'</span>, <span class="st">'participacion_%'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>top[[<span class="st">'error_ae'</span>, <span class="st">'error_pca'</span>, <span class="st">'variable_dominante'</span>, <span class="st">'participacion_%'</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1122,84 +1156,84 @@ dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2020-04</th>
+<td data-quarto-table-cell-role="th">2020-04</td>
 <td>8.524</td>
 <td>5.497</td>
 <td>PBI desestacionalizado</td>
 <td>64.900002</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2008-10</th>
+<td data-quarto-table-cell-role="th">2008-10</td>
 <td>6.956</td>
 <td>1.007</td>
 <td>embi_peru</td>
 <td>54.099998</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2008-12</th>
+<td data-quarto-table-cell-role="th">2008-12</td>
 <td>5.725</td>
 <td>5.335</td>
 <td>Crédito hipotecario</td>
 <td>79.300003</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2020-03</th>
+<td data-quarto-table-cell-role="th">2020-03</td>
 <td>5.328</td>
 <td>2.343</td>
 <td>PBI desestacionalizado</td>
 <td>47.599998</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2010-08</th>
+<td data-quarto-table-cell-role="th">2010-08</td>
 <td>4.662</td>
 <td>3.910</td>
 <td>Crédito consumo</td>
 <td>77.099998</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2020-05</th>
+<td data-quarto-table-cell-role="th">2020-05</td>
 <td>4.118</td>
 <td>1.872</td>
 <td>Crédito empresarial</td>
 <td>36.000000</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2020-06</th>
+<td data-quarto-table-cell-role="th">2020-06</td>
 <td>3.035</td>
 <td>2.967</td>
 <td>PBI desestacionalizado</td>
 <td>64.000000</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2009-05</th>
+<td data-quarto-table-cell-role="th">2009-05</td>
 <td>2.790</td>
 <td>1.104</td>
 <td>Tasa activa TAMN</td>
 <td>21.600000</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2008-01</th>
+<td data-quarto-table-cell-role="th">2008-01</td>
 <td>2.505</td>
 <td>2.538</td>
 <td>Reservas internacionales</td>
 <td>38.400002</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2018-04</th>
+<td data-quarto-table-cell-role="th">2018-04</td>
 <td>2.043</td>
 <td>2.361</td>
 <td>Crédito hipotecario</td>
 <td>47.200001</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2018-03</th>
+<td data-quarto-table-cell-role="th">2018-03</td>
 <td>1.669</td>
 <td>1.822</td>
 <td>Crédito hipotecario</td>
 <td>34.599998</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">2009-06</th>
+<td data-quarto-table-cell-role="th">2009-06</td>
 <td>1.483</td>
 <td>0.814</td>
 <td>Tasa interbancaria</td>
@@ -1215,8 +1249,8 @@ dtype: float64</code></pre>
 <section id="contraste-con-las-transiciones-detectadas-por-epca" class="level2">
 <h2 class="anchored" data-anchor-id="contraste-con-las-transiciones-detectadas-por-epca">7. Contraste con las transiciones detectadas por EPCA</h2>
 <p>Las transiciones candidatas de <code>06_epca</code> (caídas de la correlación entre cargas de PC1 de ventanas sucesivas) se superponen al error de reconstrucción del AE. La coincidencia temporal entre dos métodos independientes es evidencia más fuerte que cualquiera aislado; la discrepancia también es informativa.</p>
-<div id="0f6aa475" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.318957Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.318804Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.327367Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.327104Z&quot;}}" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>trans <span class="op">=</span> pd.read_csv(<span class="st">'data/results/06_epca_transiciones_detectadas.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'fecha_transicion_candidata'</span>])</span>
+<div id="0f6aa475" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.318957Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.318804Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.327367Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.327104Z&quot;}" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>trans <span class="op">=</span> pd.read_csv(<span class="st">'data/results/06_epca_transiciones_detectadas.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'fecha_transicion_candidata'</span>])</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>umbral_err <span class="op">=</span> err[<span class="st">'error_ae'</span>].quantile(<span class="fl">0.90</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>filas <span class="op">=</span> []</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> trans[<span class="st">'fecha_transicion_candidata'</span>]:</span>
@@ -1226,7 +1260,7 @@ dtype: float64</code></pre>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'supera_p90'</span>: <span class="bu">bool</span>(ventana.<span class="bu">max</span>() <span class="op">&gt;</span> umbral_err)})</span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>contraste <span class="op">=</span> pd.DataFrame(filas)</span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Umbral p90 del error AE: </span><span class="sc">{</span>umbral_err<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>contraste.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>contraste.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Umbral p90 del error AE: 0.930</code></pre>
 </div>
@@ -1234,7 +1268,7 @@ dtype: float64</code></pre>
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1246,21 +1280,21 @@ dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
+<td data-quarto-table-cell-role="th">0</td>
 <td>2013-05</td>
 <td>0.601</td>
 <td>2013-10</td>
 <td>False</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
+<td data-quarto-table-cell-role="th">1</td>
 <td>2017-11</td>
 <td>2.043</td>
 <td>2018-04</td>
 <td>True</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
+<td data-quarto-table-cell-role="th">2</td>
 <td>2018-02</td>
 <td>2.043</td>
 <td>2018-04</td>
@@ -1275,15 +1309,15 @@ dtype: float64</code></pre>
 </section>
 <section id="guardar-resultados" class="level2">
 <h2 class="anchored" data-anchor-id="guardar-resultados">8. Guardar resultados</h2>
-<div id="236b5b77" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.329049Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.328939Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.341964Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.341697Z&quot;}}" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>salida <span class="op">=</span> pd.DataFrame(Z_rot, index<span class="op">=</span>df.index, columns<span class="op">=</span>[<span class="ss">f'AE</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">_rotado'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)])</span>
+<div id="236b5b77" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-05T11:39:48.329049Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-05T11:39:48.328939Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-05T11:39:48.341964Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-05T11:39:48.341697Z&quot;}" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>salida <span class="op">=</span> pd.DataFrame(Z_rot, index<span class="op">=</span>df.index, columns<span class="op">=</span>[<span class="ss">f'AE</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">_rotado'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(D_FINAL)])</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>salida <span class="op">=</span> salida.join(err)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>salida.to_csv(<span class="st">'data/results/08_ae_factores_y_error.csv'</span>)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>interp.to_csv(<span class="st">'data/results/08_ae_correlaciones_variables.csv'</span>)</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>pd.concat([estab.rename(<span class="st">'valor'</span>)]).to_csv(<span class="st">'data/results/08_ae_estabilidad.csv'</span>)</span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>contraste.to_csv(<span class="st">'data/results/08_ae_contraste_epca.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>torch.save(ae_final.state_dict(), <span class="st">'data/results/08_ae_modelo_final.pt'</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Resultados guardados en data/results/08_ae_*'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Resultados guardados en data/results/08_ae_*'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Resultados guardados en data/results/08_ae_*</code></pre>
 </div>
@@ -1306,243 +1340,236 @@ dtype: float64</code></pre>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
     }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
     }
-    const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-    }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
     });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/RobertoSam\.github\.io\/Tesis-modelamiento-matematico\/");
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
         }
       }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'quarto',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config); 
     }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
-        }
-      });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
     }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
       } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
         }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
       }
     }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
-        }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
           }
         } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
+          // See if we can fetch this
+          fetch(url.split('#')[0])
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
+            const note = htmlDoc.getElementById(id);
             if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
+              const html = processXRef(id, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1550,161 +1577,185 @@ dtype: float64</code></pre>
             instance.show();
           });
         }
-      }, function(instance) {
-      });
-    }
-        let selectedAnnoteEl;
-        const selectorForAnnotation = ( cell, annotation) => {
-          let cellAttr = 'data-code-cell="' + cell + '"';
-          let lineAttr = 'data-code-annotation="' +  annotation + '"';
-          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-          return selector;
-        }
-        const selectCodeLines = (annoteEl) => {
-          const doc = window.document;
-          const targetCell = annoteEl.getAttribute("data-target-cell");
-          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-          const lineIds = lines.map((line) => {
-            return targetCell + "-" + line;
-          })
-          let top = null;
-          let height = null;
-          let parent = null;
-          if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
-            }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
-            }
-            selectedAnnoteEl = annoteEl;
-          }
-        };
-        const unselectCodeLines = () => {
-          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-          elementsIds.forEach((elId) => {
-            const div = window.document.getElementById(elId);
-            if (div) {
-              div.remove();
-            }
-          });
-          selectedAnnoteEl = undefined;
-        };
-          // Handle positioning of the toggle
-      window.addEventListener(
-        "resize",
-        throttle(() => {
-          elRect = undefined;
-          if (selectedAnnoteEl) {
-            selectCodeLines(selectedAnnoteEl);
-          }
-        }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
-              fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
-            }
-          });
-        }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
       } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
             }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
         });
       }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
     }
-  });
-  </script>
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
 </div> <!-- /content -->
 
 
