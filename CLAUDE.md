@@ -37,39 +37,79 @@ data/processed/   Datasets mensuales vigentes: niveles 228 meses × 17 series (2
 data/results/     Salidas con prefijo del notebook que las genera
 papers/           Fichas bibliográficas apellido_año.qmd (Ficha Estándar)
 R/                Versión en R (fuera del sitio; requiere Rcamiz/AedeClahfac locales)
-tesis/            Borrador de tesis (Seminario de Tesis II, MMC102) en Quarto → HTML y .docx
+tesis/            Informe del curso (Seminario de Tesis II, MMC102) en Quarto → HTML y .docx
+tesis_latex/      Tesis maestra en LaTeX → PDF
+asesoria/         Diagnósticos y planes de iteración del asesor de tesis
+herramientas/     Scripts compartidos (generar_cifras.py)
 auditorias/       Dictámenes del auditor por iteración
 .claude/agents/   Definición de los agentes
 ```
 
-## Equipo de agentes y ciclo de iteración
+## Documentos y fuentes únicas
+
+- **Tesis (documento maestro):** `tesis_latex/` → PDF. Es la versión más rigurosa.
+- **Informe del curso (MMC102):** `tesis/` (Quarto → Word y sitio). Se deriva de la tesis y no
+  puede afirmar nada que la tesis no sostenga.
+- **Cifras:** solo desde `data/results/`. `herramientas/generar_cifras.py` las convierte en macros
+  LaTeX (`tesis_latex/cifras.tex`) y en valores para Quarto; ningún documento las copia a mano.
+- **Bibliografía:** un único `tesis/referencias.bib`, compartido por la tesis y el informe. Cada
+  entrada tiene su ficha en `papers/`, y solo el bibliotecario modifica el archivo.
+
+## Equipo de agentes
 
 | Agente | Archivo | Rol |
 |---|---|---|
-| Desarrollador | `.claude/agents/desarrollador.md` | Construye y ejecuta el código en Python y en R (Rmd), produce resultados |
-| Editor APA | `.claude/agents/editor-apa.md` | Redacta el borrador y aplica APA 7 |
-| Auditor | `.claude/agents/auditor.md` | Valida todo de forma independiente |
+| Asesor de tesis | `.claude/agents/asesor-tesis.md` | Diagnostica el avance y propone la siguiente iteración; no edita |
+| Desarrollador | `.claude/agents/desarrollador.md` | Código en Python y en R (Rmd), resultados y cifras |
+| Redactor LaTeX | `.claude/agents/redactor-latex.md` | Tesis maestra en LaTeX: rigor formal, notación y PDF |
+| Editor del informe | `.claude/agents/editor-informe.md` | Informe MMC102 en Quarto/Word, APA 7, derivado de la tesis |
+| Bibliotecario | `.claude/agents/bibliotecario.md` | Fichas, verificación de metadatos, `.bib` y registro |
+| Auditor | `.claude/agents/auditor.md` | Valida todo de forma independiente antes de publicar |
 
-**Ciclo por iteración** (el orquestador es la sesión principal):
+## Ciclo de iteración (el orquestador es la sesión principal)
 
-1. Roberto fija el objetivo de la iteración.
-2. **Desarrollador** implementa y ejecuta en Python y en el Rmd (paridad); entrega
-   `data/results/` + nota de resultados.
-3. **Editor APA** integra en `tesis/` con citas y referencias cruzadas.
-4. **Auditor** revisa sin recibir el razonamiento de los otros agentes; emite
+1. **Asesor de tesis** diagnostica y propone el plan de la iteración en `asesoria/`: objetivo,
+   tareas por agente y criterios de aceptación.
+2. **Roberto da su conforme al plan**, con ajustes si los hay. Desde ese momento la iteración
+   avanza sin nuevas consultas, salvo decisiones irreversibles o que solo él puede tomar.
+3. **Desarrollador** implementa y ejecuta en Python y en el Rmd (paridad) y regenera las cifras.
+   **Bibliotecario** cierra las fichas y verificaciones que el plan requiera. Ambos trabajan en
+   paralelo si no dependen uno del otro.
+4. **Redactor LaTeX** integra el contenido en la tesis maestra. Luego **editor del informe**
+   actualiza el informe a partir de la tesis.
+5. **Auditor** revisa sin recibir el razonamiento de los otros agentes y emite
    `auditorias/AAAA-MM-DD_iteracion-N.md` con dictamen **APROBADO / OBSERVADO**.
-5. Si hay hallazgos bloqueantes o mayores, vuelven al agente responsable: código, resultados y
-   Rmd → **desarrollador**; texto, citas y formato → **editor APA**. Máximo dos vueltas; si
-   persisten, se escalan a Roberto.
-6. Roberto aprueba → commit en `main`, entrada en `linea_temporal.qmd`, render y
-   `quarto publish gh-pages`.
+6. Si hay hallazgos bloqueantes o mayores, vuelven al agente responsable:
+   - código, resultados y Rmd → **desarrollador**;
+   - tesis LaTeX → **redactor LaTeX**;
+   - informe → **editor del informe**;
+   - fichas y `.bib` → **bibliotecario**.
+
+   Como máximo hay dos vueltas; si los hallazgos persisten, se escalan a Roberto.
+7. El trabajo en curso se respalda en la rama `iteracion-N`, nunca en `main`.
+
+## Conforme de Roberto
+
+Cuando Roberto da su **conforme a una iteración auditada** («conforme iteración N»), el
+orquestador, sin más consultas:
+
+1. integra `iteracion-N` en `main`;
+2. agrega la entrada en `linea_temporal.qmd`;
+3. hace `quarto render` y `quarto publish gh-pages`;
+4. lanza al **asesor de tesis** para el plan de la iteración N+1 y se lo presenta a Roberto.
+
+Si Roberto ya aprobó ese plan por adelantado, lo ejecuta directamente.
+
+El capítulo de resultados, tanto en la tesis como en el informe, no se publica sin aprobación
+explícita de Roberto (regla 7).
 
 ## Comandos
 
 ```
 jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 notebooks/NN_*.ipynb
 Rscript -e "rmarkdown::render('R/tesis_ciclo_financiero.Rmd')"
-quarto render tesis/ --to docx      # entregable UNI
+quarto render tesis/ --to docx      # informe MMC102
+latexmk -lualatex -cd tesis_latex/tesis.tex   # tesis maestra
 quarto render                       # sitio completo
 quarto publish gh-pages             # paso separado de git push
 ```
