@@ -13,6 +13,43 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 19–20 de octubre de 2026
+
+**Versión en R operativa y en paridad con Python**
+
+- `R/tesis_ciclo_financiero.Rmd` se ejecuta completo, en unos 2,5 minutos con los parámetros
+  por defecto. En servidores sin locale UTF-8 fallaba, porque los nombres de las series llevan
+  tilde; ahora lo fija al inicio.
+- **Paridad Python–R: 15 de 15 en las dos vías.** Comprende los valores propios y las cargas del
+  PCA, las transiciones de la EPCA, los regímenes y las fases del notebook `09`, y la traducción
+  a R del código del asesor frente al binario original.
+- El Rmd vigente genera los archivos de paridad (`R_*`) en las dos vías: `data/results/` y
+  `data/results/niveles/`. La jerarquía de la HFC identifica cada hoja por nombre y código de
+  serie.
+
+**Ajustes metodológicos**
+
+- La EPCA en niveles del notebook `06` usa ahora las 17 series de D1; antes usaba 19. Aparece una
+  transición adicional en 2017-10. Está cerca del umbral y coincide con un borde de ventana, por
+  lo que no se interpreta todavía como cambio de régimen.
+- El índice de Calinski-Harabász se reporta con las dos variantes del numerador (k y k−1), porque
+  la elección cambia el número de regímenes. La variante que se adopte se decidirá con el asesor.
+- Se precisa la regla de orientación de ejes de `aede` (suma lineal de coeficientes), distinta de
+  la de Rcamiz (suma de cuadrados).
+- Nueva decisión [D3](decisiones.qmd): solo frecuencia mensual. El notebook `06a` (trimestral)
+  queda como antecedente superado y `05` se rehará con datos mensuales.
+
+**Trazabilidad**
+
+- Las fechas de los episodios de referencia y las obras sin ficha quedan marcadas como pendientes
+  de verificación (28 marcas) y registradas en las [referencias](tesis/06_referencias.qmd).
+
+**Pendientes**
+
+- Una sola definición de los episodios, con fuente externa y convención de fecha.
+- Fijar la fecha de corte de los datos: el BCRP revisa el ajuste estacional de algunas series.
+- Rehacer `05_pca` con datos mensuales (D3).
+
 ## 18–19 de octubre de 2026
 
 **Forma de trabajo: equipo de agentes**
