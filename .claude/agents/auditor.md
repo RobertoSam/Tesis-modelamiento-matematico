@@ -31,6 +31,10 @@ o los archivos indicados) y sus dependencias directas.
 7. Los notebooks modificados se ejecutan de principio a fin sin errores. Re-ejecuta los que
    cambiaron, o los más baratos si el tiempo no alcanza, y declara cuáles verificaste.
 8. No hay resultados con data incompleta ni referencias a corridas descartadas.
+8b. **Paridad Python–R:** si cambió el análisis, `R/tesis_ciclo_financiero.Rmd` se renderiza
+    sin errores y sus cifras coinciden con las de Python (`data/results/R_paridad_python.csv` y
+    los CSV `R_*`), o la diferencia está explicada. Un cambio aplicado en una sola versión es
+    un hallazgo mayor.
 
 **C. Coherencia**
 9. El texto respeta D1 y D2 y no contradice `marco_conceptual.qmd`,

@@ -45,19 +45,21 @@ auditorias/       Dictámenes del auditor por iteración
 
 | Agente | Archivo | Rol |
 |---|---|---|
-| Desarrollador | `.claude/agents/desarrollador.md` | Construye y ejecuta código, produce resultados |
+| Desarrollador | `.claude/agents/desarrollador.md` | Construye y ejecuta el código en Python y en R (Rmd), produce resultados |
 | Editor APA | `.claude/agents/editor-apa.md` | Redacta el borrador y aplica APA 7 |
 | Auditor | `.claude/agents/auditor.md` | Valida todo de forma independiente |
 
 **Ciclo por iteración** (el orquestador es la sesión principal):
 
 1. Roberto fija el objetivo de la iteración.
-2. **Desarrollador** implementa y ejecuta; entrega `data/results/` + nota de resultados.
+2. **Desarrollador** implementa y ejecuta en Python y en el Rmd (paridad); entrega
+   `data/results/` + nota de resultados.
 3. **Editor APA** integra en `tesis/` con citas y referencias cruzadas.
 4. **Auditor** revisa sin recibir el razonamiento de los otros agentes; emite
    `auditorias/AAAA-MM-DD_iteracion-N.md` con dictamen **APROBADO / OBSERVADO**.
-5. Si hay hallazgos bloqueantes, vuelven al agente responsable (máximo dos vueltas; si
-   persisten, se escalan a Roberto).
+5. Si hay hallazgos bloqueantes o mayores, vuelven al agente responsable: código, resultados y
+   Rmd → **desarrollador**; texto, citas y formato → **editor APA**. Máximo dos vueltas; si
+   persisten, se escalan a Roberto.
 6. Roberto aprueba → commit en `main`, entrada en `linea_temporal.qmd`, render y
    `quarto publish gh-pages`.
 
@@ -65,6 +67,7 @@ auditorias/       Dictámenes del auditor por iteración
 
 ```
 jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 notebooks/NN_*.ipynb
+Rscript -e "rmarkdown::render('R/tesis_ciclo_financiero.Rmd')"
 quarto render tesis/ --to docx      # entregable UNI
 quarto render                       # sitio completo
 quarto publish gh-pages             # paso separado de git push

@@ -13,6 +13,47 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 18–19 de octubre de 2026
+
+**Forma de trabajo: equipo de agentes**
+
+- Se definen tres agentes en el repositorio (`.claude/agents/`), con reglas comunes en
+  `CLAUDE.md`:
+  - **desarrollador**: código en Python y en R (`R/tesis_ciclo_financiero.Rmd`), resultados y
+    corrección de las observaciones sobre código;
+  - **editor APA**: redacción del borrador y APA 7;
+  - **auditor**: validación independiente antes de cada publicación.
+- Ciclo por iteración: objetivo → desarrollador → editor → auditor (dictamen APROBADO u
+  OBSERVADO, como máximo dos vueltas) → aprobación de Roberto → publicación. Los dictámenes
+  quedan en `auditorias/`.
+
+**Borrador de tesis (Seminario de Tesis II, MMC102)**
+
+- Nueva sección [Borrador de tesis](tesis/index.qmd) en Quarto, con la estructura de MMC102.
+  Genera HTML y Word con formato provisional (Arial 12, interlineado 1,5).
+- Iteración 1: Introducción (problema, justificación, objetivos e hipótesis de trabajo) y
+  Antecedentes y marco teórico, **aprobados por el auditor tras una vuelta de corrección**:
+  2 hallazgos bloqueantes y 6 mayores, todos resueltos. Bibliografía con 17 referencias, cada
+  una con ficha en `papers/`; las verificaciones pendientes quedan en el
+  [registro](tesis/06_referencias.qmd).
+
+**Hallazgos**
+
+- Tamaño muestral vigente: **228 meses** sin transformar (2007-01 a 2025-12, análisis oficial)
+  y 227 transformados, porque la diferenciación pierde el primer mes.
+- La ecuación de la EPCA del asesor usa media y correlación ponderadas con pesos gaussianos
+  (`R/camiz_port.R`). `06_epca.ipynb` corresponde al caso de pesos uniformes.
+
+**Pendientes**
+
+- Fechar los cinco episodios de validación con fuentes externas (crisis global, *taper
+  tantrum*, COVID-19, renuncia de Kuczynski, guerra comercial).
+- Fichar las fuentes citadas como pendientes: Atoche Murrieta (2022), Benzécri (1973),
+  Calinski y Harabász (1974), Horn (1965), entre otras.
+- Confirmar con el asesor si la EHFC es un compromiso firme o un objetivo condicional.
+- Construir el contexto simulado comprometido en la ficha de inscripción.
+- Obtener las pautas de redacción de tesis de la UNI y ajustar la plantilla Word.
+
 ## 16 de octubre de 2026
 
 **Documento en R: análisis completo en dos vías**
