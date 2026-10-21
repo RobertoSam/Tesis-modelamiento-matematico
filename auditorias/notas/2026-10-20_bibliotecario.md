@@ -287,3 +287,11 @@ renderizan sin advertencias.
 
 - Entidad emisora de Tucker (1951): no aparece en ninguna fuente oficial accesible.
 - Contenido de Tucker (1951): no hay acceso al informe.
+
+## Vuelta 2 · cierre (21 de octubre de 2026)
+
+**N-13** (`auditorias/2026-10-21_iteracion-3a_vuelta2.md`): se actualizó la columna «Marcas en los
+documentos» de cuatro filas del registro: `tucker_1951` (ya citado con `\verificar`, `v2-tk` y
+marca en el Rmd), `lorenzo_seva_ten_berge_2006` (sin marca en los tres documentos; `v2-lst`
+retirada), `granger_newbold_1974` (NB05 con marca propia) y `tuhin_et_al_2025` (marca de la tesis
+en `sec:validacion` y `v2-tu2` del informe). **N-14** queda para la iteración 3b.
