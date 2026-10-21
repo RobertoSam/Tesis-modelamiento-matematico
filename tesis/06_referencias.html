@@ -87,6 +87,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -351,6 +380,7 @@ div.csl-indent {
   <li><a href="#estado-de-verificación-de-las-referencias" id="toc-estado-de-verificación-de-las-referencias" class="nav-link" data-scroll-target="#estado-de-verificación-de-las-referencias">Estado de verificación de las referencias</a>
   <ul class="collapse">
   <li><a href="#episodios-de-referencia" id="toc-episodios-de-referencia" class="nav-link" data-scroll-target="#episodios-de-referencia">Episodios de referencia</a></li>
+  <li><a href="#marcas-pendiente-no-bibliográficas-de-la-tesis-latex" id="toc-marcas-pendiente-no-bibliográficas-de-la-tesis-latex" class="nav-link" data-scroll-target="#marcas-pendiente-no-bibliográficas-de-la-tesis-latex">Marcas <code>\pendiente</code> no bibliográficas de la tesis LaTeX</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -383,8 +413,26 @@ div.csl-indent {
 <div id="ref-baldi_hornik_1989" class="csl-entry" role="listitem">
 Baldi, P., &amp; Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. <em>Neural Networks</em>, <em>2</em>(1), 53-58. <a href="https://doi.org/10.1016/0893-6080(89)90014-2">https://doi.org/10.1016/0893-6080(89)90014-2</a>
 </div>
+<div id="ref-bartlett_1950" class="csl-entry" role="listitem">
+Bartlett, M. S. (1950). Tests of significance in factor analysis. <em>British Journal of Statistical Psychology</em>, <em>3</em>(2), 77-85. <a href="https://doi.org/10.1111/j.2044-8317.1950.tb00285.x">https://doi.org/10.1111/j.2044-8317.1950.tb00285.x</a>
+</div>
+<div id="ref-bartlett_1951" class="csl-entry" role="listitem">
+Bartlett, M. S. (1951). The effect of standardization on a <span class="math inline">\(\chi^2\)</span> approximation in factor analysis. <em>Biometrika</em>, <em>38</em>(3–4), 337-344. <a href="https://doi.org/10.1093/biomet/38.3-4.337">https://doi.org/10.1093/biomet/38.3-4.337</a>
+</div>
+<div id="ref-benzecri_1973" class="csl-entry" role="listitem">
+Benzécri, J.-P. (1973). <em>L’analyse des données: <span>T</span>. 2. <span>L</span>’analyse des correspondances</em>. Dunod.
+</div>
+<div id="ref-bernanke_2013" class="csl-entry" role="listitem">
+Bernanke, B. S. (2013, mayo 22). <em>The economic outlook [Testimonio ante el <span>Joint Economic Committee</span> del <span>Congreso</span> de los <span>Estados Unidos</span>]</em>. <span>Bank for International Settlements</span>. <a href="https://www.bis.org/speeches/20130523-economic-outlook">https://www.bis.org/speeches/20130523-economic-outlook</a>
+</div>
+<div id="ref-reserva_federal_2013" class="csl-entry" role="listitem">
+Board of Governors of the Federal Reserve System. (2013, diciembre 18). <em>Federal <span>Reserve</span> issues <span>FOMC</span> statement [Comunicado de prensa]</em>. <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20131218a.htm">https://www.federalreserve.gov/newsevents/pressreleases/monetary20131218a.htm</a>
+</div>
 <div id="ref-bourlard_kamp_1988" class="csl-entry" role="listitem">
 Bourlard, H., &amp; Kamp, Y. (1988). Auto-association by multilayer perceptrons and singular value decomposition. <em>Biological Cybernetics</em>, <em>59</em>(4–5), 291-294. <a href="https://doi.org/10.1007/BF00332918">https://doi.org/10.1007/BF00332918</a>
+</div>
+<div id="ref-calinski_harabasz_1974" class="csl-entry" role="listitem">
+Caliński, T., &amp; Harabasz, J. (1974). A dendrite method for cluster analysis. <em>Communications in Statistics</em>, <em>3</em>(1), 1-27. <a href="https://doi.org/10.1080/03610927408827101">https://doi.org/10.1080/03610927408827101</a>
 </div>
 <div id="ref-camiz_cerda_atoche_2026" class="csl-entry" role="listitem">
 Camiz, S., Cerda Hernández, J. J., &amp; Atoche Murrieta, L. K. (2026). <em>Exploratory procedure to identify financial cycle: An application to <span>Peruvian</span> data</em> [Manuscrito no publicado].
@@ -398,8 +446,20 @@ Camiz, S., &amp; Roig, F. A. (2011). Evolutionary analysis applied to tree-ring 
 <div id="ref-camiz_et_al_2020" class="csl-entry" role="listitem">
 Camiz, S., Spada, F., Denimal, J.-J., &amp; Piraino, S. (2020). Hierarchical Factor Classification of Dendrochronological Time-Series. <em>Annals of Silvicultural Research</em>, <em>45</em>(1), 62-75. <a href="https://doi.org/10.12899/asr-1968">https://doi.org/10.12899/asr-1968</a>
 </div>
+<div id="ref-congreso_2016" class="csl-entry" role="listitem">
+Congreso de la República del Perú. (2016, julio 28). <em>Temas tratados: Sesión del Pleno del jueves 28 de julio de 2016. Juramentación y mensaje al Congreso del Presidente de la República</em>. <a href="https://www.congreso.gob.pe/Docs/legislativo/TemasTratados/files/pleno/ctt_28.jul.2016.pdf">https://www.congreso.gob.pe/Docs/legislativo/TemasTratados/files/pleno/ctt_28.jul.2016.pdf</a>
+</div>
+<div id="ref-congreso_2018" class="csl-entry" role="listitem">
+Congreso de la República del Perú. (2018, marzo 23). <em>Resolución Legislativa del Congreso 008-2017-2018-CR, por la que se acepta la renuncia del ciudadano <span>Pedro Pablo Kuczynski Godard</span> al cargo de Presidente de la República y se declara la vacancia de la Presidencia de la República</em>. <a href="https://comunicaciones.congreso.gob.pe/noticias/resolucion-legislativa-del-congreso-008-2017-2018-cr-por-la-que-se-acepta-la-renuncia-del-ciudadano-pedro-pablo-kuczynski-godard-al-cargo-de-presidente-de-la-republica-y-se-declara-la-vacancia-de-la">https://comunicaciones.congreso.gob.pe/noticias/resolucion-legislativa-del-congreso-008-2017-2018-cr-por-la-que-se-acepta-la-renuncia-del-ciudadano-pedro-pablo-kuczynski-godard-al-cargo-de-presidente-de-la-republica-y-se-declara-la-vacancia-de-la</a>
+</div>
+<div id="ref-dickey_fuller_1979" class="csl-entry" role="listitem">
+Dickey, D. A., &amp; Fuller, W. A. (1979). Distribution of the estimators for autoregressive time series with a unit root. <em>Journal of the American Statistical Association</em>, <em>74</em>(366a), 427-431. <a href="https://doi.org/10.1080/01621459.1979.10482531">https://doi.org/10.1080/01621459.1979.10482531</a>
+</div>
 <div id="ref-drehmann_borio_tsatsaronis_2012" class="csl-entry" role="listitem">
-Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012). <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> (BIS Working Paper No. 380). Bank for International Settlements. <a href="https://www.bis.org/publ/work380.pdf">https://www.bis.org/publ/work380.pdf</a>
+Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012). <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> (BIS Working Paper 380). Bank for International Settlements. <a href="https://www.bis.org/publ/work380.pdf">https://www.bis.org/publ/work380.pdf</a>
+</div>
+<div id="ref-eckart_young_1936" class="csl-entry" role="listitem">
+Eckart, C., &amp; Young, G. (1936). The approximation of one matrix by another of lower rank. <em>Psychometrika</em>, <em>1</em>(3), 211-218. <a href="https://doi.org/10.1007/BF02288367">https://doi.org/10.1007/BF02288367</a>
 </div>
 <div id="ref-fisher_1958" class="csl-entry" role="listitem">
 Fisher, W. D. (1958). On grouping for maximum homogeneity. <em>Journal of the American Statistical Association</em>, <em>53</em>(284), 789-798. <a href="https://doi.org/10.1080/01621459.1958.10501479">https://doi.org/10.1080/01621459.1958.10501479</a>
@@ -410,14 +470,62 @@ Gal, Y., &amp; Ghahramani, Z. (2016). Dropout as a <span>Bayesian</span> approxi
 <div id="ref-gers_schmidhuber_cummins_2000" class="csl-entry" role="listitem">
 Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (2000). Learning to forget: Continual prediction with <span>LSTM</span>. <em>Neural Computation</em>, <em>12</em>(10), 2451-2471. <a href="https://doi.org/10.1162/089976600300015015">https://doi.org/10.1162/089976600300015015</a>
 </div>
+<div id="ref-granger_newbold_1974" class="csl-entry" role="listitem">
+Granger, C. W. J., &amp; Newbold, P. (1974). Spurious regressions in econometrics. <em>Journal of Econometrics</em>, <em>2</em>, 111-120.
+</div>
 <div id="ref-hinton_salakhutdinov_2006" class="csl-entry" role="listitem">
 Hinton, G. E., &amp; Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. <em>Science</em>, <em>313</em>(5786), 504-507. <a href="https://doi.org/10.1126/science.1127647">https://doi.org/10.1126/science.1127647</a>
 </div>
 <div id="ref-hochreiter_schmidhuber_1997" class="csl-entry" role="listitem">
 Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, <em>9</em>(8), 1735-1780. <a href="https://doi.org/10.1162/neco.1997.9.8.1735">https://doi.org/10.1162/neco.1997.9.8.1735</a>
 </div>
+<div id="ref-horn_1965" class="csl-entry" role="listitem">
+Horn, J. L. (1965). A rationale and test for the number of factors in factor analysis. <em>Psychometrika</em>, <em>30</em>(2), 179-185. <a href="https://doi.org/10.1007/BF02289447">https://doi.org/10.1007/BF02289447</a>
+</div>
+<div id="ref-hubert_arabie_1985" class="csl-entry" role="listitem">
+Hubert, L., &amp; Arabie, P. (1985). Comparing partitions. <em>Journal of Classification</em>, <em>2</em>(1), 193-218. <a href="https://doi.org/10.1007/BF01908075">https://doi.org/10.1007/BF01908075</a>
+</div>
+<div id="ref-fmi_2015" class="csl-entry" role="listitem">
+International Monetary Fund. (2015). Special feature: Commodity market developments and forecasts, with a focus on investment in an era of low oil prices. En <em>World Economic Outlook, April 2015: Uneven growth: Short- and long-term factors</em>. International Monetary Fund. <a href="https://www.imf.org/external/np/res/commod/pdf/WEOSpecialAPR15.pdf">https://www.imf.org/external/np/res/commod/pdf/WEOSpecialAPR15.pdf</a>
+</div>
+<div id="ref-kaiser_1960" class="csl-entry" role="listitem">
+Kaiser, H. F. (1960). The application of electronic computers to factor analysis. <em>Educational and Psychological Measurement</em>, <em>20</em>(1), 141-151. <a href="https://doi.org/10.1177/001316446002000116">https://doi.org/10.1177/001316446002000116</a>
+</div>
+<div id="ref-kaiser_1970" class="csl-entry" role="listitem">
+Kaiser, H. F. (1970). A second generation little jiffy. <em>Psychometrika</em>, <em>35</em>(4), 401-415. <a href="https://doi.org/10.1007/BF02291817">https://doi.org/10.1007/BF02291817</a>
+</div>
+<div id="ref-kaiser_rice_1974" class="csl-entry" role="listitem">
+Kaiser, H. F., &amp; Rice, J. (1974). Little <span>Jiffy</span>, <span>Mark IV</span>. <em>Educational and Psychological Measurement</em>, <em>34</em>(1), 111-117. <a href="https://doi.org/10.1177/001316447403400115">https://doi.org/10.1177/001316447403400115</a>
+</div>
+<div id="ref-kish_1965" class="csl-entry" role="listitem">
+Kish, L. (1965). <em>Survey sampling</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-kunsch_1989" class="csl-entry" role="listitem">
+Künsch, H. R. (1989). The jackknife and the bootstrap for general stationary observations. <em>The Annals of Statistics</em>, <em>17</em>(3), 1217-1241. <a href="https://doi.org/10.1214/aos/1176347265">https://doi.org/10.1214/aos/1176347265</a>
+</div>
+<div id="ref-lehman_brothers_2008" class="csl-entry" role="listitem">
+Lehman Brothers Holdings Inc. (2008, septiembre 15). <em>Lehman <span>Brothers</span> <span>Holdings</span> <span>Inc.</span> announces it intends to file <span>Chapter</span> 11 bankruptcy petition [Comunicado de prensa, anexo 99.1 del formulario 8-K]</em>. <span>U.S. Securities and Exchange Commission</span>. <a href="https://www.sec.gov/Archives/edgar/data/806085/000110465908059632/a08-22764_4ex99d1.htm">https://www.sec.gov/Archives/edgar/data/806085/000110465908059632/a08-22764_4ex99d1.htm</a>
+</div>
+<div id="ref-lorenzo_seva_ten_berge_2006" class="csl-entry" role="listitem">
+Lorenzo-Seva, U., &amp; ten Berge, J. M. F. (2006). Tucker’s congruence coefficient as a meaningful index of factor similarity. <em>Methodology: European Journal of Research Methods for the Behavioral and Social Sciences</em>, <em>2</em>(2), 57-64. <a href="https://doi.org/10.1027/1614-2241.2.2.57">https://doi.org/10.1027/1614-2241.2.2.57</a>
+</div>
+<div id="ref-nber_2010" class="csl-entry" role="listitem">
+National Bureau of Economic Research. (2010, septiembre 20). <em>Business <span>Cycle</span> <span>Dating</span> <span>Committee</span> announcement <span>September</span> 20, 2010</em>. <a href="https://www.nber.org/news/business-cycle-dating-committee-announcement-september-20-2010">https://www.nber.org/news/business-cycle-dating-committee-announcement-september-20-2010</a>
+</div>
+<div id="ref-ustr_2018" class="csl-entry" role="listitem">
+Office of the United States Trade Representative. (2018, junio 15). <em><span>USTR</span> issues tariffs on <span>Chinese</span> products in response to unfair trade practices [Comunicado de prensa]</em>. <a href="https://ustr.gov/about-us/policy-offices/press-office/press-releases/2018/june/ustr-issues-tariffs-chinese-products">https://ustr.gov/about-us/policy-offices/press-office/press-releases/2018/june/ustr-issues-tariffs-chinese-products</a>
+</div>
+<div id="ref-perron_1989" class="csl-entry" role="listitem">
+Perron, P. (1989). The great crash, the oil price shock, and the unit root hypothesis. <em>Econometrica</em>, <em>57</em>(6), 1361-1401. <a href="https://www.jstor.org/stable/1913712">https://www.jstor.org/stable/1913712</a>
+</div>
+<div id="ref-phillips_1986" class="csl-entry" role="listitem">
+Phillips, P. C. B. (1986). Understanding spurious regressions in econometrics. <em>Journal of Econometrics</em>, <em>33</em>(3), 311-340.
+</div>
 <div id="ref-plaut_2018" class="csl-entry" role="listitem">
 Plaut, E. (2018). <em>From principal subspaces to principal components with linear autoencoders</em> (arXiv:1804.10253). arXiv. <a href="https://doi.org/10.48550/arXiv.1804.10253">https://doi.org/10.48550/arXiv.1804.10253</a>
+</div>
+<div id="ref-pyper_peterman_1998" class="csl-entry" role="listitem">
+Pyper, B. J., &amp; Peterman, R. M. (1998). Comparison of methods to account for autocorrelation in correlation analyses of fish data. <em>Canadian Journal of Fisheries and Aquatic Sciences</em>, <em>55</em>, 2127-2140. <a href="https://doi.org/10.1139/f98-104">https://doi.org/10.1139/f98-104</a>
 </div>
 <div id="ref-robert_escoufier_1976" class="csl-entry" role="listitem">
 Robert, P., &amp; Escoufier, Y. (1976). A unifying tool for linear multivariate statistical methods: The <span>RV</span>-coefficient. <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em>, <em>25</em>(3), 257-265. <a href="https://doi.org/10.2307/2347233">https://doi.org/10.2307/2347233</a>
@@ -425,16 +533,32 @@ Robert, P., &amp; Escoufier, Y. (1976). A unifying tool for linear multivariate 
 <div id="ref-srivastava_mansimov_salakhutdinov_2015" class="csl-entry" role="listitem">
 Srivastava, N., Mansimov, E., &amp; Salakhutdinov, R. (2015). Unsupervised learning of video representations using <span>LSTMs</span>. En F. Bach &amp; D. Blei (Eds.), <em>Proceedings of the 32nd International Conference on Machine Learning</em> (Vol. 37, pp. 843-852). PMLR.
 </div>
+<div id="ref-stocker_et_al_2015" class="csl-entry" role="listitem">
+Stocker, M., Baffes, J., Kose, M. A., &amp; Ohnsorge, F. (2015). <em>The great plunge in oil prices: Causes, consequences, and policy responses</em> (Policy Research Note PRN/15/01). World Bank. <a href="https://doi.org/10.1596/23611">https://doi.org/10.1596/23611</a>
+</div>
+<div id="ref-tucker_1951" class="csl-entry" role="listitem">
+Tucker, L. R. (1951). <em>A method for synthesis of factor analysis studies</em> (PRS Report 984). <a href="https://www.ets.org/research/policy_research_reports/publications/report/1951/avxw.html">https://www.ets.org/research/policy_research_reports/publications/report/1951/avxw.html</a>
+</div>
 <div id="ref-tuhin_et_al_2025" class="csl-entry" role="listitem">
 Tuhin, K. H., Nobi, A., Rakib, M. H., &amp; Lee, J. W. (2025). Long short-term memory autoencoder based network of financial indices. <em>Humanities and Social Sciences Communications</em>, <em>12</em>, Artículo 100. <a href="https://doi.org/10.1057/s41599-025-04412-y">https://doi.org/10.1057/s41599-025-04412-y</a>
 </div>
+<div id="ref-doj_2016" class="csl-entry" role="listitem">
+U.S. Department of Justice. (2016, diciembre 21). <em>Odebrecht and <span>Braskem</span> plead guilty and agree to pay at least $3.5 billion in global penalties to resolve largest foreign bribery case in history [Comunicado de prensa]</em>. <a href="https://www.justice.gov/archives/opa/pr/odebrecht-and-braskem-plead-guilty-and-agree-pay-least-35-billion-global-penalties-resolve">https://www.justice.gov/archives/opa/pr/odebrecht-and-braskem-plead-guilty-and-agree-pay-least-35-billion-global-penalties-resolve</a>
+</div>
 <div id="ref-vincent_et_al_2008" class="csl-entry" role="listitem">
-Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extracting and composing robust features with denoising autoencoders. En <em>Proceedings of the 25th International Conference on Machine Learning</em> (pp. 1096-1103). Association for Computing Machinery. <a href="https://doi.org/10.1145/1390156.1390294">https://doi.org/10.1145/1390156.1390294</a>
+Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extracting and composing robust features with denoising autoencoders. <em>Proceedings of the 25th International Conference on Machine Learning</em>, 1096-1103. <a href="https://doi.org/10.1145/1390156.1390294">https://doi.org/10.1145/1390156.1390294</a>
+</div>
+<div id="ref-oms_2020a" class="csl-entry" role="listitem">
+World Health Organization. (2020a, enero 30). <em>Statement on the second meeting of the <span>International Health Regulations</span> (2005) <span>Emergency Committee</span> regarding the outbreak of novel coronavirus (2019-<span>nCoV</span>)</em>. <a href="https://extranet.who.int/sph/news-details/23805">https://extranet.who.int/sph/news-details/23805</a>
+</div>
+<div id="ref-oms_2020b" class="csl-entry" role="listitem">
+World Health Organization. (2020b, marzo 11). <em><span>WHO</span> <span>Director-General’s</span> opening remarks at the media briefing on <span>COVID-19</span>, 11 <span>March</span> 2020</em>. <a href="https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020">https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020</a>
 </div>
 </div>
 </section>
 <section id="estado-de-verificación-de-las-referencias" class="level2">
 <h2 class="anchored" data-anchor-id="estado-de-verificación-de-las-referencias">Estado de verificación de las referencias</h2>
+<p>Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada edición. Abreviaturas de la columna «Marcas en los documentos»: <strong>Tesis</strong>, capítulos de <code>tesis_latex/capitulos/</code> (marcas <code>\verificar</code> y <code>\pendiente</code>, con la etiqueta de la sección cuando la tiene); <strong>Informe</strong>, capítulos de <code>tesis/_capitulos/</code> (notas <code>[^…]</code> con <code>VERIFICAR</code> y marcas <code>[CITA PENDIENTE]</code>); <strong>Rmd</strong>, <code>R/tesis_ciclo_financiero.Rmd</code> (sección y subsección, o nombre del chunk); <strong>NB05</strong>, <code>notebooks/05_pca.ipynb</code> (número de celda); <strong>src</strong>, módulo y función.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -448,254 +572,380 @@ Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extractin
 <th>Clave</th>
 <th>Referencia</th>
 <th>Qué falta verificar</th>
-<th>Origen de la observación</th>
+<th>Marcas en los documentos</th>
 <th>Estado</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>baldi_hornik_1989</code></td>
-<td>Baldi y Hornik (1989), <em>Neural Networks</em>, 2(1)</td>
-<td>Texto completo no consultado; enunciados y supuestos exactos de la equivalencia con el PCA</td>
-<td>Ficha preliminar <code>papers/baldi_hornik_1989.qmd</code></td>
-<td>Pendiente</td>
+<td>Baldi y Hornik (1989), <em>Neural Networks</em>, 2(1), 53–58</td>
+<td>Solo el DOI (doi.org y ScienceDirect no accesibles). Texto completo leído; volumen, número y páginas verificados en el catálogo de la Koninklijke Bibliotheek</td>
+<td>Tesis: cap. 1, «Justificación» (<code>sec:justificacion</code>), nota conjunta con Bourlard y Kamp, y cap. 2, «Autoencoders», nota propia. Informe: cap. 1, «Justificación» (<code>v1-bk</code>), y cap. 2, «Autoencoders» (<code>v2-bk</code>). Ficha <code>papers/baldi_hornik_1989.qmd</code></td>
+<td>Pendiente (solo DOI)</td>
 </tr>
 <tr class="even">
 <td><code>bourlard_kamp_1988</code></td>
 <td>Bourlard y Kamp (1988), <em>Biological Cybernetics</em>, 59</td>
 <td>Número del fascículo (4–5); alcance del resultado sobre las no linealidades</td>
-<td>Ficha preliminar <code>papers/bourlard_kamp_1988.qmd</code></td>
+<td>Tesis: cap. 1, «Justificación» (nota conjunta con Baldi y Hornik), y cap. 2, «Autoencoders», nota propia. Informe: las notas conjuntas <code>v1-bk</code> y <code>v2-bk</code>. Ficha preliminar <code>papers/bourlard_kamp_1988.qmd</code></td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>camiz_cerda_atoche_2026</code></td>
 <td>Camiz, Cerda Hernández y Atoche Murrieta (2026), manuscrito</td>
 <td>Estado de publicación (revista, volumen, DOI); confirmar con el Dr.&nbsp;Camiz. Además, en la Tabla 1: correspondencia de «reservas» (grupo de riesgo) y «RIN» (grupo de salud) con las series del BCRP</td>
-<td>Ficha <code>papers/camiz_cerda_atoche_2026.qmd</code>, sección 1</td>
+<td>Tesis: cap. 1, «Planteamiento» (<code>sec:planteamiento</code>); cap. 2, «Antecedentes peruanos» (<code>sec:antecedentes</code>), dos notas (publicación y reservas). Informe: cap. 1, «Planteamiento» (<code>v1-cca</code>); cap. 2, «Antecedentes peruanos» (<code>v2-cca</code>, <code>v2-res</code>). Ficha, sección 1</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>camiz_maulucci_roig_2010</code></td>
 <td>Camiz, Maulucci y Roig (2010), Actas E-ICES 5</td>
 <td>Datos de edición (ISBN o DOI); grafía del editor («Papu» en esta ficha, «Papú» en la de 2011)</td>
-<td>Ficha <code>papers/camiz_maulucci_roig_2010.qmd</code></td>
+<td>Tesis: cap. 1, «Objetivos exploratorios condicionales» (OC2). Informe: cap. 1, OC2 (<code>v1-cmr</code>), y cap. 2, «Análisis evolutivo de componentes principales» (<code>v2-cmr</code>)</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>camiz_roig_2011</code></td>
 <td>Camiz y Roig (2011), Actas E-ICES 6</td>
 <td>Editor (O. Papú) inferido por analogía; año ambiguo en la ficha («E-ICES 6, 2010/2011»)</td>
-<td>Ficha <code>papers/camiz_roig_2011.qmd</code>, sección 2</td>
+<td>Tesis: cap. 1, «Justificación». Informe: cap. 1, «Justificación» (<code>v1-cr</code>), y cap. 2, «El algoritmo <code>aede</code>» (<code>v2-cr</code>). Ficha, sección 2</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>fisher_1958</code></td>
-<td>Fisher (1958), <em>JASA</em>, 53</td>
-<td>Número (284) y DOI; texto no consultado; si trata el caso multivariado</td>
-<td>Ficha preliminar <code>papers/fisher_1958.qmd</code></td>
+<td>Fisher (1958), <em>JASA</em>, 53(284)</td>
+<td>Páginas 789–798 (solo en fuentes secundarias); texto no consultado; si trata el caso multivariado. Volumen, número y DOI respaldados por el título de la página de Taylor &amp; Francis</td>
+<td>Tesis: cap. 1, «Justificación», y cap. 2, «Antecedentes peruanos». Informe: cap. 1 (<code>v1-fis</code>) y cap. 2 (<code>v2-fis</code>), mismas secciones. Ficha preliminar</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>gal_ghahramani_2016</code></td>
 <td>Gal y Ghahramani (2016), ICML, PMLR 48</td>
 <td>Editores del volumen; PDF no consultado</td>
-<td>Ficha <code>papers/gal_ghahramani_2016.qmd</code></td>
+<td>Tesis: cap. 1, «Objetivos específicos» (<code>sec:oe</code>), y cap. 2, «Autoencoders». Informe: cap. 1 (<code>v1-gg</code>) y cap. 2 (<code>v2-gg</code>), mismas secciones</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>gers_schmidhuber_cummins_2000</code></td>
 <td>Gers, Schmidhuber y Cummins (2000), <em>Neural Computation</em>, 12</td>
 <td>DOI contra el registro de MIT Press; texto no consultado</td>
-<td>Ficha preliminar <code>papers/gers_schmidhuber_cummins_2000.qmd</code></td>
+<td>Tesis e Informe: cap. 2, «Redes LSTM» (<code>v2-gsc</code>). Ficha preliminar</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>hinton_salakhutdinov_2006</code></td>
 <td>Hinton y Salakhutdinov (2006), <em>Science</em>, 313</td>
 <td>Se procesó el material suplementario; leer el artículo principal</td>
-<td>Ficha <code>papers/hinton_salakhutdinov_2006.qmd</code>, sección 2</td>
+<td>Tesis: cap. 1, «Justificación», y cap. 2, «Autoencoders». Informe: cap. 1 (<code>v1-ht</code>) y cap. 2 (<code>v2-hs</code>), mismas secciones. Ficha, sección 2</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>hochreiter_schmidhuber_1997</code></td>
 <td>Hochreiter y Schmidhuber (1997), <em>Neural Computation</em>, 9</td>
 <td>Se procesó el informe técnico FKI-207-95; contrastar con la versión publicada</td>
-<td>Ficha <code>papers/hochreiter_schmidhuber_1997.qmd</code>, sección 2</td>
+<td>Tesis e Informe: cap. 2, «Redes LSTM» (<code>v2-hoch</code>). Ficha, sección 2</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>plaut_2018</code></td>
 <td>Plaut (2018), arXiv:1804.10253</td>
 <td><em>Preprint</em> sin revisión por pares; usar solo como apoyo técnico secundario</td>
-<td>Ficha <code>papers/plaut_2018.qmd</code></td>
+<td>Tesis e Informe: cap. 2, «Autoencoders» (<code>v2-pl</code>)</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>robert_escoufier_1976</code></td>
 <td>Robert y Escoufier (1976), <em>JRSS C</em>, 25</td>
 <td>Volumen, número, páginas y DOI en JSTOR; texto no consultado</td>
-<td>Ficha preliminar <code>papers/robert_escoufier_1976.qmd</code></td>
+<td>Tesis e Informe: cap. 2, «Comparación de configuraciones» (<code>sec:comparacion</code>; <code>v2-re</code>). Ficha preliminar</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>srivastava_mansimov_salakhutdinov_2015</code></td>
 <td>Srivastava, Mansimov y Salakhutdinov (2015), ICML, PMLR 37</td>
 <td>Páginas 843–852 y editores del volumen</td>
-<td>Ficha <code>papers/srivastava_mansimov_salakhutdinov_2015.qmd</code></td>
+<td>Tesis e Informe: cap. 2, «LSTM-autoencoder» (<code>v2-sms</code>)</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td><code>tuhin_et_al_2025</code></td>
 <td>Tuhin, Nobi, Rakib y Lee (2025), <em>HSSC</em>, 12</td>
 <td>Lista completa de autores</td>
-<td>Ficha <code>papers/tuhin_et_al_2025.qmd</code>, sección 2</td>
+<td>Tesis: cap. 1, «Justificación» (nota conjunta con Hinton y Salakhutdinov), y cap. 2, «LSTM-autoencoder». Tesis: además, cap. 2, «Validación externa» (<code>sec:validacion</code>, <code>\verificar</code>). Informe: cap. 1 (<code>v1-ht</code>) y cap. 2, «Validación externa» (<code>v2-tu</code>) y «LSTM-autoencoder» (<code>v2-tu2</code>). Ficha, sección 2</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
 <td><code>vincent_et_al_2008</code></td>
 <td>Vincent et al.&nbsp;(2008), ICML</td>
 <td>DOI en ACM Digital Library</td>
-<td>Ficha <code>papers/vincent_et_al_2008.qmd</code></td>
+<td>Tesis e Informe: cap. 2, «Autoencoders» (<code>v2-vi</code>)</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
 <td>—</td>
 <td>Atoche Murrieta (2022), tesis de maestría, PUCP</td>
-<td>Sin ficha en <code>papers/</code>; solo se menciona su existencia según la ficha de 2026. Ningún contenido se le atribuye hasta ficharla</td>
-<td>Cap. 1 y cap. 2 (<code>[CITA PENDIENTE]</code>)</td>
+<td>Sin ficha. El buscador muestra una entrada de autor «Atoche Murrieta, Lilian Katherine» en el repositorio de tesis de la PUCP, pero la página no se pudo leer y no se localizó el título, el año ni el enlace del documento. Ningún contenido se le atribuye. Sugerencia: pedir a Roberto el PDF o el enlace del repositorio</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 1, «Planteamiento», y cap. 2, «Antecedentes peruanos»</td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
-<td>—</td>
-<td>Calinski y Harabász (1974)</td>
-<td>Criterio del número de cortes del EPCA y de la datación. Sin ficha en <code>papers/</code>; el Rmd ya la cita con año (1974)</td>
-<td>Cap. 2 (<code>[CITA PENDIENTE]</code>); <code>R/tesis_ciclo_financiero.Rmd</code>: chunk <code>funciones</code> (comentario del índice CH, variante <code>ch1</code>), chunk <code>b4-aede</code> (pie de la tabla de la partición de Fisher) y texto de A.3, subsección «EPCA del asesor (<code>aede</code>)»</td>
-<td>Pendiente de fichar</td>
+<td><code>benzecri_1973</code></td>
+<td>Benzécri (1973), <em>L’analyse des données</em>, t. 2, Dunod</td>
+<td>Ficha preliminar. Autoría del tomo 2 (Open Library añade a F. Benzécri); editorial (Dunod o Bordas); tomo 1 sin verificar; <strong>tomo y página del principio «dejar hablar a los datos», que no se localizó en ninguna fuente consultada</strong></td>
+<td>Tesis e Informe: cap. 2, «Posición epistemológica» (<code>sec:epistemologia</code>; <code>v2-bz</code>). Rmd: sección 2, «Balance de los argumentos» (tabla de argumentos)</td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td><code>calinski_harabasz_1974</code></td>
+<td>Caliński y Harabasz (1974), <em>Communications in Statistics</em>, 3(1)</td>
+<td>Páginas 1–27 (solo en fuentes secundarias); texto no consultado: la forma del índice y la variante del código de <code>aede</code> no se atribuyen hasta leerlo. Grafía según la fuente: «Harabasz», sin tilde</td>
+<td>Tesis: cap. 2, «Antecedentes peruanos» e «Índice de Caliński y Harabasz» (<code>sec:fisher</code>). Informe: las mismas secciones (<code>v2-ch</code>, <code>v2-ch2</code>). Rmd: chunk <code>funciones</code> (comentario de <code>ch1</code>), pie de tabla del chunk <code>b4-aede</code> y texto de A.3, «EPCA del asesor (<code>aede</code>)»</td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>horn_1965</code></td>
+<td>Horn (1965), <em>Psychometrika</em>, 30(2), 179–185</td>
+<td>Ninguno en los metadatos (Cambridge Core y SpringerLink). Contenido conocido solo por el resumen: el percentil 95 es una elección de la tesis</td>
+<td>Tesis: cap. 1, «Objetivos específicos», y cap. 2, «Número de componentes» (<code>sec:retencion</code>). Informe: cap. 1 (<code>v1-horn</code>) y cap. 2 (<code>v2-horn</code>), mismas secciones. Rmd: chunk <code>funciones</code> (comentario del análisis paralelo) y sección 2, «El argumento a favor de transformar». src: <code>multivariado.horn</code></td>
+<td>Cerrado (metadatos, 20-10-2026); contenido: solo resumen</td>
 </tr>
 <tr class="even">
 <td>—</td>
-<td>Horn (1965) y fuentes de los criterios de vara quebrada y de Rencher</td>
-<td>Triangulación del número de componentes. Sin ficha en <code>papers/</code>; citada en el Rmd: Horn (1965) en el chunk <code>funciones</code> (función del análisis paralelo) y en la sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias»; por el nombre en A.2 y B.2, subsecciones «¿Cuántas componentes retener?»; la vara quebrada en A.2, «¿Cuántas componentes retener?»</td>
-<td>Cap. 1, objetivo específico 6; <code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Fuentes del modelo de vara quebrada y del criterio de Rencher</td>
+<td>Sin ficha. No se buscó la vara quebrada; para Rencher falta precisar qué criterio y qué obra o edición se usa (OE6) antes de poder verificarlo</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 1, «Objetivos específicos» (marca conjunta), y cap. 2, «Número de componentes» (una marca para cada fuente). Rmd: A.2, «¿Cuántas componentes retener?» (vara quebrada, en marca conjunta con Kaiser)</td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
-<td>—</td>
-<td>Eckart y Young (1936); Jolliffe (2002)</td>
-<td>Sin ficha; teorema de aproximación de rango bajo y obra de referencia del PCA. Jolliffe (2002) se cita además como «como se cita en Camiz et al., 2020»</td>
-<td>Cap. 2, PCA y HFC</td>
-<td>Pendiente de fichar</td>
+<td><code>eckart_young_1936</code></td>
+<td>Eckart y Young (1936), <em>Psychometrika</em>, 1(3), 211–218</td>
+<td>Metadatos verificados en Cambridge Core. Pendiente de contenido: la condición de unicidad (p.&nbsp;216) quedó cortada en la copia leída</td>
+<td>Tesis e Informe: cap. 2, «Análisis de componentes principales», subsección «Definición y propiedad de reconstrucción» (<code>sec:pca</code>; <code>v2-ey</code>)</td>
+<td>Cerrado (metadatos); contenido parcial</td>
 </tr>
 <tr class="even">
+<td>—</td>
+<td>Jolliffe (2002), <em>Principal Component Analysis</em></td>
+<td>Sin ficha; obra de referencia del PCA, citada «como se cita en Camiz et al., 2020»</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Definición y propiedad de reconstrucción»</td>
+<td>Pendiente de fichar</td>
+</tr>
+<tr class="odd">
 <td>—</td>
 <td>Denimal (2001, 2007)</td>
 <td>Sin ficha; fuente primaria de la HFC. Se cita «Denimal, 2007, como se cita en Camiz et al., 2020»</td>
-<td>Cap. 2, HFC</td>
+<td>Tesis: cap. 2, «Clasificación Factorial Jerárquica» (<code>sec:hfc</code>, <code>\pendiente</code>). Informe: cap. 2, nota <code>v2-c20</code>, llamada en «Clasificación Factorial Jerárquica» (<code>[CITA PENDIENTE]</code> dentro de la nota)</td>
 <td>Pendiente de fichar</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>—</td>
 <td>Camiz y Diblasi (2013)</td>
 <td>Sin ficha; ponderación gaussiana de la ventana del EPCA</td>
-<td>Cap. 2, EPCA</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Ventanas, fechado y pesos» (<code>sec:epca</code>)</td>
 <td>Pendiente de fichar</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>—</td>
 <td>Tukey (1977)</td>
 <td>Sin ficha; análisis exploratorio de datos</td>
-<td>Cap. 2, EPCA</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «El algoritmo <code>aede</code>»</td>
 <td>Pendiente de fichar</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>—</td>
 <td>Lavit (1988)</td>
 <td>Sin ficha; fuente primaria de STATIS</td>
-<td>Cap. 2, coeficiente RV</td>
-<td>Pendiente de fichar</td>
-</tr>
-<tr class="even">
-<td>—</td>
-<td>Benzécri (1973), <em>L’analyse des données</em></td>
-<td>Principio <em>laisser parler les données</em>. Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», tabla de argumentos)</td>
-<td>Cap. 2, posición epistemológica; <code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Comparación de configuraciones» (coeficiente RV)</td>
 <td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
-<td>—</td>
-<td>Granger y Newbold (1974)</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias», regresión espuria)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
+<td><code>tucker_1951</code></td>
+<td>Tucker (1951), <em>A method for synthesis of factor analysis studies</em> (PRS Report 984)</td>
+<td>Autor, año, título, número del informe y extensión (120 p.) verificados en el repositorio de publicaciones de ETS. Falta: <strong>entidad emisora y lugar</strong> (el registro de ETS no los da; la lectura «Personnel Research Section, Department of the Army» no se vio en fuente oficial ni se halló registro en DTIC); no hay DOI. Texto no consultado: <strong>no se comprobó que el informe defina el coeficiente de congruencia</strong>; la atribución es la habitual</td>
+<td>Tesis: cap. 2, «Comparación de configuraciones», definición <code>def:tucker</code> (<code>\parencite{tucker_1951}</code> con <code>\verificar</code>). Informe: cap. 2, «Comparación de configuraciones», <code>@def-tucker</code> (<code>[@tucker_1951]</code> con la nota <code>v2-tk</code>). Rmd: sección 2, nota sobre los umbrales de congruencia (<code>[VERIFICAR]</code>). Auditoría 2026-10-20 (iteración 3a), M-01; actualizado en la vuelta 2 (N-13)</td>
+<td>Fichada (preliminar, 20-10-2026); pendiente</td>
+</tr>
+<tr class="even">
+<td><code>granger_newbold_1974</code></td>
+<td>Granger y Newbold (1974), <em>Journal of Econometrics</em>, 2, 111–120</td>
+<td>Número del fascículo y DOI (no figuran en la copia leída; Elsevier no accesible). Texto completo leído</td>
+<td>Rmd: sección 2, «El argumento a favor de transformar», y A.2, «Regresión sobre el tiempo y análisis de los residuos (regla D5)»; NB05, celda 15 (marca propia: número del fascículo y DOI). Auditoría 2026-10-19, M-07</td>
+<td>Pendiente (número y DOI)</td>
+</tr>
+<tr class="odd">
+<td><code>phillips_1986</code></td>
+<td>Phillips (1986), <em>Journal of Econometrics</em>, 33(3), 311–340</td>
+<td>Metadatos tomados de RePEc/IDEAS (secundaria): contrastar con Elsevier y añadir el DOI. Resumen leído; texto no consultado</td>
+<td>Rmd: sección 2, «El argumento a favor de transformar», y A.2, «Regresión sobre el tiempo… (regla D5)»; NB05, celda 15. Auditoría 2026-10-19, M-07</td>
 <td>Pendiente</td>
 </tr>
 <tr class="even">
-<td>—</td>
-<td>Phillips (1986)</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «El argumento a favor de transformar: correlación entre tendencias», regresión espuria)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
-<td>Pendiente</td>
-</tr>
-<tr class="odd">
 <td>—</td>
 <td>Engle y Granger (1987)</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», tabla de argumentos, cointegración)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code> (auditoría 2026-10-19, M-07)</td>
+<td>Sin ficha en <code>papers/</code></td>
+<td>Rmd: sección 2, «Balance de los argumentos» (tabla de argumentos, cointegración). Auditoría 2026-10-19, M-07</td>
 <td>Pendiente</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>—</td>
 <td>Fuentes de los filtros pasa-banda y de Hodrick-Prescott para la brecha del ciclo financiero</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Balance de los argumentos», por el nombre del método, sin autor ni año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Sin ficha en <code>papers/</code>; citadas por el nombre del método, sin autor ni año</td>
+<td>Rmd: sección 2, «Balance de los argumentos»</td>
 <td>Pendiente</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>—</td>
 <td>Fuente de los modelos de cambio de régimen de Markov</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.5, subsección «Alternativas consideradas», por el nombre del método, sin autor ni año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
-<td>Pendiente</td>
-</tr>
-<tr class="even">
-<td>—</td>
-<td>Fuentes de las pruebas ADF («Dickey-Fuller aumentada») y KPSS</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (sección 2, subsección «Estacionariedad en las dos versiones», por el nombre de la prueba, sin año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Sin ficha en <code>papers/</code>; citada por el nombre del método, sin autor ni año</td>
+<td>Rmd: A.5, «Alternativas consideradas»</td>
 <td>Pendiente</td>
 </tr>
 <tr class="odd">
-<td>—</td>
-<td>Fuentes de la prueba de esfericidad de Bartlett, la medida KMO («Kaiser-Meyer-Olkin») y el criterio de Kaiser</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.2, subsecciones «¿Tiene sentido un PCA con estos datos?» y «¿Cuántas componentes retener?», por el nombre, sin año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
-<td>Pendiente</td>
+<td><code>dickey_fuller_1979</code></td>
+<td>Dickey y Fuller (1979), <em>JASA</em>, 74(366a)</td>
+<td>Páginas 427–431 (solo en fuentes secundarias). La versión <strong>aumentada</strong> que usa el código se atribuye a Said y Dickey (1984), sin ficha ni verificación</td>
+<td>Rmd: sección 2, «Estacionariedad en las dos versiones», y A.2, «Regresión sobre el tiempo… (regla D5)»</td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="even">
+<td><code>kwiatkowski_et_al_1992</code></td>
+<td>Kwiatkowski et al.&nbsp;(1992), <em>Journal of Econometrics</em>, 54(1–3), 159–178</td>
+<td><strong>Lista de autores de la versión publicada</strong> (el documento de trabajo de Cowles lista tres; se cita habitualmente con cuatro) y DOI. Sin entrada en el <code>.bib</code> hasta verificarla</td>
+<td>Rmd: sección 2, «Estacionariedad en las dos versiones», y A.2, «Regresión sobre el tiempo… (regla D5)»</td>
+<td>Fichada (preliminar, sin <code>.bib</code>); pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>bartlett_1950</code>, <code>bartlett_1951</code></td>
+<td>Bartlett (1950), <em>British Journal of Statistical Psychology</em>, 3(2); Bartlett (1951), <em>Biometrika</em>, 38(3–4), 337–344</td>
+<td>1950: páginas 77–85 (secundarias). 1951: metadatos verificados en Oxford Academic. En ambos, texto no consultado: no se verificó en cuál se formula la prueba de esfericidad sobre la matriz de correlaciones</td>
+<td>Tesis e Informe: cap. 2, «Adecuación muestral» (<code>sec:adecuacion</code>; <code>v2-bk-kmo</code>, nota conjunta de las cuatro fichas). Rmd: A.2, «¿Tiene sentido un PCA con estos datos?». src: <code>multivariado.bartlett_esfericidad</code></td>
+<td>Fichadas (preliminares); pendiente</td>
+</tr>
+<tr class="even">
+<td><code>kaiser_1970</code>, <code>kaiser_rice_1974</code></td>
+<td>Kaiser (1970), <em>Psychometrika</em>, 35(4); Kaiser y Rice (1974), <em>EPM</em>, 34(1)</td>
+<td>Metadatos verificados (Cambridge Core; SAGE). Texto no consultado: la forma de la MSA que usa el código solo consta en la documentación de <code>psych</code></td>
+<td>Tesis e Informe: la misma nota conjunta de «Adecuación muestral». Rmd: A.2, «¿Tiene sentido un PCA con estos datos?» (KMO). src: <code>multivariado.kmo</code></td>
+<td>Cerrado (metadatos); atribución de la fórmula pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>kaiser_1960</code></td>
+<td>Kaiser (1960), <em>EPM</em>, 20(1), 141–151</td>
+<td>Volumen, número y páginas (solo en fuentes secundarias; SAGE no accesible). La atribución del criterio <span class="math inline">\(\lambda &gt; 1\)</span> es la habitual y no se verificó en el texto</td>
+<td>Tesis e Informe: cap. 2, «Número de componentes» (<code>v2-kai</code>). Rmd: A.2, «¿Cuántas componentes retener?» (marca conjunta con la vara quebrada)</td>
+<td>Fichada (preliminar); pendiente</td>
 </tr>
 <tr class="even">
 <td>—</td>
-<td>Fuente del índice de Rand ajustado</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.4, subsección «HFC evolutiva», por el nombre del índice, sin autor ni año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
-<td>Pendiente</td>
+<td>Fuente de la relación entre la inversa de la matriz de correlaciones y las correlaciones parciales (matriz anti-imagen)</td>
+<td>Sin ficha; no se buscó</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Adecuación muestral»</td>
+<td>Pendiente de fichar</td>
 </tr>
 <tr class="odd">
+<td>—</td>
+<td>Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa</td>
+<td>Sin ficha; no se buscó (candidata: Lebart, Piron y Morineau, 2006, citada en la ficha de Camiz et al., 2020)</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Calidad de representación y contribuciones» (<code>sec:cos2</code>)</td>
+<td>Pendiente de fichar</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>Fuente de la técnica de vecinos reducibles (Bruynooghe)</td>
+<td>Sin ficha; no se buscó</td>
+<td>Tesis (<code>\pendiente</code>) e Informe (<code>[CITA PENDIENTE]</code>): cap. 2, «Clasificación Factorial Jerárquica»</td>
+<td>Pendiente de fichar</td>
+</tr>
+<tr class="odd">
+<td><code>hubert_arabie_1985</code></td>
+<td>Hubert y Arabie (1985), <em>Journal of Classification</em>, 2(1), 193–218</td>
+<td>Metadatos tomados de RePEc/IDEAS: contrastar con SpringerLink. La atribución del índice de Rand ajustado no se verificó en el texto</td>
+<td>Rmd: A.4, «HFC evolutiva»</td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="even">
 <td>—</td>
 <td>Fuente del optimizador Adam</td>
-<td>Sin ficha en <code>papers/</code>; citada en el Rmd (A.5, subsección «Diseño del autoencoder», tabla de parámetros, por el nombre, sin autor ni año)</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code></td>
+<td>Sin ficha en <code>papers/</code>; citado por el nombre, sin autor ni año</td>
+<td>Rmd: A.5, «Diseño del autoencoder» (tabla de parámetros)</td>
 <td>Pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>kunsch_1989</code></td>
+<td>Künsch (1989), <em>The Annals of Statistics</em>, 17(3)</td>
+<td>Páginas 1217–1241 (secundarias; Project Euclid bloquea el acceso automatizado). <strong>No se verificó que el artículo defina el esquema de bloques móviles solapados del código</strong></td>
+<td>Rmd: chunk <code>funciones</code> (comentario del bootstrap por bloques). src: <code>remuestreo</code> (docstring del módulo). Plan 3a, apunte 5</td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="even">
+<td><code>pyper_peterman_1998</code></td>
+<td>Pyper y Peterman (1998), <em>Canadian Journal of Fisheries and Aquatic Sciences</em>, 55, 2127–2140</td>
+<td>Volumen y páginas (solo en una fuente secundaria); fe de erratas sin consultar; <strong>no se comprobó que la fórmula de <span class="math inline">\(n_{\text{ef}}\)</span> del código, con truncamiento <span class="math inline">\(J = \lfloor n/5 \rfloor\)</span>, sea la de este artículo</strong> (una fuente secundaria atribuye la estructura de la fórmula, sin truncamiento, a Quenouille, 1947)</td>
+<td>Tesis e Informe: cap. 2, «Adecuación muestral» (<code>v2-pp</code>). Rmd: chunk <code>funciones</code> (<span class="math inline">\(n\)</span> efectivo) y A.2, «Autocorrelación, muestra efectiva y sensibilidad de Bartlett». NB05, celda 5. src: <code>series_tiempo.n_efectivo</code></td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>kish_1965</code></td>
+<td>Kish (1965), <em>Survey sampling</em>, Wiley</td>
+<td>Metadatos verificados en el catálogo de la Universidad de Pensilvania. Texto no consultado: capítulo y página de la fórmula <span class="math inline">\(1/\sum\omega^2\)</span></td>
+<td>Ninguna marca en los documentos. Plan 3a, apunte 5 (<span class="math inline">\(n\)</span> efectivo de Kish con pesos gaussianos)</td>
+<td>Fichada (preliminar); pendiente</td>
+</tr>
+<tr class="even">
+<td><code>lorenzo_seva_ten_berge_2006</code></td>
+<td>Lorenzo-Seva y ten Berge (2006), <em>Methodology</em>, 2(2), 57–64</td>
+<td>Metadatos: ninguno (repositorio de la Universidad de Groningen y Hogrefe). <strong>Contenido: solo se leyó el resumen oficial</strong>, que da los umbrales: 0,85–0,94 «similitud aceptable» y más de 0,95 «iguales». Precisión para el texto: 0,85 no indica equivalencia, y que por debajo de 0,85 la componente sea «distinta» no está en el resumen</td>
+<td>Tesis e informe: cap. 2, «Comparación de configuraciones», sin marca (lo que se le atribuye está en el resumen; la nota <code>v2-lst</code> del informe se retiró en la vuelta 1). Rmd: sección 2, «Diagnóstico: el PCA de las series sin su tendencia lineal», y pies de tabla de congruencia, sin marca (vuelta 2, N-04)</td>
+<td>Cerrado (metadatos, 20-10-2026); contenido: solo resumen</td>
+</tr>
+<tr class="odd">
+<td><code>perron_1989</code></td>
+<td>Perron (1989), <em>Econometrica</em>, 57(6), 1361–1401</td>
+<td>DOI (la Econometric Society solo da el enlace de JSTOR). <strong>Cubre solo las pruebas de raíz unitaria (ADF)</strong>: no puede sostener la parte de la frase referida a KPSS, prueba posterior (1992)</td>
+<td>Ninguna: no se cita en ningún documento. Candidata para la parte ADF de la marca sobre quiebres estructurales (fila siguiente)</td>
+<td>Fichada (resumen leído); pendiente</td>
 </tr>
 <tr class="even">
 <td>—</td>
+<td>Fuente del efecto de los quiebres estructurales sobre las pruebas ADF y KPSS</td>
+<td>Sin identificar para KPSS; para ADF, candidata <code>perron_1989</code>. La frase «pierden potencia» debería revisarse para KPSS</td>
+<td>Rmd: A.2, «Regresión sobre el tiempo… (regla D5)» (<code>[VERIFICAR: fuente]</code>)</td>
+<td>Pendiente de identificar</td>
+</tr>
+<tr class="odd">
+<td><code>congreso_2016</code></td>
+<td>Congreso de la República (2016), temas tratados del 28 de julio de 2016</td>
+<td>Denominación oficial exacta del documento (el título se compuso con su encabezado)</td>
+<td>Fuente de episodio (tabla siguiente)</td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td><code>doj_2016</code>, <code>oms_2020a</code>, <code>fmi_2015</code></td>
+<td>Fuentes de episodios</td>
+<td><code>oms_2020a</code>: ubicar la versión en who.int (se leyó una copia en extranet.who.int). <code>fmi_2015</code>: páginas del recuadro en el WEO completo. <code>doj_2016</code>: sin pendientes de metadatos</td>
+<td>Fuentes de episodio (tabla siguiente)</td>
+<td>Pendiente (<code>oms_2020a</code>, <code>fmi_2015</code>)</td>
+</tr>
+<tr class="odd">
+<td>—</td>
 <td>Descarga de control de la API del BCRP (consulta del 08/10/2026)</td>
-<td>Los valores de diciembre de 2025 del PBI desestacionalizado (194,00) y de la demanda interna (242,86) provienen de una consulta a la API del BCRP que no está versionada. Falta guardar en <code>data/</code> la fecha de consulta, los códigos de serie y los valores obtenidos, para que el texto los lea con código (regla 3 de <code>CLAUDE.md</code>) o, en su defecto, retirar las dos cifras</td>
-<td><code>R/tesis_ciclo_financiero.Rmd</code>: chunk <code>funciones</code> (comentario de los metadatos de las series) y sección 1, subsección «Fuente, periodo y cobertura» (recuadro «Las series desestacionalizadas se revisan»); auditoría 2026-10-19, M-06 y N-03</td>
+<td>Ninguno. El Rmd citaba dos valores de diciembre de 2025 (PBI desestacionalizado y demanda interna) tomados de una consulta a la API del BCRP no versionada, contra la regla 3 de <code>CLAUDE.md</code>. De las dos salidas posibles (versionar la consulta en <code>data/</code> o retirar las cifras), se retiraron las cifras, de modo que no queda nada que guardar ni verificar</td>
+<td>Rmd: chunk <code>funciones</code> (comentario de los metadatos de las series) y sección 1, «Fuente, periodo y cobertura» (recuadro «Las series desestacionalizadas se revisan»); auditoría 2026-10-19, M-06 y N-03</td>
 <td>Cerrado: cifras retiradas del Rmd por decisión de Roberto (20-10-2026)</td>
 </tr>
 </tbody>
 </table>
 <section id="episodios-de-referencia" class="level3">
 <h3 class="anchored" data-anchor-id="episodios-de-referencia">Episodios de referencia</h3>
-<p>Los episodios se fechan con fuentes externas, nunca a partir de las propias series (regla 6 de <code>CLAUDE.md</code>). Ninguna de las fechas siguientes tiene hoy una fuente fichada. En cada episodio falta, además, fijar la convención de fechado: inicio en la fecha del anuncio o del evento externo, o en la fecha del impacto en el Perú. Ningún archivo documenta la convención que usa. Los archivos usan fechas distintas para el mismo episodio. Las de <code>notebooks/06a</code> y <code>06b</code> (columnas «06a» y «06b») no coinciden con las del Rmd y <code>modelos_dl.py</code>. En <code>R/tesis_ciclo_financiero.Rmd</code>, la marca <code>[VERIFICAR: fuente externa para fechar el episodio]</code> aparece en el chunk <code>funciones</code> (data frame <code>episodios</code> y pies <code>nota_episodios</code> y <code>nota_episodios_en</code>); en el texto de A.1 («Meses que más se alejan del promedio») y de A.2 («Sensibilidad a los episodios extremos»), y en los pies de tabla de los chunks <code>b4-transiciones</code>, <code>b8-fases</code>, <code>bB3-transiciones</code>, <code>bB6-fases</code> y <code>bC4-episodios</code>.</p>
+<p>Los episodios se fechan con fuentes externas, nunca a partir de las propias series (regla 6 de <code>CLAUDE.md</code>). En la iteración 3a el bibliotecario identificó y fichó fuentes institucionales para cinco de los seis episodios (columna «Fuentes fichadas»; detalle y opciones en <code>auditorias/notas/2026-10-20_bibliotecario.md</code>). <strong>Sigue pendiente la convención de fechado (anuncio o evento externo frente a impacto en el Perú), que decide Roberto (decisión I)</strong>, y con ella la unificación de las fechas entre archivos. Ninguna fuente del BCRP pudo consultarse: bcrp.gob.pe bloquea el acceso automatizado, de modo que el impacto en el Perú no tiene aún fuente fichada en ningún episodio.</p>
+<p>Ubicación de las marcas de episodios:</p>
+<ul>
+<li><strong>Rmd</strong> (<code>[VERIFICAR: fuente externa para fechar el episodio]</code>): chunk <code>funciones</code> (data frame <code>episodios</code> y pies <code>nota_episodios</code> y <code>nota_episodios_en</code>); texto de A.1, «Meses que más se alejan del promedio», y de A.2, «Sensibilidad a los episodios extremos»; pies de tabla de los chunks <code>b4-transiciones</code>, <code>b8-fases</code>, <code>bB3-transiciones</code>, <code>bB6-fases</code> y <code>bC4-episodios</code>.</li>
+<li><strong>NB05:</strong> celdas 1 y 16.</li>
+<li><strong>Tesis:</strong> cap. 2, «Validación externa» (<code>sec:validacion</code>), cinco <code>\pendiente</code> (crisis global, <em>taper tantrum</em>, COVID-19, renuncia de Kuczynski y guerra comercial).</li>
+<li><strong>Informe:</strong> cap. 2, «Validación externa», las mismas cinco marcas <code>[CITA PENDIENTE]</code>.</li>
+</ul>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -708,53 +958,99 @@ Vincent, P., Larochelle, H., Bengio, Y., &amp; Manzagol, P.-A. (2008). Extractin
 <tr class="header">
 <th>Episodio</th>
 <th>Fechas en uso (inicio a fin)</th>
+<th>Fuentes fichadas y fecha que respaldan</th>
 <th>Qué falta</th>
-<th>Origen</th>
 <th>Estado</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Crisis financiera global</td>
-<td>Rmd (data frame <code>episodios</code> del chunk <code>funciones</code>; pies <code>nota_episodios</code> y <code>nota_episodios_en</code>; texto de A.1, subsección «Meses que más se alejan del promedio») y <code>notebooks/modelos_dl.py</code> (diccionario <code>EPISODIOS_REFERENCIA</code>): 2008-09 a 2009-06. <code>06a</code> y <code>06b</code> (celda 2): 2008-07-01 a 2009-06-30</td>
-<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
-<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
-<td>Pendiente de identificar</td>
+<td>Rmd y <code>modelos_dl.py</code>: 2008-09 a 2009-06. <code>06a</code> y <code>06b</code>: 2008-07-01 a 2009-06-30</td>
+<td><code>lehman_brothers_2008</code>: 15-09-2008 (anuncio). <code>nber_2010</code>: fin de la recesión de EE. UU. en 06-2009 (pico en 12-2007)</td>
+<td>Ninguna fuente respalda el inicio de 2008-07 de <code>06a</code>/<code>06b</code>; fuente del impacto en el Perú (BCRP); convención; unificar archivos</td>
+<td>Fuentes identificadas; convención pendiente</td>
 </tr>
 <tr class="even">
 <td><em>Taper tantrum</em></td>
 <td>Rmd y <code>modelos_dl.py</code>: 2013-05 a 2013-12. <code>06a</code> y <code>06b</code>: 2013-04-01 a 2013-12-31</td>
-<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
-<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
-<td>Pendiente de identificar</td>
+<td><code>bernanke_2013</code>: 22-05-2013 (anuncio). <code>reserva_federal_2013</code>: 18-12-2013 (decisión de reducir compras desde enero de 2014)</td>
+<td>Ninguna fuente respalda el inicio de 2013-04; leer el pasaje del testimonio; impacto en el Perú (BCRP); convención; unificar</td>
+<td>Fuentes identificadas; convención pendiente</td>
 </tr>
 <tr class="odd">
 <td>COVID-19</td>
-<td>Rmd y <code>modelos_dl.py</code>: 2020-03 a 2020-12. <code>06a</code> y <code>06b</code> («Pandemia COVID-19»): 2020-01-01 a 2020-09-30</td>
-<td>Fuente externa que respalde inicio y fin; convención de fechado (anuncio o impacto en el Perú); unificar las fechas entre archivos</td>
-<td>Cap. 2, validación externa; auditoría 2026-10-19, M-05</td>
-<td>Pendiente de identificar</td>
+<td>Rmd y <code>modelos_dl.py</code>: 2020-03 a 2020-12. <code>06a</code> y <code>06b</code>: 2020-01-01 a 2020-09-30</td>
+<td><code>oms_2020a</code>: 30-01-2020 (ESPII). <code>oms_2020b</code>: 11-03-2020 (pandemia)</td>
+<td>Fin del episodio (ni 2020-09 ni 2020-12 tienen fuente); D. S. 044-2020-PCM (estado de emergencia en el Perú, <em>El Peruano</em> del 15-03-2020 según el buscador) localizado pero no leído; convención; unificar</td>
+<td>Inicio con fuentes; fin pendiente</td>
 </tr>
 <tr class="even">
-<td>Colapso de los precios de las materias primas («Colapso commodities»)</td>
+<td>Colapso de los precios de las materias primas</td>
 <td>Solo <code>06b</code>: 2014-06-01 a 2016-03-31</td>
-<td>Fuente externa que respalde inicio y fin; convención de fechado; decidir si se incorpora a los episodios del Rmd</td>
-<td><code>notebooks/06b</code>, celda 2; auditoría 2026-10-19, M-05</td>
-<td>Pendiente de identificar</td>
+<td><code>stocker_et_al_2015</code>: caída del petróleo desde 06-2014. <code>fmi_2015</code>: caída de las materias primas medida desde 09-2014; pico de los metales en 2011</td>
+<td>Fuente para los metales que exporta el Perú; fin del episodio (2016-03 sin fuente); convención; decidir si entra al Rmd</td>
+<td>Inicio con fuentes (petróleo); fin pendiente</td>
 </tr>
 <tr class="odd">
 <td>Kuczynski / Odebrecht</td>
-<td>Solo <code>06b</code>: 2016-07-01 a 2018-03-31. El cap. 2 menciona la renuncia de Kuczynski sin fecha</td>
-<td>Fuente externa que respalde inicio y fin; convención de fechado; precisar si el episodio es la renuncia (Camiz et al., 2026, solo identifican el evento) o un período más largo, como el de <code>06b</code></td>
-<td>Cap. 2, validación externa; <code>notebooks/06b</code>, celda 2; auditoría 2026-10-19, M-05</td>
-<td>Pendiente de identificar</td>
+<td>Solo <code>06b</code>: 2016-07-01 a 2018-03-31. El cap. 2 menciona la renuncia sin fecha</td>
+<td><code>congreso_2016</code>: 28-07-2016 (juramentación). <code>doj_2016</code>: 21-12-2016 (declaración de culpabilidad de Odebrecht en EE. UU.). <code>congreso_2018</code>: 23-03-2018 (aceptación de la renuncia)</td>
+<td>Definir si el episodio es la renuncia (fecha puntual) o un período; denominación oficial de <code>congreso_2016</code>; texto de la resolución en <em>El Peruano</em></td>
+<td>Fuentes identificadas; definición y convención pendientes</td>
 </tr>
 <tr class="even">
 <td>Guerra comercial entre Estados Unidos y China</td>
 <td>No se usa en ningún archivo de código</td>
-<td>Fuente externa para fecharla; Camiz et al.&nbsp;(2026) solo identifican el evento</td>
-<td>Cap. 2, validación externa</td>
-<td>Pendiente de identificar</td>
+<td><code>ustr_2018</code>: 15-06-2018 (anuncio) y 06-07-2018 (inicio del cobro de aranceles)</td>
+<td>Fin del episodio: la firma de la «fase uno» (15-01-2020) solo se vio en fuentes secundarias</td>
+<td>Inicio con fuente; fin pendiente</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="marcas-pendiente-no-bibliográficas-de-la-tesis-latex" class="level3">
+<h3 class="anchored" data-anchor-id="marcas-pendiente-no-bibliográficas-de-la-tesis-latex">Marcas <code>\pendiente</code> no bibliográficas de la tesis LaTeX</h3>
+<p>Se registran para que cada <code>\pendiente</code> tenga su fila (criterio 8 del plan 3a). No son referencias y no las cierra el bibliotecario. En el informe, los capítulos equivalentes llevan un recuadro «Pendiente».</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ubicación</th>
+<th>Marca</th>
+<th>Responsable</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tesis_latex/capitulos/00_portada.tex</code>, denominación del grado</td>
+<td>Denominación exacta del grado según las pautas de la UNI</td>
+<td>Roberto / redactor LaTeX</td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td><code>tesis_latex/capitulos/03_metodologia.tex</code>, inicio del capítulo</td>
+<td>Capítulo por redactar (diseño, datos, preprocesamiento y análisis en dos vías)</td>
+<td>Redactor LaTeX (3b)</td>
+<td>Pendiente</td>
+</tr>
+<tr class="odd">
+<td><code>tesis_latex/capitulos/04_resultados.tex</code>, inicio del capítulo</td>
+<td>Capítulo por redactar; requiere la Parte C y la aprobación de Roberto (regla 7)</td>
+<td>Redactor LaTeX (3b)</td>
+<td>Pendiente</td>
+</tr>
+<tr class="even">
+<td><code>tesis_latex/capitulos/05_conclusiones.tex</code>, inicio del capítulo</td>
+<td>Capítulo por redactar a partir del capítulo de resultados</td>
+<td>Redactor LaTeX (3b)</td>
+<td>Pendiente</td>
 </tr>
 </tbody>
 </table>

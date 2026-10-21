@@ -381,17 +381,18 @@ div.csl-indent {
 </header>
 
 
+<!-- Derivado de tesis_latex/capitulos/01_introduccion.tex (iteración 3a). No agregar contenido que la tesis no sostenga. Correspondencia de secciones en tesis/README.md. -->
 <section id="planteamiento-y-descripción-del-problema" class="level2">
 <h2 class="anchored" data-anchor-id="planteamiento-y-descripción-del-problema">Planteamiento y descripción del problema</h2>
 <p>El ciclo financiero es la fluctuación de mediano plazo entre fases de expansión y contracción del crédito, de los precios de activos y de la disposición a asumir riesgos. <span class="citation" data-cites="drehmann_borio_tsatsaronis_2012">Drehmann et&nbsp;al. (<a href="#ref-drehmann_borio_tsatsaronis_2012" role="doc-biblioref">2012</a>)</span> lo distinguen del ciclo económico por su duración, de 8 a 30 años, y documentan que sus picos coinciden con las crisis bancarias sistémicas. No se observa de forma directa: se manifiesta en el movimiento conjunto de muchas variables, cuya estructura de relaciones puede cambiar en el tiempo. Medirlo es, por tanto, un problema de reducción dimensional sobre series de tiempo multivariadas.</p>
 <p>Para el Perú, el antecedente más directo es <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, que continúa la tesis de maestría de Atoche Murrieta [CITA PENDIENTE: Atoche Murrieta (2022), tesis de maestría, PUCP; sin ficha]. Ese trabajo aplica el Análisis de Componentes Principales (PCA), la Clasificación Factorial Jerárquica (HFC) y el Análisis Evolutivo de Componentes Principales (EPCA) a 17 indicadores mensuales del Banco Central de Reserva del Perú (BCRP). Deja abiertas, sin embargo, cuatro cuestiones: no evalúa el aprendizaje profundo, no clasifica fases del ciclo contrastadas con episodios fechados de forma independiente, su muestra termina en 2020 y fija el ancho de la ventana del EPCA sin un criterio objetivo.</p>
-<!-- fuente: data/processed/dataset_niveles_mensual.csv (228 filas, 2007-01-01 a 2025-12-01; 19 columnas, de las que se usan 17 tras excluir «Crédito SF sector privado» e «IPC Subyacente», R/tesis_ciclo_financiero.Rmd, objeto `entra`) y data/processed/dataset_transformado_mensual.csv (227 filas × 17 columnas, 2007-02-01 a 2025-12-01); ambos verificados con pandas -->
-<p>Esta tesis analiza 17 series mensuales del BCRP de crédito, liquidez, tasas, precios, tipo de cambio, bolsa, riesgo soberano, actividad y reservas. El análisis oficial, sobre las series sin transformar (decisión D1), cubre 228 meses, de enero de 2007 a diciembre de 2025. La vía transformada tiene 227 meses, porque la diferenciación pierde enero de 2007. Ambas vías se ejecutan con el mismo código (decisión D2), y la forma de combinarlas está pendiente de discusión con el asesor.</p>
+<!-- fuente de las cifras: tesis/_cifras.yml (herramientas/generar_cifras.py, a partir de data/results/05_dimensiones.csv) -->
+<p>Esta tesis analiza 17 series mensuales del BCRP de crédito, liquidez, tasas, precios, tipo de cambio, bolsa, riesgo soberano, actividad y reservas. El análisis oficial, sobre las series sin transformar (decisión D1), cubre 228 meses, de enero de 2007 a diciembre de 2025. La vía transformada tiene 227 meses, de febrero de 2007 a diciembre de 2025, porque la diferenciación pierde el primer mes. Ambas vías se ejecutan con el mismo código (decisión D2), y la forma de combinarlas está pendiente de discusión con el asesor.</p>
 <p><strong>Problema de investigación:</strong> ¿cómo identificar, fechar y caracterizar los regímenes del ciclo financiero peruano entre 2007 y 2025 a partir de la estructura multivariada de los indicadores del BCRP, integrando los métodos exploratorios evolutivos de la escuela de Camiz con autoencoders y redes LSTM, sin renunciar a la interpretabilidad ni al principio de que la estructura emerge de los datos?</p>
 </section>
 <section id="justificación-de-la-investigación" class="level2">
 <h2 class="anchored" data-anchor-id="justificación-de-la-investigación">Justificación de la investigación</h2>
-<p><strong>Metodológica.</strong> La tesis amplía la cadena PCA–HFC–EPCA de tres maneras. Fecha los regímenes con la partición óptima de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, como hacen <span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Propone un criterio objetivo para el ancho de la ventana del EPCA. E incorpora autoencoders y redes LSTM anidados en la cadena clásica, porque un autoencoder lineal con pérdida cuadrática genera el subespacio de los primeros componentes principales <span class="citation" data-cites="bourlard_kamp_1988 baldi_hornik_1989">(<a href="#ref-baldi_hornik_1989" role="doc-biblioref">Baldi &amp; Hornik, 1989</a>; <a href="#ref-bourlard_kamp_1988" role="doc-biblioref">Bourlard &amp; Kamp, 1988</a>)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Como los antecedentes de aprendizaje profundo usan conjuntos de datos mucho mayores <span class="citation" data-cites="hinton_salakhutdinov_2006 tuhin_et_al_2025">(<a href="#ref-hinton_salakhutdinov_2006" role="doc-biblioref">Hinton &amp; Salakhutdinov, 2006</a>; <a href="#ref-tuhin_et_al_2025" role="doc-biblioref">Tuhin et&nbsp;al., 2025</a>)</span><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, documentar cómo se adaptan a series macrofinancieras cortas es en sí un resultado.</p>
+<p><strong>Metodológica.</strong> La tesis amplía la cadena PCA–HFC–EPCA de tres maneras. Fecha los regímenes con la partición óptima de <span class="citation" data-cites="fisher_1958">Fisher (<a href="#ref-fisher_1958" role="doc-biblioref">1958</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, como hacen <span class="citation" data-cites="camiz_roig_2011">Camiz &amp; Roig (<a href="#ref-camiz_roig_2011" role="doc-biblioref">2011</a>)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Propone un criterio objetivo para el ancho de la ventana del EPCA. E incorpora autoencoders y redes LSTM anidados en la cadena clásica, porque un autoencoder lineal con pérdida cuadrática genera el subespacio de los primeros componentes principales <span class="citation" data-cites="bourlard_kamp_1988 baldi_hornik_1989">(<a href="#ref-baldi_hornik_1989" role="doc-biblioref">Baldi &amp; Hornik, 1989</a>; <a href="#ref-bourlard_kamp_1988" role="doc-biblioref">Bourlard &amp; Kamp, 1988</a>)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, como precisa la proposición sobre el autoencoder lineal del capítulo 2. Como los antecedentes de aprendizaje profundo usan conjuntos de datos mucho mayores <span class="citation" data-cites="hinton_salakhutdinov_2006 tuhin_et_al_2025">(<a href="#ref-hinton_salakhutdinov_2006" role="doc-biblioref">Hinton &amp; Salakhutdinov, 2006</a>; <a href="#ref-tuhin_et_al_2025" role="doc-biblioref">Tuhin et&nbsp;al., 2025</a>)</span><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, documentar cómo se adaptan a series macrofinancieras cortas es en sí un resultado.</p>
 <p><strong>Económica y social.</strong> <span class="citation" data-cites="drehmann_borio_tsatsaronis_2012">Drehmann et&nbsp;al. (<a href="#ref-drehmann_borio_tsatsaronis_2012" role="doc-biblioref">2012</a>)</span> acuñan la noción de «recesión inconclusa»: si la política ignora la expansión del crédito y de los precios de los inmuebles, el ajuste se posterga y la crisis posterior resulta más severa. Un indicador de régimen transparente y reproducible podría servir como insumo exploratorio para los análisis de estabilidad financiera del BCRP y de la SBS.</p>
 </section>
 <section id="objetivos" class="level2">
@@ -402,30 +403,30 @@ div.csl-indent {
 </section>
 <section id="objetivos-específicos-compromisos-firmes" class="level3">
 <h3 class="anchored" data-anchor-id="objetivos-específicos-compromisos-firmes">Objetivos específicos (compromisos firmes)</h3>
-<ol type="1">
-<li>Sistematizar el estado del arte sobre el ciclo financiero y sobre la reducción dimensional de series de tiempo multivariadas.</li>
-<li>Construir y versionar el conjunto de series mensuales del BCRP, con trazabilidad de códigos, transformaciones y exclusiones.</li>
-<li>Aplicar PCA, HFC y EPCA en las dos vías del diseño y contrastar los resultados con los de <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span>.</li>
-<li>Formalizar un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas (coeficiente RV o distancia de Procrustes).</li>
-<li>Evaluar la robustez de los grupos de la HFC mediante remuestreo por bloques y correlación cofenética.</li>
-<li>Triangular el número de componentes con la vara quebrada, el criterio de Rencher y el análisis paralelo de Horn [CITA PENDIENTE: Horn (1965) y fuentes de la vara quebrada y del criterio de Rencher].</li>
-<li>Diseñar autoencoders y redes LSTM adaptados a la escala de los datos, con pesos atados, preentrenamiento por capas, regularización y validación por bloques temporales y <em>walk-forward</em>.</li>
-<li>Cuantificar la incertidumbre del error de reconstrucción mediante Monte Carlo Dropout <span class="citation" data-cites="gal_ghahramani_2016">(<a href="#ref-gal_ghahramani_2016" role="doc-biblioref">Gal &amp; Ghahramani, 2016</a>)</span><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</li>
-<li>Fechar regímenes con la partición óptima de Fisher sobre trayectorias de representaciones (primer valor propio del EPCA, <em>scores</em> del PCA o códigos latentes) y clasificarlos en expansión, contracción o transición.</li>
-<li>Contrastar regímenes y fases con episodios fechados por fuentes externas, nunca por las propias series ni por un indicador derivado de ellas.</li>
-<li>Comparar los métodos sobre un contexto simulado, con regímenes conocidos por construcción, y calibrar con ello el número de factores y de clases, el ancho de ventana y los pesos de los análisis evolutivos.</li>
-<li>Comparar los métodos clásicos y los de aprendizaje profundo según interpretabilidad, estabilidad temporal, capacidad descriptiva y robustez.</li>
-</ol>
+<ul>
+<li><strong>OE1.</strong> Sistematizar el estado del arte sobre el ciclo financiero y sobre la reducción dimensional de series de tiempo multivariadas.</li>
+<li><strong>OE2.</strong> Construir y versionar el conjunto de series mensuales del BCRP, con trazabilidad de códigos, transformaciones y exclusiones.</li>
+<li><strong>OE3.</strong> Aplicar PCA, HFC y EPCA en las dos vías del diseño y contrastar los resultados con los de <span class="citation" data-cites="camiz_cerda_atoche_2026">Camiz et&nbsp;al. (<a href="#ref-camiz_cerda_atoche_2026" role="doc-biblioref">2026</a>)</span>.</li>
+<li><strong>OE4.</strong> Formalizar un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas (coeficiente RV o distancia de Procrustes).</li>
+<li><strong>OE5.</strong> Evaluar la robustez de los grupos de la HFC mediante remuestreo por bloques y correlación cofenética.</li>
+<li><strong>OE6.</strong> Triangular el número de componentes con la vara quebrada, el criterio de Rencher y el análisis paralelo de Horn <span class="citation" data-cites="horn_1965">(<a href="#ref-horn_1965" role="doc-biblioref">Horn, 1965</a>)</span><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> [CITA PENDIENTE: fuentes de la vara quebrada y del criterio de Rencher].</li>
+<li><strong>OE7.</strong> Diseñar autoencoders y redes LSTM adaptados a la escala de los datos, con pesos atados, preentrenamiento por capas, regularización y validación por bloques temporales y <em>walk-forward</em>.</li>
+<li><strong>OE8.</strong> Cuantificar la incertidumbre del error de reconstrucción mediante Monte Carlo Dropout <span class="citation" data-cites="gal_ghahramani_2016">(<a href="#ref-gal_ghahramani_2016" role="doc-biblioref">Gal &amp; Ghahramani, 2016</a>)</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</li>
+<li><strong>OE9.</strong> Fechar regímenes con la partición óptima de Fisher sobre trayectorias de representaciones (primer valor propio del EPCA, <em>scores</em> del PCA o códigos latentes) y clasificarlos en expansión, contracción o transición.</li>
+<li><strong>OE10.</strong> Contrastar regímenes y fases con episodios fechados por fuentes externas, nunca por las propias series ni por un indicador derivado de ellas.</li>
+<li><strong>OE11.</strong> Comparar los métodos sobre un contexto simulado, con regímenes conocidos por construcción, y calibrar con ello el número de factores y de clases, el ancho de ventana y los pesos de los análisis evolutivos.</li>
+<li><strong>OE12.</strong> Comparar los métodos clásicos y los de aprendizaje profundo según interpretabilidad, estabilidad temporal, capacidad descriptiva y robustez.</li>
+</ul>
 </section>
 <section id="objetivos-exploratorios-condicionales" class="level3">
 <h3 class="anchored" data-anchor-id="objetivos-exploratorios-condicionales">Objetivos exploratorios condicionales</h3>
 <p>Se abordarán si los resultados de los objetivos firmes lo justifican:</p>
-<ol type="1">
-<li>Evaluar la viabilidad de una HFC evolutiva (EHFC) que aplique la jerarquía completa en cada ventana móvil, en lugar de la aplicación secuencial de HFC y EPCA de la literatura.</li>
-<li>Explorar el STATIS dual como detector independiente de quiebres estructurales, siguiendo a <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</li>
-<li>Explorar la capacidad del LSTM para anticipar transiciones, con validación estrictamente fuera de muestra y declarando su escaso poder estadístico.</li>
-<li>Extender la muestra a años anteriores a 2007, si la homogeneidad de las series lo permite, para evaluar la crisis financiera global fuera de muestra.</li>
-</ol>
+<ul>
+<li><strong>OC1.</strong> Evaluar la viabilidad de una HFC evolutiva (EHFC) que aplique la jerarquía completa en cada ventana móvil, en lugar de la aplicación secuencial de HFC y EPCA de la literatura.</li>
+<li><strong>OC2.</strong> Explorar el STATIS dual como detector independiente de quiebres estructurales, siguiendo a <span class="citation" data-cites="camiz_maulucci_roig_2010">Camiz et&nbsp;al. (<a href="#ref-camiz_maulucci_roig_2010" role="doc-biblioref">2010</a>)</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</li>
+<li><strong>OC3.</strong> Explorar la capacidad del LSTM para anticipar transiciones, con validación estrictamente fuera de muestra y declarando su escaso poder estadístico.</li>
+<li><strong>OC4.</strong> Extender la muestra a años anteriores a 2007, si la homogeneidad de las series lo permite, para evaluar la crisis financiera global fuera de muestra.</li>
+</ul>
 </section>
 </section>
 <section id="hipótesis" class="level2">
@@ -460,7 +461,7 @@ Camiz, S., Maulucci, R., &amp; Roig, F. A. (2010). Exploratory analysis methods 
 Camiz, S., &amp; Roig, F. A. (2011). Evolutionary analysis applied to tree-ring series. En O. Papú (Ed.), <em>Actas E-ICES 6</em> (pp. 30-37). Comisión Nacional de Energía Atómica.
 </div>
 <div id="ref-drehmann_borio_tsatsaronis_2012" class="csl-entry" role="listitem">
-Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012). <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> (BIS Working Paper No. 380). Bank for International Settlements. <a href="https://www.bis.org/publ/work380.pdf">https://www.bis.org/publ/work380.pdf</a>
+Drehmann, M., Borio, C., &amp; Tsatsaronis, K. (2012). <em>Characterising the financial cycle: Don’t lose sight of the medium term!</em> (BIS Working Paper 380). Bank for International Settlements. <a href="https://www.bis.org/publ/work380.pdf">https://www.bis.org/publ/work380.pdf</a>
 </div>
 <div id="ref-fisher_1958" class="csl-entry" role="listitem">
 Fisher, W. D. (1958). On grouping for maximum homogeneity. <em>Journal of the American Statistical Association</em>, <em>53</em>(284), 789-798. <a href="https://doi.org/10.1080/01621459.1958.10501479">https://doi.org/10.1080/01621459.1958.10501479</a>
@@ -471,6 +472,9 @@ Gal, Y., &amp; Ghahramani, Z. (2016). Dropout as a <span>Bayesian</span> approxi
 <div id="ref-hinton_salakhutdinov_2006" class="csl-entry" role="listitem">
 Hinton, G. E., &amp; Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. <em>Science</em>, <em>313</em>(5786), 504-507. <a href="https://doi.org/10.1126/science.1127647">https://doi.org/10.1126/science.1127647</a>
 </div>
+<div id="ref-horn_1965" class="csl-entry" role="listitem">
+Horn, J. L. (1965). A rationale and test for the number of factors in factor analysis. <em>Psychometrika</em>, <em>30</em>(2), 179-185. <a href="https://doi.org/10.1007/BF02289447">https://doi.org/10.1007/BF02289447</a>
+</div>
 <div id="ref-tuhin_et_al_2025" class="csl-entry" role="listitem">
 Tuhin, K. H., Nobi, A., Rakib, M. H., &amp; Lee, J. W. (2025). Long short-term memory autoencoder based network of financial indices. <em>Humanities and Social Sciences Communications</em>, <em>12</em>, Artículo 100. <a href="https://doi.org/10.1057/s41599-025-04412-y">https://doi.org/10.1057/s41599-025-04412-y</a>
 </div>
@@ -478,12 +482,13 @@ Tuhin, K. H., Nobi, A., Rakib, M. H., &amp; Lee, J. W. (2025). Long short-term m
 
 <ol>
 <li id="fn1"><p>VERIFICAR: manuscrito fechado el 25 de abril de 2026, sin datos de revista, volumen ni DOI; confirmar con el Dr.&nbsp;Camiz su estado de publicación.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>VERIFICAR: número (284) y DOI. Ficha preliminar: solo se cita su aporte general.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>VERIFICAR: páginas (789–798), solo en fuentes secundarias; número y DOI ya verificados. Ficha preliminar, texto no leído: solo se cita su aporte general.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>VERIFICAR: el nombre del editor de las actas (O. Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>VERIFICAR: Bourlard y Kamp (1988), número del fascículo; Baldi y Hornik (1989), texto completo no consultado. Ambas fichas son preliminares.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>VERIFICAR: Bourlard y Kamp (1988), número del fascículo; ficha preliminar, texto no consultado. Baldi y Hornik (1989), solo el DOI; el texto completo ya se leyó.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>VERIFICAR: Hinton y Salakhutdinov (2006), se procesó el material suplementario; Tuhin et al.&nbsp;(2025), lista completa de autores.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>VERIFICAR: editores del volumen; PDF no consultado.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>VERIFICAR: datos de edición de las actas (ISBN o DOI).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>VERIFICAR: ficha preliminar en el contenido; se leyó el resumen, no el texto. Solo se cita el aporte general.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>VERIFICAR: editores del volumen; PDF no consultado.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>VERIFICAR: datos de edición de las actas (ISBN o DOI).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

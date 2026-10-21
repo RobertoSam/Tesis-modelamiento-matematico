@@ -67,6 +67,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -367,19 +396,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-default callout-warning callout-titled" title="Ficha PRELIMINAR">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Ficha PRELIMINAR
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente documentado del trabajo, <strong>sin lectura del texto completo</strong>. Antes de citarla en el informe final hay que leer el artículo y completar o corregir las secciones 4 a 6.</p>
-</div>
-</div>
 <section id="datos-identificadores" class="level2">
 <h2 class="anchored" data-anchor-id="datos-identificadores">1. Datos identificadores</h2>
 <table class="caption-top table">
@@ -408,7 +424,7 @@ Ficha PRELIMINAR
 </tr>
 <tr class="even">
 <td><strong>Estado de lectura</strong></td>
-<td>No leído — localizado (preliminar)</td>
+<td>Texto completo leído (2026-10-20; PDF del artículo publicado en la página institucional de P. Baldi, UCI, con OCR defectuoso en algunos símbolos)</td>
 </tr>
 </tbody>
 </table>
@@ -417,7 +433,7 @@ Ficha PRELIMINAR
 <h2 class="anchored" data-anchor-id="referencia-completa-apa-7.ª-edición">2. Referencia completa (APA 7.ª edición)</h2>
 <p>Baldi, P., &amp; Hornik, K. (1989). Neural networks and principal component analysis: Learning from examples without local minima. <em>Neural Networks, 2</em>(1), 53–58. https://doi.org/10.1016/0893-6080(89)90014-2</p>
 <blockquote class="blockquote">
-<p><strong>Verificación:</strong> Referencia localizada en ScienceDirect, ACM Digital Library y Semantic Scholar (2026-10-04). No se accedió al texto completo, que requiere suscripción.</p>
+<p><strong>Verificación:</strong> Volumen 2, número 1 y páginas 53–58 verificados el 2026-10-20 en el índice del fascículo del catálogo de la Koninklijke Bibliotheek (biblioteca nacional de los Países Bajos), que registra el artículo en las pp.&nbsp;53–58 entre Grossberg (pp.&nbsp;29–51) y Parberry (pp.&nbsp;59–67). El catálogo lista solo a P. Baldi; el artículo leído incluye a K. Hornik (Technische Universität Wien) en la nota de afiliación. Texto completo leído en igb.uci.edu (recibido el 18 de mayo de 1988; aceptado el 16 de agosto de 1988). <strong>El DOI no se pudo confirmar:</strong> doi.org y ScienceDirect no fueron accesibles.</p>
 </blockquote>
 </section>
 <section id="clasificación-temática" class="level2">
@@ -461,7 +477,14 @@ Ficha PRELIMINAR
 </section>
 <section id="propuesta-metodológica" class="level3">
 <h3 class="anchored" data-anchor-id="propuesta-metodológica">Propuesta metodológica</h3>
-<p>Análisis de los puntos críticos de la función de error. Se muestra que el mínimo global corresponde a la proyección sobre el subespacio de los primeros componentes principales y que los demás puntos críticos son puntos de silla, sin mínimos locales espurios. <em>[Confirmar enunciados exactos y supuestos, como autovalores distintos y matriz de covarianza invertible, contra el texto.]</em></p>
+<p>Red lineal de una capa oculta, sin sesgo, con <span class="math inline">\(n\)</span> entradas, <span class="math inline">\(p \le n\)</span> unidades ocultas y <span class="math inline">\(n\)</span> salidas; error <span class="math inline">\(E(A,B)=\sum_t \lVert y_t - ABx_t\rVert^2\)</span>. El caso autoasociativo toma <span class="math inline">\(y_t = x_t\)</span>, de modo que <span class="math inline">\(\Sigma_{YY}=\Sigma_{XX}=\Sigma\)</span> (p.&nbsp;55). Resultados (sección 2, pp.&nbsp;55–56, con demostraciones en el apéndice A):</p>
+<ul>
+<li><strong>Hechos 1 y 2:</strong> fijada <span class="math inline">\(A\)</span>, <span class="math inline">\(E\)</span> es convexa en <span class="math inline">\(B\)</span>; si <span class="math inline">\(\Sigma_{XX}\)</span> es invertible y <span class="math inline">\(A\)</span> tiene rango completo <span class="math inline">\(p\)</span>, es estrictamente convexa con mínimo único (y simétricamente para <span class="math inline">\(A\)</span>).</li>
+<li><strong>Hecho 3:</strong> si <span class="math inline">\(\Sigma_{XX}\)</span> es invertible, en los puntos críticos <span class="math inline">\(W = AB = P_A\Sigma_{YX}\Sigma_{XX}^{-1}\)</span>, con <span class="math inline">\(P_A\)</span> que conmuta con <span class="math inline">\(\Sigma\)</span>.</li>
+<li><strong>Hecho 4 (supuestos: <span class="math inline">\(\Sigma\)</span> de rango completo con <span class="math inline">\(n\)</span> valores propios distintos, que los autores califican de no restrictivos):</strong> los puntos críticos corresponden a subconjuntos de <span class="math inline">\(p\)</span> vectores propios; el error vale <span class="math inline">\(\operatorname{tr}\Sigma_{YY} - \sum_{i\in\mathcal I}\lambda_i\)</span>. El subconjunto <span class="math inline">\(\{1,\dots,p\}\)</span> da, salvo equivalencia, <strong>el único mínimo local y global</strong>, la proyección ortogonal sobre el subespacio de los <span class="math inline">\(p\)</span> primeros vectores propios; <strong>todos los demás puntos críticos son puntos de silla</strong> (también los de rango deficiente, apéndice B).</li>
+<li><strong>Caso autoasociativo (p.&nbsp;56):</strong> con <span class="math inline">\(C=I\)</span>, <span class="math inline">\(B=U'\)</span>: los pesos de la primera unidad oculta son el vector propio dominante (enlace con Oja, 1982).</li>
+<li><strong>Advertencia (p.&nbsp;56):</strong> aunque <span class="math inline">\(E\)</span> no tiene mínimos locales, el descenso por gradiente o los métodos de Newton podrían quedar atrapados en un punto de silla; los autores lo consideran improbable en la práctica según sus simulaciones.</li>
+</ul>
 </section>
 </section>
 <section id="conceptos-clave-equivalencia-de-dominio" class="level2">
@@ -505,7 +528,8 @@ Ficha PRELIMINAR
 <section id="limitaciones-relevantes-para-la-adaptación" class="level3">
 <h3 class="anchored" data-anchor-id="limitaciones-relevantes-para-la-adaptación">Limitaciones (relevantes para la adaptación)</h3>
 <ul>
-<li>Resultado limitado al caso lineal; no dice nada sobre redes con activaciones no lineales.</li>
+<li>Resultado limitado al caso lineal. Los autores señalan que una extensión rigurosa al caso sigmoide no lineal parece «más difícil» (p.&nbsp;56) y no la demuestran; sí afirman que los rasgos principales del paisaje se mantienen con varias capas ocultas lineales y que el caso afín (con sesgo) se extiende de forma directa.</li>
+<li>El mínimo es único «salvo equivalencia»: la base del subespacio latente no está identificada (de ahí la rotación de Procrustes).</li>
 <li>Con n = 227, las garantías asintóticas sobre la superficie de error no sustituyen la verificación numérica, ya realizada en 08.</li>
 </ul>
 </section>
