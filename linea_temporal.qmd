@@ -13,6 +13,47 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 20–21 de octubre de 2026
+
+**Iteración 3a: PCA estático mensual en dos vías, en Python y R, y tesis maestra en LaTeX**
+
+- `05_pca.ipynb` se rehízo en frecuencia mensual con las 17 series de D1 y las dos vías de D2
+  (niveles 228 × 17; transformadas 227 × 17). Responde a los apuntes 1 (cos²), 3 (ACF y
+  correlaciones), 4 (KMO y Bartlett), 5 (bootstrap por bloques, parte estática), 10 (contraste
+  sin tendencia y nulo de tendencias independientes) y 11 (regresión sobre el tiempo con la
+  regla D5).
+- Paridad Python–R: todas las comprobaciones coinciden. `aede` y la HFC del asesor se portaron a
+  Python (D6) y reproducen los resultados de R en las dos vías.
+- Nuevos módulos sin `torch`: `src/multivariado.py`, `src/remuestreo.py`, `src/series_tiempo.py`,
+  `src/camiz_port.py` y `src/particion.py`, con pruebas en `tests/`.
+- Todas las cifras del texto salen de `data/results/` mediante `herramientas/generar_cifras.py`
+  (macros LaTeX y valores para Quarto).
+- **Tesis maestra en LaTeX** (`tesis_latex/`): capítulos 1 y 2 formalizados, con notación única
+  y proposiciones verificadas numéricamente. El informe MMC102 se deriva de ella.
+- Bibliografía: 31 fichas nuevas; `.bib` con 47 entradas; registro de verificación sin números
+  de línea.
+
+**Decisiones registradas:** [D4](decisiones.qmd) (datos congelados 2007-01 a 2025-12),
+[D5](decisiones.qmd) (regla de clasificación de tendencia fijada antes de calcular) y
+[D6](decisiones.qmd) (métodos del asesor también en Python).
+
+**Auditoría:** APROBADO en la vuelta 1, con 2 hallazgos mayores (una demostración de la
+proposición de ganancia de la primera diferencia y una fila faltante del registro) y 12
+menores. Se corrigieron en la vuelta 2 (21 de octubre) y la re-auditoría independiente dio
+APROBADO, sin hallazgos bloqueantes ni mayores. Quedan para 3b el fechado unificado de los
+episodios y algunas marcas [VERIFICAR] residuales en el Rmd para obras que ya tienen ficha.
+Dictámenes: [vuelta 1](https://github.com/RobertoSam/Tesis-modelamiento-matematico/blob/main/auditorias/2026-10-20_iteracion-3a.md)
+y [vuelta 2](https://github.com/RobertoSam/Tesis-modelamiento-matematico/blob/main/auditorias/2026-10-21_iteracion-3a_vuelta2.md).
+
+**Pendientes**
+
+- Decisión I: convención de fechado de los episodios de referencia (bloquea su unificación en 3b).
+- Reunión con el Dr. Camiz sobre la Parte C de D2 (qué vía mide el ciclo), con la evidencia de
+  los apuntes 10 y 11.
+- Iteración 3b: ventanas de 24 y 36 meses, maxcl = 20, nodo 31 de la HFC y parte dinámica del
+  bootstrap.
+- Completar las fichas preliminares (Tucker, Phillips, Dickey-Fuller, KPSS, entre otras).
+
 ## 19–20 de octubre de 2026
 
 **Versión en R operativa y en paridad con Python**
