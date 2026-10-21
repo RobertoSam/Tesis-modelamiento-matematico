@@ -297,3 +297,10 @@ El registro mantiene las tres obras como «Pendiente», así que la tesis adopta
 3. Retirar `v2-lst`.
 4. Añadir una nota VERIFICAR de Tuhin et al. (2025) en «LSTM-autoencoder».
 5. Mantener `v2-cmr`, `v2-cr` y `v2-tu`, que ya tienen equivalente en la tesis.
+
+### Vuelta 2 (21 de octubre de 2026)
+
+- **N-07.** Con `texlive-luatex` instalado desaparece `Error in luaotfload`. El destino duplicado
+  `page.I` se corrigió dando a la portada numeración `Alph` (`tesis.tex`). `latexmk`: exit 0,
+  46 páginas, 0 indefinidas, 0 `Overfull`, 0 destinos duplicados.
+- **N-10.** `tesis_latex/README.md` declara la lista de excepciones a la regla de cifras.

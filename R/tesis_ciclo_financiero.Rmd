@@ -1180,8 +1180,8 @@ en menor grado, para M1, el crédito empresarial y el IPC.
 
 El argumento clásico para diferenciar es que dos series con tendencia estocástica (integradas)
 pueden estar muy correlacionadas sin tener relación alguna; la correlación entre sus niveles es
-**espuria**. El resultado se suele atribuir a Granger y Newbold (1974) [VERIFICAR: sin ficha] y a Phillips
-(1986) [VERIFICAR: sin ficha]. La prueba directa con estos datos es
+**espuria**. El resultado se suele atribuir a Granger y Newbold (1974) [VERIFICAR: número del fascículo y DOI] y a
+Phillips (1986) [VERIFICAR: ficha preliminar, solo se leyó el resumen; metadatos de fuente secundaria y DOI pendientes]. La prueba directa con estos datos es
 preguntarse qué PCA darían 17 series **independientes** con las mismas tendencias que las
 observadas:
 
@@ -1321,17 +1321,18 @@ tendencia y de `r paste(num(emp_tra$congruencia[2:4], 2), collapse = ", ")` con 
 transformadas. Frente al nulo aplicado a las series sin su recta, la proporción de simulaciones
 con un PC1 igual o mayor que el observado es `r num(pos_nulo_obs(nulo_st, obs_det)[1], 2)` y con un
 PC2 igual o mayor, `r num(pos_nulo_obs(nulo_st, obs_det)[2], 2)`. Los umbrales de congruencia que
-usa este documento (0,85 y 0,95) no tienen fuente fichada [VERIFICAR: fuente de los umbrales de
-la congruencia de Tucker].
+usa este documento siguen a Lorenzo-Seva y ten Berge (2006): entre 0,85 y 0,94, similitud
+aceptable; más de 0,95, componentes iguales. El coeficiente se atribuye a Tucker (1951)
+[VERIFICAR: ficha preliminar; texto no leído, entidad emisora y lugar sin confirmar].
 :::
 
 ## Estacionariedad en las dos versiones
 
 Se aplican dos pruebas con hipótesis opuestas a cada serie:
 
-- **ADF** (Dickey-Fuller aumentada [VERIFICAR: sin ficha de la fuente de la prueba], con constante y tendencia): hipótesis nula de raíz
+- **ADF** (Dickey-Fuller aumentada; Dickey y Fuller, 1979 [VERIFICAR: ficha preliminar, páginas solo en fuentes secundarias; la versión aumentada se atribuye a Said y Dickey (1984), sin ficha], con constante y tendencia): hipótesis nula de raíz
   unitaria (no estacionaria).
-- **KPSS** [VERIFICAR: sin ficha de la fuente de la prueba]: hipótesis nula de estacionariedad en nivel.
+- **KPSS** (Kwiatkowski et al., 1992 [VERIFICAR: ficha preliminar; autores de la versión publicada sin verificar, sin entrada en el `.bib`]): hipótesis nula de estacionariedad en nivel.
 
 Una serie se considera estacionaria cuando la ADF rechaza (p < 0,05) y la KPSS no rechaza
 (p > 0,05). Ambas pruebas reportan p-valores interpolados en tablas: 0,01 significa "0,01 o
@@ -1959,9 +1960,10 @@ tendencia, `r KPSS_REZAGOS` rezagos), al `r 100 * ALFA_D5` %, con la regla fijad
 (estacionaria en tendencia); ADF no rechaza y KPSS sí → **DS** (integrada); otro caso →
 **indeterminada**. Lo mismo se hace para cada una de las 17 series. Con residuos integrados, la
 regresión sobre el tiempo es espuria y los estadísticos t de la pendiente no son válidos
-(Granger y Newbold, 1974; Phillips, 1986 [VERIFICAR: sin ficha]): solo se interpreta la
-clasificación. ADF [VERIFICAR: sin ficha de la fuente de la prueba] y KPSS [VERIFICAR: sin ficha
-de la fuente de la prueba] pierden potencia ante quiebres estructurales [VERIFICAR: fuente].
+(Granger y Newbold, 1974 [VERIFICAR: número del fascículo y DOI]; Phillips, 1986 [VERIFICAR: ficha
+preliminar, solo resumen]): solo se interpreta la clasificación. ADF (Dickey y Fuller, 1979
+[VERIFICAR: ficha preliminar]) y KPSS (Kwiatkowski et al., 1992 [VERIFICAR: ficha preliminar, sin
+entrada en el `.bib`]) pierden potencia ante quiebres estructurales [VERIFICAR: fuente].
 
 ```{r b3-tendencia-d5}
 tend_pc <- tabla_tendencia(scores[, 1:4], paste0("PC", 1:4))
@@ -2135,7 +2137,7 @@ estab <- data.frame(Componente = paste0("PC", 1:K),
                     `Congruencia p5` = num(apply(congr, 2, quantile, 0.05), 3),
                     `Valor propio p5–p95` = sapply(1:K, function(k) paste(num(quantile(boot_vp[, k], c(0.05, 0.95)), 2), collapse = " – ")),
                     check.names = FALSE)
-knitr::kable(estab, row.names = FALSE, caption = "Congruencia de Tucker: 1 = misma dirección; sobre 0,95 se considera la misma componente; bajo 0,85, distinta.")
+knitr::kable(estab, row.names = FALSE, caption = "Congruencia de Tucker: 1 = misma dirección; más de 0,95, componentes iguales; entre 0,85 y 0,94, similitud aceptable (Lorenzo-Seva y ten Berge, 2006).")
 ```
 
 ```{r b3-g-bootstrap, fig.height = 7.5}
@@ -3679,7 +3681,7 @@ knitr::kable(data.frame(Componente = paste0("PC", 1:K),
                         `Congruencia p5` = num(apply(congr_t, 2, quantile, 0.05), 3),
                         `Congruencia mediana sin transformar (A.2)` = num(apply(congr, 2, median), 3),
                         check.names = FALSE), row.names = FALSE,
-             caption = paste(B, "réplicas bootstrap por bloques de 24 meses. Sobre 0,95: la misma componente; bajo 0,85: distinta."))
+             caption = paste(B, "réplicas bootstrap por bloques de 24 meses. Más de 0,95: componentes iguales; entre 0,85 y 0,94: similitud aceptable (Lorenzo-Seva y ten Berge, 2006)."))
 ```
 
 ```{r bB2-g-bootstrap, fig.height = 7.5}
@@ -4381,7 +4383,7 @@ knitr::kable(data.frame(
 congr_nt <- abs(sapply(1:4, function(k) sapply(1:4, function(j) tucker(cargas[, k], cargas_t[, j]))))
 dimnames(congr_nt) <- list(paste0("PC", 1:4, " transformadas"), paste0("PC", 1:4, " sin transformar"))
 knitr::kable(apply(congr_nt, 2, num, dec = 2),
-             caption = "Congruencia de Tucker (valor absoluto) entre las cargas de las dos vías. Sobre 0,85: componentes parecidas.")
+             caption = "Congruencia de Tucker (valor absoluto) entre las cargas de las dos vías. Desde 0,85: similitud aceptable (Lorenzo-Seva y ten Berge, 2006).")
 ```
 
 ::: {.lectura}

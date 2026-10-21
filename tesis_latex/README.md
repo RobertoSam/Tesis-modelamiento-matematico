@@ -40,20 +40,40 @@ bibliotecario). Las figuras se buscan en `../reports/figures/` (`\graphicspath`)
 - **Fuente:** Nimbus Sans (paquete `helvet`), clon de Helvetica. Arial reproduce los anchos de
   Helvetica, de modo que es su equivalente métrico más cercano disponible en TeX Live.
   Matemáticas en Computer Modern.
-- No se usa `fontspec`: el TeX Live de este entorno no trae `luaotfload` (paquete Debian
-  `texlive-luatex`). Por eso el log muestra la línea `Error in luaotfload: reverting to OT1`, que
-  no detiene la compilación. Con fuentes Type 1 y codificación T1, el documento compila igual en
-  cualquier TeX Live. Los signos que en T1 no coinciden con Latin-1 (« » ¿ ¡ — – “ ” ·) se
-  declaran con `newunicodechar`; si se usa uno nuevo, hay que declararlo.
+- No se usa `fontspec`. Hasta la iteración 3a el entorno no traía `luaotfload` (paquete Debian
+  `texlive-luatex`) y el log mostraba `Error in luaotfload: reverting to OT1`; desde la vuelta 2
+  de la auditoría 3a está instalado y el aviso desapareció. Se mantienen las fuentes Type 1 con
+  codificación T1, que compilan igual en cualquier TeX Live; `fontspec` y una fuente OpenType
+  se evaluarán al adoptar la plantilla de la UNI. Los signos que en T1 no coinciden con Latin-1
+  (« » ¿ ¡ — – “ ” ·) se declaran con `newunicodechar`; si se usa uno nuevo, hay que declararlo.
+- La portada usa numeración `Alph` propia para que no se repita el destino `page.I` de
+  `hyperref` (auditoría 3a, N-07).
 - Debe revisarse cuando estén las pautas de la UNI.
 
 ## Reglas de redacción
 
 - Definiciones, supuestos, proposiciones y observaciones con los entornos de `amsthm`, numerados
   por capítulo; referencias con `\cref`, nunca a mano.
-- Ningún número de datos a mano: solo macros de `cifras.tex`. Los números que quedan en el texto
-  son años de cita, cifras de las fuentes citadas, constantes matemáticas y numeración.
+- Ningún número de datos a mano: solo macros de `cifras.tex`. Las únicas excepciones admitidas
+  son las de la lista siguiente (auditoría 3a, N-10).
 - `\textcite`/`\parencite` solo con claves que tengan entrada en el `.bib` **y** ficha en
   `papers/`. Lo demás va como `\pendiente{qué falta}`. Los datos por verificar de obras con ficha
   van como `\verificar{motivo}` (nota al pie), equivalente a `[VERIFICAR: motivo]` del informe.
 - Antes de introducir un símbolo, buscarlo en `notacion.tex`.
+
+## Lista de excepciones a la regla de cifras
+
+Un dígito escrito a mano en `capitulos/*.tex` solo es admisible si pertenece a una de estas
+clases. Todo lo demás (tamaños muestrales, fechas del dataset, inercias, estadísticos, umbrales
+que dependan de los datos) entra por una macro de `cifras.tex`.
+
+| Clase | Qué cubre | Ejemplos |
+|---|---|---|
+| Años de las citas | El año dentro de una referencia o del nombre de una obra | Fisher (1958), Drehmann et al. (2012) |
+| Cifras atribuidas a una fuente fichada | Hechos de la literatura, citados junto a la obra que los sostiene y respaldados por su ficha en `papers/` | Duración de 8 a 30 años y de 1 a 8 años (`drehmann_borio_tsatsaronis_2012`); 17 indicadores, 1999–2020, grupos de 7/4/4 series y ventana de 48 meses (`camiz_cerda_atoche_2026`); umbral de 0,7 (`camiz_et_al_2020`) |
+| Fechas de episodios externos | Año o mes de un evento citado como hecho histórico, con su fuente o su `\pendiente` | 2008, 2013, 2020 en la descripción de los episodios |
+| Constantes y parámetros matemáticos | Números que forman parte de una definición, proposición o demostración y no dependen de los datos | $P\ge2$, $\pi/6$, $1/2$, $\gamma(2)=2$ |
+| Numeración y estructura | Capítulos, secciones, ítems, apuntes o decisiones (D1–D6) | «apunte 11», «decisión D5» |
+| Parámetros fijados de antemano | Valores de diseño declarados en `decisiones.qmd` antes de calcular | Nivel de 5 % y rezagos de la regla D5 |
+
+Si un número no encaja en ninguna clase, se reemplaza por una macro o se lleva al auditor.

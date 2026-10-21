@@ -25,7 +25,11 @@
 
 % ---- Páginas preliminares ----------------------------------------------------
 \frontmatter
+% La portada (titlepage) reinicia la numeración: se le da un estilo propio (Alph) para que
+% hyperref no genere dos destinos 'page.I' (auditoría 3a, N-07).
+\pagenumbering{Alph}
 \input{capitulos/00_portada}
+\pagenumbering{roman}
 
 \chapter*{Resumen}
 \addcontentsline{toc}{chapter}{Resumen}

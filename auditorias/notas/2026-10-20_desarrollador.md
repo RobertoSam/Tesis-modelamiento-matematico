@@ -470,3 +470,28 @@ mención se omite cuando el parámetro es TRUE.
    revisarlos con el Dr. Camiz.
 6. **Registro de verificación:** las cuatro marcas `[VERIFICAR]` nuevas (§6, punto 6) necesitan
    fila; las agrega el bibliotecario.
+
+## Vuelta 2 (21 de octubre de 2026 · dictamen `auditorias/2026-10-20_iteracion-3a.md`)
+
+**N-03.** Las marcas «sin ficha» del Rmd (sección 2 y A.2) y de la celda 15 de `05_pca.ipynb`
+citan ahora las fichas existentes con lo que sigue pendiente: Granger y Newbold (1974), número y
+DOI; Phillips (1986), ficha preliminar (solo resumen); Dickey y Fuller (1979), ficha preliminar
+(la versión aumentada se atribuye a Said y Dickey, 1984, sin ficha); Kwiatkowski et al. (1992),
+ficha preliminar sin entrada en el `.bib`. Se conserva «[VERIFICAR: fuente]» de la pérdida de
+potencia ante quiebres (Perron no se cita).
+
+**N-04.** Los pies de tabla (umbrales de congruencia) y la nota de la sección 2 siguen la ficha
+de Lorenzo-Seva y ten Berge (2006): más de 0,95, componentes iguales; 0,85–0,94, similitud
+aceptable. Se retiró «bajo 0,85: distinta». El coeficiente se atribuye a Tucker (1951), con su
+marca. El criterio operativo «congruencia < 0,85 al retirar el episodio» (tabla de síntesis) se
+mantiene como definición del documento, no como atribución.
+
+**N-05.** Ya resuelto: la rama `archivo/v0.3-trimestral` existe en `origin` (ff52c5e) y D3 la
+nombra. Se publica además el tag `v0.3-trimestral` sobre el mismo commit.
+
+**N-06.** Se creó `src/particion.py` (`particion_fisher`): envuelve `camiz_port.fisher` y devuelve
+etiquetas, límites, fechas de corte y SCE. Prueba nueva `tests/test_particion.py` contra búsqueda
+exhaustiva (30 series, k = 2, 3, 4). `pytest tests/`: 12 de 12.
+
+**Re-ejecución.** `05_pca.ipynb` (nbconvert, exit 0) y el Rmd (exit 0, 3 min 24 s, sin avisos de R):
+los 114 CSV de `data/results/` quedan idénticos byte a byte. `generar_cifras.py --comprobar`: exit 0.
