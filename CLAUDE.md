@@ -76,6 +76,10 @@ auditorias/       Dictámenes del auditor por iteración
    tareas por agente y criterios de aceptación.
 2. **Roberto da su conforme al plan**, con ajustes si los hay. Desde ese momento la iteración
    avanza sin nuevas consultas, salvo decisiones irreversibles o que solo él puede tomar.
+   **Fase 0 sin esperar (desde el 24-oct-2026):** apenas el asesor entrega el plan, el
+   orquestador lanza las tareas que el plan marca como independientes de toda decisión
+   pendiente (fase 0), en la rama `iteracion-N`. Lo que depende de una decisión espera el
+   conforme. La fase 0 no escribe resultados en la tesis ni en el informe.
 3. **Desarrollador** implementa y ejecuta en Python y en el Rmd (paridad) y regenera las cifras.
    **Bibliotecario** cierra las fichas y verificaciones que el plan requiera. Ambos trabajan en
    paralelo si no dependen uno del otro.
@@ -91,6 +95,21 @@ auditorias/       Dictámenes del auditor por iteración
 
    Como máximo hay dos vueltas; si los hallazgos persisten, se escalan a Roberto.
 7. El trabajo en curso se respalda en la rama `iteracion-N`, nunca en `main`.
+
+## Seguimiento diario (tarea programada, desde el 24-oct-2026)
+
+Cada mañana una tarea programada abre una sesión que:
+
+1. lee este archivo, el último plan de `asesoria/`, la última auditoría y el estado de la rama
+   `iteracion-N` en curso;
+2. si el último commit de esa rama tiene menos de 3 horas, asume que hay otra sesión trabajando y
+   **solo informa**;
+3. si no, identifica el siguiente paso del ciclo y lo ejecuta (lanza al agente que corresponde),
+   salvo que dependa de un conforme o una decisión de Roberto;
+4. envía a Roberto un aviso breve: qué avanzó, qué sigue y, si algo espera de él, la decisión
+   concreta en una línea.
+
+La tarea nunca integra en `main`, nunca publica el sitio y nunca toma decisiones metodológicas.
 
 ## Conforme de Roberto
 
