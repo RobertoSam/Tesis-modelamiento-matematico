@@ -52,3 +52,75 @@ def test_una_clase():
     y = np.array([1.0, 2.0, 3.0])
     res = particion_fisher(y, 1)
     assert res["cortes"] == [] and np.isclose(res["sce"], 2.0)
+
+
+# ---- Tarea D2 (iteración 3b): longitud mínima de segmento y datos multivariados ----
+
+from src.particion import fisher_multivariado
+
+
+def _sce_m(Y):
+    # Suma de cuadrados intra-clase de un tramo multivariado
+    return float(((Y - Y.mean(axis=0)) ** 2).sum())
+
+
+def _fuerza_bruta_nmin(Y, k, n_min):
+    # Mínima SCE total entre todas las particiones en k tramos de al menos n_min filas
+    n = len(Y)
+    mejor, arg = np.inf, None
+    for cortes in itertools.combinations(range(1, n), k - 1):
+        bordes = (0,) + cortes + (n,)
+        if min(b - a for a, b in zip(bordes[:-1], bordes[1:])) < n_min:
+            continue
+        total = sum(_sce_m(Y[a:b]) for a, b in zip(bordes[:-1], bordes[1:]))
+        if total < mejor - 1e-12:
+            mejor, arg = total, list(cortes)
+    return mejor, arg
+
+
+def test_nmin_coincide_con_fuerza_bruta():
+    rng = np.random.default_rng(20261024)
+    casos = 0
+    for _ in range(40):
+        n = int(rng.integers(8, 15))
+        q = int(rng.integers(1, 4))
+        Y = rng.normal(size=(n, q)).cumsum(axis=0)
+        for n_min in (1, 2, 3, 4):
+            res = fisher_multivariado(Y, k_max=4, n_min=n_min)
+            for k in range(1, 5):
+                if k * n_min > n:
+                    assert k not in res
+                    continue
+                sce_bf, _ = _fuerza_bruta_nmin(Y, k, n_min)
+                assert np.isclose(res[k]["sce"], sce_bf, atol=1e-9)
+                bordes = [0] + res[k]["cortes"] + [n]
+                largos = np.diff(bordes)
+                assert largos.min() >= n_min
+                assert np.isclose(sum(_sce_m(Y[a:b]) for a, b in zip(bordes[:-1], bordes[1:])),
+                                  res[k]["sce"], atol=1e-9)
+                casos += 1
+    assert casos > 400
+
+
+def test_nmin_1_reproduce_comportamiento_anterior():
+    # Con n_min = 1 y datos univariados, la vía general da la misma SCE y los mismos cortes
+    rng = np.random.default_rng(7)
+    for _ in range(20):
+        y = rng.normal(size=int(rng.integers(6, 30))).cumsum()
+        for k in (2, 3, 4):
+            a = particion_fisher(y, k, maxcl=6)
+            b = particion_fisher(y[:, None], k, maxcl=6)
+            assert np.isclose(a["sce"], b["sce"], atol=1e-9)
+            assert list(a["cortes"]) == list(b["cortes"])
+            assert np.array_equal(a["etiquetas"], b["etiquetas"])
+
+
+def test_nmin_fechas_y_errores():
+    idx = pd.period_range("2010-01", periods=12, freq="M")
+    y = pd.Series([0.0] * 2 + [5.0] * 10, index=idx)
+    # Sin restricción el corte cae en el mes 3; con n_min = 4 debe correrse al mes 5
+    assert particion_fisher(y, 2)["cortes"] == [idx[2]]
+    assert particion_fisher(y, 2, n_min=4)["cortes"] == [idx[4]]
+    import pytest
+    with pytest.raises(ValueError):
+        particion_fisher(y, 4, n_min=4)
