@@ -327,13 +327,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">20–21 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">19–20 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-2" id="toc-de-octubre-de-2026-2" class="nav-link" data-scroll-target="#de-octubre-de-2026-2">18–19 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-3" id="toc-de-octubre-de-2026-3" class="nav-link" data-scroll-target="#de-octubre-de-2026-3">16 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-4" id="toc-de-octubre-de-2026-4" class="nav-link" data-scroll-target="#de-octubre-de-2026-4">8 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-5" id="toc-de-octubre-de-2026-5" class="nav-link" data-scroll-target="#de-octubre-de-2026-5">7 de octubre de 2026</a></li>
-  <li><a href="#de-octubre-de-2026-6" id="toc-de-octubre-de-2026-6" class="nav-link" data-scroll-target="#de-octubre-de-2026-6">4–5 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026" id="toc-de-octubre-de-2026" class="nav-link active" data-scroll-target="#de-octubre-de-2026">24 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-1" id="toc-de-octubre-de-2026-1" class="nav-link" data-scroll-target="#de-octubre-de-2026-1">20–21 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-2" id="toc-de-octubre-de-2026-2" class="nav-link" data-scroll-target="#de-octubre-de-2026-2">19–20 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-3" id="toc-de-octubre-de-2026-3" class="nav-link" data-scroll-target="#de-octubre-de-2026-3">18–19 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-4" id="toc-de-octubre-de-2026-4" class="nav-link" data-scroll-target="#de-octubre-de-2026-4">16 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-5" id="toc-de-octubre-de-2026-5" class="nav-link" data-scroll-target="#de-octubre-de-2026-5">8 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-6" id="toc-de-octubre-de-2026-6" class="nav-link" data-scroll-target="#de-octubre-de-2026-6">7 de octubre de 2026</a></li>
+  <li><a href="#de-octubre-de-2026-7" id="toc-de-octubre-de-2026-7" class="nav-link" data-scroll-target="#de-octubre-de-2026-7">4–5 de octubre de 2026</a></li>
   </ul>
 </nav>
     </div>
@@ -374,7 +375,37 @@ Cómo se usa esta página
 </div>
 </div>
 <section id="de-octubre-de-2026" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026">20–21 de octubre de 2026</h2>
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026">24 de octubre de 2026</h2>
+<p><strong>Arranque de la iteración 3b y protocolo para no detener el avance</strong></p>
+<ul>
+<li><strong>Diagnóstico.</strong> El trabajo estuvo detenido del 21 al 24 de octubre. El plan de la iteración 3b esperaba el conforme de Roberto, y los agentes solo se ejecutan cuando una sesión los lanza.</li>
+<li><strong>Conforme al plan 3b.</strong> Roberto aprobó, sin ajustes, las ocho recomendaciones del asesor de tesis. Quedaron registradas <strong>antes</strong> de cualquier cálculo que dependa de ellas (criterio de aceptación 9 del plan): <a href="./decisiones.html">D7 a D14</a>.
+<ul>
+<li>D7: los episodios se fechan por el evento externo, con tolerancia de ±3 meses (±6 como sensibilidad).</li>
+<li>D8: nulo de tendencias mixto por serie.</li>
+<li>D9: d = 3 como especificación principal.</li>
+<li>D10: grilla de ventanas {24, 36, 48, 60}, con RV entre ventanas adyacentes no solapadas.</li>
+<li>D11 a D14: uso del índice CH, regla de respaldo de la datación, lectura de 2017-10 y alcance de los apuntes 2 y 7.</li>
+</ul></li>
+<li><strong>Protocolo antitrabas</strong> (en <code>CLAUDE.md</code>):
+<ol type="1">
+<li>Las tareas de un plan que no dependen de decisiones (fase 0) arrancan apenas el asesor entrega el plan.</li>
+<li>Una tarea programada diaria retoma la iteración donde quedó y avisa a Roberto qué avanzó y qué espera de él. Nunca integra en <code>main</code>, nunca publica el sitio y nunca toma decisiones metodológicas.</li>
+</ol></li>
+<li><strong>Iteración 3b en marcha</strong> (rama <code>iteracion-3b</code>):
+<ul>
+<li>el desarrollador trabaja en la fase 0 (partición con longitud mínima, datación PCA en grilla, <code>aede</code> en grilla de anchos, valores propios por ventana, nulo de estructura constante y HFC);</li>
+<li>el bibliotecario cierra las fuentes de los episodios y las fichas que 3b necesita.</li>
+</ul></li>
+</ul>
+<p><strong>Pendientes</strong></p>
+<ul>
+<li>Terminar la fase 0. Luego, episodios unificados y criterio de ventana (fase 1), redacción de los capítulos 2 y 3 (fase 2) y auditoría (fase 3).</li>
+<li>Reunión con el Dr.&nbsp;Camiz sobre qué vía mide el ciclo (Parte C de D2). Bloquea solo la sección «Qué vía mide qué» del capítulo 3.</li>
+</ul>
+</section>
+<section id="de-octubre-de-2026-1" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">20–21 de octubre de 2026</h2>
 <p><strong>Iteración 3a: PCA estático mensual en dos vías, en Python y R, y tesis maestra en LaTeX</strong></p>
 <ul>
 <li><code>05_pca.ipynb</code> se rehízo en frecuencia mensual con las 17 series de D1 y las dos vías de D2 (niveles 228 × 17; transformadas 227 × 17). Responde a los apuntes 1 (cos²), 3 (ACF y correlaciones), 4 (KMO y Bartlett), 5 (bootstrap por bloques, parte estática), 10 (contraste sin tendencia y nulo de tendencias independientes) y 11 (regresión sobre el tiempo con la regla D5).</li>
@@ -394,8 +425,8 @@ Cómo se usa esta página
 <li>Completar las fichas preliminares (Tucker, Phillips, Dickey-Fuller, KPSS, entre otras).</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-1" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-1">19–20 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-2" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-2">19–20 de octubre de 2026</h2>
 <p><strong>Versión en R operativa y en paridad con Python</strong></p>
 <ul>
 <li><code>R/tesis_ciclo_financiero.Rmd</code> se ejecuta completo, en unos 2,5 minutos con los parámetros por defecto. En servidores sin locale UTF-8 fallaba, porque los nombres de las series llevan tilde; ahora lo fija al inicio.</li>
@@ -420,8 +451,8 @@ Cómo se usa esta página
 <li>Rehacer <code>05_pca</code> con datos mensuales (D3).</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-2" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-2">18–19 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-3" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-3">18–19 de octubre de 2026</h2>
 <p><strong>Forma de trabajo: equipo de agentes</strong></p>
 <ul>
 <li>Se definen tres agentes en el repositorio (<code>.claude/agents/</code>), con reglas comunes en <code>CLAUDE.md</code>:
@@ -451,8 +482,8 @@ Cómo se usa esta página
 <li>Obtener las pautas de redacción de tesis de la UNI y ajustar la plantilla Word.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-3" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-3">16 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-4" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-4">16 de octubre de 2026</h2>
 <p><strong>Documento en R: análisis completo en dos vías</strong></p>
 <ul>
 <li>A pedido del asesor (sustentar la transformación y probar sin transformar), <code>R/tesis_ciclo_financiero.Rmd</code> ejecuta ahora la cadena completa dos veces, con el mismo código y los mismos parámetros. La Parte A usa las series sin transformar y la Parte B las transformadas. La Parte C compara ambas vías. Decisión registrada en el <a href="./decisiones.html">registro de decisiones</a> (D2).</li>
@@ -485,8 +516,8 @@ Cómo se usa esta página
 <li>Reformular la regla de fases.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-4" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-4">8 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-5" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-5">8 de octubre de 2026</h2>
 <p><strong>Documento en R</strong></p>
 <ul>
 <li>Verificación del PCA de Rcamiz frente a scikit-learn sobre los 227 meses (notebook <code>07</code>).</li>
@@ -495,8 +526,8 @@ Cómo se usa esta página
 <li>Decisión: el documento en R pasa a las series sin transformar, con las transformadas como contraste (<a href="./decisiones.html">registro de decisiones</a>, D1).</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-5" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-5">7 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-6" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-6">7 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li>Se retiraron del sitio, el README, las fichas y los notebooks todas las referencias a la corrida previa con datos incompletos. Todas las cifras quedan referidas al dataset mensual vigente: 227 meses × 17 variables (2007-02 a 2025-12).</li>
@@ -515,8 +546,8 @@ Cómo se usa esta página
 <li>Consolidar la interpretación de todos los resultados antes de presentarlos al asesor.</li>
 </ul>
 </section>
-<section id="de-octubre-de-2026-6" class="level2">
-<h2 class="anchored" data-anchor-id="de-octubre-de-2026-6">4–5 de octubre de 2026</h2>
+<section id="de-octubre-de-2026-7" class="level2">
+<h2 class="anchored" data-anchor-id="de-octubre-de-2026-7">4–5 de octubre de 2026</h2>
 <p><strong>Datos</strong></p>
 <ul>
 <li><strong>Dataset mensual:</strong> 227 meses × 17 variables (2007-02 a 2025-12), con calendario continuo verificado; <code>04b</code> detiene la ejecución si falta cualquier mes.</li>
