@@ -51,8 +51,8 @@ Anuncio de los primeros aranceles de la sección 301 contra productos chinos.
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
-- No da fecha de fin. La firma del acuerdo de «fase uno» (15 de enero de 2020) solo se vio en fuentes secundarias y en una página de USTR que cita a una senadora; **no verificada en un comunicado oficial**.
+- **Convención de fechado:** desde el 24-10-2026 rige D7 (evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento.
+- No da fecha de fin. La firma del acuerdo de «fase uno» (15 de enero de 2020) está verificada desde el 24-10-2026 en la hoja informativa oficial de la USTR (`ustr_2020`).
 
 ## 7. Referencias internas relevantes
 

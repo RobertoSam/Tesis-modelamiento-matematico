@@ -1,0 +1,57 @@
+---
+title: "Hennig (2007) — Cluster-wise assessment of cluster stability"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-068 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (RePEc y documentación de `fpc`); texto no consultado |
+| **Tipo de fuente** | Artículo en revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hennig, C. (2007). Cluster-wise assessment of cluster stability. *Computational Statistics & Data Analysis, 52*(1), 258–271.
+
+> **Verificación:** Registro de RePEc/IDEAS (secundario) leído el 2026-10-24: C. Hennig, *Computational Statistics & Data Analysis*, 52(1), septiembre de 2007, pp. 258–271; PII S0167-9473(06)00462-2; sin resumen. La documentación de `clusterboot` (paquete `fpc`, CRAN), del mismo autor, lo cita con la misma revista, volumen y páginas y describe el método: remuestreo (bootstrap, submuestreo, perturbación, reemplazo por ruido) y similitud de Jaccard de cada grupo original con el más parecido del remuestreo, cuyo promedio es el índice de estabilidad. ScienceDirect y doi.org no fueron accesibles. **Pendiente: DOI y contraste con la editorial.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Estabilidad de clasificaciones |
+| **Área secundaria** | Remuestreo y similitud de Jaccard por grupo |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Propuesta del asesor (B3): estabilidad de clasificaciones bajo remuestreo (OE5, D8). |
+| **Frente de la tesis al que aporta** | D8 (bootstrap de la HFC) |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo lo que dice la documentación de `clusterboot` sobre el método (ver «Verificación»). No se leyó el artículo.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estabilidad por grupo (Jaccard medio) | Complemento del ARI global y de la frecuencia de coclasificación de D8 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata para la estabilidad de la HFC bajo remuestreo.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La descripción del método proviene de la documentación del software, no del artículo; no se le atribuye nada más.
+- El remuestreo de `clusterboot` es de observaciones; la HFC clasifica **variables** y la tesis remuestrea **bloques de meses**: la analogía debe declararse.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hubert_arabie_1985` (ARI) | Alta | Ficha preliminar |

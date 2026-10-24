@@ -1,0 +1,63 @@
+---
+title: "Denimal (2007) — Classification factorielle hiérarchique optimisée d'un tableau de mesures"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-060 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (Numdam); texto no consultado |
+| **Tipo de fuente** | Artículo en revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Denimal, J.-J. (2007). Classification factorielle hiérarchique optimisée d'un tableau de mesures. *Journal de la Société française de statistique & Revue de statistique appliquée, 148*(2), 29–63.
+
+> **Verificación:** Registro de Numdam (numdam.org/item/JSFS_2007__148_2_29_0/) leído el 2026-10-24: autor Denimal, Jean-Jacques; revista *Journal de la Société française de statistique & Revue de statistique appliquée*, t. 148, n.º 2, 2007, pp. 29–63; Société française de statistique. Resumen: construir «conjointement les axes factoriels et les noeuds des hiérarchies», con optimización y poda, validación cruzada y prueba de permutación; aplicación a los datos de Russett. Numdam no muestra DOI. **Corrige la ficha de Camiz et al. (2020)**, que daba otro título («Classification hiérarchique optimisée…»), otra revista (*Revue de Statistique Appliquée*) y pp. 29–61.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Clasificación Factorial Jerárquica (HFC) |
+| **Área secundaria** | Fuente primaria del método |
+| **Relevancia para la tesis** | **ALTA.** Fuente primaria de la HFC (OE5). |
+| **Frente de la tesis al que aporta** | Frente 3; cap. 2, `sec:hfc` |
+
+## 4. Resumen analítico
+
+### Propuesta (según el resumen)
+
+Una clasificación jerárquica de las variables de un cuadro de mediciones en la que cada nodo lleva asociado un plano factorial, y los ejes y los nodos se construyen conjuntamente. Técnicas de optimización y de poda conservan las mejores jerarquías, limitadas a sus nodos significativos (validación cruzada y prueba de permutación).
+
+### Referencias del propio artículo
+
+Cita a Denimal (2001), *Hierarchical factorial analysis*, presentado en el 10.º International Symposium on Applied Stochastic Models and Data Analysis (ASMDA), Compiègne, 12–15 de junio de 2001. Es la «Denimal (2001)» que citan Camiz y Roig (2011); **no se localizaron actas publicadas**, por lo que no se ficha.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Nodo con su plano factorial (común / diferencias) | Factor y componente de diferencias de cada grupo en `clahfac` |
+| Poda y prueba de permutación | Posible apoyo de la estabilidad bajo remuestreo de D8 (por verificar en el texto) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite citar la fuente primaria de la HFC sin «como se cita en».
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen: no se atribuye a Denimal el índice de fusión ni el umbral 0,7 sin leer el texto.
+- La variante de `clahfac` puede diferir de la versión optimizada de 2007.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Denimal (2001), ASMDA, Compiègne | Alta | Presentación en congreso; sin actas localizadas; sin ficha |
+| `camiz_et_al_2020` | Alta | Fichada; metadatos de Denimal corregidos en su sección 7 |

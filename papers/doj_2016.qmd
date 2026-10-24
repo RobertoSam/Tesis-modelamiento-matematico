@@ -51,7 +51,7 @@ Declaración de culpabilidad de Odebrecht y Braskem ante la justicia de los Esta
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- **Convención de fechado:** desde el 24-10-2026 rige D7 (evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento.
 - No vincula por sí solo el caso con el Perú; para eso hace falta el documento de la propia acusación o una fuente peruana.
 
 ## 7. Referencias internas relevantes

@@ -51,7 +51,7 @@ Aceptación por el Congreso de la renuncia del presidente Kuczynski y declaraci�
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- **Convención de fechado:** desde el 24-10-2026 rige D7 (evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento.
 - Para citar la norma conviene la versión de *El Peruano*; la nota del Congreso es una fuente institucional secundaria de la resolución.
 
 ## 7. Referencias internas relevantes

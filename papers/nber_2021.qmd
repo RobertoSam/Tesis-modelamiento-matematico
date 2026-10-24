@@ -1,0 +1,63 @@
+---
+title: "NBER (2021) — Fechado de la recesión de 2020 en los EE. UU."
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-051 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+National Bureau of Economic Research. (2021, 19 de julio). *Business Cycle Dating Committee announcement July 19, 2021*. https://www.nber.org/news/business-cycle-dating-committee-announcement-july-19-2021
+
+> **Verificación:** Leído en nber.org el 2026-10-24: «The committee has determined that a trough in monthly economic activity occurred in the US economy in April 2020» y «The previous peak in economic activity occurred in February 2020». Comité: R. Hall (presidente), R. Gordon, J. Poterba, V. Ramey, C. Romer, D. Romer, J. Stock y M. Watson.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | COVID-19 |
+| **Relevancia para la tesis** | **ALTA** para la validación externa (cap. 2, `sec:validacion`) y para el archivo único de episodios (D9). |
+| **Frente de la tesis al que aporta** | Validación externa; `data/referencia/episodios_referencia.csv` |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+El comité de fechado del NBER fija el pico de la actividad de los EE. UU. en febrero de 2020 y el valle en abril de 2020, de modo que la recesión duró dos meses.
+
+### Fecha que respalda
+
+**Abril de 2020** (valle: fin de la recesión de los EE. UU.). Candidata para el **fin del episodio COVID-19 (2020-04)**, por el mismo criterio con el que `nber_2010` respalda el fin de la crisis financiera global (valle de junio de 2009).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Valle (*trough*) del ciclo de referencia de los EE. UU. | Fin del episodio (evento externo) |
+| Pico de febrero de 2020 | No se usa: el inicio del episodio se fecha con la OMS |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Única fuente institucional hallada que fecha un fin del episodio COVID-19 con precisión mensual y con el mismo criterio que el fin de la crisis global (`nber_2010`).
+
+### Limitaciones (relevantes para la adaptación)
+
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+- Fecha el ciclo de los EE. UU., no el peruano ni el financiero. Para el COVID-19 es un fin económico, no sanitario (la OMS levantó la emergencia sanitaria internacional en mayo de 2023; `oms_2023`).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `nber_2010` (fin de la crisis global por el mismo criterio) | Alta | Fichada (FB-039) |
+| `oms_2023` (fin de la emergencia sanitaria internacional) | Media | Fichada (FB-052) |

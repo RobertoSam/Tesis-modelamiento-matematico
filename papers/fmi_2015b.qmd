@@ -1,0 +1,62 @@
+---
+title: "FMI (2015b) — Recuadro especial sobre materias primas y metales, WEO de octubre de 2015"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-055 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído (recuadro, pp. 38–50) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+International Monetary Fund. (2015). Special feature: Commodity market developments and forecasts, with a focus on metals in the world economy. En *World Economic Outlook, October 2015: Adjusting to lower commodity prices* (pp. 38–50). International Monetary Fund. https://doi.org/10.5089/9781513520735.081
+
+> **Verificación:** Recuadro leído en imf.org (external/np/res/commod/pdf/WEOSpecialOCT15.pdf) el 2026-10-24: título del recuadro, páginas impresas 38 a 50 y encabezado «World Economic Outlook: Adjusting to Lower Commodity Prices». Citas: «Although the recent fall has captured the public's attention, metal prices have been declining since 2011» (p. 40); «Metal prices have declined 13 percent since February 2015». Título del informe, fecha (6-10-2015) y DOI tomados de la página de publicaciones del FMI. **El DOI es del informe completo; no se verificó en doi.org.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Colapso de los precios de las materias primas (metales) |
+| **Relevancia para la tesis** | **ALTA.** Primera fuente fichada centrada en los **metales**, que es lo que exporta el Perú. |
+| **Frente de la tesis al que aporta** | Validación externa; archivo único de episodios |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Evolución y perspectivas de las materias primas, con un análisis de los metales en la economía mundial: ciclo de auge y caída, papel de China y costos de producción.
+
+### Fecha que respalda
+
+Los precios de los metales **caen desde 2011** (año, sin mes). No da una fecha mensual de inicio ni de fin.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Caída de los precios de los metales desde 2011 | Antecedente del episodio; no fija un mes de inicio |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Documenta que, para los metales, la caída empieza en 2011 y no en 2014: el inicio en 2014-06 (`stocker_et_al_2015`) corresponde al **petróleo**.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+- Solo da el año del inicio de la caída de los metales: bajo D7 no permite fechar un inicio mensual. Se informa en el texto como contexto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `fmi_2015` (recuadro de abril de 2015) | Alta | Fichada (FB-049) |
+| `fmi_2016` (mínimo de enero de 2016) | Alta | Fichada (FB-056) |

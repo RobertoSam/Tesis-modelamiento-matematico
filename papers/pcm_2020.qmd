@@ -1,0 +1,63 @@
+---
+title: "PCM (2020) — Decreto Supremo 044-2020-PCM: estado de emergencia nacional por la COVID-19"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-053 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído en una reproducción no oficial; publicación y título verificados en *El Peruano* |
+| **Tipo de fuente** | Norma legal peruana (fuente de un evento interno; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Presidencia del Consejo de Ministros. (2020, 15 de marzo). *Decreto Supremo que declara Estado de Emergencia Nacional por las graves circunstancias que afectan la vida de la Nación a consecuencia del brote del COVID-19* (Decreto Supremo N.º 044-2020-PCM). Diario Oficial El Peruano.
+
+> **Verificación:** El título completo y la fecha de publicación constan en la norma oficial que lo modifica, el D. S. 072-2020-PCM, leída en busquedas.elperuano.pe el 2026-10-24: «mediante Decreto Supremo Nº 044-2020-PCM, publicado el 15 de marzo de 2020». El texto del decreto se leyó en una reproducción no oficial (jurispol.pe): artículo 1, «Declárese el Estado de Emergencia Nacional por el plazo de quince (15) días calendario», con aislamiento social obligatorio; «Dado en la Casa de Gobierno, en Lima, a los quince días del mes de marzo del año dos mil veinte». Que se publicó en edición extraordinaria lo dice LP Derecho (secundaria). **Falta leer el texto en *El Peruano* o en gob.pe** (la página de gob.pe, normas-legales/460472-044-2020-pcm, no fue accesible) y obtener su URL oficial.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | COVID-19 (medida en el Perú) |
+| **Relevancia para la tesis** | **BAJA para el fechado principal** (D7 fecha por el evento externo); **MEDIA** como contexto del episodio en el Perú. |
+| **Frente de la tesis al que aporta** | Validación externa; capítulo 2 |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Declaratoria del estado de emergencia nacional por 15 días calendario, con aislamiento social obligatorio, a raíz del brote de la COVID-19. Fue prorrogada luego por otros decretos (p. ej., D. S. 051-2020-PCM, del 27 de marzo de 2020, por 13 días desde el 31 de marzo).
+
+### Fecha que respalda
+
+**15 de marzo de 2020** (publicación y firma). Es un evento **interno**: bajo D7 no fija el inicio del episodio, que se fecha con la OMS, pero coincide con el mes de `oms_2020b` (11-03-2020).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estado de emergencia nacional y aislamiento obligatorio | Contexto del episodio COVID-19 en el Perú; no es fecha de referencia bajo D7 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Respaldo documental de que la medida peruana cae en el mismo mes que la declaración de pandemia (2020-03), lo que reduce la ambigüedad del inicio del episodio.
+
+### Limitaciones (relevantes para la adaptación)
+
+- No es la convención de D7 (evento externo).
+- Texto leído solo en una reproducción no oficial; la referencia no lleva URL hasta tener la oficial.
+- No da fin del episodio: el estado de emergencia se prorrogó muchas veces.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| D. S. 072-2020-PCM (modifica el art. 4; fuente de la fecha de publicación) | Baja | Leído en *El Peruano*; no se ficha por separado |
+| `oms_2020b` | Alta | Fichada |

@@ -51,7 +51,7 @@ El Comité de Fechado del Ciclo del NBER fija el valle de la recesión de los Es
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- **Convención de fechado:** desde el 24-10-2026 rige D7 (evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento.
 - Fecha el ciclo económico de los Estados Unidos, no el impacto financiero en el Perú.
 
 ## 7. Referencias internas relevantes

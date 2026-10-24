@@ -1,0 +1,70 @@
+---
+title: "Atoche Murrieta (2022) — Estimación del ciclo financiero con métodos exploratorios (tesis, PUCP)"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-058 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto parcial leído (capítulos 1 a 5.2 del PDF; no se vieron las referencias ni las conclusiones) |
+| **Tipo de fuente** | Tesis de maestría (repositorio institucional; antecedente peruano directo) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Atoche Murrieta, L. K. (2022). *Estimación del ciclo financiero utilizando métodos de análisis exploratorios: Aplicación a Perú en el periodo 2000-2020* [Tesis de maestría, Pontificia Universidad Católica del Perú]. Repositorio de Tesis PUCP. http://hdl.handle.net/20.500.12404/23378
+
+> **Verificación:** Registro del Repositorio PUCP (repositorio.pucp.edu.pe, ítem 123456789/186665) leído el 2026-10-24: autora «Atoche Murrieta, Lilian Katherine», fecha 2022-09-22, handle 20.500.12404/23378, licencia CC BY-NC 2.5 Perú. Portada del PDF (tesis.pucp.edu.pe): «Tesis para obtener el grado académico de Magíster en Estadística», Escuela de Posgrado, asesor Sergio Camiz, Lima, 2022. **Discrepancia del título:** la portada dice «periodo 2000-2020» y el registro, «periodo 2000-2021». APA toma el título de la obra; se usa el de la portada y queda `VERIFICAR`.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Antecedentes peruanos |
+| **Área secundaria** | PCA, HFC y EPCA aplicados al ciclo financiero |
+| **Relevancia para la tesis** | **ALTA.** Antecedente directo dirigido por el mismo asesor; es la tesis que cita el manuscrito `camiz_cerda_atoche_2026`. |
+| **Frente de la tesis al que aporta** | Capítulos 1 y 2 («Planteamiento» y «Antecedentes peruanos») |
+
+## 4. Resumen analítico
+
+### Problema y datos
+
+Identifica el ciclo financiero peruano con 17 series mensuales del BCRP (2000–2020 según el resumen; el capítulo 5 dice que el PCA va de enero de 1999 a noviembre de 2020): activos internos netos de la banca, circulante, ahorro, encaje, crédito, IGBVL, fondos de las AFP, tipo de cambio, liquidez, dolarización, RIN, palanca global, tasas activas y pasivas en moneda nacional y extranjera, y EMBIG.
+
+### Métodos
+
+PCA, HFC (atribuida a Denimal, 2007, y aplicada a precios de acciones por Camiz, 2021) y PCA evolutivo con ventanas de 240 observaciones y pesos gaussianos con parámetro *k* = 3, elegido «tras una experimentación con valores variados». En la parte leída no se cita fuente para el esquema gaussiano.
+
+### Resultados (según el resumen)
+
+Tres componentes: una de largo plazo (evolución del sistema financiero), otra de mediano plazo ligada a las tasas activas y pasivas y una tercera asociada a la volatilidad del mercado financiero.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ventana de 240 observaciones, pesos gaussianos *k* = 3 | Ventanas de 24 a 60 meses y `nsd = 3` de la grilla de D10 |
+| 17 series mensuales del BCRP | 17 series de la tesis (conjunto distinto) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cierra la marca «sin ficha» de Atoche Murrieta (2022) en los capítulos 1 y 2.
+- Muestra que el parámetro gaussiano 3 ya se usó, como elección empírica, en el antecedente.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Título con dos versiones del periodo (portada y registro).
+- Las series y el periodo difieren de los de la tesis; las comparaciones deben ser cualitativas.
+- No se leyeron las referencias: no se sabe si cita a Camiz y Diblasi (2013).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Denimal (2007) | Alta | Fichada (`denimal_2007`, FB-060) |
+| Camiz (2021), HFC en acciones brasileñas | Media | Sin ficha; no se buscó |
+| Camiz y Pillar (2018) | Alta | Fichada (`camiz_pillar_2018`, FB-064) |

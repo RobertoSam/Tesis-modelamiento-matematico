@@ -1,0 +1,58 @@
+---
+title: "Rencher y Christensen (2012) — Methods of multivariate analysis (3.ª ed.)"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-065 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (índice de contenidos en un catálogo); texto no consultado |
+| **Tipo de fuente** | Libro (editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Rencher, A. C., & Christensen, W. F. (2012). *Methods of multivariate analysis* (3.ª ed.). Wiley.
+
+> **Verificación:** Índice de contenidos y portada del ejemplar de la biblioteca SB RAS (prometeus.nsc.ru, lista de adquisiciones) leídos el 2026-10-24: A. C. Rencher y W. F. Christensen, 3.ª ed., Wiley, Hoboken, 2012, xxv + 758 p., Wiley Series in Probability and Statistics, ISBN 978-0-470-17896-6. Capítulo 12, «Principal Component Analysis» (p. 405); sección 12.6, «Deciding How Many Components to Retain» (p. 423). **No se verificó el DOI ni que la sección 12.6 contenga la prueba que Camiz y Pillar (2018) atribuyen a Rencher; tampoco qué edición citan ellos.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Número de componentes (OE6) |
+| **Área secundaria** | Prueba de igualdad de los últimos valores propios |
+| **Relevancia para la tesis** | **MEDIA** hasta confirmar la edición y la página. |
+| **Frente de la tesis al que aporta** | Cap. 1, OE6; cap. 2, «Número de componentes» |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo el índice: la sección 12.6 trata cuántas componentes retener (p. 423).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Sección 12.6 | «Criterio de Rencher» de OE6 (por confirmar) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Candidata para la fuente directa del criterio de Rencher.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ficha preliminar: hasta leer la sección, el criterio se cita a través de `camiz_pillar_2018`.
+- La edición que citan Camiz y Pillar (2018) puede ser otra (**no verificado**: sus referencias no se pudieron leer).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `camiz_pillar_2018` | Alta | Fichada (FB-064) |
+| `bartlett_1950`, `bartlett_1951` | Media | Fichas preliminares |

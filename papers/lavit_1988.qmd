@@ -1,0 +1,58 @@
+---
+title: "Lavit (1988) — Analyse conjointe de tableaux quantitatifs"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-062 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (catálogo y bibliografía especializada); texto no consultado |
+| **Tipo de fuente** | Libro (editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lavit, C. (1988). *Analyse conjointe de tableaux quantitatifs*. Masson.
+
+> **Verificación:** Catálogo de la biblioteca de la Universidad de Patras (find.library.upatras.gr, registro 102393) leído el 2026-10-24: título, Masson, París, 1988, colección «Méthode + programmes»; el campo de autor está vacío. Autoría (Lavit, C.) en la *Three-Mode Bibliography* de la Universidad de Leiden (three-mode.leidenuniv.nl), entrada marcada «Ref. checked OK». **Falta la autoría en un catálogo oficial, el ISBN y la extensión.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis de tablas múltiples (STATIS) |
+| **Área secundaria** | Coeficiente RV |
+| **Relevancia para la tesis** | **MEDIA.** Fuente primaria de STATIS, usado por Camiz et al. (2010) y mencionado en el cap. 2 junto al RV. |
+| **Frente de la tesis al que aporta** | Frente 3; cap. 2, «Comparación de configuraciones» |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo los metadatos. Por la bibliografía de Leiden: la misma autora publicó la aplicación del método STATIS (1985) y, con Escoufier, Sabatier y Traissac, *The ACT (STATIS method)* (1994).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| STATIS / análisis conjunto de tablas | Comparación de las matrices de correlación de las ventanas del EPCA |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite sustituir el «[CITA PENDIENTE: Lavit (1988) …; sin ficha]» del cap. 2.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Autoría confirmada solo en una bibliografía especializada, no en un catálogo; queda `VERIFICAR`.
+- Texto no consultado.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Lavit, Escoufier, Sabatier y Traissac (1994), *CSDA*, 18, 97–119 | Media | Sin ficha; alternativa en revista |
+| `robert_escoufier_1976` (RV) | Alta | Fichada |

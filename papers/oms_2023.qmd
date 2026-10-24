@@ -1,0 +1,62 @@
+---
+title: "OMS (2023) — Fin de la emergencia de salud pública de importancia internacional por la COVID-19"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-052 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído (página de la Oficina Regional para Europa) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+World Health Organization. (2023, 5 de mayo). *Statement on the fifteenth meeting of the International Health Regulations (2005) Emergency Committee regarding the coronavirus disease (COVID-19) pandemic*. https://www.who.int/europe/news/item/05-05-2023-statement-on-the-fifteenth-meeting-of-the-international-health-regulations-(2005)-emergency-committee-regarding-the-coronavirus-disease-(covid-19)-pandemic
+
+> **Verificación:** Leído el 2026-10-24 en la página de la Oficina Regional de la OMS para Europa (who.int/europe): el director general «determines that COVID-19 is now an established and ongoing health issue which no longer constitutes a public health emergency of international concern (PHEIC)». **La versión de la sede (who.int/news) no fue accesible con las herramientas de la sesión**; conviene citarla si Roberto la ubica.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | COVID-19 |
+| **Relevancia para la tesis** | **MEDIA.** Fin sanitario del episodio; alternativa al fin económico de `nber_2021`. |
+| **Frente de la tesis al que aporta** | Validación externa |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Declaración tras la decimoquinta reunión del Comité de Emergencia del RSI (2005): la COVID-19 deja de ser una emergencia de salud pública de importancia internacional.
+
+### Fecha que respalda
+
+**5 de mayo de 2023** (fin de la ESPII declarada el 30 de enero de 2020; `oms_2020a`).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fin de la ESPII | Fin sanitario del episodio (evento externo) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cierra simétricamente el episodio que abre `oms_2020a` con la misma institución y el mismo instrumento.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+- Un episodio de 2020-01 a 2023-05 abarca más de tres años y se superpone con cualquier transición posterior: como episodio de validación es poco discriminante. Se ficha como alternativa documentada, no como propuesta principal.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `oms_2020a` (inicio de la ESPII) | Alta | Fichada |
+| `nber_2021` (fin económico) | Alta | Fichada (FB-051) |

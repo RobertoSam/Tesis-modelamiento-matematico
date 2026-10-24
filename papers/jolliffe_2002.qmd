@@ -1,0 +1,61 @@
+---
+title: "Jolliffe (2002) — Principal component analysis (2.ª ed.)"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-059 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos e índice de capítulos de la editorial); texto no consultado |
+| **Tipo de fuente** | Libro (monografía de referencia; editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Jolliffe, I. T. (2002). *Principal component analysis* (2.ª ed.). Springer. https://doi.org/10.1007/b98835
+
+> **Verificación:** Página de la editorial (link.springer.com/book/9780387954424) leída el 2026-10-24: 2.ª edición, Springer Series in Statistics, Springer New York, 2002, xxx + 488 p., DOI 10.1007/b98835, ISBN 978-0-387-95442-4 (tapa dura). Capítulo 6, «Choosing a Subset of Principal Components or Variables», pp. 111–149; capítulo 12, «Principal Component Analysis for Time Series and Other Non-Independent Data», pp. 299–337.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis de componentes principales |
+| **Área secundaria** | Número de componentes; PCA con datos dependientes |
+| **Relevancia para la tesis** | **ALTA.** Obra de referencia del PCA citada en el cap. 2 y fuente que Camiz et al. (2020) dan para el umbral 0,7. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático); cap. 2, «Definición y propiedad de reconstrucción» |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo el índice: propiedades poblacionales y muestrales (caps. 2 y 3), elección del número de componentes (cap. 6) y PCA para series de tiempo y datos no independientes (cap. 12).
+
+### Uso en la tesis
+
+Referencia general del PCA. **No se verificó** en qué página propone el umbral 0,7 que Camiz et al. (2020) le atribuyen.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Elección del número de componentes (cap. 6) | OE6 (vara quebrada, Kaiser, Horn) |
+| PCA con datos no independientes (cap. 12) | Series autocorrelacionadas de NIV |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite sustituir el «[CITA PENDIENTE: … Jolliffe (2002); sin ficha]» del cap. 2 por una cita con ficha.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: no se le atribuye ningún resultado concreto (ni el umbral 0,7) hasta leer la página. Para el 0,7, mantener «como se cita en Camiz et al., 2020».
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `camiz_et_al_2020` (umbral 0,7) | Alta | Fichada |

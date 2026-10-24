@@ -51,9 +51,9 @@ Caída del precio del petróleo desde junio de 2014: causas, consecuencias y res
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **La convención de fechado (anuncio o impacto en el Perú) no está decidida: la decide Roberto (decisión I).** Esta ficha solo registra qué fecha respalda el documento.
+- **Convención de fechado:** desde el 24-10-2026 rige D7 (evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento.
 - Trata el petróleo, no los metales que exporta el Perú.
-- No da fecha de fin; ninguna fuente hallada respalda el fin en 2016-03 de `06b`.
+- No da fecha de fin; ninguna fuente hallada respalda el fin en 2016-03 de `06b`. Desde el 24-10-2026, el fin en **2016-01** tiene fuente (`fmi_2016`, concordante con `baffes_streifel_2016`), y la caída de los **metales** desde 2011, en `fmi_2015b`.
 
 ## 7. Referencias internas relevantes
 

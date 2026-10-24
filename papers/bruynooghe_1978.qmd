@@ -1,0 +1,56 @@
+---
+title: "Bruynooghe (1978) — Algoritmo rápido de clasificación ascendante jerárquica por vecindades reducibles"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-061 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (registro de Numdam); texto no consultado |
+| **Tipo de fuente** | Artículo en revista |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bruynooghe, M. (1978). Classification ascendante hiérarchique des grands ensembles de données : Un algorithme rapide fondé sur la construction des voisinages réductibles. *Les Cahiers de l'Analyse des Données, 3*(1), 7–33.
+
+> **Verificación:** Registro de Numdam (numdam.org/item/CAD_1978__3_1_7_0/) leído el 2026-10-24: autor Bruynooghe, M.; *Les cahiers de l'analyse des données*, t. 3, n.º 1, 1978, pp. 7–33; Dunod-Gauthier-Villars, París. Sin resumen ni DOI en el registro. **La inicial del nombre (M.) es la única que da el registro.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Clasificación jerárquica |
+| **Área secundaria** | Algoritmo de vecinos reducibles |
+| **Relevancia para la tesis** | **MEDIA.** Fuente de la técnica de vecinos reducibles que usa `clahfac` (cap. 2, observación de correspondencia con el código). |
+| **Frente de la tesis al que aporta** | Frente 3; cap. 2, `sec:hfc` |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo el título: un algoritmo rápido de clasificación ascendante jerárquica para grandes conjuntos de datos, basado en construir vecindades reducibles.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Vecindades reducibles | Grafo de vecinos reducibles con umbral de `clahfac` |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite sustituir el «[CITA PENDIENTE: … Bruynooghe; sin ficha]» del cap. 2.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: la propiedad de reducibilidad que exige el índice de la HFC no se atribuye a este artículo hasta leerlo (la tesis declara que no la demuestra).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | — |

@@ -1,0 +1,58 @@
+---
+title: "Newey y West (1987) — Matriz de covarianzas HAC semidefinida positiva"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-066 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (NBER); texto no consultado |
+| **Tipo de fuente** | Artículo en revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Newey, W. K., & West, K. D. (1987). A simple, positive semi-definite, heteroskedasticity and autocorrelation consistent covariance matrix. *Econometrica, 55*(3), 703–708. https://doi.org/10.2307/1913610
+
+> **Verificación:** Página de la Econometric Society (editora de la revista) leída el 2026-10-24: «Notes and Comments: A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix», *Econometrica*, vol. 55, n.º 3, mayo de 1987, pp. 703–708, enlace estable de JSTOR 1913610. Resumen en la página del documento de trabajo NBER t0055 (abril de 1986), que remite a la versión publicada: «a simple method of calculating a heteroskedasticity and autocorrelation consistent covariance matrix that is positive semi-definite by construction». **Pendientes:** (1) el orden de los autores: RePEc y el NBER dan Newey y West, pero la página de la Econometric Society lista primero a West; se usa el orden habitual hasta ver la página impresa; (2) el DOI se infiere del identificador estable de JSTOR (10.2307/1913610) y no se comprobó en doi.org.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Econometría de series de tiempo |
+| **Área secundaria** | Errores estándar robustos a autocorrelación (HAC) |
+| **Relevancia para la tesis** | **ALTA.** Fuente del estimador HAC que D8 usa para clasificar la deriva de las series DS (|t| > 2, 12 rezagos). |
+| **Frente de la tesis al que aporta** | Frente 2 y 3; D8 y D11 (nulo mixto) |
+
+## 4. Resumen analítico
+
+### Propuesta (según el resumen)
+
+Un estimador de la matriz de covarianzas consistente ante heterocedasticidad y autocorrelación, semidefinido positivo por construcción, cuya consistencia se establece en condiciones bastante generales.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Covarianza HAC | Error estándar de la media de los incrementos de cada serie (D8) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cierra la fuente pendiente de D8 en sus metadatos.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: que el núcleo sea el de Bartlett (pesos lineales decrecientes) es la lectura habitual, no verificada aquí.
+- **El número de rezagos (12) es una elección de la tesis**, no una regla del artículo, y debe declararse así.
+- D8 usa |t| > 2 sobre este estimador: el umbral también es una elección de la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| NBER Technical Working Paper t0055 (1986) | Baja | Versión previa; no se cita |
