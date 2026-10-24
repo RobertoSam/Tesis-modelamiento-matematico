@@ -14,6 +14,95 @@ Las entradas van de la más reciente a la más antigua. El avance por sesión es
 [línea temporal](linea_temporal.qmd).
 :::
 
+::: {.callout-important title="Bloque D7–D14 · registrado el 24 de octubre de 2026"}
+Roberto aprobó, sin ajustes, las recomendaciones del plan de la iteración 3b
+(`asesoria/2026-10-21_plan-iteracion-3b.md`, sección 3.1). Se registran **antes** de calcular
+cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). Estado anterior
+recuperable en el commit `57104ff` de `main`.
+:::
+
+## D14 · 24 de octubre de 2026 · Alcance de los apuntes 2 y 7 (decisión G)
+
+**Decisión.** El apunte 7 se ejecuta en su versión útil: valores propios por ventana frente al
+umbral de Kaiser y al p95 de Horn calculado con el $n$ efectivo de Kish de la ventana. El apunte 2
+queda fuera de la iteración 3b hasta que se aclare su sentido.
+
+**Alternativa descartada.** Esperar la aclaración para ejecutar ambos.
+
+## D13 · 24 de octubre de 2026 · Lectura de la transición de 2017-10 (decisión L)
+
+**Decisión.** La transición de 2017-10 se informa como **«transición no confirmada»**, salvo que
+aparezca con al menos dos anchos de ventana **y** con los dos esquemas de pesos (uniformes y
+gaussianos), y que no coincida con un borde de ventana según la convención de D7.
+
+**Alternativa descartada.** Tratarla como transición confirmada por aparecer con el ancho de
+60 meses.
+
+## D12 · 24 de octubre de 2026 · Regla de respaldo de la datación en niveles (decisión K)
+
+**Decisión.** Se formaliza ahora, en dos pasos aplicados en este orden: (1) la regla del notebook
+09 (el número de regímenes es el menor $k$ a partir del cual la reducción relativa del costo es
+menor que 10 %); (2) si esa regla no elige, la caída máxima del costo. Queda registrada antes de
+correr la grilla de maxcl.
+
+**Alternativa descartada.** Formalizarla después de ver la grilla.
+
+## D11 · 24 de octubre de 2026 · Uso del índice de Calinski-Harabasz (decisión J)
+
+**Decisión.** El CH se **informa** en sus dos variantes (con $k$ y con $k-1$ grados de libertad),
+pero **no se usa como selector** del número de grupos, salvo que muestre un óptimo interior con
+maxcl = 20 **y** fuera del rango del nulo de estructura constante. Al Dr. Camiz se le pregunta,
+sin corregirlo, si el $k$ de `aede` es deliberado.
+
+**Alternativa descartada.** Usar el CH como selector, que con maxcl = 10 elige el tope en 7 de
+las 8 filas de `R_aede_cortes.csv`.
+
+## D10 · 24 de octubre de 2026 · Criterio de ventana de la EPCA (OE4) y grilla (decisión Q)
+
+**Decisión.** Grilla de anchos $n_w \in \{24, 36, 48, 60\}$. El ancho de 48 meses es el de
+Camiz et al. (2026) y da comparabilidad con el antecedente (OE3). El criterio es el coeficiente
+RV entre **ventanas adyacentes no solapadas**, comparado con el nulo de estructura constante del
+mismo ancho. La grilla se lee como **multiescala**, no como búsqueda de la ventana «correcta».
+
+**Alternativa descartada.** Grilla {24, 36, 60} y RV entre ventanas consecutivas con paso 1, que
+comparten casi todos los meses y dan RV cercano a 1 por construcción.
+
+## D9 · 24 de octubre de 2026 · Número de dimensiones (OE6; decisión P)
+
+**Decisión.** Se mantiene **d = 3** como especificación principal, porque se fijó en la
+iteración 1, antes de conocer las cifras de la 3a. Se informan d = 2 y d = 4 como sensibilidad.
+No se fija un umbral bootstrap a posteriori.
+
+**Alternativa descartada.** Elegir ahora un umbral bootstrap, conociendo ya las cifras.
+
+## D8 · 24 de octubre de 2026 · Nulo de tendencias mixto por serie (decisión O)
+
+**Contexto.** D5 distingue tendencia determinística (TS) de estocástica (DS), pero no si una
+serie DS tiene deriva. Ni el nulo global con deriva ni el nulo global sin deriva corresponden a
+estos datos.
+
+**Decisión.** Nulo **mixto por serie**, con la regla fijada antes de calcularlo:
+
+- serie TS → recta más residuos remuestreados;
+- serie DS → con deriva si el $|t|$ HAC (Newey-West, 12 rezagos) de la media de los incrementos
+  es mayor que 2; sin deriva en otro caso;
+- serie indeterminada → se informa con las dos variantes.
+
+Se declaran las series con $|t|$ cercano a 2. La fuente del estimador HAC queda a cargo del
+bibliotecario; mientras no tenga ficha verificada, el texto lo marca como pendiente.
+
+**Alternativa descartada.** Mantener solo los dos nulos globales de D2.
+
+## D7 · 24 de octubre de 2026 · Fechado de los episodios de referencia y tolerancia (decisión I)
+
+**Decisión.** Los episodios se fechan por el **evento o anuncio externo** (no por su impacto en
+el Perú), con fuente fichada. La tolerancia principal de HT3 es de **±3 meses**, y ±6 meses como
+sensibilidad. Un episodio sin fecha de fin con fuente se trata como **puntual** (solo inicio): no
+se inventa el fin. Todos los consumidores leen un único archivo de episodios.
+
+**Alternativa descartada.** Fechar por el impacto en el Perú, que exige fuentes del BCRP hoy no
+accesibles de forma automática.
+
 ## D6 · 20 de octubre de 2026 · Métodos del asesor también en Python
 
 **Contexto.** `aede` (EPCA con datación) y `clahfac` (HFC) del Dr. Camiz existen solo en R
