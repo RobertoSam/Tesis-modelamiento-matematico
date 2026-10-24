@@ -13,6 +13,42 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 24 de octubre de 2026
+
+**Arranque de la iteración 3b y protocolo para no detener el avance**
+
+- **Diagnóstico.** El trabajo estuvo detenido del 21 al 24 de octubre. El plan de la iteración
+  3b esperaba el conforme de Roberto, y los agentes solo se ejecutan cuando una sesión los
+  lanza.
+- **Conforme al plan 3b.** Roberto aprobó, sin ajustes, las ocho recomendaciones del asesor de
+  tesis. Quedaron registradas **antes** de cualquier cálculo que dependa de ellas (criterio de
+  aceptación 9 del plan): [D7 a D14](decisiones.qmd).
+  - D7: los episodios se fechan por el evento externo, con tolerancia de ±3 meses (±6 como
+    sensibilidad).
+  - D8: nulo de tendencias mixto por serie.
+  - D9: d = 3 como especificación principal.
+  - D10: grilla de ventanas {24, 36, 48, 60}, con RV entre ventanas adyacentes no solapadas.
+  - D11 a D14: uso del índice CH, regla de respaldo de la datación, lectura de 2017-10 y
+    alcance de los apuntes 2 y 7.
+- **Protocolo antitrabas** (en `CLAUDE.md`):
+  1. Las tareas de un plan que no dependen de decisiones (fase 0) arrancan apenas el asesor
+     entrega el plan.
+  2. Una tarea programada diaria retoma la iteración donde quedó y avisa a Roberto qué avanzó
+     y qué espera de él. Nunca integra en `main`, nunca publica el sitio y nunca toma
+     decisiones metodológicas.
+- **Iteración 3b en marcha** (rama `iteracion-3b`):
+  - el desarrollador trabaja en la fase 0 (partición con longitud mínima, datación PCA en
+    grilla, `aede` en grilla de anchos, valores propios por ventana, nulo de estructura
+    constante y HFC);
+  - el bibliotecario cierra las fuentes de los episodios y las fichas que 3b necesita.
+
+**Pendientes**
+
+- Terminar la fase 0. Luego, episodios unificados y criterio de ventana (fase 1), redacción de
+  los capítulos 2 y 3 (fase 2) y auditoría (fase 3).
+- Reunión con el Dr. Camiz sobre qué vía mide el ciclo (Parte C de D2). Bloquea solo la sección
+  «Qué vía mide qué» del capítulo 3.
+
 ## 20–21 de octubre de 2026
 
 **Iteración 3a: PCA estático mensual en dos vías, en Python y R, y tesis maestra en LaTeX**
