@@ -359,7 +359,7 @@ signo_difiere <- function(M, w, d = 3) {
        ejes_globales = which(apply(Vg, 2, function(v) invierte_lineal(v) != invierte_cuadr(v))))
 }
 
-# Análisis paralelo de Horn (1965) [VERIFICAR: sin ficha]: percentil 95 de autovalores con datos gaussianos
+# Análisis paralelo de Horn (1965) [VERIFICAR: ficha horn_1965; contenido conocido solo por el resumen, el percentil 95 es elección de la tesis]: percentil 95 de autovalores con datos gaussianos
 horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
   set.seed(semilla)
   obs <- eigen(cor(X), symmetric = TRUE, only.values = TRUE)$values
@@ -427,7 +427,7 @@ datar <- function(Y, k_max = 10, tam_min = 12, umbral = 0.10) {
   regla_codo <- if (length(bajo)) "umbral" else "caida"
   # Calinski-Harabász en dos variantes:
   #  - ch:  fórmula del código del asesor en aede(), grados de libertad k y n - k
-  #  - ch1: forma habitual de Calinski y Harabász [VERIFICAR: sin ficha], k - 1 y n - k
+  #  - ch1: forma habitual de Caliński y Harabasz (1974) [VERIFICAR: ficha preliminar calinski_harabasz_1974; texto no consultado, la forma del índice no se atribuye hasta leerlo], k - 1 y n - k
   # La elección entre ambas queda pendiente; se informan las dos.
   nk <- nrow(Y); ks <- as.integer(names(sce))
   ch <- ch_variantes(sce, nk)
@@ -489,7 +489,7 @@ kmo <- function(R) {
 vara_quebrada <- function(p) 100 * rev(cumsum(1 / (p:1))) / p
 
 # Bootstrap por bloques móviles: índices de filas remuestreadas en bloques contiguos
-# [VERIFICAR: fuente del método; se suele atribuir a Künsch (1989), propuesta para el bibliotecario].
+# Künsch (1989) [VERIFICAR: ficha preliminar kunsch_1989; no se verificó que el artículo defina el esquema de bloques móviles solapados de este código].
 # Se separa el sorteo de los inicios de bloque (inicios_bloques) de la construcción de las filas
 # (indices_desde_inicios) para escribir los inicios en data/results/ y que Python reproduzca las
 # mismas réplicas (paridad exacta con índices compartidos). indices_bloques consume el generador
@@ -553,7 +553,7 @@ quitar_tendencia <- function(M) {
 acf_rezagos <- function(x, rezagos) acf(x, lag.max = max(rezagos), plot = FALSE)$acf[rezagos + 1]
 
 # Tamaño muestral efectivo de la correlación entre dos series autocorrelacionadas
-# [VERIFICAR: fuente de la fórmula; propuesta para el bibliotecario]:
+# Pyper y Peterman (1998) [VERIFICAR: ficha preliminar pyper_peterman_1998; no se comprobó que la fórmula con truncamiento J = floor(n/5) sea la del artículo]:
 #   1/n_ef = 1/n + (2/n) Σ_{j=1}^{J} ((n - j)/n) ρx(j) ρy(j),  J = floor(n/5); n_ef <= n.
 # Se reciben las ACF ya calculadas (rezagos 1..J) para no recalcularlas en cada par.
 n_efectivo <- function(ax, ay, n) {
@@ -1194,7 +1194,7 @@ observadas:
   tendencia determinística.
 
 Se repite `r params$reps_nulo` veces y se compara la inercia observada con la distribución que
-generan series independientes. Es el equivalente del análisis paralelo de Horn (1965) [VERIFICAR: sin ficha] para series
+generan series independientes. Es el equivalente del análisis paralelo de Horn (1965) [VERIFICAR: solo se leyó el resumen] para series
 integradas: Horn compara con ruido gaussiano independiente en el tiempo, una referencia que no
 corresponde a series con tendencia.
 
@@ -1377,7 +1377,7 @@ muestra de las redes (A.5).
 | Frecuencias del ciclo | — | La diferencia atenúa las oscilaciones de mediano plazo (8 años: `r num(100 * (2 * sin(pi / 96))^2, 1)` % de su varianza) | Mediana de varianza en períodos ≥ 2 años: `r num(100 * median(espectro$niv_det), 0)` % sin transformar frente a `r num(100 * median(espectro$tr), 0)` % transformadas |
 | Qué representa cada mes | Variación: dirección de movimiento, cercana a la noción de fase | Estado: posición del sistema en el ciclo | Ver Parte C: las dos vías no encuentran los mismos ejes |
 | Estacionariedad e inferencia | Validez de pruebas y de la evaluación fuera de muestra | El PCA es descriptivo y no la necesita | `r cuenta(est, "No estacionaria")` series no estacionarias sin transformar; `r cuenta(est_t, "No estacionaria")` transformadas |
-| Principio de la tradición del asesor | — | Trabajar con los datos como los publica la fuente; estandarizar es la única operación necesaria (unidades distintas) | Coherente con Benzécri (1973) [VERIFICAR: sin ficha] y el marco conceptual de la tesis |
+| Principio de la tradición del asesor | — | Trabajar con los datos como los publica la fuente; estandarizar es la única operación necesaria (unidades distintas) | Coherente con Benzécri (1973) [VERIFICAR: ficha preliminar; no se ha ubicado el tomo ni la página del principio «dejar hablar a los datos»] y el marco conceptual de la tesis |
 | Relaciones de largo plazo | — | Diferenciar descarta la información de niveles; si hay cointegración, se pierde (Engle y Granger, 1987 [VERIFICAR: sin ficha]) | No evaluado en este documento |
 | Ruido de corto plazo | — | La diferencia amplifica choques de un mes y estacionalidad residual | Estacionalidad visible en `r sum(estac_t$a12 > umbral_acf)` series transformadas |
 
@@ -1714,11 +1714,11 @@ km <- kmo(R)
 
 Un PCA solo resume bien si las series están correlacionadas. Dos pruebas lo verifican:
 
-- **Esfericidad de Bartlett** [VERIFICAR: sin ficha de la fuente de la prueba]: la hipótesis nula es que la matriz de correlaciones es la
+- **Esfericidad de Bartlett** (Bartlett, 1950, 1951) [VERIFICAR: texto no consultado; no se verificó en cuál de las dos obras se formula la prueba sobre la matriz de correlaciones]: la hipótesis nula es que la matriz de correlaciones es la
   identidad (series no correlacionadas). Estadístico chi-cuadrado
   `r num(bt$estadistico, 0)` con `r bt$gl` grados de libertad, p-valor
   `r format.pval(bt$p_valor, digits = 2)`.
-- **KMO** (Kaiser-Meyer-Olkin) [VERIFICAR: sin ficha de la fuente de la medida]: compara las correlaciones con las correlaciones parciales.
+- **KMO** (Kaiser-Meyer-Olkin; Kaiser, 1970; Kaiser y Rice, 1974) [VERIFICAR: texto no consultado; la forma de la medida que usa el código solo consta en la documentación de `psych`]: compara las correlaciones con las correlaciones parciales.
   Valores sobre 0,6 se consideran aceptables y sobre 0,8, buenos. KMO global:
   **`r num(km$global, 2)`**.
 
@@ -1752,7 +1752,7 @@ la información independiente es menor que $n$. Para cada par de series se calcu
 muestral efectivo** $n_{\text{ef}}$, que corrige la varianza de la correlación por el producto
 de las autocorrelaciones de las dos series:
 $1/n_{\text{ef}} = 1/n + (2/n)\sum_{j=1}^{J} \frac{n-j}{n}\,\rho_x(j)\,\rho_y(j)$, con
-$J = \lfloor n/5 \rfloor$ y $n_{\text{ef}} \le n$ [VERIFICAR: fuente de la fórmula]. La ACF es la
+$J = \lfloor n/5 \rfloor$ y $n_{\text{ef}} \le n$ (Pyper y Peterman, 1998) [VERIFICAR: ficha preliminar; no se comprobó que el truncamiento $J$ sea el del artículo]. La ACF es la
 de `stats::acf` (serie centrada, divisor $n$).
 
 ```{r b3-acf-nef}
@@ -1832,7 +1832,7 @@ ggplot(sc, aes(k)) +
 
 ::: {.lectura}
 Kaiser retiene `r k_kaiser` componentes, Horn `r k_horn` y la vara quebrada `r k_vara`
-[VERIFICAR: sin ficha de las fuentes del criterio de Kaiser y de la vara quebrada]. Las
+(Kaiser, 1960 [VERIFICAR: ficha preliminar; la atribución del criterio no se verificó en el texto]; vara quebrada [VERIFICAR: sin ficha de la fuente]). Las
 dos primeras explican `r num(sum(inercia[1:2]), 1)` % de la variabilidad y las tres primeras
 `r num(sum(inercia[1:3]), 1)` %. `r if (inercia[1] > 50) paste0("El primer componente domina: explica por sí solo ", num(inercia[1], 1), " %, más del triple que el segundo (", num(inercia[2], 1), " %).") else paste0("Ningún componente domina: el primero explica ", num(inercia[1], 1), " %.")`
 :::
@@ -2468,7 +2468,7 @@ knitr::kable(data.frame(Clases = 1:10,
                         `SC intra (gaussiana)` = num(aede_g$part[, 2], 2),
                         `CH, k gl (gaussiana)` = num(aede_g$part[, 3], 0), `CH, k − 1 gl (gaussiana)` = num(aede_g$ch1, 0),
                         check.names = FALSE), row.names = FALSE,
-             caption = "Partición de Fisher de la serie del primer valor propio. SC intra: suma de cuadrados dentro de las clases. Reducción en %. CH: índice de Calinski-Harabász; «k gl», fórmula del código de aede (grados de libertad k y n − k); «k − 1 gl», forma habitual (k − 1 y n − k) [VERIFICAR: sin ficha de Calinski y Harabász, 1974].")
+             caption = "Partición de Fisher de la serie del primer valor propio. SC intra: suma de cuadrados dentro de las clases. Reducción en %. CH: índice de Calinski-Harabász; «k gl», fórmula del código de aede (grados de libertad k y n − k); «k − 1 gl», forma habitual (k − 1 y n − k) (Caliński y Harabasz, 1974) [VERIFICAR: ficha preliminar; texto no consultado].")
 ```
 
 ```{r b4-signo}
@@ -2526,7 +2526,7 @@ componente varía entre `r num(min(100 * aede_u$a$eigenvalues[, 1] / p), 0)` % y
 ::: {.pregunta}
 **¿Qué fórmula del índice de Calinski-Harabász se adopta?** El código de `aede` divide la suma de
 cuadrados entre clases por $k$; la forma habitual del índice la divide por $k-1$
-[VERIFICAR: sin ficha de Calinski y Harabász (1974)]. Con pesos uniformes, la primera elige
+(Caliński y Harabasz, 1974) [VERIFICAR: ficha preliminar; texto no consultado, la forma del índice no se atribuye hasta leerlo]. Con pesos uniformes, la primera elige
 `r aede_u$k_ch` clases y la segunda `r aede_u$k_ch1`
 (`r tipo_k(aede_u$k_ch1)``r if (aede_u$k_ch1 == aede_u$k_codo) "; el mismo número que la regla de codo" else ""`). Antes de
 usar el CH como criterio conviene confirmar con el Dr. Camiz si la elección de $k$ es deliberada.
@@ -2753,7 +2753,7 @@ con el asesor.
 
 Se aplica la HFC en cada ventana de 60 meses (paso de 3) y se compara cada jerarquía con la de
 la ventana anterior de dos formas: la **correlación cofenética** entre dendrogramas (¿se
-parecen las distancias a las que se unen las series?) y el **índice de Rand ajustado** [VERIFICAR: sin ficha de la fuente del índice] entre
+parecen las distancias a las que se unen las series?) y el **índice de Rand ajustado** (Hubert y Arabie, 1985) [VERIFICAR: ficha preliminar; metadatos de RePEc por contrastar y atribución no verificada en el texto] entre
 las particiones en 4 grupos (¿se forman los mismos grupos?).
 
 ```{r b5-ehfc}

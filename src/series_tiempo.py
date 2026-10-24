@@ -50,7 +50,8 @@ def acf(x, rezagos):
 def n_efectivo(x, y, max_rezago=None):
     """
     Tamaño muestral efectivo de la correlación entre x e y
-    [VERIFICAR: fuente de la fórmula; propuesta para el bibliotecario]:
+    Pyper y Peterman (1998) [VERIFICAR: ficha preliminar; no se comprobó que el truncamiento
+    J = floor(n/5) sea el del artículo]:
 
         1/n_ef = 1/n + (2/n) · sum_{j=1}^{J} ((n - j)/n) · rho_x(j) · rho_y(j),   J = floor(n/5),
 
