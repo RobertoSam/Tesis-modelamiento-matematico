@@ -16,7 +16,8 @@ Funciones:
 Supuesto declarado: el bootstrap por bloques supone dependencia débil (series estacionarias y
 mezcladoras). En la vía en niveles, con tendencias, ese supuesto no se cumple: ahí el bootstrap
 mide estabilidad descriptiva de los ejes, no incertidumbre muestral.
-Fuente del método [VERIFICAR: se suele atribuir a Künsch (1989); propuesta para el bibliotecario].
+Fuente del método: Künsch (1989) [VERIFICAR: ficha preliminar kunsch_1989; no se verificó que el
+artículo defina el esquema de bloques móviles solapados de este código].
 """
 
 import numpy as np

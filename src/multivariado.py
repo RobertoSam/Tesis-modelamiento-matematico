@@ -87,7 +87,7 @@ def vara_quebrada(p):
 
 def horn(X, n_sim=1000, percentil=0.95, semilla=42):
     """
-    Análisis paralelo de Horn [VERIFICAR: sin ficha]: percentil 95 de los valores propios de
+    Análisis paralelo de Horn (1965) [VERIFICAR: ficha horn_1965; solo se leyó el resumen]: percentil 95 de los valores propios de
     matrices de correlación de datos gaussianos independientes del mismo tamaño.
 
     El generador (numpy PCG64 con la semilla dada) es distinto del de R: los umbrales difieren
@@ -161,7 +161,8 @@ def procrustes(Z, referencia):
 
 def bartlett_esfericidad(R, n):
     """
-    Prueba de esfericidad de Bartlett [VERIFICAR: sin ficha de la fuente de la prueba]:
+    Prueba de esfericidad de Bartlett (1950, 1951) [VERIFICAR: texto no consultado; no se
+    verificó en cuál de las dos obras se formula la prueba]:
     chi² = -(n - 1 - (2p + 5)/6) · ln|R|, con p(p - 1)/2 grados de libertad.
     Si el factor (n - 1 - (2p + 5)/6) no es positivo (n pequeño), el estadístico no está
     definido y se devuelve NaN.
@@ -179,7 +180,8 @@ def bartlett_esfericidad(R, n):
 
 def kmo(R):
     """
-    Medida KMO de adecuación muestral [VERIFICAR: sin ficha de la fuente de la medida], global
+    Medida KMO de adecuación muestral (Kaiser, 1970; Kaiser y Rice, 1974) [VERIFICAR: texto no
+    consultado; la forma de la medida solo consta en la documentación de psych], global
     y por serie, a partir de la matriz anti-imagen: correlaciones parciales
     q_ij = -(R⁻¹)_ij / sqrt((R⁻¹)_ii (R⁻¹)_jj).
     """
