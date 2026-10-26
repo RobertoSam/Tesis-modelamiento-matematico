@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from src import nulo_estructura as ne
 
@@ -36,5 +37,34 @@ def test_medir_devuelve_la_grilla_completa():
     M = _datos(n=80)
     k, rv, rr = ne.medir(M, nw_grilla=(24,), pesos={"uniformes": 0}, maxcl=5)
     assert len(k) == 3 and set(k.criterio) == {c for c, _ in ne.CRITERIOS}
-    assert len(rv) == (80 - 24 + 1) - 24 and rv.rv.between(0, 1 + 1e-12).all()
-    assert rr.n_pares.iloc[0] == len(rv)
+    n_pares = (80 - 24 + 1) - 24
+    assert len(rv) == 2 * n_pares and set(rv.objeto) == set(ne.OBJETOS_D17)
+    assert rv.rv.between(0, 1 + 1e-12).all()
+    assert (rr.n_pares == n_pares).all() and len(rr) == 2
+    # Frontera: primer mes de la segunda ventana del par (fila i + nw)
+    assert list(rv.frontera[:3]) == [M.index[24], M.index[25], M.index[26]]
+
+
+def test_rv_correlacion_y_cargas_completas():
+    # Con todas las cargas (p ejes), el RV de las cargas sin centrar es el de las correlaciones,
+    # porque C Cᵀ = R (src.dinamica)
+    from src.dinamica import rv_correlacion
+    from src.multivariado import coef_rv
+    rng = np.random.default_rng(3)
+    Ra = np.corrcoef(rng.normal(size=(40, 5)), rowvar=False)
+    Rb = np.corrcoef(rng.normal(size=(40, 5)), rowvar=False)
+    def cargas(R):
+        val, vec = np.linalg.eigh(R)
+        return vec * np.sqrt(np.clip(val, 0, None))
+    assert rv_correlacion(Ra, Rb) == pytest.approx(coef_rv(cargas(Ra), cargas(Rb), centrar=False), abs=1e-12)
+    assert rv_correlacion(Ra, Ra) == pytest.approx(1.0, abs=1e-15)
+
+
+def test_antecedente_conserva_rv_centrado():
+    from src.multivariado import coef_rv
+    from src import camiz_port as cp
+    M = _datos(n=80)
+    _, rv, _ = ne.medir(M, nw_grilla=(24,), pesos={"uniformes": 0}, maxcl=5, objetos_rv=ne.OBJETOS_ANTECEDENTE)
+    C = cp.aede(M, nw=24, ndim=3, nsd=0, maxcl=5)['correlationlsq']
+    assert set(rv.objeto) == {'cargas_centradas'}
+    assert rv.rv.iloc[0] == coef_rv(C[0], C[24])

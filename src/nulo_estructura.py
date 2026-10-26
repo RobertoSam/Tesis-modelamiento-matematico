@@ -1,7 +1,7 @@
-"""Nulo de estructura constante para la parte dinámica (iteración 3b, tarea D7).
+"""Nulo de estructura constante para la parte dinámica (iteración 3b, tareas D7 y D10).
 
 Traducción de `R/07b_nulo_estructura.R` (la referencia en R, D6). Remuestreo por bloques
-**conjunto**: los mismos inicios de bloque para las 17 series, de modo que se conservan la
+**conjunto**: los mismos inicios de bloque para todas las series, de modo que se conservan la
 correlación contemporánea y la dinámica corta, pero se dispersa en el tiempo cualquier cambio de
 estructura.
 
@@ -15,8 +15,16 @@ Los inicios de bloque los sortea el guion de R (semilla 2026) y se leen de
 
 Para cada serie (observada o nula), ancho n_w y esquema de pesos se miden:
 1. el k* de cada criterio de `aede` con maxcl = 20 (codo por caída máxima, CH con k y con k - 1);
-2. el perfil del coeficiente RV entre ventanas adyacentes no solapadas: RV entre las cargas
-   (`correlationlsq`, 17 × 3) de la ventana que empieza en la fila i y la que empieza en i + n_w.
+2. el perfil del coeficiente RV entre ventanas adyacentes no solapadas (la ventana que empieza en la
+   fila i y la que empieza en i + n_w), con uno o más objetos (`objetos_rv`):
+   - `cargas_sin_centrar` (principal de D17.2): RV de las cargas de `aede` (`correlationlsq`,
+     p × 3) sin centrar las columnas;
+   - `correlacion` (sensibilidad de D17.2): RV de las matrices de correlación completas p × p de
+     cada ventana, con los pesos de `aede` (`camiz_port.bstatw`, la misma matriz que diagonaliza
+     `aede`);
+   - `cargas_centradas`: la lectura del antecedente (iteración 3b, fase 0, 17 series), que la
+     adenda del 26-oct-2026 (§1.2) descartó; se conserva solo para la prueba de no regresión.
+   La `frontera` de cada par es la etiqueta de la fila i + n_w (primer mes de la segunda ventana).
 """
 
 import numpy as np
@@ -46,12 +54,24 @@ def serie_nula(M, via, inicios, largo):
     return pd.DataFrame(B, index=M.index, columns=M.columns)
 
 
-def medir(M, nw_grilla=NW_GRILLA, pesos=None, maxcl=MAXCL):
+OBJETOS_D17 = ('cargas_sin_centrar', 'correlacion')
+OBJETOS_ANTECEDENTE = ('cargas_centradas',)
+
+
+def _rv_correlacion(Ra, Rb):
+    # tr(Ra Rb) / sqrt(tr(Ra²) tr(Rb²)) para matrices simétricas (misma fórmula que src.dinamica)
+    return float(np.sum(Ra * Rb) / np.sqrt(np.sum(Ra * Ra) * np.sum(Rb * Rb)))
+
+
+def medir(M, nw_grilla=NW_GRILLA, pesos=None, maxcl=MAXCL, objetos_rv=OBJETOS_D17):
     """k* por criterio y perfil RV entre ventanas adyacentes no solapadas, para toda la grilla.
 
-    Devuelve (kstar, rv, rv_resumen) como DataFrames.
+    Devuelve (kstar, rv, rv_resumen) como DataFrames; `rv` y `rv_resumen` llevan la columna
+    `objeto` (uno por elemento de `objetos_rv`).
     """
     pesos = PESOS if pesos is None else pesos
+    A = M.to_numpy(dtype=float)
+    etiquetas = list(M.index)
     kst, rv, rvr = [], [], []
     for nw in nw_grilla:
         for pz, nsd in pesos.items():
@@ -62,9 +82,21 @@ def medir(M, nw_grilla=NW_GRILLA, pesos=None, maxcl=MAXCL):
             C = a['correlationlsq']
             wn = C.shape[0]
             fv = list(a['eigenvalues'].index)
-            valores = np.array([coef_rv(C[j], C[j + nw]) for j in range(wn - nw)])
-            rv.append(pd.DataFrame({'nw': nw, 'pesos': pz, 'fecha_a': fv[:wn - nw], 'fecha_b': fv[nw:wn], 'rv': valores}))
-            rvr.append({'nw': nw, 'pesos': pz, 'n_pares': len(valores), 'rv_min': valores.min(),
-                        'rv_p05': np.quantile(valores, 0.05), 'rv_p50': np.quantile(valores, 0.5),
-                        'rv_media': valores.mean()})
+            frontera = etiquetas[nw:nw + wn - nw]
+            if 'correlacion' in objetos_rv:
+                Rw = [cp.bstatw(A[j:j + nw], a['weights'])['correlations'] for j in range(wn)]
+            for obj in objetos_rv:
+                if obj == 'cargas_centradas':
+                    valores = np.array([coef_rv(C[j], C[j + nw]) for j in range(wn - nw)])
+                elif obj == 'cargas_sin_centrar':
+                    valores = np.array([coef_rv(C[j], C[j + nw], centrar=False) for j in range(wn - nw)])
+                elif obj == 'correlacion':
+                    valores = np.array([_rv_correlacion(Rw[j], Rw[j + nw]) for j in range(wn - nw)])
+                else:
+                    raise ValueError(f'objeto RV desconocido: {obj}')
+                rv.append(pd.DataFrame({'objeto': obj, 'nw': nw, 'pesos': pz, 'fecha_a': fv[:wn - nw],
+                                        'fecha_b': fv[nw:wn], 'frontera': frontera, 'rv': valores}))
+                rvr.append({'objeto': obj, 'nw': nw, 'pesos': pz, 'n_pares': len(valores), 'rv_min': valores.min(),
+                            'rv_p05': np.quantile(valores, 0.05), 'rv_p50': np.quantile(valores, 0.5),
+                            'rv_media': valores.mean()})
     return pd.DataFrame(kst), pd.concat(rv, ignore_index=True), pd.DataFrame(rvr)

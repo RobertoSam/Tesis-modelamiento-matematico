@@ -264,8 +264,14 @@ def grilla_datacion(S, fechas, maxcls=(10, 15, 20), n_min=12, umbral=0.10):
     S: scores ya suavizados (sin los NaN iniciales); fechas: las de sus filas. La columna
     `k_en_tope` vale True si el k elegido es el mayor k factible de la grilla (k_max_efectivo, que
     con n_min = 12 puede ser menor que maxcl).
+
+    D17.1 (26-oct-2026): `n_segmentos_en_minimo` cuenta los tramos de exactamente n_min meses y
+    `segmentos_en_minimo` marca como artefacto las soluciones en que **todos** los tramos miden
+    n_min (lectura literal de D17.1). Con n = 217 meses suavizados y n_min = 12, la marca literal
+    no puede cumplirse (217 no es múltiplo de 12); por eso se informa también el conteo.
     """
     filas = []
+    n = len(S)
     for maxcl in maxcls:
         d = datar(S, k_max=maxcl, n_min=n_min, umbral=umbral)
         elegidos = [("codo (caída máxima)", d["k_caida"], "caida"),
@@ -273,9 +279,12 @@ def grilla_datacion(S, fechas, maxcls=(10, 15, 20), n_min=12, umbral=0.10):
                     ("Calinski-Harabász k-1 gl (habitual)", d["k_ch1"], ""),
                     ("regla K (D12)", d["k_codo"], d["regla_codo"])]
         for criterio, k, regla in elegidos:
+            largos = np.diff([0] + list(d["res"][k]["cortes"]) + [n])
             filas.append({"maxcl": maxcl, "k_max_efectivo": d["k_max_efectivo"], "criterio": criterio,
                           "k": k, "k_en_tope": k == d["k_max_efectivo"], "regla_k": regla,
-                          "cortes": " ".join(fechas_corte(d["res"][k]["cortes"], fechas))})
+                          "cortes": " ".join(fechas_corte(d["res"][k]["cortes"], fechas)),
+                          "n_segmentos_en_minimo": int(np.sum(largos == n_min)),
+                          "segmentos_en_minimo": bool(np.all(largos == n_min))})
     return pd.DataFrame(filas)
 
 
