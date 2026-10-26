@@ -5009,6 +5009,54 @@ knitr::kable(rbind(resumen_boot(boot_hfc_niv, "sin transformar"), resumen_boot(b
              caption = "HFC recalculada en cada réplica bootstrap (bloques de 24 meses). Detalle en R_hfc_bootstrap.csv y R_hfc_coclasificacion.csv.")
 ```
 
+## D7 · Nulo de estructura constante (primera pieza de OE11)
+
+Remuestreo por bloques **conjunto** (los mismos inicios de bloque para las 17 series, $L = 24$ y,
+como sensibilidad, $L = 12$ y $L = 36$): en las transformadas se remuestrean las filas; sin
+transformar, los incrementos mensuales, que luego se acumulan desde 0 como en el nulo «con
+deriva» de la sección 2. Se conservan la correlación contemporánea y la dinámica corta, y se
+dispersa en el tiempo cualquier cambio de estructura. En cada réplica y para cada ancho y
+esquema de pesos se calculan el $k^*$ de los tres criterios de `aede` con maxcl = 20 y el perfil
+del RV entre las cargas (17 × 3) de **ventanas adyacentes no solapadas** (la que empieza en la
+fila $i$ y la que empieza en $i + n_w$; D10).
+
+**Cómputo fuera del documento (declarado).** Por su costo (unas 960 corridas de `aede` con
+maxcl = 20, cerca de 30 minutos), el cálculo en R está en el guion `R/07b_nulo_estructura.R`, que
+sortea los inicios (200 réplicas por $L$, semilla del documento), calcula las 20 primeras réplicas
+de cada $L$ y escribe los CSV `R_nulo_estructura_*`. Este bloque los lee, comprueba que la serie
+observada (réplica 0) da los $k^*$ de la grilla de D4 con maxcl = 20, y la tabla de paridad los
+compara con el notebook `07b_nulo_estructura.ipynb`, que calcula además las réplicas 21 a 200 con
+$L = 24$ (solo en Python). Ninguna réplica se reduce: si los CSV faltan, la paridad lo marca.
+
+```{r b3b-nulo}
+leer_nulo <- function(via, f) { ruta <- file.path(c(niveles = "data/results/niveles", transformadas = "data/results")[[via]], f)
+  if (file.exists(ruta)) read.csv(ruta, stringsAsFactors = FALSE) else NULL }
+nulo_r <- lapply(c(niveles = "niveles", transformadas = "transformadas"), function(v)
+  list(kstar = leer_nulo(v, "R_nulo_estructura_kstar.csv"), rv = leer_nulo(v, "R_nulo_estructura_rv.csv"),
+       rv_resumen = leer_nulo(v, "R_nulo_estructura_rv_resumen.csv")))
+tiene_nulo <- all(sapply(nulo_r, function(x) !is.null(x$kstar) && !is.null(x$rv) && !is.null(x$rv_resumen)))
+if (tiene_nulo) {
+  # La réplica 0 del guion (serie observada) reproduce los k* de b3b-aede-grilla con maxcl = 20
+  for (v in list(list(nulo_r$niveles$kstar, grilla_aede_niv$tabla), list(nulo_r$transformadas$kstar, grilla_aede_tr$tabla))) {
+    o <- v[[1]][v[[1]]$replica == 0, ]; g <- v[[2]][v[[2]]$maxcl == 20, ]
+    stopifnot(identical(as.integer(o$k[match(paste(g$nw, g$pesos, g$criterio), paste(o$nw, o$pesos, o$criterio))]), as.integer(g$k)))
+  }
+  rango_nulo <- function(ks, via) {
+    o <- ks[ks$replica == 0, ]; nul <- ks[ks$L == 24 & ks$replica > 0, ]
+    data.frame(Vía = via, nw = o$nw, Pesos = o$pesos, Criterio = o$criterio, `k observado` = o$k,
+               `k nulo: mín.–máx. (20 réplicas R, L = 24)` = sapply(seq_len(nrow(o)), function(i) {
+                 q <- nul$k[nul$nw == o$nw[i] & nul$pesos == o$pesos[i] & nul$criterio == o$criterio[i]]
+                 paste(min(q), "–", max(q)) }), check.names = FALSE)
+  }
+  knitr::kable(rbind(rango_nulo(nulo_r$niveles$kstar, "sin transformar"), rango_nulo(nulo_r$transformadas$kstar, "transformadas")),
+               row.names = FALSE, caption = "k* de aede con maxcl = 20: serie observada y rango en las 20 réplicas nulas calculadas en R. La posición en las 200 réplicas de Python está en 07b_nulo_estructura_kstar_posicion.csv.")
+}
+```
+
+```{r b3b-nulo-ausente, eval = !tiene_nulo, echo = FALSE, results = "asis"}
+cat("**Faltan los CSV del nulo de estructura.** Ejecutar `Rscript R/07b_nulo_estructura.R` antes de renderizar; la tabla de paridad marca las filas del nulo como «no».\n")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -5306,6 +5354,31 @@ paridad_hfc <- function(via, cm, cr, bh) {
 }
 par_niv <- rbind(par_niv, paridad_hfc("niveles", comp_hfc_niv, corr_hfc_niv, boot_hfc_niv))
 par_tr <- rbind(par_tr, paridad_hfc("transformadas", comp_hfc_tr, corr_hfc_tr, boot_hfc_tr))
+# Nulo de estructura constante (D7): R = guion R/07b_nulo_estructura.R (20 réplicas por L)
+paridad_nulo <- function(via, nr) {
+  sec <- "Nulo de estructura constante (D7)"
+  f_r <- file.path(dir_via[[via]], "R_nulo_estructura_kstar.csv")
+  if (is.null(nr$kstar)) return(fila_par(via, sec, "k*, RV y resúmenes", "archivo ausente", "—", f_r, NA_real_, FALSE))
+  ck <- function(t) paste(t$L, t$replica, t$nw, t$pesos, t$criterio)
+  cv <- function(t) paste(t$replica, t$nw, t$pesos, t$fecha_a, t$fecha_b)
+  cr <- function(t) paste(t$L, t$replica, t$nw, t$pesos)
+  rbind(
+    fila_tabla(via, sec, "k* de aede con maxcl = 20 (3 criterios × 4 anchos × 2 pesos), serie observada y réplicas 1-20 de L = 12, 24, 36",
+               "07b_nulo_estructura_kstar.csv", with(nr$kstar, paste(ck(nr$kstar), k, k_en_tope)),
+               function(py) { q <- py[match(ck(nr$kstar), ck(py)), ]; paste(ck(nr$kstar), q$k, as.logical(q$k_en_tope)) }),
+    fila_num(via, sec, "Perfil RV entre ventanas adyacentes no solapadas (L = 24, réplicas 0-20)", "07b_nulo_estructura_rv.csv",
+             nr$rv$rv, function(py) py$rv[match(cv(nr$rv), cv(py))], 1e-10, resumen = paste(nrow(nr$rv), "pares")),
+    fila_num(via, sec, "Resumen del RV por réplica (mín., p5, mediana, media; L = 12, 24, 36)", "07b_nulo_estructura_rv_resumen.csv",
+             as.vector(as.matrix(nr$rv_resumen[, c("rv_min", "rv_p05", "rv_p50", "rv_media")])),
+             function(py) { q <- py[match(cr(nr$rv_resumen), cr(py)), ]; as.vector(as.matrix(q[, c("rv_min", "rv_p05", "rv_p50", "rv_media")])) }, 1e-10),
+    # Excepción declarada (plan, D7): las réplicas 21-200 de L = 24 solo se calculan en Python. Se
+    # comprueba que existan todas y que usen los inicios sorteados por el guion de R.
+    fila_tabla(via, sec, "Excepción declarada: réplicas 21-200 de L = 24 solo en Python (se comprueba que estén las 200)",
+               "07b_nulo_estructura_kstar.csv", paste(24, 1:200),
+               function(py) { u <- unique(py[py$L == 24 & py$replica > 0, c("L", "replica")]); paste(u$L, u$replica) }))
+}
+par_niv <- rbind(par_niv, paridad_nulo("niveles", nulo_r$niveles))
+par_tr <- rbind(par_tr, paridad_nulo("transformadas", nulo_r$transformadas))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {
