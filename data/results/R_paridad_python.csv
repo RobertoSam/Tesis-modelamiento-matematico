@@ -29,3 +29,5 @@
 "transformadas","Valores propios por ventana (D5)","Ventanas bajo Kaiser por eje y cruces λ2 ↔ λ3","24 filas","24 filas","data/results/06c_aede_valores_propios_resumen.csv",0,"sí"
 "transformadas","Valores propios por ventana (D5)","Ventanas bajo el p95 de Horn por eje (umbral compartido: R_aede_horn_umbrales.csv)","24 filas","24 filas","data/results/06c_aede_valores_propios_resumen.csv",0,"sí"
 "transformadas","Valores propios por ventana (D5)","Fechas de los cruces λ2 ↔ λ3","26 filas","26 filas","data/results/06c_aede_cruces.csv",0,"sí"
+"transformadas","EPCA regla 06 por ventana (D6, PC1)","Transiciones por ancho (24, 36, 48, 60)","19 filas","19 filas","data/results/06_epca_transiciones_ventanas.csv",0,"sí"
+"transformadas","EPCA regla 06 por ventana (D6, PC1)","Estabilidad de cada par de ventanas y umbral","244 pares","0,9782 0,9652 0,9978 0,9939 0,9981","data/results/06_epca_estabilidad_ventanas.csv",1.32671651442706e-14,"sí"

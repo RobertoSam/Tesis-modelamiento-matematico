@@ -4857,6 +4857,54 @@ knitr::kable(tab_vpv, row.names = FALSE,
              caption = "Valores propios de aede por ventana frente a los umbrales. Detalle por ventana en R_aede_valores_propios.csv; cruces en R_aede_cruces.csv.")
 ```
 
+## D6 · Regla del notebook 06 por ancho de ventana
+
+La regla de `b4-replica` y `bB3-seguimiento` (paso de 3 meses; PC2 sin transformar y PC1 en las
+transformadas; transición si la correlación entre las cargas de ventanas consecutivas cae por
+debajo de su media menos una desviación estándar) se repite con $n_w$ ∈ {24, 36, 48, 60}. Con
+$n_w = 24$ hay ventanas en que la tasa de referencia no cambia; para ellas se replica la
+convención de `StandardScaler` del notebook 06 (la columna constante queda en 0). Con 60 meses
+se reproducen las transiciones de A.3 y B.3.
+
+```{r b3b-regla06}
+# Estandarización como StandardScaler: una columna constante (criterio _is_constant_feature de
+# scikit-learn) se deja con escala 1, de modo que queda centrada en 0
+estandarizar_sk <- function(M) {
+  M <- as.matrix(M); nm <- nrow(M)
+  m <- colMeans(M); v <- colMeans(sweep(M, 2, m)^2)
+  eps <- .Machine$double.eps
+  s <- sqrt(v); s[v <= nm * eps * v + (nm * m * eps)^2] <- 1
+  sweep(sweep(M, 2, m), 2, s, "/")
+}
+regla06 <- function(M, fechas_M, k, nw, paso = PASO) {
+  ini <- seq(1, nrow(M) - nw + 1, by = paso)
+  fe <- fechas_M[ini + nw %/% 2]
+  C <- t(sapply(ini, function(i) eigen(crossprod(estandarizar_sk(M[i:(i + nw - 1), ])) / nw, symmetric = TRUE)$vectors[, k]))
+  for (i in 2:nrow(C)) if (cor(C[i, ], C[i - 1, ]) < 0) C[i, ] <- -C[i, ]
+  est <- sapply(2:nrow(C), function(i) cor(C[i, ], C[i - 1, ]))
+  umbral <- mean(est) - sqrt(mean((est - mean(est))^2))
+  list(estabilidad = data.frame(ventana = nw, fecha = format(fe[-1], "%Y-%m"), estabilidad = est, umbral = umbral),
+       transiciones = data.frame(ventana = rep(nw, sum(est < umbral)), fecha = format(fe[-1][est < umbral], "%Y-%m")))
+}
+regla06_grilla <- function(M, fechas_M, k) {
+  r <- lapply(nw_grilla, function(nw) regla06(M, fechas_M, k, nw))
+  list(estabilidad = do.call(rbind, lapply(r, `[[`, "estabilidad")), transiciones = do.call(rbind, lapply(r, `[[`, "transiciones")))
+}
+r06_niv <- regla06_grilla(X, fechas, 2)
+r06_tr <- regla06_grilla(Xt, fechas_t, 1)
+# No regresión: con 60 meses, las transiciones de A.3 (PC2) y B.3 (PC1)
+stopifnot(identical(r06_niv$transiciones$fecha[r06_niv$transiciones$ventana == 60], trans_r17),
+          identical(r06_tr$transiciones$fecha[r06_tr$transiciones$ventana == 60], format(transiciones_t, "%Y-%m")))
+write.csv(r06_niv$transiciones, "data/results/niveles/R_epca_regla06_transiciones.csv", row.names = FALSE)
+write.csv(r06_niv$estabilidad, "data/results/niveles/R_epca_regla06_estabilidad.csv", row.names = FALSE)
+write.csv(r06_tr$transiciones, "data/results/R_epca_regla06_transiciones.csv", row.names = FALSE)
+write.csv(r06_tr$estabilidad, "data/results/R_epca_regla06_estabilidad.csv", row.names = FALSE)
+knitr::kable(rbind(
+  data.frame(Vía = "sin transformar (PC2)", Ventana = nw_grilla, Transiciones = sapply(nw_grilla, function(w) paste(r06_niv$transiciones$fecha[r06_niv$transiciones$ventana == w], collapse = ", "))),
+  data.frame(Vía = "transformadas (PC1)", Ventana = nw_grilla, Transiciones = sapply(nw_grilla, function(w) paste(r06_tr$transiciones$fecha[r06_tr$transiciones$ventana == w], collapse = ", ")))),
+  row.names = FALSE, caption = "Regla del notebook 06 por ancho (paso 3). Fechas: centro de la ventana posterior de cada par.")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -5118,6 +5166,20 @@ paridad_vpv <- function(via, v) {
 }
 par_niv <- rbind(par_niv, paridad_vpv("niveles", vpv_niv))
 par_tr <- rbind(par_tr, paridad_vpv("transformadas", vpv_tr))
+paridad_r06 <- function(via, r, sufijo, comp) {
+  f_t <- paste0(if (via == "niveles") "../" else "", "06_epca_transiciones_ventanas", sufijo, ".csv")
+  f_e <- paste0(if (via == "niveles") "../" else "", "06_epca_estabilidad_ventanas", sufijo, ".csv")
+  clave <- function(t) paste(t$ventana, substr(t$fecha, 1, 7))
+  rbind(
+    fila_tabla(via, paste0("EPCA regla 06 por ventana (D6, ", comp, ")"), "Transiciones por ancho (24, 36, 48, 60)", f_t,
+               clave(r$transiciones), function(py) paste(py$ventana, substr(py$fecha_transicion_candidata, 1, 7))),
+    fila_num(via, paste0("EPCA regla 06 por ventana (D6, ", comp, ")"), "Estabilidad de cada par de ventanas y umbral", f_e,
+             c(r$estabilidad$estabilidad, r$estabilidad$umbral),
+             function(py) { q <- py[match(clave(r$estabilidad), clave(py)), ]; c(q$estabilidad, q$umbral) }, 1e-10,
+             resumen = paste(nrow(r$estabilidad), "pares")))
+}
+par_niv <- rbind(par_niv, paridad_r06("niveles", r06_niv, "_niveles", "PC2"))
+par_tr <- rbind(par_tr, paridad_r06("transformadas", r06_tr, "", "PC1"))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {
