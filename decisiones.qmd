@@ -21,6 +21,55 @@ cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). E
 recuperable en el commit `57104ff` de `main`.
 :::
 
+## D16 · 26 de octubre de 2026 · Se excluye la Liquidez M2 (16 series)
+
+**Contexto.** Al revisar el Rmd, Roberto observó que M1, M2 y M3 son muy parecidas. En los datos
+congelados de D4, la correlación entre M2 y M3 es 0,998 en niveles, 0,986 en logaritmos sin
+tendencia lineal y 0,907 en tasas de crecimiento. M1 se separa de ambas cuando se quita la
+tendencia (0,78 en logaritmos sin tendencia; 0,53–0,56 en tasas de crecimiento). Un par casi
+duplicado pesa dos veces en un PCA sin ponderar y desplaza el primer eje hacia el bloque monetario.
+
+**Decisión.** Se excluye la **Liquidez M2**. El análisis pasa de 17 a 16 series: se conservan M1
+(componente transaccional) y M3 (liquidez amplia). Los archivos de D4 no se modifican (sus md5
+siguen vigentes); la exclusión se aplica al leerlos, igual que la del crédito total del SF y la del
+IPC subyacente. Todos los resultados de las iteraciones 3a y 3b que usan 17 series quedan como
+antecedente y se vuelven a calcular con 16.
+
+**Alternativas descartadas.** Excluir M3 (M2 no recoge los depósitos en moneda extranjera de una
+economía dolarizada); dejar un solo agregado (se pierde la información propia de M1); mantener las
+tres y justificar la redundancia.
+
+**Pendiente.** Comunicarlo al Dr. Camiz junto con D15.
+
+**Rastro.** Estado anterior, con 17 series: commit `81d8a94` de la rama `iteracion-3b`.
+
+## D15 · 26 de octubre de 2026 · Rmd final solo en niveles; las transformadas pasan a anexo
+
+**Contexto.** D1 fija las series sin transformar como análisis oficial y D2 ejecuta todo en dos
+vías, a la espera de discutir la Parte C con el asesor. Roberto revisó el Rmd y decidió no
+sostener las dos vías en el documento principal.
+
+**Decisión.**
+
+- Se crea un **Rmd final** que ejecuta la cadena completa solo con las series sin transformar
+  (estandarizadas).
+- El Rmd actual (`R/tesis_ciclo_financiero.Rmd`) queda como **documento de exploración**, sin más
+  cambios metodológicos.
+- Las series transformadas no desaparecen: pasan a un **anexo de robustez** del Rmd final con
+  (a) el sustento de no diferenciar (ganancia del filtro de diferencias y contraste de la
+  estructura) y (b) la detección de episodios fuera de muestra, donde solo la vía transformada
+  es informativa.
+- Las tareas pendientes de la iteración 3b se ejecutan solo en niveles, salvo lo que el anexo
+  necesite.
+
+Esta decisión resuelve en la práctica la propuesta de la Parte C de D2, que se presentará al
+Dr. Camiz como propuesta, no como hecho consumado.
+
+**Alternativas descartadas.** Quitar las transformadas por completo (se pierde el contraste de
+episodios); esperar a la reunión con el Dr. Camiz.
+
+**Rastro.** Estado anterior, en dos vías: commit `81d8a94` de la rama `iteracion-3b`.
+
 ## D14 · 24 de octubre de 2026 · Alcance de los apuntes 2 y 7 (decisión G)
 
 **Decisión.** El apunte 7 se ejecuta en su versión útil: valores propios por ventana frente al
