@@ -20,3 +20,6 @@
 "transformadas","Tendencia y residuos (apunte 11)","PC1-PC4: pendiente, R², r(t), ACF 1 y 12, Ljung-Box","0,0036 -0,0049 -0,0070 -0,0066 0,0139","0,0036 -0,0049 -0,0070 -0,0066 0,0139","data/results/05_pca_tendencia_componentes.csv",5.62061694705868e-15,"sí"
 "transformadas","Tendencia y residuos (apunte 11)","PC1-PC4: estadísticos ADF y KPSS de los residuos (tseries frente a statsmodels)","-4,1936 -3,7014 -5,4859 -5,2731 0,0647","-4,1936 -3,7014 -5,4859 -5,2731 0,0647","data/results/05_pca_tendencia_componentes.csv",1.0847415196082e-14,"sí"
 "transformadas","Tendencia y residuos (apunte 11)","PC1-PC4: clase D5","TS TS TS indeterminada","TS TS TS indeterminada","data/results/05_pca_tendencia_componentes.csv",NA,"sí"
+"transformadas","Datación 09a (D3)","Grilla maxcl × criterio: k, k en el tope, regla y cortes","12 filas","12 filas","data/results/09a_datacion_criterios.csv",0,"sí"
+"transformadas","Estabilidad de cortes (D3)","Cortes de referencia y k","7 filas","7 filas","data/results/09a_estabilidad_cortes.csv",0,"sí"
+"transformadas","Estabilidad de cortes (D3)","Frecuencia a ±3 meses (200 réplicas, L = 24, índices compartidos)","1,0000 1,0000 0,9300 0,8600 0,9300","1,0000 1,0000 0,9300 0,8600 0,9300","data/results/09a_estabilidad_cortes.csv",0,"sí"

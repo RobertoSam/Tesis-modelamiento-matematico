@@ -27,3 +27,6 @@
 "niveles","Nulo de tendencias (apunte 10)","Observado, p50, p95 y proporción por versión y medida","67,1590 18,2569 7,1167 0,5767 67,1590","67,1590 18,2569 7,1167 0,5767 67,1590","data/results/niveles/05_nulo_tendencias.csv",2.327600417895e-15,"sí"
 "niveles","Sin tendencia (apunte 10)","Inercia, KMO, χ², ln|R|, condición y congruencias por versión","67,1590 18,2569 7,1167 2,9032 0,8624","67,1590 18,2569 7,1167 2,9032 0,8624","data/results/niveles/05_pca_contraste_tendencia.csv",5.4260528791893e-12,"sí"
 "niveles","Dimensiones (05)","n y p de cada vía (228 × 17 y 227 × 17)","228,0000 17,0000 227,0000 17,0000","228,0000 17,0000 227,0000 17,0000","data/results/niveles/../05_dimensiones.csv",0,"sí"
+"niveles","Datación 09a (D3)","Grilla maxcl × criterio: k, k en el tope, regla y cortes","12 filas","12 filas","data/results/niveles/09a_datacion_criterios.csv",0,"sí"
+"niveles","Estabilidad de cortes (D3)","Cortes de referencia y k","5 filas","5 filas","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"
+"niveles","Estabilidad de cortes (D3)","Frecuencia a ±3 meses (200 réplicas, L = 24, índices compartidos)","0,8500 0,9800 0,3500 0,9550 1,0000","0,8500 0,9800 0,3500 0,9550 1,0000","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"

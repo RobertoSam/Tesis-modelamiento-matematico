@@ -431,8 +431,11 @@ datar <- function(Y, k_max = 10, tam_min = 12, umbral = 0.10) {
   # La elección entre ambas queda pendiente; se informan las dos.
   nk <- nrow(Y); ks <- as.integer(names(sce))
   ch <- ch_variantes(sce, nk)
+  # Iteración 3b (D3): también el codo por caída máxima por sí solo y el mayor k factible
+  # (k · tam_min <= n), para la grilla de maxcl; no cambian k_codo ni los demás criterios.
+  k_caida <- ks0[which.max(c(NA, head(reduccion, -1)) - reduccion)]
   list(res = res, tabla = data.frame(k = ks, sce = sce, reduccion = reduccion, ch = ch$k, ch1 = ch$k1),
-       k_codo = k_codo, regla_codo = regla_codo,
+       k_codo = k_codo, regla_codo = regla_codo, k_caida = k_caida, k_max_efectivo = max(ks),
        k_ch = ks[which.max(ch$k)], k_ch1 = ks[which.max(ch$k1)])
 }
 
@@ -4645,6 +4648,54 @@ condicionan el análisis:
 12. **Calinski-Harabász**: fórmula con $k$ (código de `aede`) o con $k-1$ (forma habitual)
     grados de libertad en el numerador (A.3).
 
+# Anexo 3b · Parte dinámica en grilla (iteración 3b, fase 0) {-}
+
+Este anexo calcula, en las dos vías y con los mismos parámetros que los notebooks de Python, las
+grillas de la parte dinámica que pide el plan de la iteración 3b
+(`asesoria/2026-10-21_plan-iteracion-3b.md`, sección 4, tareas D3 a D8). Sus tablas son
+**insumos sin interpretación**: la lectura se hace en la fase 1, contra el nulo de estructura
+constante (D10, D11), y ninguna cifra de aquí pasa a la tesis sin esa lectura (regla 7). Cada
+bloque escribe sus CSV `R_*` en la carpeta de su vía y la tabla de paridad del anexo siguiente
+los compara con los de Python.
+
+## D3 · Datación PCA-MM12: grilla de maxcl y criterios
+
+La datación de A.6 y B.6 se repite con maxcl ∈ {10, 15, 20} y cuatro criterios: el codo por caída
+máxima, el CH con $k$ y con $k-1$ grados de libertad (D11: se informan, no se usan como selector)
+y la regla K de D12 (umbral de 10 % y, si no elige, la caída máxima), que es la regla `datar`
+de A.6. Con segmentos de al menos 12 meses, el mayor $k$ factible puede ser menor que maxcl: la
+columna `k_en_tope` compara el $k$ elegido con ese máximo efectivo.
+
+```{r b3b-datacion}
+maxcl_grilla <- c(10, 15, 20)
+grilla_datacion <- function(Sm, fechas_seg) do.call(rbind, lapply(maxcl_grilla, function(mc) {
+  d <- datar(Sm, k_max = mc)
+  el <- data.frame(criterio = c("codo (caída máxima)", "Calinski-Harabász k gl (aede)",
+                                "Calinski-Harabász k-1 gl (habitual)", "regla K (D12)"),
+                   k = c(d$k_caida, d$k_ch, d$k_ch1, d$k_codo),
+                   regla_k = c("caida", "", "", d$regla_codo), stringsAsFactors = FALSE)
+  data.frame(maxcl = mc, k_max_efectivo = d$k_max_efectivo, criterio = el$criterio, k = el$k,
+             k_en_tope = el$k == d$k_max_efectivo, regla_k = el$regla_k,
+             cortes = sapply(el$k, function(k) paste(fechas_corte(d$res[[as.character(k)]]$cortes, fechas_seg), collapse = " ")),
+             stringsAsFactors = FALSE)
+}))
+grilla_dat_niv <- grilla_datacion(mm_scores(scores[, 1:3]), fechas_z)
+grilla_dat_tr <- grilla_datacion(mm_scores_t(scores_t[, 1:3]), fechas_zt)
+# No regresión: con maxcl = 10, la regla K es la datación de A.6 y B.6 (y del notebook 09)
+stopifnot(grilla_dat_niv$k[grilla_dat_niv$maxcl == 10 & grilla_dat_niv$criterio == "regla K (D12)"] == dat3$k_codo,
+          grilla_dat_tr$k[grilla_dat_tr$maxcl == 10 & grilla_dat_tr$criterio == "regla K (D12)"] == dat3t$k_codo)
+# Estabilidad de los cortes (b8-estabilidad-cortes y bB6-estabilidad), ahora escrita en data/results/
+estab_largo <- function(e, k_ref) data.frame(corte = e$Corte, frecuencia = e$frecuencia, k_ref = k_ref,
+                                             replicas = B_cortes, L = 24, tolerancia_meses = 3)
+write.csv(grilla_dat_niv, "data/results/niveles/R_datacion_criterios.csv", row.names = FALSE)
+write.csv(grilla_dat_tr, "data/results/R_datacion_criterios.csv", row.names = FALSE)
+write.csv(estab_largo(estab_cortes, k_ref), "data/results/niveles/R_estabilidad_cortes.csv", row.names = FALSE)
+write.csv(estab_largo(estab_cortes_t, k_ref_t), "data/results/R_estabilidad_cortes.csv", row.names = FALSE)
+knitr::kable(rbind(data.frame(Vía = "sin transformar", grilla_dat_niv), data.frame(Vía = "transformadas", grilla_dat_tr))[, c("Vía", "maxcl", "k_max_efectivo", "criterio", "k", "k_en_tope", "cortes")],
+             row.names = FALSE, col.names = c("Vía", "maxcl", "k máx. factible", "Criterio", "k", "En el tope", "Inicio de cada régimen nuevo"),
+             caption = "Datación PCA-MM12 (PC1 a PC3, media móvil causal de 12 meses, segmentos de al menos 12 meses). Escrito en R_datacion_criterios.csv de cada vía.")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -4850,6 +4901,31 @@ par_niv_extra <- rbind(
 
 par_niv <- rbind(par_niv, par_niv_05, par_niv_extra)
 par_tr <- rbind(par_tr, par_tr_05)
+
+# ---- Iteración 3b: parte dinámica en grilla (Anexo 3b) -----------------------
+# Tablas discretas (k, cortes, clases): se comparan fila a fila como texto; dif_max = número de
+# filas distintas. Si el CSV de Python no existe, la fila queda como «no» con la causa.
+fila_tabla <- function(via, seccion, criterio, archivo, clave_r, f_py) {
+  f <- file.path(dir_via[[via]], archivo)
+  py <- leer_05(via, archivo)
+  if (is.null(py)) return(fila_par(via, seccion, criterio, "—", "archivo ausente", f, NA_real_, FALSE))
+  clave_py <- f_py(py)
+  ok <- length(clave_py) == length(clave_r)
+  n_dif <- if (ok) sum(as.character(clave_r) != as.character(clave_py)) else NA_real_
+  fila_par(via, seccion, criterio, paste(length(clave_r), "filas"), paste(length(clave_py), "filas"), f, n_dif,
+           ok && n_dif == 0)
+}
+sin_na <- function(x) ifelse(is.na(x), "", as.character(x))
+paridad_09a <- function(via, grilla_r, estab_r) rbind(
+  fila_tabla(via, "Datación 09a (D3)", "Grilla maxcl × criterio: k, k en el tope, regla y cortes", "09a_datacion_criterios.csv",
+             with(grilla_r, paste(maxcl, k_max_efectivo, criterio, k, k_en_tope, regla_k, cortes)),
+             function(py) with(py, paste(maxcl, k_max_efectivo, criterio, k, as.logical(k_en_tope), sin_na(regla_k), sin_na(cortes)))),
+  fila_tabla(via, "Estabilidad de cortes (D3)", "Cortes de referencia y k", "09a_estabilidad_cortes.csv",
+             with(estab_r, paste(corte, k_ref, replicas)), function(py) with(py, paste(corte, k_ref, replicas))),
+  fila_num(via, "Estabilidad de cortes (D3)", "Frecuencia a ±3 meses (200 réplicas, L = 24, índices compartidos)",
+           "09a_estabilidad_cortes.csv", estab_r$frecuencia, function(py) py$frecuencia, 1e-12))
+par_niv <- rbind(par_niv, paridad_09a("niveles", grilla_dat_niv, estab_largo(estab_cortes, k_ref)))
+par_tr <- rbind(par_tr, paridad_09a("transformadas", grilla_dat_tr, estab_largo(estab_cortes_t, k_ref_t)))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {

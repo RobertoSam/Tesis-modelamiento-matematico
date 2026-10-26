@@ -51,6 +51,14 @@ def fisher_multivariado(Y, k_max=8, n_min=6):
         ss = float(np.sum(np.asarray(s * s, dtype=np.longdouble)))
         return S2[j] - S2[i] - ss / (j - i)
 
+    def sce_vec(ini, j):
+        # sce(i, j) para un vector de inicios i, con las mismas operaciones elemento a elemento
+        # (iteración 3b: se vectoriza el bucle interno sin cambiar la aritmética, porque la
+        # grilla maxcl = 20 y el remuestreo de los cortes lo recorren miles de veces)
+        s = S1[j] - S1[ini]
+        ss = np.sum(np.asarray(s * s, dtype=np.longdouble), axis=1).astype(np.float64)
+        return S2[j] - S2[ini] - ss / (j - ini)
+
     D = np.full((k_max + 1, n + 1), np.inf)
     B = np.zeros((k_max + 1, n + 1), dtype=int)
     for j in range(n_min, n + 1):
@@ -60,7 +68,7 @@ def fisher_multivariado(Y, k_max=8, n_min=6):
             break
         for j in range(k * n_min, n + 1):
             ini = np.arange((k - 1) * n_min, j - n_min + 1)
-            costos = np.array([D[k - 1, i] + sce(i, j) for i in ini])
+            costos = D[k - 1, ini] + sce_vec(ini, j)
             pos = int(np.argmin(costos))            # primer mínimo, como which.min
             D[k, j] = costos[pos]
             B[k, j] = ini[pos]
@@ -159,3 +167,134 @@ def _particion_general(y, k, maxcl, n_min):
         etiquetas[a:b] = c
     cortes = [indice[c] for c in res["cortes"]] if indice is not None else list(res["cortes"])
     return {"etiquetas": etiquetas, "limites": bordes[1:], "cortes": cortes, "sce": res["sce"]}
+
+
+# ---- Tarea D3 (iteración 3b): datación PCA-MM12 sin torch (notebook 09a) -----------------
+#
+# Traducción de `datar`, `mm_causal`, `pca_basico` y del chunk `b8-estabilidad-cortes` del Rmd,
+# con el orden de operaciones de R donde puede cambiar un empate (medias con acumulador long
+# double, como colMeans; media móvil con el orden de stats::filter). La regla del codo del 09 es
+# la regla K de D12 (decisiones.qmd): primero el umbral de 10 % y, si no elige, la caída máxima.
+
+CRITERIOS_DATACION = ("codo (caída máxima)", "Calinski-Harabász k gl (aede)",
+                      "Calinski-Harabász k-1 gl (habitual)", "regla K (D12)")
+
+
+def estandarizar_r(X):
+    """Estandarización del Rmd (divisor n) con las medias de colMeans (long double)."""
+    X = np.asarray(X, dtype=float)
+    n = X.shape[0]
+    m = (np.sum(X.astype(np.longdouble), axis=0) / n).astype(np.float64)
+    c = X - m
+    s = np.sqrt((np.sum((c * c).astype(np.longdouble), axis=0) / n).astype(np.float64))
+    return c / s
+
+
+def media_movil_causal(x, w):
+    """stats::filter(x, rep(1/w, w), sides = 1): z_t = sum_{j=0}^{w-1} (1/w) x_{t-j}, en ese orden.
+
+    Las primeras w - 1 posiciones quedan en NaN, como en R.
+    """
+    x = np.asarray(x, dtype=float)
+    n = len(x)
+    r = np.full(n, np.nan)
+    if n < w:
+        return r
+    z = np.zeros(n - w + 1)
+    for j in range(w):
+        z = z + (1 / w) * x[w - 1 - j:n - j]
+    r[w - 1:] = z
+    return r
+
+
+def scores_pca_rcamiz(X):
+    """Scores del PCA de la matriz de correlaciones con la regla de signo de Rcamiz (pca_basico).
+
+    Devuelve (valores propios, vectores orientados, scores) a partir de X sin estandarizar.
+    """
+    from src import camiz_port as cp
+    Z = estandarizar_r(X)
+    val, V = cp._eigen_sim(cp._crossprod_ref(Z) / len(Z))
+    V = V.copy()
+    for k in range(V.shape[1]):
+        v = V[:, k]
+        if np.sum(v[v < 0] ** 2) > np.sum(v[v > 0] ** 2):
+            V[:, k] = -v
+    return val, V, Z @ V
+
+
+def datar(Y, k_max=10, n_min=12, umbral=0.10):
+    """Datación como `datar` del Rmd: Fisher multivariado sobre Y estandarizada.
+
+    Devuelve un dict con la tabla por k (sce, reducción relativa al pasar de k a k + 1 y las dos
+    variantes de Calinski-Harabász), los k elegidos por cada criterio y la partición por k:
+      - k_caida: codo por caída máxima de la reducción (k en 2..K-1);
+      - k_codo: regla K (D12): menor k con reducción < umbral; si no hay, k_caida;
+      - k_ch, k_ch1: máximo del CH con k y con k - 1 grados de libertad;
+      - k_max_efectivo: mayor k factible (k · n_min <= n).
+    """
+    from src.camiz_port import ch_variantes
+    Ys = estandarizar_r(Y)
+    res = fisher_multivariado(Ys, k_max=k_max, n_min=n_min)
+    ks = np.array(sorted(res))
+    sce = np.array([res[k]["sce"] for k in ks])
+    reduccion = np.append(-np.diff(sce) / sce[:-1], np.nan)
+    bajo = np.nonzero(reduccion < umbral)[0]
+    caida = np.concatenate([[np.nan], reduccion[:-1]]) - reduccion
+    k_caida = int(ks[np.nanargmax(caida)])
+    if len(bajo):
+        k_codo, regla = int(ks[bajo].min()), "umbral"
+    else:
+        k_codo, regla = k_caida, "caida"
+    ch = ch_variantes(sce, len(Ys))
+    tabla = pd.DataFrame({"k": ks, "sce": sce, "reduccion": reduccion, "ch": ch["k"], "ch1": ch["k1"]})
+    return {"res": res, "tabla": tabla, "k_codo": k_codo, "regla_codo": regla, "k_caida": k_caida,
+            "k_ch": int(ks[np.nanargmax(ch["k"])]), "k_ch1": int(ks[np.nanargmax(ch["k1"])]),
+            "k_max_efectivo": int(ks.max())}
+
+
+def fechas_corte(cortes, fechas):
+    """Primer mes de cada régimen nuevo, en formato AAAA-MM (como `fechas_corte` del Rmd)."""
+    return [pd.Timestamp(fechas[c]).strftime("%Y-%m") for c in cortes]
+
+
+def grilla_datacion(S, fechas, maxcls=(10, 15, 20), n_min=12, umbral=0.10):
+    """Grilla maxcl × criterio de la datación (tarea D3), en formato largo.
+
+    S: scores ya suavizados (sin los NaN iniciales); fechas: las de sus filas. La columna
+    `k_en_tope` vale True si el k elegido es el mayor k factible de la grilla (k_max_efectivo, que
+    con n_min = 12 puede ser menor que maxcl).
+    """
+    filas = []
+    for maxcl in maxcls:
+        d = datar(S, k_max=maxcl, n_min=n_min, umbral=umbral)
+        elegidos = [("codo (caída máxima)", d["k_caida"], "caida"),
+                    ("Calinski-Harabász k gl (aede)", d["k_ch"], ""),
+                    ("Calinski-Harabász k-1 gl (habitual)", d["k_ch1"], ""),
+                    ("regla K (D12)", d["k_codo"], d["regla_codo"])]
+        for criterio, k, regla in elegidos:
+            filas.append({"maxcl": maxcl, "k_max_efectivo": d["k_max_efectivo"], "criterio": criterio,
+                          "k": k, "k_en_tope": k == d["k_max_efectivo"], "regla_k": regla,
+                          "cortes": " ".join(fechas_corte(d["res"][k]["cortes"], fechas))})
+    return pd.DataFrame(filas)
+
+
+def estabilidad_cortes(Z, boot_cargas, boot_valores, cortes_ref, k_ref, ventana=12, n_min=12,
+                       tolerancia=3, d=3):
+    """Proporción de réplicas bootstrap que reproducen cada corte a ±tolerancia filas (b8).
+
+    En cada réplica b los scores se recalculan con las cargas emparejadas de la réplica
+    (V = cargas / sqrt(valor propio)), se suavizan con la media causal y se parten con Fisher en
+    k_ref clases de al menos n_min meses. Devuelve (frecuencias, cortes de cada réplica).
+    """
+    Z = np.asarray(Z, dtype=float)
+    cortes_b = []
+    for b in range(boot_cargas.shape[0]):
+        V = np.column_stack([boot_cargas[b, :, k] / np.sqrt(boot_valores[b, k]) for k in range(d)])
+        Sb = Z @ V
+        Sm = np.column_stack([media_movil_causal(Sb[:, k], ventana) for k in range(d)])[ventana - 1:]
+        r = fisher_multivariado(estandarizar_r(Sm), k_max=k_ref, n_min=n_min)[k_ref]
+        cortes_b.append(np.array(r["cortes"]))
+    frec = np.array([np.mean([np.any(np.abs(cb - c0) <= tolerancia) for cb in cortes_b])
+                     for c0 in cortes_ref])
+    return frec, cortes_b

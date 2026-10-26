@@ -124,3 +124,33 @@ def test_nmin_fechas_y_errores():
     import pytest
     with pytest.raises(ValueError):
         particion_fisher(y, 4, n_min=4)
+
+
+# ---- Tarea D3 (iteración 3b): datación PCA-MM12 -------------------------------------
+
+from src.particion import media_movil_causal, datar, grilla_datacion
+
+
+def test_media_movil_causal_como_rolling():
+    rng = np.random.default_rng(3)
+    x = rng.normal(size=40)
+    r = media_movil_causal(x, 12)
+    esperado = pd.Series(x).rolling(12).mean().to_numpy()
+    assert np.all(np.isnan(r[:11])) and np.allclose(r[11:], esperado[11:], atol=1e-14)
+
+
+def test_datar_regla_k_y_grilla():
+    # Tres regímenes nítidos de 20 meses: la regla K (paso «umbral») elige 3 y corta en 20 y 40
+    rng = np.random.default_rng(11)
+    Y = np.repeat([[0.0, 0.0], [4.0, -4.0], [0.0, 4.0]], 20, axis=0) + 0.1 * rng.normal(size=(60, 2))
+    d = datar(Y, k_max=4, n_min=12)
+    assert d["k_codo"] == 3 and d["regla_codo"] == "umbral"
+    assert d["res"][3]["cortes"] == [20, 40]
+    assert d["k_max_efectivo"] == 4
+    fechas = [f"2010-{m:02d}" for m in range(1, 13)] * 5
+    g = grilla_datacion(Y, fechas, maxcls=(4, 5))
+    assert set(g.criterio) == {"codo (caída máxima)", "Calinski-Harabász k gl (aede)",
+                               "Calinski-Harabász k-1 gl (habitual)", "regla K (D12)"}
+    # Con n_min = 12 y 60 filas, el mayor k factible es 5 aunque maxcl sea mayor
+    assert (g.k_max_efectivo[g.maxcl == 5] == 5).all()
+    assert (g.k_en_tope == (g.k == g.k_max_efectivo)).all()
