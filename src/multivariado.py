@@ -160,12 +160,23 @@ def emparejar_componentes(C_ref, C, K=4, candidatos=6):
     return np.array(idx), np.array(cong), np.array(signo)
 
 
-def coef_rv(X, Y):
-    """Coeficiente RV de Robert y Escoufier entre dos configuraciones de las mismas filas."""
+def coef_rv(X, Y, centrar=True):
+    """Coeficiente RV de Robert y Escoufier entre dos configuraciones de las mismas filas.
+
+    RV = tr(Sx Sy) / sqrt(tr(Sx²) tr(Sy²)), con Sx = X Xᵀ y Sy = Y Yᵀ.
+
+    `centrar=True` (por defecto, el comportamiento de siempre) resta antes la media de cada
+    columna. `centrar=False` usa X e Y tal cual: es la variante para comparar **cargas**
+    (series × ejes), donde el centrado restaría la carga media de cada eje (adenda del
+    26-oct-2026, §1.2). Su uso en el análisis queda pendiente de D17; aquí solo se ofrece la
+    opción. Con columnas ya centradas, ambas variantes coinciden. Si una configuración es nula
+    (p. ej., una columna constante centrada), el cociente no está definido y se devuelve nan.
+    """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
-    X = X - X.mean(axis=0)
-    Y = Y - Y.mean(axis=0)
+    if centrar:
+        X = X - X.mean(axis=0)
+        Y = Y - Y.mean(axis=0)
     Sx = X @ X.T
     Sy = Y @ Y.T
     return float(np.sum(Sx * Sy) / np.sqrt(np.sum(Sx * Sx) * np.sum(Sy * Sy)))

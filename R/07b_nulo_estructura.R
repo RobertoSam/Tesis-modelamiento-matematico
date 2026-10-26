@@ -83,8 +83,11 @@ resumir_aede <- function(a) {
   stopifnot(isTRUE(all.equal(ch$k[-1], unname(part[-1, 3]))))
   c(k_codo = which.max(caida) + 1, k_ch = which.max(part[, 3]), k_ch1 = which.max(ch$k1))
 }
-coef_rv <- function(X, Y) {
-  X <- scale(as.matrix(X), scale = FALSE); Y <- scale(as.matrix(Y), scale = FALSE)
+# centrar = TRUE (por defecto) es el comportamiento de siempre; centrar = FALSE compara las cargas
+# sin restar la carga media de cada eje (adenda del 26-oct-2026, §1.2; su uso espera D17)
+coef_rv <- function(X, Y, centrar = TRUE) {
+  X <- as.matrix(X); Y <- as.matrix(Y)
+  if (centrar) { X <- scale(X, scale = FALSE); Y <- scale(Y, scale = FALSE) }
   Sx <- tcrossprod(X); Sy <- tcrossprod(Y)
   sum(Sx * Sy) / sqrt(sum(Sx * Sx) * sum(Sy * Sy))
 }
