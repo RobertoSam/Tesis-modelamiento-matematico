@@ -1,0 +1,49 @@
+episodio,tipo,nw,evento,centro
+Crisis financiera global,periodo,24,entra,2007-10
+Crisis financiera global,periodo,24,sale,2010-06
+Crisis financiera global,periodo,36,entra,2007-04
+Crisis financiera global,periodo,36,sale,2010-12
+Crisis financiera global,periodo,48,entra,2006-10
+Crisis financiera global,periodo,48,sale,2011-06
+Crisis financiera global,periodo,60,entra,2006-04
+Crisis financiera global,periodo,60,sale,2011-12
+Taper tantrum,periodo,24,entra,2012-06
+Taper tantrum,periodo,24,sale,2014-12
+Taper tantrum,periodo,36,entra,2011-12
+Taper tantrum,periodo,36,sale,2015-06
+Taper tantrum,periodo,48,entra,2011-06
+Taper tantrum,periodo,48,sale,2015-12
+Taper tantrum,periodo,60,entra,2010-12
+Taper tantrum,periodo,60,sale,2016-06
+Colapso de las materias primas,periodo,24,entra,2013-07
+Colapso de las materias primas,periodo,24,sale,2017-01
+Colapso de las materias primas,periodo,36,entra,2013-01
+Colapso de las materias primas,periodo,36,sale,2017-07
+Colapso de las materias primas,periodo,48,entra,2012-07
+Colapso de las materias primas,periodo,48,sale,2018-01
+Colapso de las materias primas,periodo,60,entra,2012-01
+Colapso de las materias primas,periodo,60,sale,2018-07
+Kuczynski / Odebrecht,puntual,24,entra,2017-04
+Kuczynski / Odebrecht,puntual,24,sale,2019-03
+Kuczynski / Odebrecht,puntual,36,entra,2016-10
+Kuczynski / Odebrecht,puntual,36,sale,2019-09
+Kuczynski / Odebrecht,puntual,48,entra,2016-04
+Kuczynski / Odebrecht,puntual,48,sale,2020-03
+Kuczynski / Odebrecht,puntual,60,entra,2015-10
+Kuczynski / Odebrecht,puntual,60,sale,2020-09
+Guerra comercial EE. UU.–China,periodo,24,entra,2017-07
+Guerra comercial EE. UU.–China,periodo,24,sale,2021-01
+Guerra comercial EE. UU.–China,periodo,36,entra,2017-01
+Guerra comercial EE. UU.–China,periodo,36,sale,2021-07
+Guerra comercial EE. UU.–China,periodo,48,entra,2016-07
+Guerra comercial EE. UU.–China,periodo,48,sale,2022-01
+Guerra comercial EE. UU.–China,periodo,60,entra,2016-01
+Guerra comercial EE. UU.–China,periodo,60,sale,2022-07
+COVID-19,periodo,24,entra,2019-04
+COVID-19,periodo,24,sale,2021-04
+COVID-19,periodo,36,entra,2018-10
+COVID-19,periodo,36,sale,2021-10
+COVID-19,periodo,48,entra,2018-04
+COVID-19,periodo,48,sale,2022-04
+COVID-19,periodo,60,entra,2017-10
+COVID-19,periodo,60,sale,2022-10

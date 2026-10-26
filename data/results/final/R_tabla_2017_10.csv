@@ -1,0 +1,25 @@
+"objeto","metodo","nw","pesos","candidatos","candidato","algun_no_borde","algun_fuera_del_nulo","cuenta"
+"cargas_sin_centrar","regla 06 (PC2)",24,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","regla 06 (PC2)",36,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","regla 06 (PC2)",48,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","regla 06 (PC2)",60,"uniformes","2017-10 2018-01",TRUE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",24,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",36,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",48,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",60,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",24,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",36,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",48,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"cargas_sin_centrar","aede codo",60,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"correlacion","regla 06 (PC2)",24,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","regla 06 (PC2)",36,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","regla 06 (PC2)",48,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","regla 06 (PC2)",60,"uniformes","2017-10 2018-01",TRUE,FALSE,FALSE,FALSE
+"correlacion","aede codo",24,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",36,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",48,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",60,"uniformes","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",24,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",36,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",48,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE
+"correlacion","aede codo",60,"gaussianos_nsd3","",FALSE,FALSE,FALSE,FALSE

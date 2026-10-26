@@ -1,0 +1,25 @@
+objeto,metodo,nw,pesos,candidatos,candidato,algun_no_borde,algun_fuera_del_nulo,cuenta
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,,False,False,False,False
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,,False,False,False,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,,False,False,False,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2017-10 2018-01,True,False,False,False
+cargas_sin_centrar,aede codo,24,uniformes,,False,False,False,False
+cargas_sin_centrar,aede codo,36,uniformes,,False,False,False,False
+cargas_sin_centrar,aede codo,48,uniformes,,False,False,False,False
+cargas_sin_centrar,aede codo,60,uniformes,,False,False,False,False
+cargas_sin_centrar,aede codo,24,gaussianos_nsd3,,False,False,False,False
+cargas_sin_centrar,aede codo,36,gaussianos_nsd3,,False,False,False,False
+cargas_sin_centrar,aede codo,48,gaussianos_nsd3,,False,False,False,False
+cargas_sin_centrar,aede codo,60,gaussianos_nsd3,,False,False,False,False
+correlacion,regla 06 (PC2),24,uniformes,,False,False,False,False
+correlacion,regla 06 (PC2),36,uniformes,,False,False,False,False
+correlacion,regla 06 (PC2),48,uniformes,,False,False,False,False
+correlacion,regla 06 (PC2),60,uniformes,2017-10 2018-01,True,False,False,False
+correlacion,aede codo,24,uniformes,,False,False,False,False
+correlacion,aede codo,36,uniformes,,False,False,False,False
+correlacion,aede codo,48,uniformes,,False,False,False,False
+correlacion,aede codo,60,uniformes,,False,False,False,False
+correlacion,aede codo,24,gaussianos_nsd3,,False,False,False,False
+correlacion,aede codo,36,gaussianos_nsd3,,False,False,False,False
+correlacion,aede codo,48,gaussianos_nsd3,,False,False,False,False
+correlacion,aede codo,60,gaussianos_nsd3,,False,False,False,False
