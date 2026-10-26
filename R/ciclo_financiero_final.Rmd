@@ -1,0 +1,2130 @@
+---
+title: "Ciclo financiero del Perú · documento final"
+subtitle: "Series sin transformar, 16 series (D15, D16): datos, diagnóstico y PCA estático, con el anexo de robustez de las series transformadas"
+author: "Roberto Samaniego Salcedo · Asesor: Dr. Sergio Camiz"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: false
+    code_folding: hide
+    df_print: kable
+params:
+  raiz_repo: ""            # ruta del repositorio; vacío = se detecta automáticamente
+  bootstrap_reps: 500      # réplicas del bootstrap por bloques del PCA
+  semilla: 2026
+  reps_nulo: 1000          # simulaciones del nulo de tendencias independientes (sección 2)
+  version_asesor: FALSE    # TRUE: omite los recuadros internos «Para Roberto» (clase .pregunta)
+  excluidas: !r c("Liquidez M2")       # D16: columnas del archivo que se excluyen al leer
+  carpeta: "data/results/final"         # salidas; el anexo de robustez escribe en carpeta/anexo
+---
+
+```{r configuracion, include = FALSE}
+# Codificación de caracteres: el Rmd y los CSV están en UTF-8 y los nombres de las series llevan
+# tildes («Crédito ...», «Índice BVL»). En una sesión con locale no UTF-8 (p. ej. "C"/POSIX en
+# servidores Linux), R convierte esos literales en secuencias "<U+00E9>" al evaluar cada bloque
+# y dejan de coincidir con las columnas de los CSV (falla el control de b1-datos). Se fija aquí
+# un locale UTF-8 para la clasificación de caracteres antes de evaluar el resto del documento.
+# Se guarda el locale de la sesión que llama para restaurarlo al final (chunk anexo-locale)
+locale_previo <- Sys.getlocale("LC_CTYPE")
+if (!isTRUE(l10n_info()[["UTF-8"]])) {
+  for (loc in c("C.UTF-8", "C.utf8", "en_US.UTF-8", "es_PE.UTF-8", "es_ES.UTF-8")) {
+    if (nzchar(suppressWarnings(Sys.setlocale("LC_CTYPE", loc)))) break
+  }
+  if (!isTRUE(l10n_info()[["UTF-8"]])) {
+    stop("El documento requiere un locale UTF-8 y no se encontró ninguno en el sistema ",
+         "(locale actual: ", Sys.getlocale("LC_CTYPE"), ").")
+  }
+}
+
+# Raíz del repositorio: params$raiz_repo o se sube desde la carpeta del Rmd hasta _quarto.yml
+buscar_raiz <- function(desde) {
+  actual <- normalizePath(desde, mustWork = FALSE)
+  repeat {
+    if (file.exists(file.path(actual, "_quarto.yml"))) return(actual)
+    padre <- dirname(actual)
+    if (padre == actual) return(NA_character_)
+    actual <- padre
+  }
+}
+candidatos <- c(params$raiz_repo, knitr::current_input(dir = TRUE), getwd())
+candidatos <- candidatos[nzchar(candidatos) & !is.na(candidatos)]
+raices <- vapply(candidatos, function(d) buscar_raiz(if (dir.exists(d)) d else dirname(d)), character(1))
+raiz <- raices[!is.na(raices)][1]
+if (is.na(raiz)) {
+  stop("No se encontró el repositorio de la tesis (archivo _quarto.yml). Abre el Rmd desde ",
+       "la carpeta R/ del repositorio clonado, o usa params = list(raiz_repo = '/ruta/al/repo').")
+}
+knitr::opts_knit$set(root.dir = raiz)
+
+# Versión para el asesor (params$version_asesor = TRUE): se retiran del documento los recuadros
+# internos «Para Roberto» (bloques ::: {.pregunta} ... :::) antes de pasar a pandoc, de modo que
+# no quedan ni en el HTML ni en su código fuente. Los recuadros no se anidan.
+if (isTRUE(params$version_asesor)) {
+  knitr::knit_hooks$set(document = function(x) {
+    x <- paste(x, collapse = "\n")
+    gsub("(?s)\n::: \\{\\.pregunta\\}\n.*?\n:::\n", "\n", x, perl = TRUE)
+  })
+}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = TRUE,   # avisos visibles en el documento
+                      fig.width = 10, fig.height = 5, dpi = 110, fig.align = "center")
+```
+
+```{r paquetes}
+# Paquetes necesarios (instalación única):
+# install.packages(c("ggplot2", "scales", "tseries", "dendextend"))
+suppressMessages({
+  library(ggplot2)
+  library(scales)
+  library(tseries)
+  library(dendextend)
+})
+# HFC y EPCA del asesor en R puro: traducción validada de AedeClahfac 1.2 (ver R/camiz_port.R)
+source("R/camiz_port.R")
+tiene_rcamiz <- requireNamespace("Rcamiz", quietly = TRUE)
+```
+
+```{css, echo = FALSE}
+.main-container { max-width: 1200px; }
+table { font-size: 12px; }
+table td, table th { padding: 4px 6px !important; vertical-align: top; }
+.lectura, .pregunta, .hallazgo {
+  border-left: 4px solid; border-radius: 4px; padding: 10px 14px; margin: 14px 0;
+}
+.lectura  { border-color: #2a78d6; background: #eef4fc; }
+.pregunta { border-color: #eb6834; background: #fdf1eb; }
+.hallazgo { border-color: #4a3aa7; background: #f1effa; }
+.lectura::before  { content: "Lectura"; font-weight: bold; display: block; margin-bottom: 4px; }
+.pregunta::before { content: "Para Roberto"; font-weight: bold; display: block; margin-bottom: 4px; }
+.hallazgo::before { content: "Hallazgo"; font-weight: bold; display: block; margin-bottom: 4px; }
+```
+
+# Cómo leer este documento {-}
+
+Es el **documento final** de la tesis en R (decisión D15, 26-oct-2026): ejecuta la cadena solo con
+las series **sin transformar** (estandarizadas), con **16 series** (D16: se excluye la Liquidez M2).
+El documento anterior, `R/tesis_ciclo_financiero.Rmd` (dos vías y 17 series), queda como
+exploración y no se modifica; sus resultados son antecedente (tag `v0.4-17series-dos-vias`).
+
+| Sección | Contenido | Estado |
+|---|---|---|
+| 0 | Configuración y funciones | este documento |
+| 1 | Series y criterio de inclusión (16 series; qué entra y por qué) | este documento |
+| 2 | Diagnóstico sin transformar: regla D5, deriva HAC, $n$ efectivo, adecuación, nulo de tendencias (con el nulo mixto de D8) y contraste sin tendencia | este documento |
+| 3 | PCA estático: retención, cargas, bootstrap y sensibilidad de la dimensión (d = 3, con 2 y 4; D9) | este documento |
+| 4 | EPCA (`aede` en grilla, valores propios por ventana, regla del 06, nulo de estructura) | pendiente: espera D17 |
+| 5 | HFC (3 y 4 clases, factores, representantes, bootstrap) | pendiente: espera D17 |
+| 6 | Datación de regímenes | pendiente: espera D17 |
+| 7 | Autoencoders y LSTM | pendiente: espera la decisión R1 |
+| 8 | Síntesis descriptiva | pendiente |
+| Anexo R | Robustez con las series transformadas: R.a, sustento de no diferenciar | R.a en este documento; R.b espera D17 |
+| Anexo P | Paridad con Python | este documento |
+
+Los resultados se escriben en `r params$carpeta` (niveles) y en `r file.path(params$carpeta, "anexo")`
+(anexo de robustez). Los notebooks de Python reciben los mismos parámetros (`VIA`, `EXCLUIDAS`,
+`CARPETA`) y escriben en las mismas carpetas; la paridad se comprueba en el anexo P.
+
+En cada resultado hay tres tipos de recuadro:
+
+::: {.lectura}
+Una línea que pone el número en contexto. Las cifras del texto se calculan en el propio
+documento: si cambian los datos, cambian solas.
+:::
+
+::: {.pregunta}
+Una duda o pregunta abierta para que continúes la interpretación.
+:::
+
+::: {.hallazgo}
+Algo que contradice o matiza lo establecido en avances previos y que conviene resolver.
+:::
+
+**Interpretación pendiente.** Con 16 series ningún resultado tiene todavía interpretación
+consolidada (regla 7): los recuadros «Lectura» solo describen las cifras. Las lecturas del
+documento de exploración se escribieron con 17 series y no se trasladan.
+
+**Ejecución.** Todo el documento corre en R puro. La HFC y la EPCA del asesor (secciones 4 y 5,
+pendientes) usan `R/camiz_port.R`, la traducción a R de `AedeClahfac` 1.2 validada contra el
+original. Orden: este documento, luego `notebooks/05_pca.ipynb` y `notebooks/05c_anexo_no_diferenciar.ipynb`,
+y de nuevo este documento para la paridad.
+
+```{r funciones}
+# ---- Datos ------------------------------------------------------------------
+
+# Series en niveles (19 series, 2007-01 a 2025-12) y dataset transformado (17 series)
+cargar_niveles <- function() {
+  d <- read.csv("data/processed/dataset_niveles_mensual.csv", check.names = FALSE)
+  d$fecha <- as.Date(d$fecha)
+  d
+}
+cargar_transformado <- function() {
+  d <- read.csv("data/processed/dataset_transformado_mensual.csv", check.names = FALSE)
+  d$fecha <- as.Date(d$fecha)
+  d
+}
+
+# Control común: calendario mensual completo y sin valores faltantes
+verificar_calendario <- function(d) {
+  stopifnot(!anyNA(d))
+  cal <- seq(min(d$fecha), max(d$fecha), by = "month")
+  if (length(cal) != nrow(d) || any(cal != d$fecha)) {
+    stop("El calendario mensual tiene huecos: revisar 04b antes de continuar")
+  }
+  invisible(TRUE)
+}
+
+# Episodios de referencia (solo para validación ex post y para sombrear gráficos). Se leen del
+# archivo único data/referencia/episodios_referencia.csv (tarea D9, decisión D7): fecha del evento
+# o anuncio externo, con clave de fuente fichada en papers/ y en tesis/referencias.bib. Un episodio
+# sin fin con fuente es puntual (fin vacío): no se le inventa el fin; para los cálculos que
+# necesitan un fin se usa fin_efectivo = inicio. Lo mismo hace src/episodios.py en Python.
+leer_episodios <- function(archivo = "data/referencia/episodios_referencia.csv") {
+  e <- read.csv(archivo, colClasses = "character", check.names = FALSE, na.strings = character(0))
+  stopifnot(identical(names(e), c("nombre", "inicio", "fin", "clave_inicio", "clave_fin", "tipo", "convencion")),
+            !anyDuplicated(e$nombre), all(grepl("^[0-9]{4}-[0-9]{2}$", e$inicio)),
+            all(grepl("^([0-9]{4}-[0-9]{2})?$", e$fin)), all(nzchar(e$clave_inicio)),
+            identical(!nzchar(e$fin), !nzchar(e$clave_fin)), identical(!nzchar(e$fin), e$tipo == "puntual"),
+            all(e$tipo %in% c("periodo", "puntual")))
+  e$inicio <- as.Date(paste0(e$inicio, "-01"))
+  e$fin <- as.Date(ifelse(nzchar(e$fin), paste0(e$fin, "-01"), NA_character_))
+  e$fin_efectivo <- as.Date(ifelse(is.na(e$fin), format(e$inicio), format(e$fin)))
+  stopifnot(all(e$fin_efectivo >= e$inicio))
+  e
+}
+episodios <- leer_episodios()
+
+# ---- Metadatos de las series ------------------------------------------------
+# Código BCRP, nombre y unidad de cada serie del dataset.
+# tipo: "nivel" (stocks e índices: se analizan en variación porcentual) o
+#       "tasa" (tasas de interés en % y spread en pbs: se analizan en cambios absolutos)
+metadatos_series <- function() {
+  m <- data.frame(
+    columna = c("Crédito SF sector privado", "Crédito empresarial", "Crédito consumo",
+                "Crédito hipotecario", "Liquidez M1", "Liquidez M2", "Liquidez M3",
+                "Tasa referencia BCRP", "Tasa interbancaria", "Tasa activa TAMN",
+                "Tasa pasiva TIPMN", "IPC Lima", "IPC Subyacente", "Tipo de cambio",
+                "Índice BVL", "embi_peru", "PBI desestacionalizado", "Demanda interna",
+                "Reservas internacionales"),
+    nombre_corto = c("Crédito total (SF)", "Crédito empresarial", "Crédito consumo",
+                     "Crédito hipotecario", "M1 (dinero)", "M2 (liquidez en soles)",
+                     "M3 (liquidez total)", "Tasa de referencia", "Tasa interbancaria",
+                     "TAMN", "TIPMN", "IPC Lima", "IPC subyacente", "Tipo de cambio",
+                     "Índice BVL", "EMBIG Perú", "PBI desestacionalizado", "Demanda interna",
+                     "Reservas internacionales netas"),
+    bloque = c(rep("Crédito", 4), rep("Liquidez", 3), rep("Tasas de interés", 4),
+               rep("Precios", 2), rep("Mercados y riesgo", 3), rep("Actividad y sector externo", 3)),
+    codigo = c("PN00518MM", "PN00532MM", "PN00533MM", "PN00534MM", "PN00199MM", "PN00208MM",
+               "PN00214MM", "PD04722MM", "PN07819NM", "PN07807NM", "PN07816NM", "PN38705PM",
+               "PN38708PM", "PN01246PM", "PN01142MM", "PD04709XD", "PN01773AM", "PN01774AM",
+               "PN00027MM"),
+    nombre_bcrp = c(
+      "Crédito del sistema financiero al sector privado (fin de periodo) - Crédito Total",
+      "Crédito al sector privado de las sociedades creadoras de depósito - Saldos - A Empresas",
+      "Crédito al sector privado de las sociedades creadoras de depósito - Saldos - Consumo",
+      "Crédito al sector privado de las sociedades creadoras de depósito - Saldos - Hipotecario",
+      "Liquidez del sistema financiero (fin de periodo) - Dinero",
+      "Liquidez del sistema financiero (fin de periodo) - Liquidez en Soles",
+      "Liquidez del sistema financiero (fin de periodo) - Liquidez Total",
+      "Tasa de Referencia de la Política Monetaria",
+      "Tasa Interbancaria Promedio (MN)",
+      "Tasa activa promedio de las empresas bancarias en MN (TAMN)",
+      "Tasa pasiva promedio de las empresas bancarias en MN (TIPMN)",
+      "Índice de Precios al Consumidor, Lima Metropolitana",
+      "IPC Subyacente, Lima Metropolitana",
+      "Tipo de Cambio Nominal Promedio",
+      "Índice General BVL",
+      "Spread EMBIG Perú",
+      "PBI desestacionalizado - mensual",
+      "Indicador de Demanda Interna",
+      "Reservas Internacionales Netas"),
+    unidad = c(rep("millones S/", 4), rep("millones S/", 3), rep("% anual", 4),
+               "índice dic.2021 = 100", "índice dic.2021 = 100", "S/ por US$",
+               "índice 31/12/1991 = 100", "puntos básicos", "índice 2007 = 100",
+               "índice 2007 = 100", "millones US$"),
+    frecuencia_origen = c(rep("mensual, fin de periodo", 7), rep("mensual", 4), "mensual",
+                          "mensual", "mensual, promedio del periodo", "mensual",
+                          "diaria → promedio mensual", "mensual", "mensual", "mensual"),
+    tipo = c(rep("nivel", 7), rep("tasa", 4), rep("nivel", 4), "tasa", rep("nivel", 3)),
+    transformacion = c("—", rep("log-diferencia", 6), rep("diferencia simple", 4),
+                       "log-diferencia", "—", "log-diferencia", "log-diferencia",
+                       "diferencia simple", rep("log-diferencia", 3)),
+    entra = c("No", rep("Sí", 11), "No", rep("Sí", 6)),
+    stringsAsFactors = FALSE
+  )
+  # D16: series que se excluyen al leer (parámetro único del documento, params$excluidas)
+  stopifnot(all(params$excluidas %in% m$columna))
+  m$entra[m$columna %in% params$excluidas] <- "No"
+  m$bloque <- factor(m$bloque, levels = unique(m$bloque))
+  m
+}
+
+# ---- Indicadores ------------------------------------------------------------
+
+# Variación interanual: % para series en nivel, cambio absoluto para tasas y spreads
+variacion_12m <- function(x, tipo) {
+  previo <- c(rep(NA, 12), head(x, -12))
+  if (tipo == "nivel") 100 * (x / previo - 1) else x - previo
+}
+
+indicadores_basicos <- function(d, meta) {
+  do.call(rbind, lapply(seq_len(nrow(meta)), function(i) {
+    v <- meta$columna[i]; x <- d[[v]]; f <- d$fecha; n <- length(x)
+    var12 <- variacion_12m(x, meta$tipo[i])
+    anios <- as.numeric(f[n] - f[1]) / 365.25
+    data.frame(
+      serie = meta$nombre_corto[i], bloque = meta$bloque[i], tipo = meta$tipo[i],
+      unidad = meta$unidad[i],
+      inicio = x[1], fin = x[n], media = mean(x), desv_est = sd(x),
+      cv = if (meta$tipo[i] == "nivel") sd(x) / mean(x) else NA,
+      minimo = min(x), fecha_min = format(f[which.min(x)], "%Y-%m"),
+      maximo = max(x), fecha_max = format(f[which.max(x)], "%Y-%m"),
+      cambio_total = if (meta$tipo[i] == "nivel") 100 * (x[n] / x[1] - 1) else x[n] - x[1],
+      crec_anual = if (meta$tipo[i] == "nivel") 100 * ((x[n] / x[1])^(1 / anios) - 1) else NA,
+      var12_mediana = median(var12, na.rm = TRUE),
+      var12_min = min(var12, na.rm = TRUE),
+      fecha_var12_min = format(f[which.min(var12)], "%Y-%m"),
+      var12_max = max(var12, na.rm = TRUE),
+      fecha_var12_max = format(f[which.max(var12)], "%Y-%m"),
+      stringsAsFactors = FALSE
+    )
+  }))
+}
+
+# ---- Formato ----------------------------------------------------------------
+
+# Números en formato peruano (coma decimal, espacio de miles) para el texto
+num <- function(x, dec = 1) {
+  dec <- rep_len(dec, length(x))
+  dec[!is.na(x) & abs(x) >= 1000] <- 0           # saldos en millones: sin decimales
+  vapply(seq_along(x), function(i) if (is.na(x[i])) "—" else
+    formatC(x[i], format = "f", digits = dec[i], big.mark = "\u00a0", decimal.mark = ","), character(1))
+}
+pct <- function(x, dec = 1) paste0(num(x, dec), " %")
+# p-valores con coma decimal (format.pval usa punto)
+fmt_p <- function(x) if (is.na(x)) "—" else if (x < 1e-4) "< 0,0001" else num(x, 4)
+
+# Paleta: un tono por serie (gráficos de una serie) y hasta tres categorías
+color_serie <- "#2a78d6"
+colores_cat <- c("#2a78d6", "#eb6834", "#1baf7a")
+gris_episodio <- "#e4e2dc"
+
+tema_tesis <- function() {
+  theme_minimal(base_size = 10) +
+    theme(panel.grid.minor = element_blank(),
+          panel.grid.major = element_line(color = "#ecebe6", linewidth = 0.3),
+          strip.text = element_text(face = "bold", hjust = 0, size = 9),
+          plot.title = element_text(face = "bold", size = 11),
+          plot.subtitle = element_text(color = "#52514e", size = 9),
+          plot.caption = element_text(color = "#52514e", size = 8, hjust = 0),
+          axis.title = element_text(color = "#52514e", size = 9),
+          legend.position = "top")
+}
+
+# Bandas grises con los episodios de referencia (períodos) y línea discontinua (puntuales)
+# En escala logarítmica, ymin = -Inf se vuelve NaN y ggplot descarta las bandas: para esos
+# gráficos se pasan límites finitos y positivos (y_lim) y
+# el rango de fechas del gráfico (x_lim), para dibujar solo los episodios que caen en él.
+episodios_en <- function(x_lim = NULL) {
+  if (is.null(x_lim)) return(episodios)
+  episodios[episodios$fin_efectivo >= x_lim[1] & episodios$inicio <= x_lim[2], , drop = FALSE]
+}
+capa_episodios <- function(y_lim = NULL, x_lim = NULL) {
+  e <- episodios_en(x_lim)
+  if (is.null(y_lim)) { e$ymin <- -Inf; e$ymax <- Inf } else { e$ymin <- y_lim[1]; e$ymax <- y_lim[2] }
+  per <- e[e$tipo == "periodo", , drop = FALSE]; pun <- e[e$tipo == "puntual", , drop = FALSE]
+  list(geom_rect(data = per, inherit.aes = FALSE,
+                 aes(xmin = inicio, xmax = fin_efectivo, ymin = ymin, ymax = ymax),
+                 fill = gris_episodio, alpha = 0.8),
+       if (nrow(pun)) geom_vline(data = pun, aes(xintercept = inicio), color = "#b5b4ab", linetype = 2, linewidth = 0.4))
+}
+# Rango de un episodio en texto ("AAAA-MM a AAAA-MM", o solo el mes si es puntual), por nombre
+rango_epi <- function(nombre) {
+  i <- match(nombre, episodios$nombre); stopifnot(!is.na(i))
+  if (episodios$tipo[i] == "puntual") paste(format(episodios$inicio[i], "%Y-%m"), "(puntual)") else
+    paste(format(episodios$inicio[i], "%Y-%m"), "a", format(episodios$fin[i], "%Y-%m"))
+}
+fuente_episodios <- "data/referencia/episodios_referencia.csv, D7; fuentes en papers/"
+nota_episodios <- paste0("Bandas grises: episodios de referencia (", fuente_episodios, "): ",
+                         paste0(episodios$nombre, " (", sapply(episodios$nombre, rango_epi), ")", collapse = ", "),
+                         ". Línea discontinua: episodio puntual.")
+# Pie para gráficos que solo muestran los episodios dentro de su rango de fechas
+nota_episodios_en <- function(x_lim) {
+  e <- episodios_en(x_lim)
+  if (!nrow(e)) return("Ningún episodio de referencia cae en el rango del gráfico.")
+  paste0("Bandas grises: ", paste0(e$nombre, " (", sapply(e$nombre, rango_epi), ")", collapse = ", "),
+         " (", fuente_episodios, ").")
+}
+# Estandarización con desviación poblacional (divisor n), igual que StandardScaler
+estandarizar <- function(X) {
+  X <- as.matrix(X)
+  m <- colMeans(X)
+  s <- sqrt(colMeans(sweep(X, 2, m)^2))
+  sweep(sweep(X, 2, m), 2, s, "/")
+}
+
+# PCA por descomposición espectral de la matriz de correlación (divisor n)
+# con la regla de signo de Rcamiz: domina la suma de cuadrados de los coeficientes positivos
+pca_basico <- function(Z, d = ncol(Z)) {
+  e <- eigen(crossprod(Z) / nrow(Z), symmetric = TRUE)
+  V <- e$vectors[, 1:d, drop = FALSE]
+  for (k in seq_len(d)) {
+    if (sum(V[V[, k] < 0, k]^2) > sum(V[V[, k] > 0, k]^2)) V[, k] <- -V[, k]
+  }
+  list(valores = e$values, vectores = V, scores = Z %*% V)
+}
+
+# Reglas de orientación del signo de un vector propio:
+#  - lineal (aede_r de AedeClahfac, R/camiz_port.R): se invierte si |suma de los negativos| > suma de los positivos
+#  - cuadrática (Rcamiz::pca y pca_basico): se invierte si suma de cuadrados de los negativos > la de los positivos
+invierte_lineal <- function(v) abs(sum(v[v < 0])) > sum(v[v > 0])
+invierte_cuadr  <- function(v) sum(v[v < 0]^2) > sum(v[v > 0]^2)
+# Número de ventanas (paso 1, pesos uniformes) en que ambas reglas orientan distinto cada eje 1..d,
+# y ejes del PCA global en que difieren
+signo_difiere <- function(M, w, d = 3) {
+  wn <- nrow(M) - w + 1
+  por_ventana <- t(sapply(seq_len(wn), function(i) {
+    V <- eigen(cor(M[i:(i + w - 1), ]), symmetric = TRUE)$vectors[, 1:d, drop = FALSE]
+    apply(V, 2, function(v) invierte_lineal(v) != invierte_cuadr(v))
+  }))
+  Vg <- eigen(cor(M), symmetric = TRUE)$vectors
+  list(ventanas = wn, por_dim = colSums(por_ventana),
+       ejes_globales = which(apply(Vg, 2, function(v) invierte_lineal(v) != invierte_cuadr(v))))
+}
+
+# Análisis paralelo de Horn (1965) [VERIFICAR: ficha horn_1965; contenido conocido solo por el resumen, el percentil 95 es elección de la tesis]: percentil 95 de autovalores con datos gaussianos
+horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
+  set.seed(semilla)
+  obs <- eigen(cor(X), symmetric = TRUE, only.values = TRUE)$values
+  sims <- t(replicate(n_sim, eigen(cor(matrix(rnorm(nrow(X) * ncol(X)), nrow(X))),
+                                   symmetric = TRUE, only.values = TRUE)$values))
+  umbral <- apply(sims, 2, quantile, probs = percentil)
+  retener <- 0
+  for (j in seq_along(obs)) if (obs[j] > umbral[j]) retener <- retener + 1 else break
+  list(observados = obs, umbral = umbral, retener = retener)
+}
+
+# Coeficiente RV de Robert y Escoufier (1976) entre dos configuraciones de las mismas filas.
+# centrar = TRUE (por defecto) es el comportamiento de siempre; centrar = FALSE compara las cargas
+# sin restar la carga media de cada eje (adenda del 26-oct-2026, §1.2). Su uso espera D17; la
+# prueba tests/test_coef_rv.py extrae esta función y la compara con la de Python.
+coef_rv <- function(X, Y, centrar = TRUE) {
+  X <- as.matrix(X); Y <- as.matrix(Y)
+  if (centrar) { X <- scale(X, scale = FALSE); Y <- scale(Y, scale = FALSE) }
+  Sx <- tcrossprod(X); Sy <- tcrossprod(Y)
+  sum(Sx * Sy) / sqrt(sum(Sx * Sx) * sum(Sy * Sy))
+}
+
+# Rotación ortogonal de Procrustes de Z hacia la referencia
+procrustes <- function(Z, referencia) {
+  Zc <- scale(Z, scale = FALSE); Rc <- scale(referencia, scale = FALSE)
+  s <- svd(crossprod(Zc, Rc))
+  Zc %*% (s$u %*% t(s$v))
+}
+
+# Partición óptima de Fisher (1958) de una serie ordenada en k segmentos contiguos,
+# por programación dinámica exacta (traducción de particion_fisher)
+particion_fisher <- function(Y, k_max = 8, tam_min = 6) {
+  Y <- as.matrix(Y); n <- nrow(Y)
+  S1 <- rbind(0, apply(Y, 2, cumsum))
+  S2 <- c(0, cumsum(rowSums(Y^2)))
+  sce <- function(i, j) {               # segmento de las filas i+1..j
+    s <- S1[j + 1, ] - S1[i + 1, ]
+    S2[j + 1] - S2[i + 1] - sum(s * s) / (j - i)
+  }
+  D <- matrix(Inf, k_max, n); B <- matrix(0L, k_max, n)
+  for (j in tam_min:n) D[1, j] <- sce(0, j)
+  for (k in 2:k_max) {
+    if (k * tam_min > n) break
+    for (j in (k * tam_min):n) {
+      ini <- ((k - 1) * tam_min):(j - tam_min)
+      costos <- vapply(ini, function(i) D[k - 1, i] + sce(i, j), numeric(1))
+      D[k, j] <- min(costos); B[k, j] <- ini[which.min(costos)]
+    }
+  }
+  res <- list()
+  for (k in 1:k_max) {
+    if (!is.finite(D[k, n])) next
+    cortes <- integer(0); j <- n
+    if (k > 1) for (kk in k:2) { i <- B[kk, j]; cortes <- c(i, cortes); j <- i }
+    res[[as.character(k)]] <- list(sce = D[k, n], cortes = cortes)  # cortes: índice 0-based del inicio de segmento
+  }
+  res
+}
+
+# Datación como en 09: estandarizar, Fisher (k <= 10, segmentos >= 12 meses) y regla de codo
+datar <- function(Y, k_max = 10, tam_min = 12, umbral = 0.10) {
+  res <- particion_fisher(estandarizar(Y), k_max, tam_min)
+  sce <- sapply(res, `[[`, "sce")
+  reduccion <- c(-diff(sce) / head(sce, -1), NA)   # reducción relativa al pasar de k a k+1
+  ks0 <- as.integer(names(sce)); bajo <- which(reduccion < umbral)
+  # Regla de 09: primer k cuya reducción al agregar una clase es menor que el umbral.
+  # Si ninguna lo es, codo por caída máxima de la reducción (misma regla que para aede)
+  k_codo <- if (length(bajo)) min(ks0[bajo]) else ks0[which.max(c(NA, head(reduccion, -1)) - reduccion)]
+  regla_codo <- if (length(bajo)) "umbral" else "caida"
+  # Calinski-Harabász en dos variantes:
+  #  - ch:  fórmula del código del asesor en aede(), grados de libertad k y n - k
+  #  - ch1: forma habitual de Caliński y Harabasz (1974) [VERIFICAR: ficha preliminar calinski_harabasz_1974; texto no consultado, la forma del índice no se atribuye hasta leerlo], k - 1 y n - k
+  # La elección entre ambas queda pendiente; se informan las dos.
+  nk <- nrow(Y); ks <- as.integer(names(sce))
+  ch <- ch_variantes(sce, nk)
+  # Iteración 3b (D3): también el codo por caída máxima por sí solo y el mayor k factible
+  # (k · tam_min <= n), para la grilla de maxcl; no cambian k_codo ni los demás criterios.
+  k_caida <- ks0[which.max(c(NA, head(reduccion, -1)) - reduccion)]
+  list(res = res, tabla = data.frame(k = ks, sce = sce, reduccion = reduccion, ch = ch$k, ch1 = ch$k1),
+       k_codo = k_codo, regla_codo = regla_codo, k_caida = k_caida, k_max_efectivo = max(ks),
+       k_ch = ks[which.max(ch$k)], k_ch1 = ks[which.max(ch$k1)])
+}
+
+# Índice de Calinski-Harabász a partir de las sumas de cuadrados intra (sce[1] = total) para
+# k = 1..K clases, en las dos variantes de grados de libertad. k = 1 no está definido (NA).
+ch_variantes <- function(sce, n) {
+  k <- seq_along(sce); tss <- sce[1]
+  ch_k  <- ((tss - sce) / k) / (sce / (n - k))
+  ch_k1 <- ((tss - sce) / (k - 1)) / (sce / (n - k))
+  ch_k[1] <- NA; ch_k1[1] <- NA
+  list(k = unname(ch_k), k1 = unname(ch_k1))
+}
+# Posición del k elegido en la grilla k = 2..k_max (para el texto)
+tipo_k <- function(k, k_max = 10) if (k == k_max) "borde superior de la grilla: favorece más cortes" else
+  if (k == 2) "el menor número admisible, en el borde inferior de la grilla" else "un óptimo interior"
+
+# Segmentos (inicio, fin) a partir de los cortes de Fisher
+segmentos <- function(cortes, fechas_serie) {
+  bordes <- c(0, cortes, length(fechas_serie))
+  data.frame(inicio = fechas_serie[head(bordes, -1) + 1], fin = fechas_serie[tail(bordes, -1)])
+}
+
+# Fecha del primer mes de cada régimen nuevo (como en las tablas de Python)
+fechas_corte <- function(cortes, fechas_serie) format(fechas_serie[cortes + 1], "%Y-%m")
+# ---- Utilidades adicionales -------------------------------------------------
+
+# Medias móviles centradas y causales, alineadas como pandas rolling(w, center=True) y rolling(w)
+mm_centrada <- function(x, w) {
+  r <- as.numeric(stats::filter(x, rep(1 / w, w), sides = 2))
+  if (w %% 2 == 0) r <- c(NA, r[-length(r)])
+  r
+}
+mm_causal <- function(x, w) as.numeric(stats::filter(x, rep(1 / w, w), sides = 1))
+
+# Congruencia de Tucker entre dos vectores de cargas (1 = misma dirección; insensible a escala)
+tucker <- function(a, b) sum(a * b) / sqrt(sum(a^2) * sum(b^2))
+
+# Prueba de esfericidad de Bartlett y medida KMO de adecuación muestral
+bartlett_esfericidad <- function(R, n) {
+  p <- ncol(R)
+  estad <- -(n - 1 - (2 * p + 5) / 6) * log(det(R))
+  gl <- p * (p - 1) / 2
+  list(estadistico = estad, gl = gl, p_valor = pchisq(estad, gl, lower.tail = FALSE))
+}
+kmo <- function(R) {
+  Ri <- solve(R)
+  parcial <- -Ri / sqrt(outer(diag(Ri), diag(Ri)))
+  diag(parcial) <- 0; R0 <- R; diag(R0) <- 0
+  list(global = sum(R0^2) / (sum(R0^2) + sum(parcial^2)),
+       por_variable = colSums(R0^2) / (colSums(R0^2) + colSums(parcial^2)))
+}
+
+# Modelo de vara quebrada: inercia esperada (%) de cada componente bajo partición al azar
+vara_quebrada <- function(p) 100 * rev(cumsum(1 / (p:1))) / p
+
+# Bootstrap por bloques móviles: índices de filas remuestreadas en bloques contiguos
+# Künsch (1989) [VERIFICAR: ficha preliminar kunsch_1989; no se verificó que el artículo defina el esquema de bloques móviles solapados de este código].
+# Se separa el sorteo de los inicios de bloque (inicios_bloques) de la construcción de las filas
+# (indices_desde_inicios) para escribir los inicios en data/results/ y que Python reproduzca las
+# mismas réplicas (paridad exacta con índices compartidos). indices_bloques consume el generador
+# exactamente igual que antes.
+inicios_bloques <- function(n, largo) sample(seq_len(n - largo + 1), ceiling(n / largo), replace = TRUE)
+indices_desde_inicios <- function(inicios, largo, n) head(unlist(lapply(inicios, function(i) i:(i + largo - 1))), n)
+indices_bloques <- function(n, largo) indices_desde_inicios(inicios_bloques(n, largo), largo, n)
+# Matriz réplicas × bloques de inicios, con la semilla del documento (una llamada por réplica,
+# en el mismo orden en que las consumía el bucle del bootstrap)
+generar_inicios <- function(B, n, largo, semilla = params$semilla) {
+  set.seed(semilla)
+  t(vapply(seq_len(B), function(b) inicios_bloques(n, largo), integer(ceiling(n / largo))))
+}
+
+# Bootstrap por bloques del PCA (chunks b3-bootstrap y bB2-bootstrap): cada componente original
+# k = 1..K se empareja con la componente de la réplica (entre las 6 primeras) de mayor
+# |congruencia|, sin repetir, y se orienta con el signo de la congruencia.
+# Supuesto: dependencia débil. Con tendencias (vía sin transformar) no se cumple, y el bootstrap
+# mide entonces estabilidad descriptiva de los ejes, no incertidumbre muestral.
+bootstrap_pca <- function(Xm, cargas_ref, inicios, largo, K = 4) {
+  nm <- nrow(Xm); pm <- ncol(Xm); B <- nrow(inicios)
+  boot_c <- array(NA, c(B, pm, K)); boot_vp <- matrix(NA, B, K); congr <- matrix(NA, B, K)
+  vp_ord <- matrix(NA, B, pm)
+  for (b in 1:B) {
+    idx <- indices_desde_inicios(inicios[b, ], largo, nm)
+    Zb <- estandarizar(Xm[idx, ])
+    eb <- eigen(crossprod(Zb) / nm, symmetric = TRUE)
+    Cb <- sweep(eb$vectors[, 1:6], 2, sqrt(eb$values[1:6]), "*")
+    usadas <- integer(0)
+    for (k in 1:K) {
+      tk <- sapply(1:6, function(j) if (j %in% usadas) 0 else abs(tucker(cargas_ref[, k], Cb[, j])))
+      j <- which.max(tk); usadas <- c(usadas, j)
+      s <- sign(tucker(cargas_ref[, k], Cb[, j]))
+      boot_c[b, , k] <- s * Cb[, j]; boot_vp[b, k] <- eb$values[j]; congr[b, k] <- tk[j]
+    }
+    vp_ord[b, ] <- eb$values
+  }
+  list(cargas = boot_c, valores = boot_vp, congruencia = congr, valores_ordenados = vp_ord)
+}
+
+# Emparejamiento de componentes entre dos PCA (misma regla codiciosa que el bootstrap)
+emparejar <- function(C_ref, C, K = 4) {
+  usadas <- integer(0); jj <- integer(K); tt <- numeric(K)
+  for (k in 1:K) {
+    tk <- sapply(1:6, function(j) if (j %in% usadas) 0 else abs(tucker(C_ref[, k], C[, j])))
+    jj[k] <- which.max(tk); tt[k] <- tk[jj[k]]; usadas <- c(usadas, jj[k])
+  }
+  list(j = jj, congruencia = tt)
+}
+
+# ---- Diagnósticos de series de tiempo (iteración 3a) --------------------------
+
+# Series sin su tendencia lineal: residuos de cada columna sobre (1, t), t = 1..n
+quitar_tendencia <- function(M) {
+  M <- as.matrix(M); t <- seq_len(nrow(M))
+  r <- apply(M, 2, function(x) as.numeric(residuals(lm(x ~ t))))
+  dimnames(r) <- dimnames(M); r
+}
+
+# ACF muestral (stats::acf: serie centrada, divisor n) en los rezagos pedidos
+acf_rezagos <- function(x, rezagos) acf(x, lag.max = max(rezagos), plot = FALSE)$acf[rezagos + 1]
+
+# Tamaño muestral efectivo de la correlación entre dos series autocorrelacionadas
+# Pyper y Peterman (1998) [VERIFICAR: ficha preliminar pyper_peterman_1998; no se comprobó que la fórmula con truncamiento J = floor(n/5) sea la del artículo]:
+#   1/n_ef = 1/n + (2/n) Σ_{j=1}^{J} ((n - j)/n) ρx(j) ρy(j),  J = floor(n/5); n_ef <= n.
+# Se reciben las ACF ya calculadas (rezagos 1..J) para no recalcularlas en cada par.
+n_efectivo <- function(ax, ay, n) {
+  j <- seq_along(ax)
+  inv <- 1 / n + 2 / n * sum((n - j) / n * ax * ay)
+  if (inv <= 0) n else min(n, 1 / inv)
+}
+# Prueba t bilateral de rho = 0 con n_ef - 2 grados de libertad; con n_ef <= 3 no se evalúa
+p_correlacion <- function(r, n_ef) if (n_ef <= 3) NA_real_ else
+  2 * pt(abs(r * sqrt((n_ef - 2) / (1 - r^2))), n_ef - 2, lower.tail = FALSE)
+
+# Tabla de pares con r, n_ef y significación con n y con n_ef (alfa = 0,05)
+tabla_n_efectivo <- function(M) {
+  nm <- nrow(M); J <- nm %/% 5
+  A <- sapply(seq_len(ncol(M)), function(j) acf_rezagos(M[, j], seq_len(J)))
+  Rm <- cor(M); pares <- which(upper.tri(Rm), arr.ind = TRUE)
+  do.call(rbind, lapply(seq_len(nrow(pares)), function(i) {
+    a <- pares[i, 1]; b <- pares[i, 2]; r <- Rm[a, b]
+    ne <- n_efectivo(A[, a], A[, b], nm)
+    p_n <- p_correlacion(r, nm); p_e <- p_correlacion(r, ne)
+    data.frame(serie_a = colnames(M)[a], serie_b = colnames(M)[b], r = r, n = nm, n_ef = ne,
+               p_n = p_n, p_n_ef = p_e, signif_n = !is.na(p_n) && p_n < 0.05,
+               signif_n_ef = !is.na(p_e) && p_e < 0.05, stringsAsFactors = FALSE)
+  }))
+}
+
+# Adecuación del PCA: Bartlett (con n y con la mediana de n_ef de los pares), KMO, número de
+# condición y ln|R|. Bartlett no está definido si n - 1 - (2p + 5)/6 <= 0.
+adecuacion <- function(M, n_ef_mediana) {
+  Rm <- cor(M); nm <- nrow(M); pm <- ncol(M)
+  b_n <- bartlett_esfericidad(Rm, nm)
+  b_e <- if (n_ef_mediana - 1 - (2 * pm + 5) / 6 > 0) bartlett_esfericidad(Rm, n_ef_mediana) else
+    list(estadistico = NA_real_, gl = pm * (pm - 1) / 2, p_valor = NA_real_)
+  ev <- eigen(Rm, symmetric = TRUE, only.values = TRUE)$values
+  list(bartlett_n = b_n, bartlett_nef = b_e, kmo = kmo(Rm), num_condicion = max(ev) / min(ev),
+       log_det = sum(log(ev)), n = nm, n_ef_mediana = n_ef_mediana)
+}
+
+# Regla D5 (decisiones.qmd), fijada el 20-10-2026 antes de calcular. Se ajusta x_t = a + b t + e_t
+# por MCO y a e_t se le aplican:
+#  - ADF de tseries::adf.test (constante y tendencia en la regresión auxiliar) con 6 rezagos fijos;
+#  - KPSS de tseries::kpss.test con nula de estacionariedad en tendencia y 4 rezagos (lshort);
+# ambas al 5 % con los p-valores interpolados de tseries. Como e_t es x_t menos una recta, los dos
+# estadísticos son idénticos a los de las pruebas con tendencia sobre x_t (se comprueba).
+# ADF rechaza y KPSS no → TS; ADF no rechaza y KPSS sí → DS; otro caso → indeterminada.
+# Complementos (no entran en la regla): ACF de e_t en los rezagos 1 y 12 y Ljung-Box con 12 rezagos.
+ADF_REZAGOS <- 6L; KPSS_REZAGOS <- 4L; ALFA_D5 <- 0.05; LB_REZAGOS <- 12L
+clasificar_d5 <- function(p_adf, p_kpss) {
+  adf_r <- p_adf < ALFA_D5; kpss_r <- p_kpss < ALFA_D5
+  if (adf_r && !kpss_r) "TS" else if (!adf_r && kpss_r) "DS" else "indeterminada"
+}
+tendencia_residuos <- function(x) {
+  x <- as.numeric(x); t <- seq_along(x)
+  m <- lm(x ~ t); e <- as.numeric(residuals(m))
+  adf <- suppressWarnings(tseries::adf.test(e, k = ADF_REZAGOS))
+  kp <- suppressWarnings(tseries::kpss.test(e, null = "Trend", lshort = TRUE))
+  stopifnot(adf$parameter == ADF_REZAGOS, kp$parameter == KPSS_REZAGOS,
+            abs(adf$statistic - suppressWarnings(tseries::adf.test(x, k = ADF_REZAGOS))$statistic) < 1e-8,
+            abs(kp$statistic - suppressWarnings(tseries::kpss.test(x, null = "Trend", lshort = TRUE))$statistic) < 1e-8)
+  lb <- Box.test(e, lag = LB_REZAGOS, type = "Ljung-Box")
+  a <- acf_rezagos(e, c(1, 12))
+  data.frame(intercepto = unname(coef(m)[1]), pendiente = unname(coef(m)[2]),
+             r2 = summary(m)$r.squared, r_tiempo = cor(x, t),
+             acf1_residuos = a[1], acf12_residuos = a[2],
+             ljung_box_q12 = unname(lb$statistic), ljung_box_p12 = lb$p.value,
+             adf_estadistico = unname(adf$statistic), adf_rezagos = unname(adf$parameter),
+             adf_p_tseries = adf$p.value,
+             kpss_estadistico = unname(kp$statistic), kpss_rezagos = unname(kp$parameter),
+             kpss_p_tseries = kp$p.value,
+             clase_d5 = clasificar_d5(adf$p.value, kp$p.value), stringsAsFactors = FALSE)
+}
+tabla_tendencia <- function(M, nombres = colnames(M)) {
+  d <- do.call(rbind, lapply(seq_len(ncol(M)), function(j) tendencia_residuos(M[, j])))
+  cbind(nombre = nombres, d, stringsAsFactors = FALSE)
+}
+
+# Índice de Rand ajustado entre dos particiones
+rand_ajustado <- function(a, b) {
+  t <- table(a, b); n <- sum(t)
+  comb <- function(x) sum(x * (x - 1) / 2)
+  sij <- comb(t); sa <- comb(rowSums(t)); sb <- comb(colSums(t)); esp <- sa * sb / comb(n)
+  (sij - esp) / ((sa + sb) / 2 - esp)
+}
+
+# Escala divergente para mapas de calor (azul = negativo, gris = 0, naranja = positivo)
+escala_divergente <- function(nombre, lim = NULL) {
+  scale_fill_gradient2(name = nombre, low = "#2a78d6", mid = "#f4f3ee", high = "#eb6834",
+                       midpoint = 0, limits = lim, oob = squish)
+}
+
+# Distancia en meses entre fechas
+meses_entre <- function(a, b) abs((as.numeric(format(a, "%Y")) - as.numeric(format(b, "%Y"))) * 12 +
+                                    as.numeric(format(a, "%m")) - as.numeric(format(b, "%m")))
+# Desplaza una fecha k meses (k puede ser negativo)
+mover_meses <- function(f, k) seq(f, by = paste(k, "months"), length.out = 2)[2]
+
+# ¿Coincide una transición (centro de ventana) con la entrada o salida de un episodio de la ventana?
+# La ventana de w meses con centro f va de f - w/2 a f + w/2 - 1: un episodio sale cuando el
+# inicio de la ventana pasa su fin, y entra cuando el final de la ventana llega a su inicio.
+# Tolerancia de D7: 3 meses (6 como sensibilidad). Un episodio puntual entra y sale en su inicio.
+# Misma regla que src/episodios.borde_ventana.
+borde_ventana <- function(f, w, tol = 3) {
+  sale <- episodios$nombre[meses_entre(mover_meses(f, -(w %/% 2)), episodios$fin_efectivo) <= tol]
+  entra <- episodios$nombre[meses_entre(mover_meses(f, w - 1 - w %/% 2), episodios$inicio) <= tol]
+  r <- c(if (length(entra)) paste("Entra", entra), if (length(sale)) paste("Sale", sale))
+  if (length(r)) paste(r, collapse = "; ") else "—"
+}
+
+# ---- Nulo mixto por serie (D8, 24-oct-2026) ---------------------------------
+# t de la media de los incrementos con error estándar HAC de Newey y West (1987) [VERIFICAR: ficha
+# newey_west_1987, orden de autores y DOI pendientes]: núcleo de Bartlett con L = 12 rezagos,
+# Ω = γ0 + 2 Σ_{k=1}^{L} (1 − k/(L+1)) γk, γk con divisor n, sin corrección por grados de libertad;
+# t = media / sqrt(Ω / n). Los 12 rezagos y el umbral |t| > 2 son elecciones de la tesis (D8).
+# Misma fórmula que src/series_tiempo.t_hac_media.
+HAC_REZAGOS <- 12L; UMBRAL_DERIVA <- 2
+t_hac_media <- function(d, L = HAC_REZAGOS) {
+  nd <- length(d); u <- d - mean(d)
+  omega <- sum(u * u) / nd
+  for (k in seq_len(L)) omega <- omega + 2 * (1 - k / (L + 1)) * sum(u[(k + 1):nd] * u[1:(nd - k)]) / nd
+  se <- sqrt(omega / nd)
+  c(media = mean(d), se = se, t = mean(d) / se)
+}
+# Regla de D8: TS → recta más residuos remuestreados; DS → con deriva si |t| HAC > 2, sin deriva en
+# otro caso; indeterminada → se informa con las dos variantes (como TS y como DS)
+tratamiento_mixto <- function(clase, t, indeterminada_como) {
+  stopifnot(indeterminada_como %in% c("TS", "DS"))
+  cl <- ifelse(clase == "indeterminada", indeterminada_como, clase)
+  ifelse(cl == "TS", "TS", ifelse(abs(t) > UMBRAL_DERIVA, "con_deriva", "sin_deriva"))
+}
+```
+
+
+# 1. Series y criterio de inclusión {#series}
+
+```{r b1-datos}
+niv <- cargar_niveles()
+verificar_calendario(niv)
+meta <- metadatos_series()
+stopifnot(setequal(meta$columna, setdiff(names(niv), "fecha")))
+ind <- indicadores_basicos(niv, meta)
+dato <- function(serie, campo) ind[ind$serie == serie, campo]
+n_meses <- nrow(niv)
+periodo <- paste(format(min(niv$fecha), "%m/%Y"), "a", format(max(niv$fecha), "%m/%Y"))
+```
+
+## Fuente, periodo y cobertura
+
+El análisis usa **`r nrow(meta)` series mensuales del BCRP** entre `r periodo`
+(**`r n_meses` meses**, sin meses faltantes). Cubren seis dimensiones del sistema financiero y
+macroeconómico: crédito, liquidez, tasas de interés, precios, mercados y riesgo, y actividad y
+sector externo. De las `r nrow(meta)` series, **`r sum(meta$entra == "Sí")` entran al
+análisis** (PCA, EPCA, HFC y redes); las otras `r sum(meta$entra == "No")` quedan fuera: dos se
+usan como referencia y `r length(params$excluidas)` se excluye por D16 (sección
+[Qué entra al análisis](#que-entra)).
+
+::: {.hallazgo}
+**Las series desestacionalizadas se revisan.** El BCRP recalcula el ajuste estacional del PBI
+desestacionalizado y de la demanda interna al incorporar meses nuevos, por lo que estas dos
+series cambian levemente según la fecha de descarga. En el dataset de la tesis, sus valores de
+`r format(max(niv$fecha), "%m/%Y")` son `r num(tail(niv[["PBI desestacionalizado"]], 1), 2)` y
+`r num(tail(niv[["Demanda interna"]], 1), 2)`, respectivamente; una descarga posterior puede
+dar valores algo distintos. Conviene **fijar y declarar la fecha de corte de los datos** en la
+tesis.
+:::
+
+## Ficha de las series
+
+```{r b1-ficha}
+ficha <- meta[, c("bloque", "nombre_corto", "codigo", "nombre_bcrp", "unidad",
+                  "frecuencia_origen", "transformacion", "entra")]
+knitr::kable(ficha, row.names = FALSE,
+             col.names = c("Bloque", "Serie", "Código BCRP", "Nombre en el BCRP", "Unidad",
+                           "Frecuencia de origen", "Transformación (anexo de robustez)", "¿Entra?"))
+```
+
+Las series entran al análisis **sin transformar** (D1, D15). Para describirlas en esta sección se
+usan dos convenciones:
+
+- **Series en nivel** (saldos, índices y tipo de cambio): crecen con el tiempo, así que se
+  describen por su variación porcentual. En el anexo de robustez se transforman con
+  log-diferencia.
+- **Tasas y spread** (tasas de interés en % y EMBIG en puntos básicos): ya son precios
+  relativos, así que se describen por cambios absolutos (puntos porcentuales o básicos). En
+  el anexo de robustez se transforman con diferencia simple.
+
+## Indicadores básicos
+
+### Series en nivel
+
+```{r b1-ind-nivel}
+t_niv <- ind[ind$tipo == "nivel", ]
+knitr::kable(data.frame(
+  Serie = t_niv$serie, Unidad = t_niv$unidad,
+  `Ene-2007` = num(t_niv$inicio), `Dic-2025` = num(t_niv$fin),
+  `Crec. acumulado` = pct(t_niv$cambio_total, 0),
+  `Crec. anual compuesto` = pct(t_niv$crec_anual),
+  `CV` = num(t_niv$cv, 2),
+  `Var. 12m mediana` = pct(t_niv$var12_mediana),
+  `Var. 12m mínima` = paste0(pct(t_niv$var12_min), " (", t_niv$fecha_var12_min, ")"),
+  `Var. 12m máxima` = paste0(pct(t_niv$var12_max), " (", t_niv$fecha_var12_max, ")"),
+  check.names = FALSE), align = "llrrrrrrrr")
+```
+
+### Tasas de interés y spread
+
+```{r b1-ind-tasa}
+t_tas <- ind[ind$tipo == "tasa", ]
+knitr::kable(data.frame(
+  Serie = t_tas$serie, Unidad = t_tas$unidad,
+  `Ene-2007` = num(t_tas$inicio, 2), `Dic-2025` = num(t_tas$fin, 2),
+  Media = num(t_tas$media, 2), `Desv. est.` = num(t_tas$desv_est, 2),
+  Mínimo = paste0(num(t_tas$minimo, 2), " (", t_tas$fecha_min, ")"),
+  Máximo = paste0(num(t_tas$maximo, 2), " (", t_tas$fecha_max, ")"),
+  `Cambio 12m más bajo` = paste0(num(t_tas$var12_min, 2), " (", t_tas$fecha_var12_min, ")"),
+  `Cambio 12m más alto` = paste0(num(t_tas$var12_max, 2), " (", t_tas$fecha_var12_max, ")"),
+  check.names = FALSE), align = "llrrrrrrrr")
+```
+
+CV: coeficiente de variación (desviación estándar / media), solo para series en nivel; en ellas
+mide sobre todo la tendencia, no la volatilidad. Var. 12m: variación respecto del mismo mes del
+año anterior (en %, o en puntos para tasas y spread).
+
+## Las series en el tiempo
+
+```{r b1-funciones-graficos}
+graficar_bloque <- function(nombre_bloque) {
+  m <- meta[meta$bloque == nombre_bloque, ]
+  largo <- do.call(rbind, lapply(seq_len(nrow(m)), function(i) {
+    x <- niv[[m$columna[i]]]
+    rbind(data.frame(fecha = niv$fecha, serie = m$nombre_corto[i], panel = "Nivel", valor = x),
+          data.frame(fecha = niv$fecha, serie = m$nombre_corto[i],
+                     panel = if (m$tipo[i] == "nivel") "Variación 12 meses (%)" else "Cambio 12 meses (puntos)",
+                     valor = variacion_12m(x, m$tipo[i])))
+  }))
+  largo$serie <- factor(largo$serie, levels = m$nombre_corto)
+  largo$panel <- factor(largo$panel, levels = c("Nivel", "Variación 12 meses (%)", "Cambio 12 meses (puntos)"))
+  largo$columna <- interaction(largo$serie, largo$panel, sep = " · ", lex.order = TRUE, drop = TRUE)
+  ceros <- unique(largo[largo$panel != "Nivel", "columna", drop = FALSE])
+  ggplot(largo[!is.na(largo$valor), ], aes(fecha, valor)) +
+    capa_episodios() +
+    geom_hline(data = ceros, aes(yintercept = 0), color = "#9a9890", linewidth = 0.3) +
+    geom_line(color = color_serie, linewidth = 0.6) +
+    facet_wrap(~ columna, scales = "free_y", ncol = 2) +
+    scale_x_date(date_breaks = "3 years", date_labels = "%Y") +
+    scale_y_continuous(labels = label_number(big.mark = "\u00a0", decimal.mark = ",")) +
+    labs(x = NULL, y = NULL, title = nombre_bloque, caption = nota_episodios) +
+    tema_tesis()
+}
+alto <- function(b) 1.9 * sum(meta$bloque == b) + 0.8
+```
+
+### Crédito
+
+```{r b1-g-credito, fig.height = alto("Crédito")}
+graficar_bloque("Crédito")
+```
+
+::: {.lectura}
+En `r round(n_meses / 12)` años el crédito se multiplicó: el empresarial creció
+`r pct(dato("Crédito empresarial", "cambio_total"), 0)`, el de consumo
+`r pct(dato("Crédito consumo", "cambio_total"), 0)` y el hipotecario
+`r pct(dato("Crédito hipotecario", "cambio_total"), 0)`. Los tres tuvieron su mayor
+crecimiento interanual en 2008 (entre `r pct(min(ind$var12_max[ind$bloque == "Crédito"][-1]), 0)`
+y `r pct(max(ind$var12_max[ind$bloque == "Crédito"][-1]), 0)`). Sus mínimos no coinciden: el
+consumo cayó hasta `r pct(dato("Crédito consumo", "var12_min"))` en
+`r dato("Crédito consumo", "fecha_var12_min")`, el empresarial hasta
+`r pct(dato("Crédito empresarial", "var12_min"))` en
+`r dato("Crédito empresarial", "fecha_var12_min")`, y el hipotecario nunca cayó (su menor
+crecimiento fue `r pct(dato("Crédito hipotecario", "var12_min"))` en
+`r dato("Crédito hipotecario", "fecha_var12_min")`).
+:::
+
+::: {.pregunta}
+Los tres tipos de crédito toman caminos distintos después de 2020: el consumo se contrae
+primero, el empresarial años después y el hipotecario mantiene crecimiento positivo. ¿Lo lees
+como un solo ciclo financiero con fases desfasadas por segmento, o como dinámicas propias de
+cada mercado? La respuesta condiciona si el componente de crédito que usa la clasificación de
+fases debe ser un promedio de los tres o tratarlos por separado.
+:::
+
+### Liquidez
+
+```{r b1-g-liquidez, fig.height = alto("Liquidez")}
+graficar_bloque("Liquidez")
+```
+
+```{r b1-liquidez-datos}
+v12 <- function(col) variacion_12m(niv[[col]], "nivel")
+liq_neg <- format(niv$fecha[which(v12("Liquidez M1") < 0 & v12("Liquidez M2") < 0 &
+                                  v12("Liquidez M3") < 0)], "%Y-%m")
+```
+
+::: {.lectura}
+El dinero (M1) es el agregado más volátil: su variación interanual va de
+`r pct(dato("M1 (dinero)", "var12_min"))` (`r dato("M1 (dinero)", "fecha_var12_min")`) a
+`r pct(dato("M1 (dinero)", "var12_max"))` (`r dato("M1 (dinero)", "fecha_var12_max")`), frente a
+un rango de `r pct(dato("M3 (liquidez total)", "var12_min"))` a
+`r pct(dato("M3 (liquidez total)", "var12_max"))` en M3. Los tres agregados cayeron a la vez
+en términos interanuales solo entre `r liq_neg[1]` y `r tail(liq_neg, 1)`
+(`r length(liq_neg)` meses): es el único periodo de contracción simultánea de la muestra.
+:::
+
+::: {.pregunta}
+El máximo de M1 en `r dato("M1 (dinero)", "fecha_var12_max")` y su caída en 2022 forman el
+movimiento más fuerte del bloque. ¿Lo atribuyes a la respuesta monetaria a la pandemia y su
+retiro? Si es así, es un episodio puntual de política más que un rasgo del ciclo, y conviene
+vigilar que no defina por sí solo un componente o un corte de régimen.
+:::
+
+### Tasas de interés
+
+```{r b1-g-tasas, fig.height = alto("Tasas de interés")}
+graficar_bloque("Tasas de interés")
+```
+
+```{r b1-tasas-datos}
+cor_ref_inter <- cor(niv[["Tasa referencia BCRP"]], niv[["Tasa interbancaria"]])
+rezago_tamn <- round(as.numeric(as.Date(paste0(dato("TAMN", "fecha_min"), "-01")) -
+  as.Date(paste0(dato("Tasa de referencia", "fecha_min"), "-01"))) / 30.44)
+margen <- niv[["Tasa activa TAMN"]] - niv[["Tasa pasiva TIPMN"]]
+```
+
+::: {.lectura}
+La tasa de referencia fue de `r num(dato("Tasa de referencia", "minimo"), 2)` % en
+`r dato("Tasa de referencia", "fecha_min")` a `r num(dato("Tasa de referencia", "maximo"), 2)` %
+en `r dato("Tasa de referencia", "fecha_max")`. La interbancaria la sigue casi exactamente
+(correlación de niveles `r num(cor_ref_inter, 3)`). La TAMN tocó su mínimo
+(`r num(dato("TAMN", "minimo"), 2)` %) en `r dato("TAMN", "fecha_min")`, unos `r rezago_tamn`
+meses después que la tasa de referencia. El margen entre TAMN y TIPMN estuvo entre
+`r num(min(margen), 1)` y `r num(max(margen), 1)` puntos.
+:::
+
+::: {.pregunta}
+La interbancaria y la de referencia son casi la misma serie. ¿Conviene mantener ambas en el
+PCA? Si se mantienen, la información de política monetaria pesa el doble en la matriz de
+correlaciones; si se retira una, se pierde la desviación entre ambas, que en 2020 pudo ser
+informativa. Lo mismo, en menor grado, para TIPMN.
+:::
+
+### Precios
+
+```{r b1-g-precios, fig.height = alto("Precios")}
+graficar_bloque("Precios")
+```
+
+::: {.lectura}
+La inflación interanual del IPC tuvo una mediana de `r pct(dato("IPC Lima", "var12_mediana"))`,
+con un máximo de `r pct(dato("IPC Lima", "var12_max"))` en `r dato("IPC Lima", "fecha_var12_max")`.
+La subyacente fue menos extrema (máximo `r pct(dato("IPC subyacente", "var12_max"))`) y llegó a
+su pico más tarde, en `r dato("IPC subyacente", "fecha_var12_max")`.
+:::
+
+::: {.pregunta}
+¿El IPC debe estar en el análisis del ciclo financiero o es una variable del ciclo económico
+que conviene usar solo como contraste, igual que la subyacente? Su presencia acerca el PCA a
+una medición del ciclo macroeconómico.
+:::
+
+### Mercados y riesgo
+
+```{r b1-g-mercados, fig.height = alto("Mercados y riesgo")}
+graficar_bloque("Mercados y riesgo")
+```
+
+::: {.lectura}
+El EMBIG Perú alcanzó `r num(dato("EMBIG Perú", "maximo"), 0)` pbs en
+`r dato("EMBIG Perú", "fecha_max")`, `r num(dato("EMBIG Perú", "maximo") / dato("EMBIG Perú", "media"), 1)` veces su media de
+`r num(dato("EMBIG Perú", "media"), 0)` pbs, y terminó la muestra en
+`r num(dato("EMBIG Perú", "fin"), 0)` pbs. La BVL tuvo la mayor caída interanual de todas las
+series (`r pct(dato("Índice BVL", "var12_min"), 0)` en `r dato("Índice BVL", "fecha_var12_min")`)
+y la mayor subida (`r pct(dato("Índice BVL", "var12_max"), 0)` en
+`r dato("Índice BVL", "fecha_var12_max")`). El tipo de cambio osciló entre
+`r num(dato("Tipo de cambio", "minimo"), 2)` (`r dato("Tipo de cambio", "fecha_min")`) y
+`r num(dato("Tipo de cambio", "maximo"), 2)` soles por dólar (`r dato("Tipo de cambio", "fecha_max")`).
+:::
+
+::: {.pregunta}
+La crisis de 2008 es el episodio de riesgo más intenso de la muestra y ocurre en sus primeros
+meses. Con ventanas de EPCA de 60 meses, las ventanas que la contienen son pocas y están en el
+borde. ¿Es aceptable que el episodio más claro quede parcialmente fuera del análisis evolutivo,
+o refuerza la extensión de la muestra hacia atrás?
+:::
+
+### Actividad y sector externo
+
+```{r b1-g-actividad, fig.height = alto("Actividad y sector externo")}
+graficar_bloque("Actividad y sector externo")
+```
+
+```{r b1-covid}
+dlog_pbi <- 100 * diff(log(niv[["PBI desestacionalizado"]]))
+mes_caida <- format(niv$fecha[-1][which.min(dlog_pbi)], "%Y-%m")
+```
+
+::: {.lectura}
+La pandemia domina este bloque: el PBI cayó `r pct(abs(dato("PBI desestacionalizado", "var12_min")), 0)`
+interanual en `r dato("PBI desestacionalizado", "fecha_var12_min")` y subió
+`r pct(dato("PBI desestacionalizado", "var12_max"), 0)` un año después por efecto base. En
+variación mensual, la caída de `r mes_caida` fue de `r pct(abs(min(dlog_pbi)), 0)`, unas
+`r round(abs(min(dlog_pbi)) / sd(dlog_pbi[-which.min(dlog_pbi)]))` desviaciones estándar
+del resto de la muestra. Las reservas internacionales se multiplicaron por
+`r num(dato("Reservas internacionales netas", "fin") / dato("Reservas internacionales netas", "inicio"), 1)`.
+:::
+
+::: {.pregunta}
+En variaciones mensuales, una caída de esa magnitud puede definir por sí sola un componente
+(anexo de robustez); sin transformar, se ve como un hundimiento temporal del nivel. ¿Prefieres
+tratar 2020 como parte del ciclo (y que pese lo que pese), o analizar también una versión sin los
+meses de la pandemia? La sección 3 cuantifica su peso en el PCA.
+:::
+
+## Qué entra al análisis y por qué {#que-entra}
+
+```{r b1-credito-total}
+tot <- niv[["Crédito SF sector privado"]]
+suma <- niv[["Crédito empresarial"]] + niv[["Crédito consumo"]] + niv[["Crédito hipotecario"]]
+cobertura <- 100 * suma / tot
+cor_dlog <- cor(diff(log(tot)), diff(log(suma)))
+cor_ipc <- cor(diff(log(niv[["IPC Lima"]])), diff(log(niv[["IPC Subyacente"]])))
+# D16: correlaciones de la Liquidez M2 con M1 y M3 en los datos congelados de D4, en tres versiones
+# (niveles, logaritmos sin tendencia lineal y tasas de crecimiento). Se calculan aquí, en línea, y
+# no se escriben en ningún CSV de data/results/final/ (criterio 16 de la adenda).
+agregados <- c(M1 = "Liquidez M1", M2 = "Liquidez M2", M3 = "Liquidez M3")
+log_det_t <- function(x) { lx <- log(x); tt <- seq_along(lx); as.numeric(residuals(lm(lx ~ tt))) }
+cor_version <- function(f) { V <- sapply(agregados, function(a) f(niv[[a]])); cor(V) }
+cor_agr <- list(niveles = cor_version(identity), log_sin_tendencia = cor_version(log_det_t),
+                tasas = cor_version(function(x) diff(log(x))))
+```
+
+Quedan fuera del análisis multivariado `r sum(meta$entra == "No")` series:
+
+- **Crédito total del sistema financiero**: se excluyó por colinealidad con la suma de sus tres
+  componentes.
+- **IPC subyacente**: se reserva como serie de contraste para el IPC.
+- **Liquidez M2** (decisión D16, 26-oct-2026): casi duplica a M3. Un par casi duplicado pesa dos
+  veces en un PCA sin ponderar y desplaza el primer eje hacia el bloque monetario. Se conservan
+  M1 (componente transaccional) y M3 (liquidez amplia, que incluye los depósitos en moneda
+  extranjera de una economía dolarizada). Los archivos de D4 no cambian: la exclusión se aplica al
+  leer (`params$excluidas`).
+
+```{r b1-d16}
+knitr::kable(data.frame(
+  Par = c("M2–M3", "M1–M3", "M1–M2"),
+  `Niveles` = num(sapply(cor_agr, function(R) c(R["M2", "M3"], R["M1", "M3"], R["M1", "M2"]))[, "niveles"], 3),
+  `Logaritmos sin tendencia lineal` = num(sapply(cor_agr, function(R) c(R["M2", "M3"], R["M1", "M3"], R["M1", "M2"]))[, "log_sin_tendencia"], 3),
+  `Tasas de crecimiento mensual` = num(sapply(cor_agr, function(R) c(R["M2", "M3"], R["M1", "M3"], R["M1", "M2"]))[, "tasas"], 3),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Correlaciones entre los agregados monetarios en los datos congelados de D4 (sustento de D16). Calculadas en línea; no se escriben en data/results/final/.")
+```
+
+::: {.lectura}
+La correlación entre M2 y M3 es `r num(cor_agr$niveles["M2", "M3"], 3)` en niveles,
+`r num(cor_agr$log_sin_tendencia["M2", "M3"], 3)` en logaritmos sin tendencia lineal y
+`r num(cor_agr$tasas["M2", "M3"], 3)` en tasas de crecimiento; la de M1 con M3 es
+`r num(cor_agr$log_sin_tendencia["M1", "M3"], 3)` en logaritmos sin tendencia y
+`r num(cor_agr$tasas["M1", "M3"], 3)` en tasas.
+:::
+
+::: {.pregunta}
+En la tradición de Benzécri no se depuran variables a priori, y la HFC trata la redundancia por
+construcción (M2 y M3 se agregarían primero). D16 se tomó con las correlaciones de los datos, no con
+resultados del análisis, y el antecedente con 17 series queda conservado
+(tag `v0.4-17series-dos-vias`). ¿Cómo lo presentas al Dr. Camiz?
+:::
+
+::: {.hallazgo}
+**El crédito total no es la suma de los tres componentes.** El total corresponde al sistema
+financiero completo, mientras que los componentes son de las sociedades creadoras de depósito
+(nombres en el BCRP, ficha anterior). La suma de los componentes representa entre
+`r pct(min(cobertura), 0)` y `r pct(max(cobertura), 0)` del total, con una trayectoria que sube
+hasta `r format(niv$fecha[which.max(cobertura)], "%Y-%m")` y luego baja; en ese mes la suma
+incluso supera al total, lo que indica que las dos fuentes no usan definiciones directamente
+comparables. La correlación entre sus
+variaciones mensuales es `r num(cor_dlog, 2)`, no "casi perfecta" como se registró en el
+diccionario de datos. La exclusión puede seguir justificándose, pero por
+otra razón: evitar contar dos veces el crédito. Hay que corregir el argumento en el
+diccionario.
+:::
+
+::: {.pregunta}
+La correlación entre las variaciones mensuales del IPC y de la subyacente es
+`r num(cor_ipc, 2)`: comparten tendencia pero no la dinámica de corto plazo. ¿La subyacente
+sigue como contraste o reemplaza al IPC, que incluye alimentos y energía (choques que no
+son del ciclo financiero)?
+:::
+
+
+
+# 2. Diagnóstico de las series sin transformar {#diagnostico}
+
+Las `r sum(meta$entra == "Sí")` series entran en sus unidades originales y solo se estandarizan
+(media 0, desviación 1), que es lo que hace de todos modos un PCA sobre la matriz de correlaciones.
+Esta sección reúne los diagnósticos que condicionan la lectura del PCA: la clase de tendencia de
+cada serie (regla D5) y su deriva (D8), la información independiente que contienen ($n$ efectivo),
+la adecuación de la matriz de correlaciones y la comparación con series independientes que tienen
+las mismas tendencias (nulo de tendencias, con la versión mixta por serie de D8).
+
+```{r b2-datos}
+# Series SIN transformar (niveles en sus unidades originales), sin las excluidas (D16)
+meta_an <- meta[meta$entra == "Sí", ]
+X <- as.matrix(niv[, meta_an$columna]); colnames(X) <- meta_an$nombre_corto
+fechas <- niv$fecha
+Z <- estandarizar(X)
+n <- nrow(Z); p <- ncol(Z)
+p_archivo <- 17L                      # series de D1 en el archivo (sin las dos de referencia)
+# Dimensiones vigentes (D1, D4, D16): 228 × 16 sin transformar (2007-01 a 2025-12). Si cambian,
+# el documento se detiene. Calendario y faltantes ya se verificaron en b1-datos.
+stopifnot(n == 228, p == p_archivo - length(params$excluidas), !any(params$excluidas %in% meta_an$columna),
+          format(min(fechas), "%Y-%m") == "2007-01", format(max(fechas), "%Y-%m") == "2025-12", !anyNA(X))
+# Versión congelada de los datos (D4): mismos md5 que src/datos.py
+md5_d4 <- c(dataset_niveles_mensual.csv = "8088c28cf277419388d9562722faa1ad",
+            dataset_transformado_mensual.csv = "8c49f3e55608f2651be3c1dee4236194")
+stopifnot(identical(unname(tools::md5sum(file.path("data/processed", names(md5_d4)))), unname(md5_d4)))
+dir_final <- params$carpeta
+dir_anexo <- file.path(params$carpeta, "anexo")
+dir.create(dir_anexo, showWarnings = FALSE, recursive = TRUE)
+# El antecedente (17 series, dos vías) no se sobrescribe (criterio 17 de la adenda)
+stopifnot(!normalizePath(dir_final, mustWork = FALSE) %in% normalizePath(c("data/results", "data/results/niveles"), mustWork = FALSE))
+X_det <- quitar_tendencia(X)
+```
+
+El análisis usa **`r p` series** y **`r n` meses** (`r format(min(fechas), "%m/%Y")` a
+`r format(max(fechas), "%m/%Y")`), de la versión congelada de los datos (D4).
+
+## 2.1 Tendencia de cada serie (regla D5) y deriva (D8)
+
+Para cada serie se ajusta $x_t = a + b\,t + e_t$ por MCO y a los residuos se aplican la ADF
+(constante y tendencia, `r ADF_REZAGOS` rezagos) y la KPSS (nula de estacionariedad en tendencia,
+`r KPSS_REZAGOS` rezagos), al `r 100 * ALFA_D5` %, con la regla fijada de antemano en D5: ADF
+rechaza y KPSS no → **TS** (estacionaria en tendencia); ADF no rechaza y KPSS sí → **DS**
+(integrada); otro caso → **indeterminada**. Con residuos integrados, la regresión sobre el tiempo
+es espuria y los estadísticos t de la pendiente no son válidos (Granger y Newbold, 1974
+[VERIFICAR: número del fascículo y DOI]; Phillips, 1986 [VERIFICAR: ficha preliminar, solo
+resumen]): solo se interpreta la clasificación. ADF (Dickey y Fuller, 1979 [VERIFICAR: ficha
+preliminar]) y KPSS (Kwiatkowski et al., 1992 [VERIFICAR: ficha preliminar, sin entrada en el
+`.bib`]) pierden potencia ante quiebres estructurales [VERIFICAR: fuente].
+
+Para el nulo mixto (D8) se calcula además el **t de la media de los incrementos** de cada serie
+con error estándar HAC de Newey y West (1987) [VERIFICAR: ficha newey_west_1987, orden de los
+autores y DOI pendientes], con `r HAC_REZAGOS` rezagos. Una serie DS se simula con deriva si
+$|t| > `r UMBRAL_DERIVA`$ y sin deriva en otro caso; las indeterminadas se informan con las dos
+variantes (como TS y como DS).
+
+```{r b2-tendencia-d5}
+tend_series <- tabla_tendencia(X)
+hac_series <- t(sapply(seq_len(p), function(j) t_hac_media(diff(X[, j]))))
+tend_series$deriva_media <- hac_series[, "media"]
+tend_series$deriva_hac_se <- hac_series[, "se"]
+tend_series$deriva_hac_t <- hac_series[, "t"]
+tend_series$tratamiento_ind_ts <- tratamiento_mixto(tend_series$clase_d5, tend_series$deriva_hac_t, "TS")
+tend_series$tratamiento_ind_ds <- tratamiento_mixto(tend_series$clase_d5, tend_series$deriva_hac_t, "DS")
+fmt_tend <- function(d) data.frame(Nombre = d$nombre, Pendiente = num(d$pendiente, 4), `R²` = num(d$r2, 3),
+  `ACF residuos 1 / 12` = paste(num(d$acf1_residuos, 2), "/", num(d$acf12_residuos, 2)),
+  `Ljung-Box Q(12)` = num(d$ljung_box_q12, 0), `ADF` = num(d$adf_estadistico, 2), `ADF p` = num(d$adf_p_tseries, 2),
+  `KPSS` = num(d$kpss_estadistico, 3), `KPSS p` = num(d$kpss_p_tseries, 2), `Clase (D5)` = d$clase_d5, check.names = FALSE)
+knitr::kable(fmt_tend(tend_series), row.names = FALSE,
+             caption = paste("Las", p, "series sin transformar. p-valores interpolados de tseries: 0,01 significa 0,01 o menos y 0,10, 0,10 o más."))
+orden_t <- order(-abs(tend_series$deriva_hac_t))
+knitr::kable(data.frame(Serie = tend_series$nombre[orden_t], `Clase (D5)` = tend_series$clase_d5[orden_t],
+                        `Media de los incrementos` = num(tend_series$deriva_media[orden_t], 4),
+                        `Error estándar HAC` = num(tend_series$deriva_hac_se[orden_t], 4),
+                        `|t| HAC` = num(abs(tend_series$deriva_hac_t[orden_t]), 2),
+                        `Nulo mixto, indeterminadas como TS` = tend_series$tratamiento_ind_ts[orden_t],
+                        `Nulo mixto, indeterminadas como DS` = tend_series$tratamiento_ind_ds[orden_t], check.names = FALSE),
+             row.names = FALSE, caption = paste0("Deriva de cada serie (D8), ordenada por |t|. Con deriva si |t| > ", UMBRAL_DERIVA, " (series DS)."))
+cuenta_d5 <- function(d) sapply(c("TS", "DS", "indeterminada"), function(cl) sum(d$clase_d5 == cl))
+cerca_2 <- tend_series$nombre[orden_t][abs(abs(tend_series$deriva_hac_t[orden_t]) - UMBRAL_DERIVA) < 0.5]
+```
+
+::: {.lectura}
+Series: `r cuenta_d5(tend_series)["TS"]` TS, `r cuenta_d5(tend_series)["DS"]` DS y
+`r cuenta_d5(tend_series)["indeterminada"]` indeterminadas. Con $|t|$ HAC a menos de 0,5 del umbral
+de `r num(UMBRAL_DERIVA, 0)`: `r if (length(cerca_2)) paste(cerca_2, collapse = ", ") else "ninguna"`.
+:::
+
+::: {.pregunta}
+D8 pide declarar las series con $|t|$ «cercano a 2», sin fijar qué es cercano. La tabla las ordena
+por $|t|$ y la lectura usa una banda de ±0,5 solo para describir (no entra en ninguna regla).
+¿Quieres fijar una banda y una sensibilidad que cambie el tratamiento de esas series?
+:::
+
+## 2.2 Persistencia y tamaño muestral efectivo
+
+Bartlett y la prueba de cada correlación suponen meses independientes. Con series persistentes,
+la información independiente es menor que $n$. Para cada par de series se calcula un **tamaño
+muestral efectivo** $n_{\text{ef}}$, que corrige la varianza de la correlación por el producto
+de las autocorrelaciones de las dos series:
+$1/n_{\text{ef}} = 1/n + (2/n)\sum_{j=1}^{J} \frac{n-j}{n}\,\rho_x(j)\,\rho_y(j)$, con
+$J = \lfloor n/5 \rfloor$ y $n_{\text{ef}} \le n$ (Pyper y Peterman, 1998) [VERIFICAR: ficha preliminar; no se comprobó que el truncamiento $J$ sea el del artículo]. La ACF es la
+de `stats::acf` (serie centrada, divisor $n$).
+
+```{r b2-acf-nef}
+rezagos_acf <- c(1, 3, 6, 12, 24)
+acf_niv <- t(sapply(colnames(X), function(s) acf_rezagos(X[, s], rezagos_acf)))
+colnames(acf_niv) <- paste0("acf_", rezagos_acf)
+nef_niv <- tabla_n_efectivo(X)
+nef_niv_det <- tabla_n_efectivo(X_det)
+knitr::kable(data.frame(Serie = rownames(acf_niv), apply(acf_niv, 2, num, dec = 2), check.names = FALSE),
+             row.names = FALSE, col.names = c("Serie", paste("Rezago", rezagos_acf)),
+             caption = "Autocorrelación de las series sin transformar en los rezagos 1, 3, 6, 12 y 24 meses.")
+resumen_nef <- function(tb) c(mediana = median(tb$n_ef), minimo = min(tb$n_ef), maximo = max(tb$n_ef),
+                              signif_n = mean(tb$signif_n), signif_nef = mean(tb$signif_n_ef))
+rs_niv <- rbind(`Sin transformar` = resumen_nef(nef_niv), `Sin transformar, sin tendencia lineal` = resumen_nef(nef_niv_det))
+knitr::kable(data.frame(Versión = rownames(rs_niv), `n` = n, `n_ef mediana` = num(rs_niv[, "mediana"], 1),
+                        `n_ef mínimo–máximo` = paste(num(rs_niv[, "minimo"], 1), "–", num(rs_niv[, "maximo"], 1)),
+                        `Pares con r ≠ 0 al 5 % (con n)` = pct(100 * rs_niv[, "signif_n"], 0),
+                        `Pares con r ≠ 0 al 5 % (con n_ef)` = pct(100 * rs_niv[, "signif_nef"], 0), check.names = FALSE),
+             row.names = FALSE, caption = paste(nrow(nef_niv), "pares de series. Prueba t de r = 0 con n_ef − 2 grados de libertad; con n_ef ≤ 3 no se evalúa y el par cuenta como no significativo."))
+```
+
+::: {.lectura}
+La mediana de $n_{\text{ef}}$ entre los `r nrow(nef_niv)` pares es `r num(rs_niv[1, "mediana"], 1)`
+meses de `r n`. Con $n$, el `r pct(100 * rs_niv[1, "signif_n"], 0)` de las correlaciones es distinta
+de cero al 5 %; con $n_{\text{ef}}$, el `r pct(100 * rs_niv[1, "signif_nef"], 0)`. Sin la tendencia
+lineal de cada serie, esas proporciones son `r pct(100 * rs_niv[2, "signif_n"], 0)` y
+`r pct(100 * rs_niv[2, "signif_nef"], 0)`.
+:::
+
+## 2.3 Adecuación de la matriz de correlaciones
+
+Un PCA solo resume bien si las series están correlacionadas. Dos pruebas lo verifican:
+
+- **Esfericidad de Bartlett** (Bartlett, 1950, 1951) [VERIFICAR: texto no consultado; no se verificó en cuál de las dos obras se formula la prueba sobre la matriz de correlaciones]: la hipótesis nula es que la matriz de correlaciones es la
+  identidad (series no correlacionadas). Supone meses independientes y normalidad multivariada;
+  ninguno de los dos supuestos se cumple sin transformar, por eso se informa también con la
+  mediana de $n_{\text{ef}}$.
+- **KMO** (Kaiser-Meyer-Olkin; Kaiser, 1970; Kaiser y Rice, 1974) [VERIFICAR: texto no consultado; la forma de la medida que usa el código solo consta en la documentación de `psych`]: compara las correlaciones con las correlaciones parciales.
+  Valores sobre 0,6 se consideran aceptables y sobre 0,8, buenos.
+
+```{r b2-adecuacion}
+R <- crossprod(Z) / n
+bt <- bartlett_esfericidad(R, n)
+km <- kmo(R)
+adec_niv <- adecuacion(X, median(nef_niv$n_ef))
+kmo_tab <- data.frame(Serie = names(km$por_variable), KMO = km$por_variable)
+kmo_tab <- kmo_tab[order(kmo_tab$KMO), ]
+knitr::kable(data.frame(
+  Medida = c("χ² de Bartlett con n", "p-valor con n", "χ² de Bartlett con la mediana de n_ef", "p-valor con la mediana de n_ef",
+             "Grados de libertad", "KMO global", "Número de condición de R", "ln|R|"),
+  Valor = c(num(adec_niv$bartlett_n$estadistico, 0), fmt_p(adec_niv$bartlett_n$p_valor),
+            if (is.na(adec_niv$bartlett_nef$estadistico)) "no definido (n_ef − 1 − (2p + 5)/6 ≤ 0)" else num(adec_niv$bartlett_nef$estadistico, 0),
+            fmt_p(adec_niv$bartlett_nef$p_valor),
+            adec_niv$bartlett_n$gl, num(km$global, 2), num(adec_niv$num_condicion, 0), num(adec_niv$log_det, 1))),
+  row.names = FALSE, caption = "Adecuación del PCA y sensibilidad de la prueba de Bartlett a la muestra efectiva.")
+knitr::kable(data.frame(Serie = kmo_tab$Serie, `KMO individual` = num(kmo_tab$KMO, 2), check.names = FALSE),
+             row.names = FALSE, caption = "Adecuación de cada serie al análisis factorial (de menor a mayor).")
+```
+
+::: {.lectura}
+KMO global: `r num(km$global, 2)`. Bartlett con $n$: χ² = `r num(bt$estadistico, 0)` con
+`r bt$gl` grados de libertad; con la mediana de $n_{\text{ef}}$
+(`r num(adec_niv$n_ef_mediana, 1)`), `r if (is.na(adec_niv$bartlett_nef$p_valor)) "no está definido" else paste0("p = ", fmt_p(adec_niv$bartlett_nef$p_valor))`.
+Series con KMO individual menor que 0,5:
+`r if (any(km$por_variable < 0.5)) paste(kmo_tab$Serie[kmo_tab$KMO < 0.5], collapse = ", ") else "ninguna"`.
+:::
+
+## 2.4 Nulo de tendencias independientes, con el nulo mixto por serie (D8)
+
+El argumento clásico para diferenciar es que dos series con tendencia estocástica (integradas)
+pueden estar muy correlacionadas sin tener relación alguna; la correlación entre sus niveles es
+**espuria** (Granger y Newbold, 1974 [VERIFICAR: número del fascículo y DOI]; Phillips, 1986
+[VERIFICAR: ficha preliminar, solo se leyó el resumen; metadatos de fuente secundaria y DOI
+pendientes]). La prueba directa con estos datos es preguntarse qué PCA darían `r p` series
+**independientes** con las mismas tendencias que las observadas:
+
+- **Con deriva**: los incrementos mensuales de cada serie se remuestrean en bloques de 12 meses y se
+  acumulan; cada serie conserva su crecimiento medio, su volatilidad y su persistencia, pero se
+  rompe toda relación entre series.
+- **Sin deriva**: se resta antes el incremento medio de cada serie.
+- **Mixto (D8)**: cada serie según su clase D5 y su deriva (sección 2.1). TS → su recta MCO más sus
+  residuos remuestreados en bloques de 12 meses (los mismos inicios de bloque); DS → con o sin
+  deriva según $|t|$ HAC; indeterminada → dos variantes, como TS y como DS.
+
+Se repite `r params$reps_nulo` veces y se compara lo observado con la distribución que generan
+series independientes. Es el equivalente del análisis paralelo de Horn (1965) [VERIFICAR: solo se
+leyó el resumen] para series con tendencia.
+
+```{r b2-nulo}
+D_niv <- apply(X, 2, diff)
+# Inicios de bloque de cada réplica y serie, sorteados una sola vez con la semilla del documento
+# (réplica a réplica, serie a serie). Todas las versiones usan los mismos inicios. Se escriben en
+# R_nulo_indices.csv para que el notebook 05 los reproduzca.
+set.seed(params$semilla)
+m_bloques_nulo <- ceiling(nrow(D_niv) / 12)
+inicios_nulo <- array(NA_integer_, c(params$reps_nulo, p, m_bloques_nulo))
+for (r in seq_len(params$reps_nulo)) for (j in seq_len(p)) inicios_nulo[r, j, ] <- inicios_bloques(nrow(D_niv), 12)
+medidas_nulo <- function(M) {
+  Rm <- cor(M); e <- eigen(Rm, symmetric = TRUE, only.values = TRUE)$values
+  c(100 * e[1:3] / ncol(M), mean(abs(Rm[upper.tri(Rm)])))
+}
+# version: "con_deriva", "sin_deriva", "sin_tendencia" (con deriva y luego sin la recta de cada
+# serie simulada, para el diagnóstico de la sección 2.5) o "mixto" (D8, con `tratamiento` por serie).
+# En el mixto, una serie TS es su recta MCO más sus residuos remuestreados con los mismos inicios
+# (sorteados para n − 1 incrementos, caben en las n filas). Igual que src/remuestreo.nulo_tendencias.
+simular_nulo <- function(version, tratamiento = NULL) {
+  if (version == "mixto") {
+    stopifnot(length(tratamiento) == p, all(tratamiento %in% c("TS", "con_deriva", "sin_deriva")))
+    tt <- seq_len(n)
+    rectas <- sapply(seq_len(p), function(j) as.numeric(fitted(lm(X[, j] ~ tt))))
+    resid_ts <- X - rectas
+  } else {
+    tratamiento <- rep(if (version == "sin_deriva") "sin_deriva" else "con_deriva", p)
+  }
+  t(vapply(seq_len(params$reps_nulo), function(r) {
+    M <- sapply(seq_len(p), function(j) {
+      if (tratamiento[j] == "TS") return(rectas[, j] + resid_ts[indices_desde_inicios(inicios_nulo[r, j, ], 12, n), j])
+      d <- D_niv[indices_desde_inicios(inicios_nulo[r, j, ], 12, nrow(D_niv)), j]
+      if (tratamiento[j] == "sin_deriva") d <- d - mean(D_niv[, j])
+      cumsum(c(0, d))
+    })
+    if (version == "sin_tendencia") M <- quitar_tendencia(M)
+    medidas_nulo(M)
+  }, numeric(4)))
+}
+nulo_d <- simular_nulo("con_deriva"); nulo_0 <- simular_nulo("sin_deriva")
+nulo_m_ts <- simular_nulo("mixto", tend_series$tratamiento_ind_ts)
+nulo_m_ds <- simular_nulo("mixto", tend_series$tratamiento_ind_ds)
+obs_nulo <- medidas_nulo(X)
+pos_nulo_obs <- function(sim, obs) sapply(1:4, function(j) mean(sim[, j] >= obs[j]))
+fila_nulo <- function(sim) sapply(1:4, function(j) paste(num(quantile(sim[, j], 0.5), c(1, 1, 1, 2)[j]), "/",
+                                                       num(quantile(sim[, j], 0.95), c(1, 1, 1, 2)[j])))
+nombres_nulo <- c(con_deriva = "Con deriva", sin_deriva = "Sin deriva", mixto_ind_ts = "Mixto (D8), indeterminadas como TS",
+                  mixto_ind_ds = "Mixto (D8), indeterminadas como DS")
+sims_nulo <- list(con_deriva = nulo_d, sin_deriva = nulo_0, mixto_ind_ts = nulo_m_ts, mixto_ind_ds = nulo_m_ds)
+knitr::kable(do.call(rbind, lapply(names(sims_nulo), function(v) data.frame(
+  Nulo = nombres_nulo[[v]],
+  Medida = c("Inercia PC1 (%)", "Inercia PC2 (%)", "Inercia PC3 (%)", "|r| promedio entre pares"),
+  Observado = num(obs_nulo, c(1, 1, 1, 2)),
+  `Simulaciones: p50 / p95` = fila_nulo(sims_nulo[[v]]),
+  `Proporción de simulaciones ≥ observado` = num(pos_nulo_obs(sims_nulo[[v]], obs_nulo), 3), check.names = FALSE))),
+  row.names = FALSE, caption = "La proporción de simulaciones con un valor igual o mayor que el observado funciona como un p-valor: si es baja, el valor observado no se explica por series independientes con esas tendencias.")
+```
+
+::: {.lectura}
+Proporción de simulaciones con un PC1 igual o mayor que el observado: `r num(pos_nulo_obs(nulo_d, obs_nulo)[1], 3)`
+con deriva, `r num(pos_nulo_obs(nulo_0, obs_nulo)[1], 3)` sin deriva,
+`r num(pos_nulo_obs(nulo_m_ts, obs_nulo)[1], 3)` y `r num(pos_nulo_obs(nulo_m_ds, obs_nulo)[1], 3)` con el
+nulo mixto (indeterminadas como TS y como DS). Para el PC2: `r num(pos_nulo_obs(nulo_d, obs_nulo)[2], 3)`,
+`r num(pos_nulo_obs(nulo_0, obs_nulo)[2], 3)`, `r num(pos_nulo_obs(nulo_m_ts, obs_nulo)[2], 3)` y
+`r num(pos_nulo_obs(nulo_m_ds, obs_nulo)[2], 3)`.
+:::
+
+::: {.pregunta}
+Con 17 series (antecedente), el PC1 no superaba al nulo con deriva y el PC2 sí. ¿Se mantiene esa
+lectura con 16 series y con el nulo mixto, que es el que D8 fija como pertinente? La respuesta
+condiciona qué se llama «ciclo» en niveles (riesgo 2 de la adenda: regímenes de estructura, no
+oscilación).
+:::
+
+## 2.5 Diagnóstico: el PCA de las series sin su tendencia lineal
+
+Para medir cuánto de la estructura sin transformar viene de la tendencia, se repite el PCA con
+cada serie **sin su tendencia lineal** (los residuos de $x_t = a + b\,t + e_t$). Es un
+**diagnóstico**, no una tercera vía (D5). Se comparan la inercia, la adecuación (KMO y Bartlett)
+y la dirección de los ejes (congruencia de Tucker con el eje más parecido entre las seis primeras
+componentes, sin repetir), y se aplica el mismo nulo de tendencias independientes a las series
+simuladas, también sin su recta. La comparación con las series transformadas está en el anexo R.
+
+```{r b2-sin-tendencia}
+pca_niv0 <- pca_basico(Z)
+cargas_niv0 <- sweep(pca_niv0$vectores, 2, sqrt(pca_niv0$valores), "*")
+pca_det <- pca_basico(estandarizar(X_det))
+inercia_det <- 100 * pca_det$valores / p
+cargas_det <- sweep(pca_det$vectores, 2, sqrt(pca_det$valores), "*")
+adec_version <- function(M) {
+  Rm <- cor(M); ev <- eigen(Rm, symmetric = TRUE, only.values = TRUE)$values
+  c(kmo = kmo(Rm)$global, chi2 = bartlett_esfericidad(Rm, nrow(M))$estadistico, log_det = sum(log(ev)),
+    num_condicion = max(ev) / min(ev))
+}
+adec_v <- rbind(niveles = adec_version(X), niveles_sin_tendencia = adec_version(X_det))
+iner_v <- rbind(niveles = (100 * pca_niv0$valores / p)[1:4], niveles_sin_tendencia = inercia_det[1:4])
+emp_det <- emparejar(cargas_niv0, cargas_det)
+emp_v <- list(niveles = list(j = 1:4, congruencia = rep(1, 4)), niveles_sin_tendencia = emp_det)
+# Contraste en formato largo (versión, medida, componente, valor), igual que el notebook 05
+contraste_tend <- do.call(rbind, lapply(rownames(adec_v), function(v) rbind(
+  data.frame(version = v, medida = "inercia", componente = 1:4, valor = iner_v[v, ]),
+  data.frame(version = v, medida = names(adec_v[v, ]), componente = NA, valor = unname(adec_v[v, ])),
+  data.frame(version = v, medida = "equivalente", componente = 1:4, valor = emp_v[[v]]$j),
+  data.frame(version = v, medida = "congruencia", componente = 1:4, valor = emp_v[[v]]$congruencia))))
+nulo_st <- simular_nulo("sin_tendencia")
+obs_det <- medidas_nulo(X_det)
+# Sin tendencia, la versión con deriva y la sin deriva coinciden (la deriva acumulada es una
+# recta): se comprueba en las 20 primeras réplicas
+stopifnot(max(abs(nulo_st[1:20, ] - t(vapply(1:20, function(r) medidas_nulo(quitar_tendencia(sapply(seq_len(p), function(j)
+  cumsum(c(0, D_niv[indices_desde_inicios(inicios_nulo[r, j, ], 12, nrow(D_niv)), j] - mean(D_niv[, j])))))), numeric(4))))) < 1e-8)
+knitr::kable(data.frame(
+  Versión = c("Sin transformar", "Sin transformar, sin tendencia lineal"),
+  `Inercia PC1–PC4 (%)` = apply(iner_v, 1, function(v) paste(num(v, 1), collapse = " / ")),
+  KMO = num(adec_v[, "kmo"], 2), `χ² de Bartlett` = num(adec_v[, "chi2"], 0),
+  `ln|R|` = num(adec_v[, "log_det"], 1), `Número de condición` = num(adec_v[, "num_condicion"], 0),
+  `Eje equivalente a PC1–PC4 sin transformar` = sapply(emp_v, function(e) paste0("PC", e$j, collapse = " / ")),
+  `Congruencia |Tucker|` = sapply(emp_v, function(e) paste(num(e$congruencia, 2), collapse = " / ")),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Bartlett con n meses (supone meses independientes). Congruencia de cada componente sin transformar con su equivalente sin tendencia.")
+knitr::kable(data.frame(
+  Medida = c("Inercia PC1 (%)", "Inercia PC2 (%)", "Inercia PC3 (%)", "|r| promedio entre pares"),
+  `Observado sin tendencia` = num(obs_det, c(1, 1, 1, 2)),
+  `Independientes, sin su recta: p50 / p95` = fila_nulo(nulo_st),
+  `Proporción ≥ observado` = num(pos_nulo_obs(nulo_st, obs_det), 3), check.names = FALSE),
+  row.names = FALSE, caption = paste("Nulo de tendencias independientes aplicado a las series sin tendencia lineal:", params$reps_nulo, "simulaciones con los mismos bloques que el nulo anterior. Con o sin deriva da lo mismo: la deriva es lineal y la recta la retira."))
+```
+
+::: {.lectura}
+Sin la recta, el primer componente explica `r num(inercia_det[1], 1)` % (frente a
+`r num(iner_v["niveles", 1], 1)` % con ella) y el KMO pasa de `r num(adec_v["niveles", "kmo"], 2)` a
+`r num(adec_v["niveles_sin_tendencia", "kmo"], 2)`. Los ejes PC2 a PC4 sin transformar tienen
+congruencias de `r paste(num(emp_det$congruencia[2:4], 2), collapse = ", ")` con su equivalente sin
+tendencia. Frente al nulo aplicado a las series sin su recta, la proporción de simulaciones con un
+PC1 igual o mayor que el observado es `r num(pos_nulo_obs(nulo_st, obs_det)[1], 3)` y con un PC2
+igual o mayor, `r num(pos_nulo_obs(nulo_st, obs_det)[2], 3)`. Los umbrales de congruencia que usa
+este documento siguen a Lorenzo-Seva y ten Berge (2006): entre 0,85 y 0,94, similitud aceptable;
+más de 0,95, componentes iguales. El coeficiente se atribuye a Tucker (1951) [VERIFICAR: ficha
+preliminar; texto no leído, entidad emisora y lugar sin confirmar].
+:::
+
+
+# 3. PCA estático {#pca}
+
+El PCA busca pocas variables nuevas (componentes), combinaciones lineales de las `r p` series
+estandarizadas, que concentren la mayor parte de su variabilidad conjunta. Cada componente es
+ortogonal a los anteriores y explica la mayor varianza posible que estos dejaron sin explicar.
+Se trabaja sobre la matriz de correlaciones (series estandarizadas), porque las series están en
+unidades distintas. Las series entran sin transformar (sección 2).
+
+```{r b3-pca}
+R <- crossprod(Z) / n
+pc <- pca_basico(Z)
+vp <- pc$valores
+inercia <- 100 * vp / sum(vp)
+cargas <- sweep(pc$vectores, 2, sqrt(vp), "*")         # correlación variable–componente
+dimnames(cargas) <- list(colnames(Z), paste0("PC", 1:p))
+scores <- pc$scores; colnames(scores) <- paste0("PC", 1:p)
+ctr_var <- 100 * pc$vectores^2                          # contribución (%) de cada variable al eje
+dimnames(ctr_var) <- dimnames(cargas)
+cos2 <- cargas^2                                        # calidad de representación
+```
+
+## 3.1 ¿Cuántas componentes retener?
+
+```{r b3-retencion}
+set.seed(params$semilla)
+hr <- horn(Z, n_sim = 1000)
+vq <- vara_quebrada(p)
+k_kaiser <- sum(vp > 1)
+k_horn <- hr$retener
+k_vara <- sum(cumprod(inercia > vq))
+k_70 <- which(cumsum(inercia) >= 70)[1]
+k_80 <- which(cumsum(inercia) >= 80)[1]
+reten <- data.frame(Componente = paste0("PC", 1:8), `Valor propio` = num(vp[1:8], 3),
+                    `Inercia (%)` = num(inercia[1:8], 1), `Acumulada (%)` = num(cumsum(inercia)[1:8], 1),
+                    `Umbral Horn p95` = num(hr$umbral[1:8], 3), `Vara quebrada (%)` = num(vq[1:8], 1),
+                    check.names = FALSE)
+knitr::kable(reten, row.names = FALSE)
+knitr::kable(data.frame(Criterio = c("Kaiser (valor propio > 1)", "Análisis paralelo de Horn (p95, 1 000 simulaciones)",
+                                     "Vara quebrada", "70 % de inercia acumulada", "80 % de inercia acumulada"),
+                        `Componentes` = c(k_kaiser, k_horn, k_vara, k_70, k_80), check.names = FALSE),
+             row.names = FALSE, caption = "Número de componentes que retiene cada criterio.")
+```
+
+```{r b3-g-scree, fig.height = 4}
+sc <- data.frame(k = 1:p, observado = vp, horn = hr$umbral, vara = vq / 100 * p)
+ggplot(sc, aes(k)) +
+  geom_hline(yintercept = 1, color = "#9a9890", linewidth = 0.3, linetype = 3) +
+  geom_line(aes(y = horn, color = "Umbral de Horn (p95)"), linetype = 2, linewidth = 0.6) +
+  geom_line(aes(y = vara, color = "Vara quebrada"), linetype = 3, linewidth = 0.6) +
+  geom_line(aes(y = observado, color = "Valores propios observados"), linewidth = 0.8) +
+  geom_point(aes(y = observado, color = "Valores propios observados"), size = 2) +
+  scale_color_manual(NULL, values = c("Valores propios observados" = colores_cat[1],
+                                      "Umbral de Horn (p95)" = colores_cat[2], "Vara quebrada" = colores_cat[3])) +
+  scale_x_continuous(breaks = 1:p) +
+  labs(x = "Componente", y = "Valor propio", title = "Gráfico de sedimentación y criterios de retención",
+       subtitle = "Línea punteada gris: criterio de Kaiser (valor propio = 1).") +
+  tema_tesis()
+```
+
+::: {.lectura}
+Kaiser retiene `r k_kaiser` componentes, Horn `r k_horn` y la vara quebrada `r k_vara`
+(Kaiser, 1960 [VERIFICAR: ficha preliminar; la atribución del criterio no se verificó en el texto];
+vara quebrada: Camiz y Pillar, 2018, la atribuyen a Frontier, 1976 [VERIFICAR: fuente primaria no
+localizada]). Las dos primeras explican `r num(sum(inercia[1:2]), 1)` % de la variabilidad y las tres
+primeras `r num(sum(inercia[1:3]), 1)` %; la primera, `r num(inercia[1], 1)` %.
+:::
+
+::: {.pregunta}
+D9 mantiene d = 3 como especificación principal (fijada en la iteración 1) e informa d = 2 y d = 4
+como sensibilidad (sección 3.5). Horn retiene `r k_horn`. ¿Cómo justificas d = 3 frente a lo que
+dicen aquí los criterios, sin fijar un umbral a posteriori?
+:::
+
+## 3.2 Qué representa cada componente
+
+```{r b3-cargas-tabla}
+tab_c <- data.frame(Serie = colnames(Z))
+for (k in 1:4) {
+  tab_c[[paste0("r PC", k)]] <- num(cargas[, k], 2)
+  tab_c[[paste0("Contr. PC", k, " (%)")]] <- num(ctr_var[, k], 1)
+}
+tab_c[["Calidad 3 dims (cos²)"]] <- num(rowSums(cos2[, 1:3]), 2)
+tab_c[["Calidad 4 dims (cos²)"]] <- num(rowSums(cos2[, 1:4]), 2)
+knitr::kable(tab_c, row.names = FALSE,
+             caption = paste0("r: correlación de la serie con la componente. Contr.: aporte de la serie a la construcción del eje (suma 100 % por componente; promedio 1/", p, " = ", num(100 / p, 1), " %). Calidad: proporción de la varianza de la serie que reproducen las primeras componentes."))
+```
+
+#### Calidad de representación (cos²) eje por eje
+
+```{r b3-cos2}
+# cos²_jk = r_jk²: parte de la varianza de la serie j que reproduce el eje k; suma 1 sobre los p ejes
+tabla_cos2 <- function(C2, kmo_ind) {
+  stopifnot(max(abs(rowSums(C2) - 1)) < 1e-12)
+  data.frame(serie = rownames(C2), cos2_1 = C2[, 1], cos2_2 = C2[, 2], cos2_3 = C2[, 3], cos2_4 = C2[, 4],
+             suma_1_3 = rowSums(C2[, 1:3]), plano_1_2 = rowSums(C2[, 1:2]), plano_1_3 = C2[, 1] + C2[, 3],
+             suma_total = rowSums(C2), kmo_individual = unname(kmo_ind[rownames(C2)]), stringsAsFactors = FALSE)
+}
+cos2_niv <- tabla_cos2(cos2, km$por_variable)
+knitr::kable(data.frame(Serie = cos2_niv$serie, `cos² 1` = num(cos2_niv$cos2_1, 2), `cos² 2` = num(cos2_niv$cos2_2, 2),
+                        `cos² 3` = num(cos2_niv$cos2_3, 2), `Suma 1–3` = num(cos2_niv$suma_1_3, 2),
+                        `Plano 1–2` = num(cos2_niv$plano_1_2, 2), `Plano 1–3` = num(cos2_niv$plano_1_3, 2),
+                        `KMO individual` = num(cos2_niv$kmo_individual, 2), check.names = FALSE),
+             row.names = FALSE, caption = paste("cos² de cada serie en los ejes 1, 2 y 3, su suma y la calidad en los planos 1–2 y 1–3. La suma sobre los", p, "ejes es 1 en todas las series."))
+bien <- function(k) paste(cos2_niv$serie[cos2_niv[[paste0("cos2_", k)]] >= 0.5], collapse = ", ")
+```
+
+::: {.lectura}
+Series con cos² ≥ 0,5 en el eje 1: `r bien(1)`. En el eje 2: `r if (nzchar(bien(2))) bien(2) else "ninguna"`.
+En el eje 3: `r if (nzchar(bien(3))) bien(3) else "ninguna"`. Con calidad menor que 0,5 en el plano
+1–2: `r paste(cos2_niv$serie[cos2_niv$plano_1_2 < 0.5], collapse = ", ")`.
+:::
+
+```{r b3-g-cargas, fig.height = 7.5}
+largo_c <- do.call(rbind, lapply(1:4, function(k) {
+  o <- order(cargas[, k])
+  data.frame(comp = sprintf("PC%d (%s %% de inercia)", k, num(inercia[k], 1)), serie = colnames(Z),
+             r = cargas[, k], orden = match(seq_len(p), o))
+}))
+ggplot(largo_c, aes(r, reorder(paste(comp, serie, sep = "___"), r), fill = r > 0)) +
+  geom_col(width = 0.7) +
+  geom_vline(xintercept = 0, color = "#52514e", linewidth = 0.3) +
+  geom_vline(xintercept = c(-0.5, 0.5), color = "#9a9890", linewidth = 0.3, linetype = 3) +
+  facet_wrap(~ comp, scales = "free_y", ncol = 2) +
+  scale_y_discrete(labels = function(x) sub(".*___", "", x)) +
+  scale_fill_manual(values = c(`TRUE` = colores_cat[2], `FALSE` = colores_cat[1]), guide = "none") +
+  scale_x_continuous(limits = c(-1, 1)) +
+  labs(x = "Correlación con la componente", y = NULL, title = "Correlaciones de las series con las cuatro primeras componentes",
+       subtitle = "Naranja: correlación positiva; azul: negativa. Líneas punteadas en ±0,5.") +
+  tema_tesis()
+```
+
+```{r b3-interpretacion}
+describir <- function(k, umbral = 0.4) {
+  o <- order(abs(cargas[, k]), decreasing = TRUE)
+  fuertes <- o[abs(cargas[o, k]) >= umbral]
+  if (length(fuertes) == 0) fuertes <- o[1:3]
+  pos <- fuertes[cargas[fuertes, k] > 0]; neg <- fuertes[cargas[fuertes, k] < 0]
+  f <- function(i) paste0(colnames(Z)[i], " (", num(cargas[i, k], 2), ")", collapse = ", ")
+  list(pos = if (length(pos)) f(pos) else "ninguna", neg = if (length(neg)) f(neg) else "ninguna")
+}
+d1 <- describir(1); d2 <- describir(2); d3 <- describir(3); d4 <- describir(4)
+```
+
+::: {.lectura}
+- **PC1 (`r num(inercia[1], 1)` %)**: correlaciones positivas con `r d1$pos`; negativas con
+  `r d1$neg`.
+- **PC2 (`r num(inercia[2], 1)` %)**: positivas con `r d2$pos`; negativas con `r d2$neg`.
+- **PC3 (`r num(inercia[3], 1)` %)**: positivas con `r d3$pos`; negativas con `r d3$neg`.
+- **PC4 (`r num(inercia[4], 1)` %)**: positivas con `r d4$pos`; negativas con `r d4$neg`.
+
+Se listan las correlaciones de magnitud 0,4 o más. El signo de cada eje es convencional
+(regla de Rcamiz); lo que importa es qué series van juntas y cuáles en oposición.
+:::
+
+::: {.pregunta}
+Antes de seguir, ponle nombre a cada componente en una línea, con las series que lo componen y no
+con lo que se espera del ciclo financiero. Los nombres del documento de exploración se pusieron con
+17 series: ¿se sostienen sin M2?
+:::
+
+## 3.3 Las componentes y el tiempo
+
+```{r b3-tiempo}
+r_tiempo <- cor(scores[, 1:4], seq_len(n))[, 1]
+knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Inercia (%)` = num(inercia[1:4], 1),
+                        `Correlación con el tiempo` = num(r_tiempo, 3), check.names = FALSE), row.names = FALSE,
+             caption = "Correlación del score de cada componente con el número de mes.")
+```
+
+::: {.lectura}
+Correlación del score con el tiempo: `r paste0("PC", 1:4, " ", num(r_tiempo, 3), collapse = ", ")`.
+La subsección siguiente clasifica los residuos de cada componente con la regla D5.
+:::
+
+#### Regresión sobre el tiempo y análisis de los residuos (regla D5)
+
+Para cada componente se ajusta $\text{PC}_k = a + b\,t + e_t$ por MCO y a los residuos se aplican
+la ADF (constante y tendencia, `r ADF_REZAGOS` rezagos) y la KPSS (nula de estacionariedad en
+tendencia, `r KPSS_REZAGOS` rezagos), al `r 100 * ALFA_D5` %, con la regla fijada de antemano en D5: ADF rechaza y KPSS no → **TS**
+(estacionaria en tendencia); ADF no rechaza y KPSS sí → **DS** (integrada); otro caso →
+**indeterminada**. Lo mismo se hace para cada una de las series (sección 2.1). Con residuos integrados, la
+regresión sobre el tiempo es espuria y los estadísticos t de la pendiente no son válidos
+(Granger y Newbold, 1974 [VERIFICAR: número del fascículo y DOI]; Phillips, 1986 [VERIFICAR: ficha
+preliminar, solo resumen]): solo se interpreta la clasificación. ADF (Dickey y Fuller, 1979
+[VERIFICAR: ficha preliminar]) y KPSS (Kwiatkowski et al., 1992 [VERIFICAR: ficha preliminar, sin
+entrada en el `.bib`]) pierden potencia ante quiebres estructurales [VERIFICAR: fuente].
+
+```{r b3-tendencia-d5}
+tend_pc <- tabla_tendencia(scores[, 1:4], paste0("PC", 1:4))
+fmt_tend <- function(d) data.frame(Nombre = d$nombre, Pendiente = num(d$pendiente, 4), `R²` = num(d$r2, 3),
+  `ACF residuos 1 / 12` = paste(num(d$acf1_residuos, 2), "/", num(d$acf12_residuos, 2)),
+  `Ljung-Box Q(12)` = num(d$ljung_box_q12, 0), `ADF` = num(d$adf_estadistico, 2), `ADF p` = num(d$adf_p_tseries, 2),
+  `KPSS` = num(d$kpss_estadistico, 3), `KPSS p` = num(d$kpss_p_tseries, 2), `Clase (D5)` = d$clase_d5, check.names = FALSE)
+knitr::kable(fmt_tend(tend_pc), row.names = FALSE, caption = "Componentes sin transformar. p-valores interpolados de tseries: 0,01 significa 0,01 o menos y 0,10, 0,10 o más.")
+```
+
+```{r b3-g-residuos, fig.height = 7}
+largo_res <- do.call(rbind, lapply(1:4, function(k) data.frame(
+  fecha = fechas, comp = paste0("PC", k, " (clase ", tend_pc$clase_d5[k], ")"),
+  e = scores[, k] - tend_pc$intercepto[k] - tend_pc$pendiente[k] * seq_len(n))))
+ggplot(largo_res, aes(fecha, e)) +
+  capa_episodios() +
+  geom_hline(yintercept = 0, color = "#9a9890", linewidth = 0.3) +
+  geom_line(color = color_serie, linewidth = 0.5) +
+  facet_wrap(~ comp, ncol = 1, scales = "free_y") +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  labs(x = NULL, y = "Residuo", title = "Residuos de cada componente sobre una recta en el tiempo (sin transformar)",
+       caption = nota_episodios) +
+  tema_tesis()
+```
+
+::: {.lectura}
+Componentes: `r paste0(tend_pc$nombre, " ", tend_pc$clase_d5, collapse = ", ")`.
+:::
+
+## 3.4 Círculos de correlación y meses en el espacio factorial
+
+Cada flecha es una serie; su posición son sus correlaciones con dos componentes. Flechas largas
+(cerca del círculo) están bien representadas en ese plano; flechas que apuntan en la misma
+dirección van juntas; en direcciones opuestas, en oposición; en ángulo recto, independientes.
+
+```{r b3-g-circulos, fig.height = 10}
+planos <- list(c(1, 2), c(1, 3), c(2, 3), c(3, 4))
+circ <- do.call(rbind, lapply(planos, function(pl) data.frame(
+  plano = sprintf("PC%d (%s %%) – PC%d (%s %%)", pl[1], num(inercia[pl[1]], 1), pl[2], num(inercia[pl[2]], 1)),
+  serie = colnames(Z), x = cargas[, pl[1]], y = cargas[, pl[2]])))
+circ$plano <- factor(circ$plano, levels = unique(circ$plano))
+circ$largo <- sqrt(circ$x^2 + circ$y^2)
+circulo <- data.frame(x = cos(seq(0, 2 * pi, length.out = 200)), y = sin(seq(0, 2 * pi, length.out = 200)))
+ggplot(circ) +
+  geom_path(data = circulo, aes(x, y), color = "#9a9890", linewidth = 0.3) +
+  geom_hline(yintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_segment(aes(x = 0, y = 0, xend = x, yend = y, alpha = largo), color = color_serie,
+               arrow = arrow(length = unit(0.12, "cm")), linewidth = 0.5) +
+  geom_text(aes(x = x * 1.08, y = y * 1.08, label = serie, alpha = largo), size = 2.5, color = "#0b0b0b") +
+  scale_alpha_continuous(range = c(0.3, 1), guide = "none") +
+  facet_wrap(~ plano, ncol = 2) +
+  coord_equal(xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25)) +
+  labs(x = NULL, y = NULL, title = "Círculos de correlación",
+       subtitle = "Opacidad proporcional a la calidad de representación en el plano.") +
+  tema_tesis()
+```
+
+### Los meses en el espacio de las componentes
+
+```{r b3-g-individuos, fig.height = 5.5}
+ctr_mes <- 100 * sweep(scores^2, 2, n * vp, "/")       # contribución (%) de cada mes a cada eje
+episodio <- rep("Resto de meses", n)
+for (i in seq_len(nrow(episodios))) episodio[fechas >= episodios$inicio[i] & fechas <= episodios$fin_efectivo[i]] <- episodios$nombre[i]
+episodio <- factor(episodio, levels = c(episodios$nombre, "Resto de meses"))
+colores_epi <- setNames(c("#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7", "#c9a227", "#d64550")[seq_len(nrow(episodios))], episodios$nombre)
+ind_df <- do.call(rbind, lapply(list(c(1, 2), c(1, 3)), function(pl) data.frame(
+  plano = sprintf("PC%d – PC%d", pl[1], pl[2]), x = scores[, pl[1]], y = scores[, pl[2]], episodio = episodio,
+  etiqueta = ifelse(rank(-(ctr_mes[, pl[1]] + ctr_mes[, pl[2]])) <= 6, format(fechas, "%Y-%m"), ""))))
+ggplot(ind_df, aes(x, y)) +
+  geom_hline(yintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "#d4d2ca", linewidth = 0.3) +
+  geom_point(data = function(d) d[d$episodio == "Resto de meses", ], color = "#b5b4ab", size = 1.4) +
+  geom_point(data = function(d) d[d$episodio != "Resto de meses", ], aes(color = episodio), size = 2) +
+  geom_text(aes(label = etiqueta), size = 2.6, vjust = -0.8, color = "#52514e") +
+  scale_color_manual(NULL, values = colores_epi, drop = TRUE) +
+  facet_wrap(~ plano, ncol = 2) +
+  labs(x = NULL, y = NULL, title = "Meses en los planos factoriales",
+       subtitle = "Se rotulan los seis meses que más contribuyen a cada plano.") +
+  tema_tesis()
+```
+
+```{r b3-ctr-meses}
+top_ctr <- lapply(1:4, function(k) {
+  o <- order(ctr_mes[, k], decreasing = TRUE)[1:5]
+  paste0(format(fechas[o], "%Y-%m"), " (", num(ctr_mes[o, k], 1), " %)", collapse = ", ")
+})
+knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Cinco meses que más contribuyen` = unlist(top_ctr),
+                        `Contribución acumulada de esos 5 meses` = sapply(1:4, function(k)
+                          paste0(num(sum(sort(ctr_mes[, k], decreasing = TRUE)[1:5]), 1), " %")),
+                        check.names = FALSE), row.names = FALSE,
+             caption = paste0("Un mes promedio contribuye 1/", n, " = ", num(100 / n, 2), " % a cada eje."))
+```
+
+::: {.lectura}
+Aporte de los cinco meses que más pesan en cada eje: PC1 `r num(sum(sort(ctr_mes[, 1], decreasing = TRUE)[1:5]), 1)` %,
+PC2 `r num(sum(sort(ctr_mes[, 2], decreasing = TRUE)[1:5]), 1)` %, PC3
+`r num(sum(sort(ctr_mes[, 3], decreasing = TRUE)[1:5]), 1)` % y PC4
+`r num(sum(sort(ctr_mes[, 4], decreasing = TRUE)[1:5]), 1)` %. Un eje construido por pocos meses
+describe esos episodios más que una regularidad del periodo.
+:::
+
+### Las componentes en el tiempo
+
+```{r b3-g-scores-tiempo, fig.height = 7.5}
+largo_s <- do.call(rbind, lapply(1:4, function(k) rbind(
+  data.frame(fecha = fechas, comp = paste0("PC", k), tipo = "Mensual", valor = scores[, k]),
+  data.frame(fecha = fechas, comp = paste0("PC", k), tipo = "Media móvil centrada de 12 meses", valor = mm_centrada(scores[, k], 12)))))
+largo_s$tipo <- factor(largo_s$tipo, levels = c("Mensual", "Media móvil centrada de 12 meses"))
+ggplot(largo_s[!is.na(largo_s$valor), ], aes(fecha, valor, color = tipo, linewidth = tipo)) +
+  capa_episodios() +
+  geom_hline(yintercept = 0, color = "#9a9890", linewidth = 0.3) +
+  geom_line() +
+  scale_color_manual(NULL, values = c("#b5b4ab", color_serie)) +
+  scale_linewidth_manual(NULL, values = c(0.35, 0.9)) +
+  facet_wrap(~ comp, ncol = 1, scales = "free_y") +
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+  labs(x = NULL, y = "Score", title = "Componentes principales en el tiempo", caption = nota_episodios) +
+  tema_tesis()
+```
+
+```{r b3-persistencia-scores}
+cruces <- function(x) { s <- sign(x[!is.na(x)]); sum(diff(s) != 0) }
+pers_sc <- sapply(1:4, function(k) c(mensual = cruces(scores[, k]), mm12 = cruces(mm_centrada(scores[, k], 12))))
+```
+
+::: {.lectura}
+Cruces por cero del score mensual: `r paste0("PC", 1:4, " ", pers_sc["mensual", ], collapse = ", ")`;
+con la media móvil centrada de 12 meses: `r paste0("PC", 1:4, " ", pers_sc["mm12", ], collapse = ", ")`.
+:::
+
+## 3.5 ¿Qué tan robustas son las componentes? Bootstrap y dimensión (D9)
+
+#### Orientación de los ejes
+
+```{r b3-signo}
+margen <- sapply(1:4, function(k) { v <- pc$vectores[, k]; c(neg = sum(v[v < 0]^2), pos = sum(v[v > 0]^2)) })
+knitr::kable(data.frame(Componente = paste0("PC", 1:4), `Suma de cuadrados positivos` = num(margen["pos", ], 3),
+                        `Suma de cuadrados negativos` = num(margen["neg", ], 3),
+                        Margen = num(margen["pos", ] - margen["neg", ], 3), check.names = FALSE), row.names = FALSE,
+             caption = "Regla de signo de Rcamiz: el eje se orienta para que dominen los coeficientes positivos. Un margen cercano a 0 hace frágil la orientación.")
+```
+
+#### Bootstrap por bloques
+
+Se remuestrean los meses en bloques contiguos de 24 meses (para conservar la dependencia
+temporal), se recalcula el PCA `r params$bootstrap_reps` veces y se mide cuánto varían las
+correlaciones de cada serie con cada componente. Cada réplica se alinea con la original
+(signo y orden de las componentes) antes de comparar.
+
+```{r b3-bootstrap}
+B <- params$bootstrap_reps; K <- 4
+largos_bloque <- c(12, 24, 36)
+# Inicios de bloque por longitud (semilla del documento antes de cada longitud); con L = 24 son
+# exactamente las réplicas del antecedente (los inicios no dependen del número de series). Se
+# escriben en la carpeta del documento.
+inicios_boot <- lapply(setNames(largos_bloque, paste0("L", largos_bloque)), function(L) generar_inicios(B, n, L))
+boot_L <- lapply(setNames(largos_bloque, paste0("L", largos_bloque)), function(L)
+  bootstrap_pca(X, cargas, inicios_boot[[paste0("L", L)]], L, K))
+boot_c <- boot_L$L24$cargas; boot_vp <- boot_L$L24$valores; congr <- boot_L$L24$congruencia
+ic <- apply(boot_c, c(2, 3), quantile, probs = c(0.05, 0.95))
+estab <- data.frame(Componente = paste0("PC", 1:K),
+                    `Congruencia mediana con la original` = num(apply(congr, 2, median), 3),
+                    `Congruencia p5` = num(apply(congr, 2, quantile, 0.05), 3),
+                    `Valor propio p5–p95` = sapply(1:K, function(k) paste(num(quantile(boot_vp[, k], c(0.05, 0.95)), 2), collapse = " – ")),
+                    check.names = FALSE)
+knitr::kable(estab, row.names = FALSE, caption = "Congruencia de Tucker: 1 = misma dirección; más de 0,95, componentes iguales; entre 0,85 y 0,94, similitud aceptable (Lorenzo-Seva y ten Berge, 2006).")
+```
+
+```{r b3-g-bootstrap, fig.height = 7.5}
+ic_df <- do.call(rbind, lapply(1:K, function(k) data.frame(
+  comp = paste0("PC", k), serie = colnames(Z), r = cargas[, k], lo = ic[1, , k], hi = ic[2, , k])))
+ic_df$serie <- factor(ic_df$serie, levels = rev(colnames(Z)))
+ggplot(ic_df, aes(r, serie)) +
+  geom_vline(xintercept = 0, color = "#52514e", linewidth = 0.3) +
+  geom_segment(aes(x = lo, xend = hi, yend = serie), color = "#9a9890", linewidth = 1.6) +
+  geom_point(color = color_serie, size = 1.8) +
+  facet_wrap(~ comp, ncol = 4) +
+  scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1)) +
+  labs(x = "Correlación con la componente", y = NULL, title = "Intervalos bootstrap (p5–p95) de las correlaciones",
+       subtitle = "Punto: estimación con toda la muestra. Barra gris: rango del 90 % central de las réplicas por bloques.") +
+  tema_tesis()
+```
+
+#### Sensibilidad a la longitud del bloque y número de dimensiones
+
+Se repite el bootstrap con bloques de `r paste(largos_bloque, collapse = ", ")` meses (misma
+semilla para cada longitud). Los intervalos de los valores propios **ordenados** de cada réplica
+informan cuántas dimensiones se separan del resto (OE6). **Supuesto:** el bootstrap por bloques
+supone dependencia débil; las series sin transformar, con tendencia, no la cumplen, de modo que
+aquí mide la **estabilidad descriptiva** de los ejes y no la incertidumbre muestral.
+
+```{r b3-bootstrap-L}
+# Resúmenes por longitud de bloque (formato largo, igual que el notebook 05)
+resumen_congruencia <- function(bl) do.call(rbind, lapply(names(bl), function(L) data.frame(
+  L = as.integer(sub("L", "", L)), componente = 1:K,
+  mediana = apply(bl[[L]]$congruencia, 2, median), p5 = apply(bl[[L]]$congruencia, 2, quantile, 0.05),
+  minimo = apply(bl[[L]]$congruencia, 2, min),
+  vp_emparejado_p5 = apply(bl[[L]]$valores, 2, quantile, 0.05),
+  vp_emparejado_p95 = apply(bl[[L]]$valores, 2, quantile, 0.95))))
+resumen_vp <- function(bl, kmax = 6) do.call(rbind, lapply(names(bl), function(L) {
+  V <- bl[[L]]$valores_ordenados
+  data.frame(L = as.integer(sub("L", "", L)), componente = 1:kmax,
+             p5 = apply(V[, 1:kmax], 2, quantile, 0.05), mediana = apply(V[, 1:kmax], 2, median),
+             p95 = apply(V[, 1:kmax], 2, quantile, 0.95), prop_mayor_1 = colMeans(V[, 1:kmax] > 1),
+             brecha_siguiente_p5 = apply(V[, 1:kmax] - V[, 2:(kmax + 1)], 2, quantile, 0.05))
+}))
+rc_niv <- resumen_congruencia(boot_L); rv_niv <- resumen_vp(boot_L)
+knitr::kable(data.frame(L = rc_niv$L, Componente = paste0("PC", rc_niv$componente),
+                        `Congruencia mediana` = num(rc_niv$mediana, 3), `Congruencia p5` = num(rc_niv$p5, 3),
+                        `Valor propio emparejado p5–p95` = paste(num(rc_niv$vp_emparejado_p5, 2), "–", num(rc_niv$vp_emparejado_p95, 2)),
+                        check.names = FALSE), row.names = FALSE, caption = "Congruencia de cada componente con su réplica, por longitud de bloque L (meses).")
+knitr::kable(data.frame(L = rv_niv$L, `λ` = paste0("λ", rv_niv$componente), Observado = num(vp[rv_niv$componente], 2),
+                        `p5–p95` = paste(num(rv_niv$p5, 2), "–", num(rv_niv$p95, 2)),
+                        `Réplicas con λ > 1` = pct(100 * rv_niv$prop_mayor_1, 0),
+                        `p5 de λk − λk+1` = num(rv_niv$brecha_siguiente_p5, 2), check.names = FALSE),
+             row.names = FALSE, caption = "Valores propios ordenados de cada réplica (sin emparejar), por longitud de bloque.")
+```
+
+#### Sensibilidad de la dimensión: d = 2, 3 y 4 (D9)
+
+D9 mantiene **d = 3** como especificación principal, porque se fijó en la iteración 1, antes de
+conocer las cifras, e informa d = 2 y d = 4 como sensibilidad. No se fija un umbral bootstrap a
+posteriori: la tabla solo reúne, para cada d, las cifras de los criterios ya calculados.
+
+```{r b3-dimension}
+dimensiones <- c(2, 3, 4)
+bt24 <- boot_L$L24
+dim_tab <- do.call(rbind, lapply(dimensiones, function(d) data.frame(
+  d = d, inercia_acumulada = sum(inercia[1:d]), lambda_d = vp[d], brecha_lambda = vp[d] - vp[d + 1],
+  inercia_d = inercia[d], vara_quebrada_d = vq[d], supera_vara = inercia[d] > vq[d],
+  congruencia_mediana_L24 = median(bt24$congruencia[, d]), congruencia_p5_L24 = unname(quantile(bt24$congruencia[, d], 0.05)),
+  brecha_p5_L24 = unname(quantile(bt24$valores_ordenados[, d] - bt24$valores_ordenados[, d + 1], 0.05)),
+  prop_lambda_mayor_1_L24 = mean(bt24$valores_ordenados[, d] > 1),
+  calidad_media = mean(rowSums(cos2[, 1:d, drop = FALSE])))))
+knitr::kable(data.frame(d = dim_tab$d, `Inercia acumulada (%)` = num(dim_tab$inercia_acumulada, 1),
+                        `λd` = num(dim_tab$lambda_d, 3), `λd − λd+1` = num(dim_tab$brecha_lambda, 3),
+                        `Inercia de la componente d (%) / vara quebrada (%)` = paste(num(dim_tab$inercia_d, 1), "/", num(dim_tab$vara_quebrada_d, 1)),
+                        `Congruencia bootstrap de la componente d: mediana / p5` = paste(num(dim_tab$congruencia_mediana_L24, 3), "/", num(dim_tab$congruencia_p5_L24, 3)),
+                        `p5 de λd − λd+1 (bootstrap)` = num(dim_tab$brecha_p5_L24, 2),
+                        `Réplicas con λd > 1` = pct(100 * dim_tab$prop_lambda_mayor_1_L24, 0),
+                        `Calidad media con d ejes (cos²)` = num(dim_tab$calidad_media, 2), check.names = FALSE),
+             row.names = FALSE, caption = "Sensibilidad de la dimensión (D9). Bootstrap por bloques con L = 24 (estabilidad descriptiva en niveles).")
+```
+
+#### Sensibilidad a los episodios extremos
+
+Se repite el PCA retirando, por separado, los meses de la crisis financiera global
+(`r rango_epi("Crisis financiera global")`) y los del COVID-19 (`r rango_epi("COVID-19")`), con las
+fechas del archivo de episodios (D7, D9), y se busca la componente equivalente a cada original.
+
+```{r b3-sin-covid}
+meses_epi <- function(nombre) { i <- match(nombre, episodios$nombre); fechas >= episodios$inicio[i] & fechas <= episodios$fin_efectivo[i] }
+covid <- meses_epi("COVID-19"); crisis <- meses_epi("Crisis financiera global")
+sin_episodio <- function(excluir) {
+  Zs <- estandarizar(X[!excluir, ])
+  es <- eigen(crossprod(Zs) / nrow(Zs), symmetric = TRUE)
+  Cs <- sweep(es$vectors[, 1:6], 2, sqrt(es$values[1:6]), "*")
+  e <- sapply(1:4, function(k) { t <- sapply(1:6, function(j) abs(tucker(cargas[, k], Cs[, j]))); c(j = which.max(t), t = max(t)) })
+  rbind(e, inercia = 100 * es$values[e["j", ]] / p)
+}
+emp <- sin_episodio(covid); emp_crisis <- sin_episodio(crisis)
+knitr::kable(data.frame(Componente = paste0("PC", 1:4),
+                        `Inercia con toda la muestra (%)` = num(inercia[1:4], 1),
+                        `Sin la crisis: equivalente` = paste0("PC", emp_crisis["j", ]),
+                        `Sin la crisis: inercia (%)` = num(emp_crisis["inercia", ], 1),
+                        `Sin la crisis: congruencia` = num(emp_crisis["t", ], 3),
+                        `Sin el COVID-19: equivalente` = paste0("PC", emp["j", ]),
+                        `Sin el COVID-19: inercia (%)` = num(emp["inercia", ], 1),
+                        `Sin el COVID-19: congruencia` = num(emp["t", ], 3), check.names = FALSE), row.names = FALSE,
+             caption = paste0("Meses retirados: ", sum(crisis), " de la crisis global y ", sum(covid), " del COVID-19."))
+```
+
+::: {.lectura}
+Congruencia mediana bootstrap (L = 24) de PC1 a PC4: `r paste(num(apply(congr, 2, median), 3), collapse = ", ")`.
+Congruencia con las componentes originales sin la crisis global:
+`r paste(num(emp_crisis["t", ], 2), collapse = ", ")`; sin el COVID-19:
+`r paste(num(emp["t", ], 2), collapse = ", ")`.
+`r if (any(emp_crisis["j", ] != 1:4) || any(emp["j", ] != 1:4)) "Alguna componente cambia de orden al retirar un episodio." else "Ninguna componente cambia de orden al retirar un episodio."`
+:::
+
+::: {.pregunta}
+Las componentes con congruencia bootstrap bajo 0,9 no deberían interpretarse por separado. ¿Qué
+componentes de las d = 3 de D9 tienen, con 16 series, una interpretación propia y estable?
+:::
+
+```{r b3-rcamiz, eval = tiene_rcamiz, results = "asis"}
+# Verificación con el paquete del asesor (solo si Rcamiz está instalado)
+rc <- Rcamiz::pca(as.data.frame(X), st = TRUE, nd = p, r = 10)
+cat(sprintf("\n**Verificación con Rcamiz.** Diferencia máxima en valores propios: %s; en cargas: %s.\n",
+            format(max(abs(rc$eigenvalues[, "eigen"] - vp)), digits = 2),
+            format(max(abs(abs(rc$coord$var) - abs(cargas))), digits = 2)))
+```
+
+```{r b3-rcamiz-omitido, eval = !tiene_rcamiz, echo = FALSE, results = "asis"}
+# Se deja constancia visible cuando la verificación no puede ejecutarse
+cat("\n**Rcamiz no disponible: verificación no ejecutada.** El bloque anterior solo corre si el",
+    "paquete `Rcamiz` está instalado. El PCA usa la regla de signo determinística de Rcamiz",
+    "(`pca_basico`); su correspondencia con Rcamiz se verificó en el antecedente (17 series,",
+    "`data/results/07_rcamiz_*.csv`). La paridad con Python está en el anexo P.\n")
+```
+
+
+# 4. EPCA {#epca}
+
+**Pendiente.** Se calcula con 16 series cuando Roberto registre D17 (maxcl de la regla K, lectura
+del RV, aplicación de D13 a la regla del 06) en `decisiones.qmd`, con un commit anterior al primer
+resultado (criterio 18 de la adenda). Contenido previsto: `aede` en grilla, $\lambda$ por ventana,
+regla del 06 por ancho, nulo de estructura constante, criterio de OE4 y tabla de 2017-10. El
+antecedente con 17 series está en el documento de exploración (Anexo 3b).
+
+# 5. Clasificación Factorial Jerárquica (HFC) {#hfc}
+
+**Pendiente** (DR, después de D17): 3 y 4 clases, factores, representantes y bootstrap.
+
+# 6. Datación de regímenes {#datacion}
+
+**Pendiente** (DR, después de D17): PCA-MM12, grilla de maxcl × criterio, estabilidad de cortes y
+d ∈ {2, 3, 4}.
+
+# 7. Autoencoders y LSTM {#redes}
+
+**Pendiente** hasta reentrenar con 16 series (decisión R1 de la adenda, sin registrar). `torch` no
+está disponible en el entorno de la iteración 3b.
+
+# 8. Síntesis descriptiva {#sintesis}
+
+**Pendiente.** Sin conclusiones sobre la Parte C (regla 7).
+
+
+# Anexo R · Robustez con las series transformadas {#anexo-r}
+
+**Pendiente en este commit** (tarea DX, R.a).
+
+
+# Anexo P · Archivos de resultados y paridad con Python {-}
+
+Este documento escribe sus resultados de control en `r dir_final` (niveles) y en `r dir_anexo`
+(anexo de robustez). Cada `R_paridad_python.csv` compara las cifras de R con los CSV de Python de
+su carpeta e indica el archivo de origen. Si un CSV de Python todavía no existe (primer render,
+antes de los notebooks), la fila queda como «no» con la causa.
+
+```{r anexo-paridad}
+# ---- Paridad con Python -------------------------------------------------------
+fila_par <- function(via, seccion, criterio, valor_r, valor_py, archivo, dif = NA_real_, coincide) {
+  data.frame(via = via, seccion = seccion, criterio = criterio, valor_r = valor_r,
+             valor_python = valor_py, archivo_python = archivo, dif_max = dif,
+             coincide = if (coincide) "sí" else "no", stringsAsFactors = FALSE)
+}
+dir_via <- c(niveles = dir_final, transformadas = dir_anexo)
+leer_05 <- function(via, archivo) {
+  f <- file.path(dir_via[[via]], archivo)
+  if (file.exists(f)) read.csv(f, check.names = FALSE, stringsAsFactors = FALSE) else NULL
+}
+fila_num <- function(via, seccion, criterio, archivo, valor_r, f_py, tol, resumen = NULL) {
+  f <- file.path(dir_via[[via]], archivo)
+  py <- leer_05(via, archivo)
+  if (is.null(py)) return(fila_par(via, seccion, criterio, "—", "archivo ausente", f, NA_real_, FALSE))
+  vp <- tryCatch(f_py(py), error = function(e) NULL)
+  if (is.null(vp)) return(fila_par(via, seccion, criterio, "—", "columnas ausentes", f, NA_real_, FALSE))
+  # Diferencia relativa |R - Python| / max(1, |Python|): absoluta para valores de magnitud <= 1
+  # (cargas, cos², ACF, congruencias) y relativa para los grandes (χ², número de condición)
+  ok_forma <- length(vp) == length(valor_r) && !anyNA(vp) && !anyNA(valor_r)
+  dif <- if (ok_forma) max(abs(as.numeric(valor_r) - as.numeric(vp)) / pmax(1, abs(as.numeric(vp)))) else NA_real_
+  fila_par(via, seccion, criterio, if (is.null(resumen)) paste(num(head(valor_r, 5), 4), collapse = " ") else resumen,
+           if (ok_forma) paste(num(head(vp, 5), 4), collapse = " ") else "forma distinta", f, dif,
+           ok_forma && dif < tol)
+}
+fila_txt <- function(via, seccion, criterio, archivo, valor_r, f_py) {
+  f <- file.path(dir_via[[via]], archivo)
+  py <- leer_05(via, archivo)
+  if (is.null(py)) return(fila_par(via, seccion, criterio, "—", "archivo ausente", f, NA_real_, FALSE))
+  vp <- tryCatch(f_py(py), error = function(e) NULL)
+  if (is.null(vp)) return(fila_par(via, seccion, criterio, "—", "columnas ausentes", f, NA_real_, FALSE))
+  fila_par(via, seccion, criterio, paste(valor_r, collapse = " "), paste(vp, collapse = " "), f,
+           coincide = identical(as.character(valor_r), as.character(vp)))
+}
+cols_tend <- c("pendiente", "r2", "r_tiempo", "acf1_residuos", "acf12_residuos", "ljung_box_q12")
+cols_prueba <- c("adf_estadistico", "kpss_estadistico")
+por_clave <- function(py, clave, valores) py[match(valores, py[[clave]]), , drop = FALSE]
+ser <- colnames(X)
+adec_r <- c(adec_niv$bartlett_n$estadistico, adec_niv$bartlett_n$gl, adec_niv$kmo$global, adec_niv$num_condicion,
+            adec_niv$log_det, adec_niv$n_ef_mediana, unname(adec_niv$kmo$por_variable[ser]))
+ic_v <- apply(boot_L$L24$cargas, c(2, 3), quantile, probs = c(0.05, 0.95))
+rc_niv <- resumen_congruencia(boot_L); rv_niv <- resumen_vp(boot_L)
+sec <- "PCA mensual (05)"
+par_niv <- rbind(
+  fila_num("niveles", sec, paste0("Valores propios d = 1..", p), "05_pca_valores_propios.csv", vp,
+           function(py) py$valor_propio, 1e-10),
+  fila_num("niveles", sec, paste(p, "×", p, "cargas (regla de signo de Rcamiz)"), "05_pca_cargas.csv", as.vector(cargas),
+           function(py) as.vector(as.matrix(por_clave(py, "serie", ser)[, paste0("PC", 1:p)])), 1e-10),
+  fila_num("niveles", "cos² (apunte 1)", "cos² ejes 1-4, suma 1-3 y planos 1-2 y 1-3; suma de los p ejes = 1 (1e-12)", "05_pca_cos2.csv",
+           c(as.vector(cos2[, 1:4]), rowSums(cos2[, 1:3]), rowSums(cos2[, 1:2]), cos2[, 1] + cos2[, 3]),
+           function(py) { q <- por_clave(py, "serie", ser); stopifnot(max(abs(q$suma_total - 1)) < 1e-12)
+             c(q$cos2_1, q$cos2_2, q$cos2_3, q$cos2_4, q$suma_1_3, q$plano_1_2, q$plano_1_3) }, 1e-10),
+  fila_txt("niveles", sec, "Componentes retenidos por Horn (excepción de generadores: se compara el número, no el umbral)",
+           "05_pca_retencion.csv", k_horn, function(py) py$componentes[py$criterio == "horn"]),
+  fila_txt("niveles", sec, "Kaiser, vara quebrada, 70 % y 80 % de inercia", "05_pca_retencion.csv",
+           c(k_kaiser, k_vara, k_70, k_80),
+           function(py) py$componentes[match(c("kaiser", "vara_quebrada", "inercia_70", "inercia_80"), py$criterio)]),
+  fila_num("niveles", "ACF (apunte 3)", "ACF rezagos 1, 3, 6, 12, 24 (stats::acf)", "05_acf.csv", as.vector(acf_niv),
+           function(py) as.vector(as.matrix(por_clave(py, "serie", ser)[, colnames(acf_niv)])), 1e-10),
+  fila_num("niveles", "n efectivo (apunte 3)", paste("n_ef de los", nrow(nef_niv), "pares (n_ef <= n en todos)"), "05_n_efectivo.csv",
+           { stopifnot(all(nef_niv$n_ef <= nef_niv$n)); nef_niv$n_ef },
+           function(py) { q <- py[py$version == "original", ]
+             q$n_ef[match(paste(nef_niv$serie_a, nef_niv$serie_b), paste(q$serie_a, q$serie_b))] }, 1e-8),
+  fila_num("niveles", "n efectivo (apunte 3)", "n_ef de los pares sin tendencia lineal", "05_n_efectivo.csv", nef_niv_det$n_ef,
+           function(py) { q <- py[py$version == "sin_tendencia", ]
+             q$n_ef[match(paste(nef_niv_det$serie_a, nef_niv_det$serie_b), paste(q$serie_a, q$serie_b))] }, 1e-8),
+  fila_num("niveles", "KMO y Bartlett (apunte 4)", "χ², gl, KMO global, condición, ln|R|, mediana n_ef y KMO por serie",
+           "05_adecuacion.csv", adec_r,
+           function(py) { g <- function(m) py$valor[py$ambito == "global" & py$medida == m]
+             c(g("bartlett_chi2_n"), g("bartlett_gl"), g("kmo_global"), g("num_condicion"), g("log_det"), g("n_ef_mediana"),
+               py$valor[py$medida == "kmo_individual"][match(ser, py$ambito[py$medida == "kmo_individual"])]) }, 1e-8,
+           resumen = paste("χ²", num(adec_r[1], 1), "· KMO", num(adec_r[3], 4))),
+  fila_num("niveles", "Bootstrap (apunte 5)", "Congruencia mediana, p5, mínimo y valor propio emparejado p5/p95; L = 12, 24, 36",
+           "05_bootstrap_congruencia.csv", as.vector(as.matrix(rc_niv[, -(1:2)])),
+           function(py) { q <- py[match(paste(rc_niv$L, rc_niv$componente), paste(py$L, py$componente)), ]
+             as.vector(as.matrix(q[, names(rc_niv)[-(1:2)]])) }, 1e-10),
+  fila_num("niveles", "Bootstrap (apunte 5)", "Valores propios ordenados λ1-λ6: p5, mediana, p95, P(λ > 1), p5 de la brecha; L = 12, 24, 36",
+           "05_bootstrap_valores_propios.csv", as.vector(as.matrix(rv_niv[, -(1:2)])),
+           function(py) { q <- py[match(paste(rv_niv$L, rv_niv$componente), paste(py$L, py$componente)), ]
+             as.vector(as.matrix(q[, names(rv_niv)[-(1:2)]])) }, 1e-10),
+  fila_num("niveles", "Bootstrap (apunte 5)", "Intervalos p5-p95 de las cargas PC1-PC4 (L = 24)", "05_bootstrap_cargas.csv",
+           as.vector(ic_v),
+           function(py) { q <- py[py$L == 24, ]
+             key <- function(k, s) paste(k, s)
+             lo <- q$p5[match(key(rep(1:K, each = p), rep(ser, K)), key(q$componente, q$serie))]
+             hi <- q$p95[match(key(rep(1:K, each = p), rep(ser, K)), key(q$componente, q$serie))]
+             as.vector(rbind(lo, hi)) }, 1e-10),
+  fila_num("niveles", "Dimensión (D9)", "d = 2, 3, 4: inercia, λd, brechas, vara quebrada, congruencia y calidad", "05_pca_dimension.csv",
+           as.vector(as.matrix(dim_tab[, setdiff(names(dim_tab), c("d", "supera_vara"))])),
+           function(py) { q <- py[match(dim_tab$d, py$d), ]; as.vector(as.matrix(q[, setdiff(names(dim_tab), c("d", "supera_vara"))])) }, 1e-10),
+  fila_txt("niveles", "Dimensión (D9)", "d = 2, 3, 4: ¿la componente d supera a la vara quebrada?", "05_pca_dimension.csv",
+           dim_tab$supera_vara, function(py) as.logical(py$supera_vara[match(dim_tab$d, py$d)])),
+  fila_num("niveles", "Tendencia y residuos (apunte 11)", "PC1-PC4: pendiente, R², r(t), ACF 1 y 12, Ljung-Box", "05_pca_tendencia_componentes.csv",
+           as.vector(as.matrix(tend_pc[, cols_tend])),
+           function(py) as.vector(as.matrix(por_clave(py, "nombre", tend_pc$nombre)[, cols_tend])), 1e-8),
+  fila_num("niveles", "Tendencia y residuos (apunte 11)", "PC1-PC4: estadísticos ADF y KPSS de los residuos (tseries frente a statsmodels)",
+           "05_pca_tendencia_componentes.csv", as.vector(as.matrix(tend_pc[, cols_prueba])),
+           function(py) as.vector(as.matrix(por_clave(py, "nombre", tend_pc$nombre)[, cols_prueba])), 1e-6),
+  fila_txt("niveles", "Tendencia y residuos (apunte 11)", "PC1-PC4: clase D5", "05_pca_tendencia_componentes.csv",
+           tend_pc$clase_d5, function(py) por_clave(py, "nombre", tend_pc$nombre)$clase_d5),
+  fila_num("niveles", "Tendencia y residuos (apunte 11)", paste(p, "series: pendiente, R², r(t), ACF 1 y 12, Ljung-Box"), "05_tendencia_series.csv",
+           as.vector(as.matrix(tend_series[, cols_tend])),
+           function(py) as.vector(as.matrix(por_clave(py, "nombre", tend_series$nombre)[, cols_tend])), 1e-8),
+  fila_num("niveles", "Tendencia y residuos (apunte 11)", paste(p, "series: estadísticos ADF y KPSS de los residuos"), "05_tendencia_series.csv",
+           as.vector(as.matrix(tend_series[, cols_prueba])),
+           function(py) as.vector(as.matrix(por_clave(py, "nombre", tend_series$nombre)[, cols_prueba])), 1e-6),
+  fila_txt("niveles", "Tendencia y residuos (apunte 11)", paste(p, "series: clase D5"), "05_tendencia_series.csv",
+           tend_series$clase_d5, function(py) por_clave(py, "nombre", tend_series$nombre)$clase_d5),
+  fila_num("niveles", "Nulo mixto (D8)", "Media, error estándar HAC (12 rezagos) y t de la deriva de cada serie", "05_tendencia_series.csv",
+           as.vector(as.matrix(tend_series[, c("deriva_media", "deriva_hac_se", "deriva_hac_t")])),
+           function(py) as.vector(as.matrix(por_clave(py, "nombre", tend_series$nombre)[, c("deriva_media", "deriva_hac_se", "deriva_hac_t")])), 1e-10),
+  fila_txt("niveles", "Nulo mixto (D8)", "Tratamiento de cada serie (indeterminadas como TS y como DS)", "05_tendencia_series.csv",
+           c(tend_series$tratamiento_ind_ts, tend_series$tratamiento_ind_ds),
+           function(py) { q <- por_clave(py, "nombre", tend_series$nombre); c(q$tratamiento_ind_ts, q$tratamiento_ind_ds) }))
+
+# Nulo de tendencias: resumen y simulaciones por réplica en formato largo (igual que el notebook 05)
+nulo_largo <- function(sims, obs, version) data.frame(version = version,
+  medida = c("inercia_pc1", "inercia_pc2", "inercia_pc3", "r_abs_medio"), observado = obs,
+  p50 = apply(sims, 2, quantile, 0.5), p95 = apply(sims, 2, quantile, 0.95), proporcion = pos_nulo_obs(sims, obs))
+sims_todas <- list(con_deriva = nulo_d, sin_deriva = nulo_0, sin_tendencia = nulo_st, mixto_ind_ts = nulo_m_ts, mixto_ind_ds = nulo_m_ds)
+obs_todas <- list(con_deriva = obs_nulo, sin_deriva = obs_nulo, sin_tendencia = obs_det, mixto_ind_ts = obs_nulo, mixto_ind_ds = obs_nulo)
+nulo_tab <- do.call(rbind, lapply(names(sims_todas), function(v) nulo_largo(sims_todas[[v]], obs_todas[[v]], v)))
+nulo_sims <- data.frame(version = rep(names(sims_todas), each = params$reps_nulo),
+                        replica = rep(seq_len(params$reps_nulo), length(sims_todas)),
+                        setNames(as.data.frame(do.call(rbind, sims_todas)), c("inercia_pc1", "inercia_pc2", "inercia_pc3", "r_abs_medio")))
+dims_r <- c(n, p)
+par_niv <- rbind(par_niv,
+  fila_num("niveles", "Nulo de tendencias (apunte 10; D8)", paste0("Medidas simuladas por réplica (", length(sims_todas), " versiones × ", params$reps_nulo, " × 4), índices compartidos"),
+           "05_nulo_simulaciones.csv", as.vector(as.matrix(nulo_sims[, 3:6])),
+           function(py) { q <- py[match(paste(nulo_sims$version, nulo_sims$replica), paste(py$version, py$replica)), ]
+             as.vector(as.matrix(q[, names(nulo_sims)[3:6]])) }, 1e-10,
+           resumen = paste(nrow(nulo_sims), "filas")),
+  fila_num("niveles", "Nulo de tendencias (apunte 10; D8)", "Observado, p50, p95 y proporción por versión y medida (incluido el mixto)", "05_nulo_tendencias.csv",
+           as.vector(as.matrix(nulo_tab[, 3:6])),
+           function(py) { q <- py[match(paste(nulo_tab$version, nulo_tab$medida), paste(py$version, py$medida)), ]
+             as.vector(as.matrix(q[, names(nulo_tab)[3:6]])) }, 1e-10),
+  fila_num("niveles", "Sin tendencia (apunte 10)", "Inercia, KMO, χ², ln|R|, condición y congruencias por versión", "05_pca_contraste_tendencia.csv",
+           contraste_tend$valor,
+           function(py) py$valor[match(paste(contraste_tend$version, contraste_tend$medida, contraste_tend$componente),
+                                       paste(py$version, py$medida, ifelse(is.na(py$componente), NA, py$componente)))], 1e-10),
+  fila_num("niveles", "Dimensiones (05)", paste0("n y p de la vía en niveles (", n, " × ", p, ")"), "05_dimensiones.csv", dims_r,
+           function(py) c(py$n[py$via == "niveles"], py$p[py$via == "niveles"]), 0.5))
+
+# ---- Archivos de resultados (índices compartidos y cifras para la paridad) -------
+escribir_inicios <- function(ini, archivo) {
+  d <- data.frame(replica = seq_len(nrow(ini)), ini); names(d)[-1] <- paste0("inicio_", seq_len(ncol(ini)))
+  write.csv(d, archivo, row.names = FALSE)
+}
+for (L in largos_bloque) escribir_inicios(inicios_boot[[paste0("L", L)]], file.path(dir_final, sprintf("R_bootstrap_indices_L%d.csv", L)))
+ini_nulo <- data.frame(replica = rep(seq_len(params$reps_nulo), each = p), serie = rep(seq_len(p), params$reps_nulo),
+                       matrix(aperm(inicios_nulo, c(3, 2, 1)), ncol = m_bloques_nulo, byrow = TRUE))
+names(ini_nulo)[-(1:2)] <- paste0("inicio_", seq_len(m_bloques_nulo))
+write.csv(ini_nulo, file.path(dir_final, "R_nulo_indices.csv"), row.names = FALSE)
+write.csv(nulo_tab, file.path(dir_final, "R_nulo_tendencias.csv"), row.names = FALSE)
+write.csv(nulo_sims, file.path(dir_final, "R_nulo_simulaciones.csv"), row.names = FALSE)
+write.csv(contraste_tend, file.path(dir_final, "R_pca_contraste_tendencia.csv"), row.names = FALSE)
+adec_largo <- function(a, ser) rbind(
+  data.frame(ambito = "global", medida = c("n", "n_ef_mediana", "bartlett_chi2_n", "bartlett_gl", "bartlett_p_n",
+                                           "bartlett_chi2_nef", "bartlett_p_nef", "kmo_global", "num_condicion", "log_det"),
+             valor = c(a$n, a$n_ef_mediana, a$bartlett_n$estadistico, a$bartlett_n$gl, a$bartlett_n$p_valor,
+                       a$bartlett_nef$estadistico, a$bartlett_nef$p_valor, a$kmo$global, a$num_condicion, a$log_det)),
+  data.frame(ambito = ser, medida = "kmo_individual", valor = unname(a$kmo$por_variable[ser])))
+write.csv(adec_largo(adec_niv, colnames(X)), file.path(dir_final, "R_adecuacion.csv"), row.names = FALSE)
+write.csv(rc_niv, file.path(dir_final, "R_bootstrap_congruencia.csv"), row.names = FALSE)
+write.csv(rv_niv, file.path(dir_final, "R_bootstrap_valores_propios.csv"), row.names = FALSE)
+write.csv(tend_pc, file.path(dir_final, "R_tendencia_componentes.csv"), row.names = FALSE)
+write.csv(tend_series, file.path(dir_final, "R_tendencia_series.csv"), row.names = FALSE)
+write.csv(dim_tab, file.path(dir_final, "R_pca_dimension.csv"), row.names = FALSE)
+write.csv(par_niv, file.path(dir_final, "R_paridad_python.csv"), row.names = FALSE)
+# Criterio 16 de la adenda: ningún CSV de la carpeta final contiene la columna o la serie excluida
+nombres_excluidos <- c(params$excluidas, meta$nombre_corto[meta$columna %in% params$excluidas])
+for (f in list.files(dir_final, pattern = "\\.csv$", full.names = TRUE)) {
+  txt <- readLines(f, warn = FALSE, encoding = "UTF-8")
+  stopifnot(!any(vapply(nombres_excluidos, function(s) any(grepl(s, txt, fixed = TRUE)), logical(1))))
+}
+knitr::kable(par_niv[, c("via", "seccion", "criterio", "archivo_python", "dif_max", "coincide")],
+             row.names = FALSE, caption = paste("Paridad R–Python. Escrito en", file.path(dir_final, "R_paridad_python.csv"), "."))
+```
+
+::: {.lectura}
+`r sum(par_niv$coincide == "sí")` de `r nrow(par_niv)` comprobaciones de paridad coinciden`r if (any(par_niv$coincide == "no")) paste0("; difieren: ", paste(with(par_niv, paste(via, seccion, criterio, sep = " · ")[coincide == "no"]), collapse = "; ")) else ""`.
+:::
+
+```{r anexo-locale, include = FALSE}
+# Se restaura el LC_CTYPE con que se llamó al render (relevante si se renderiza desde una
+# sesión interactiva de R; con Rscript el cambio no sale del proceso)
+if (!identical(Sys.getlocale("LC_CTYPE"), locale_previo)) invisible(suppressWarnings(Sys.setlocale("LC_CTYPE", locale_previo)))
+```

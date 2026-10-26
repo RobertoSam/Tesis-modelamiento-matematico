@@ -91,7 +91,7 @@ def _medidas_nulo(M, p):
     return np.concatenate([100 * e[:3] / p, [np.mean(np.abs(R[iu]))]])
 
 
-def nulo_tendencias(X, inicios, largo=12, version='con_deriva'):
+def nulo_tendencias(X, inicios, largo=12, version='con_deriva', tratamiento=None):
     """
     Nulo de tendencias independientes (chunk `b2s-nulo` del Rmd).
 
@@ -101,20 +101,38 @@ def nulo_tendencias(X, inicios, largo=12, version='con_deriva'):
       - 'con_deriva': incrementos tal cual (cada serie conserva su crecimiento medio);
       - 'sin_deriva': se resta antes el incremento medio de la serie;
       - 'sin_tendencia': como 'con_deriva', y luego se quita a cada serie simulada su tendencia
-        lineal, igual que a las series observadas en el diagnóstico sin tendencia (D5).
+        lineal, igual que a las series observadas en el diagnóstico sin tendencia (D5);
+      - 'mixto' (D8): cada serie según `tratamiento[j]` ∈ {'TS', 'con_deriva', 'sin_deriva'}
+        (ver `series_tiempo.tratamiento_mixto`). Una serie 'TS' se simula como su recta MCO más
+        sus residuos remuestreados en bloques con los **mismos inicios** (los inicios caben en
+        las n filas porque se sortearon para n − 1 incrementos); las otras, como arriba.
     Devuelve una matriz réplicas × 4 (inercia PC1, PC2, PC3 y |r| medio).
     """
     X = np.asarray(X, dtype=float)
     D = np.diff(X, axis=0)
     nd, p = D.shape
     medias = D.mean(axis=0)
+    if version == 'mixto':
+        assert tratamiento is not None and len(tratamiento) == p
+        assert set(tratamiento) <= {'TS', 'con_deriva', 'sin_deriva'}
+        n = nd + 1
+        t = np.arange(1, n + 1, dtype=float)
+        A = np.column_stack([np.ones(n), t])
+        coef, *_ = np.linalg.lstsq(A, X, rcond=None)
+        rectas = A @ coef
+        residuos = X - rectas
+    else:
+        tratamiento = [version if version in ('con_deriva', 'sin_deriva') else 'con_deriva'] * p
     reps = inicios.shape[0]
     sims = np.empty((reps, 4))
     for r in range(reps):
         M = np.empty((nd + 1, p))
         for j in range(p):
+            if tratamiento[j] == 'TS':
+                M[:, j] = rectas[:, j] + residuos[indices_desde_inicios(inicios[r, j], largo, nd + 1), j]
+                continue
             d = D[indices_desde_inicios(inicios[r, j], largo, nd), j]
-            if version == 'sin_deriva':
+            if tratamiento[j] == 'sin_deriva':
                 d = d - medias[j]
             M[:, j] = np.concatenate([[0.0], np.cumsum(d)])
         if version == 'sin_tendencia':

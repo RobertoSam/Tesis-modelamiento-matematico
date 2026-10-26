@@ -82,10 +82,9 @@ def test_sin_fechas_de_episodio_a_mano_en_consumidores_vigentes():
     meses |= {f[:7] for par in FECHAS_ANTIGUAS.values() for f in par}
     meses |= {'2008-07', '2013-04', '2020-01', '2020-09', '2016-03', '2016-07'}   # 06a y 06b
     patron = re.compile('|'.join(re.escape(m) for m in sorted(meses)))
-    fuentes = {'notebooks/modelos_dl.py': open(os.path.join(RAIZ, 'notebooks/modelos_dl.py'), encoding='utf-8').read()}
-    final = os.path.join(RAIZ, 'R', 'ciclo_financiero_final.Rmd')
-    if os.path.exists(final):
-        fuentes['R/ciclo_financiero_final.Rmd'] = open(final, encoding='utf-8').read()
+    fuentes = {'notebooks/modelos_dl.py': open(os.path.join(RAIZ, 'notebooks/modelos_dl.py'), encoding='utf-8').read(),
+               'notebooks/05_pca.ipynb': _codigo_notebook(os.path.join(RAIZ, 'notebooks/05_pca.ipynb')),
+               'R/ciclo_financiero_final.Rmd': open(os.path.join(RAIZ, 'R', 'ciclo_financiero_final.Rmd'), encoding='utf-8').read()}
     for nombre in os.listdir(os.path.join(RAIZ, 'src')):
         if nombre.endswith('.py'):
             fuentes[f'src/{nombre}'] = open(os.path.join(RAIZ, 'src', nombre), encoding='utf-8').read()

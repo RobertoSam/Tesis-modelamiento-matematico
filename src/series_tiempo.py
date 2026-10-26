@@ -168,3 +168,44 @@ def quitar_tendencia(X):
     A = np.column_stack([np.ones(n), np.arange(1, n + 1, dtype=float)])
     coef, *_ = np.linalg.lstsq(A, X, rcond=None)
     return X - A @ coef
+
+
+# ---- Deriva de una serie integrada (nulo mixto, decisión D8, 24-oct-2026) --------------
+HAC_REZAGOS = 12       # rezagos del estimador de Newey-West (D8)
+UMBRAL_DERIVA = 2.0    # |t| HAC > 2: la serie DS se simula con deriva (D8)
+
+
+def t_hac_media(d, rezagos=HAC_REZAGOS):
+    """
+    Estadístico t de la media de los incrementos `d` con error estándar HAC de Newey y West
+    (1987) [VERIFICAR: ficha newey_west_1987 con orden de autores y DOI pendientes; los 12
+    rezagos y el umbral |t| > 2 son elecciones de la tesis (D8)].
+
+        γ_k = (1/n) Σ_{t=k+1}^{n} (d_t − d̄)(d_{t−k} − d̄),
+        Ω   = γ_0 + 2 Σ_{k=1}^{L} (1 − k/(L+1)) γ_k      (núcleo de Bartlett, L = rezagos),
+        t   = d̄ / sqrt(Ω / n).
+
+    Sin corrección por grados de libertad. Devuelve (media, error estándar, t).
+    """
+    d = np.asarray(d, dtype=float)
+    n = len(d)
+    u = d - d.mean()
+    omega = np.sum(u * u) / n
+    for k in range(1, rezagos + 1):
+        omega += 2 * (1 - k / (rezagos + 1)) * np.sum(u[k:] * u[:-k]) / n
+    se = float(np.sqrt(omega / n))
+    return float(d.mean()), se, float(d.mean() / se)
+
+
+def tratamiento_mixto(clase_d5, t_hac, indeterminada_como):
+    """
+    Regla del nulo mixto (D8), fijada antes de calcular:
+      - TS → 'TS' (recta más residuos remuestreados);
+      - DS → 'con_deriva' si |t| HAC > 2, 'sin_deriva' en otro caso;
+      - indeterminada → se informa con las dos variantes: `indeterminada_como` = 'TS' o 'DS'.
+    """
+    assert indeterminada_como in ('TS', 'DS')
+    clase = clase_d5 if clase_d5 != 'indeterminada' else indeterminada_como
+    if clase == 'TS':
+        return 'TS'
+    return 'con_deriva' if abs(t_hac) > UMBRAL_DERIVA else 'sin_deriva'
