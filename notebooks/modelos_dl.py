@@ -526,15 +526,15 @@ def particion_fisher(Y, k_max=8, tam_min=6):
 # 9. Episodios de referencia para validación externa
 # =============================================================================
 
-# Fechas de referencia de episodios de estrés conocidos. Se usan SOLO para
-# validar ex post (nunca como insumo del entrenamiento). Las fechas son
-# aproximaciones a nivel de mes y deben sustentarse con fuente en el marco
-# teórico antes de publicarse como resultado.
-# [VERIFICAR: fuente externa para fechar el episodio] Ninguna de las tres fechas cita aún una
-# fuente externa con ficha en papers/ (los episodios se fechan con fuentes externas, nunca a
-# partir de las propias series).
-EPISODIOS_REFERENCIA = {
-    'Crisis financiera global': ('2008-09-01', '2009-06-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
-    'Taper tantrum':            ('2013-05-01', '2013-12-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
-    'COVID-19':                 ('2020-03-01', '2020-12-01'),  # [VERIFICAR: fuente externa para fechar el episodio]
-}
+# Episodios de referencia. Se usan SOLO para validar ex post (nunca como insumo del
+# entrenamiento). Desde la tarea D9 de la iteración 3b (decisión D7) se leen del archivo único
+# data/referencia/episodios_referencia.csv, con fechas de eventos o anuncios externos y fuente
+# fichada; un episodio puntual (sin fin con fuente) se representa con fin = inicio. Las fechas
+# anteriores (escritas a mano, sin fuente) se conservan en el tag v0.4-17series-dos-vias.
+# Este módulo no se ejecutó tras el cambio (torch no está disponible en el entorno de 3b).
+import sys as _sys
+_RAIZ_REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _RAIZ_REPO not in _sys.path:
+    _sys.path.insert(0, _RAIZ_REPO)
+from src.episodios import cargar_episodios as _cargar_episodios, diccionario_episodios as _dic_episodios
+EPISODIOS_REFERENCIA = _dic_episodios(_cargar_episodios(_RAIZ_REPO))
