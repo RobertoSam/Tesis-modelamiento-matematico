@@ -1929,7 +1929,185 @@ está disponible en el entorno de la iteración 3b.
 
 # Anexo R · Robustez con las series transformadas {#anexo-r}
 
-**Pendiente en este commit** (tarea DX, R.a).
+Por D15, las series transformadas (log-diferencias para saldos e índices y diferencias simples para
+tasas y spread, como en el notebook `04`) pasan a este anexo. Contiene (R.a) el **sustento de no
+diferenciar**: qué paso de la transformación cambia la estructura, qué hace la diferencia con las
+frecuencias del ciclo y qué deja en primer plano; y (R.b) la detección de episodios fuera de
+muestra, que **queda pendiente** hasta que se registre D17 (necesita el error *walk-forward* del PCA
+con 16 series). Las salidas van en `r dir_anexo`.
+
+```{r ra-datos}
+# Las mismas series que la sección 2, transformadas (notebook 04), en el mismo orden de columnas
+tr <- cargar_transformado()
+verificar_calendario(tr)
+cols_tr <- setdiff(names(tr), "fecha")
+base_tr <- sub("_log_diff$|_diff$", "", cols_tr)
+stopifnot(setequal(base_tr, meta$columna[meta$columna %in% base_tr]), all(meta_an$columna %in% base_tr))
+Xt <- as.matrix(tr[, cols_tr[match(meta_an$columna, base_tr)]]); colnames(Xt) <- colnames(X)
+fechas_t <- tr$fecha
+nt <- nrow(Xt)
+stopifnot(nt == 227, ncol(Xt) == p, format(min(fechas_t), "%Y-%m") == "2007-02",
+          format(max(fechas_t), "%Y-%m") == "2025-12", !anyNA(Xt))
+# Las transformadas del notebook 04 se reconstruyen exactamente desde los niveles
+dif_transf <- max(sapply(seq_len(p), function(j) {
+  x <- X[, j]
+  r <- if (meta_an$transformacion[j] == "log-diferencia") diff(log(x)) else diff(x)
+  max(abs(r - Xt[, j]))
+}))
+stopifnot(dif_transf < 1e-8)
+```
+
+Las series transformadas (`r nt` meses, de `r format(min(fechas_t), "%m/%Y")` a
+`r format(max(fechas_t), "%m/%Y")`, porque al diferenciar se pierde el primer mes) se leen de
+`data/processed/dataset_transformado_mensual.csv`. Recalculadas en R desde los niveles, la diferencia
+máxima con ese archivo es `r format(dif_transf, digits = 2)`.
+
+## R.a.1 Qué paso cambia la estructura: el logaritmo o la diferencia
+
+La transformación tiene dos pasos (logaritmo y diferencia) que se justifican de forma distinta. Se
+calcula el PCA con cuatro versiones de las mismas series: sin transformar, solo con logaritmo (en
+las series que la transformación lleva a log-diferencia), solo con la diferencia simple (en todas)
+y con la transformación completa.
+
+```{r ra-pasos}
+logX <- X
+for (j in seq_len(p)) if (meta_an$transformacion[j] == "log-diferencia") logX[, j] <- log(X[, j])
+version_pca <- function(M) {
+  Zm <- estandarizar(M); pm <- pca_basico(Zm)
+  list(inercia = 100 * pm$valores / ncol(M), cargas = sweep(pm$vectores, 2, sqrt(pm$valores), "*"),
+       horn = horn(Zm, n_sim = 500, semilla = params$semilla)$retener,
+       r_t = cor(pm$scores[, 1], seq_len(nrow(M))))
+}
+versiones <- list(sin_transformar = X, solo_logaritmo = logX, solo_diferencia = apply(X, 2, diff), log_diferencia = Xt)
+nombres_versiones <- c(sin_transformar = "Sin transformar", solo_logaritmo = "Solo logaritmo",
+                       solo_diferencia = "Solo diferencia simple", log_diferencia = "Log-diferencia (transformación completa)")
+vers <- lapply(versiones, version_pca)
+cong_niv <- function(v) sapply(1:3, function(k) max(abs(sapply(1:6, function(j) tucker(vers[[1]]$cargas[, k], v$cargas[, j])))))
+pasos_tab <- do.call(rbind, lapply(names(vers), function(v) rbind(
+  data.frame(version = v, medida = "inercia", componente = 1:4, valor = vers[[v]]$inercia[1:4]),
+  data.frame(version = v, medida = "horn_retenidas", componente = NA, valor = vers[[v]]$horn),
+  data.frame(version = v, medida = "r_pc1_tiempo_abs", componente = NA, valor = abs(vers[[v]]$r_t)),
+  data.frame(version = v, medida = "congruencia_con_sin_transformar", componente = 1:3, valor = cong_niv(vers[[v]])))))
+knitr::kable(data.frame(
+  Versión = nombres_versiones[names(vers)],
+  `Inercia PC1 (%)` = sapply(vers, function(v) num(v$inercia[1], 1)),
+  `Inercia 3 PC (%)` = sapply(vers, function(v) num(sum(v$inercia[1:3]), 1)),
+  `Horn (500 simulaciones)` = sapply(vers, `[[`, "horn"),
+  `Correlación PC1–tiempo` = sapply(vers, function(v) num(abs(v$r_t), 2)),
+  `Congruencia con PC1, PC2, PC3 sin transformar` = sapply(vers, function(v) paste(num(cong_niv(v), 2), collapse = " / ")),
+  check.names = FALSE), row.names = FALSE,
+  caption = "Congruencia de Tucker con la componente más parecida entre las seis primeras (valor absoluto). La versión «solo diferencia simple» aplica Δx a todas las series.")
+```
+
+::: {.lectura}
+Con solo logaritmo, las tres primeras componentes tienen congruencia
+`r paste(num(cong_niv(vers$solo_logaritmo), 2), collapse = ", ")` con las de las series sin
+transformar; con solo la diferencia, `r paste(num(cong_niv(vers$solo_diferencia), 2), collapse = ", ")`, y con
+la transformación completa, `r paste(num(cong_niv(vers$log_diferencia), 2), collapse = ", ")`. La inercia
+del PC1 es `r num(vers$sin_transformar$inercia[1], 1)` % sin transformar,
+`r num(vers$solo_logaritmo$inercia[1], 1)` % con solo logaritmo y
+`r num(vers$solo_diferencia$inercia[1], 1)` % y `r num(vers$log_diferencia$inercia[1], 1)` % con la
+diferencia (sin y con logaritmo).
+:::
+
+## R.a.2 Lo que la diferencia hace con las frecuencias del ciclo
+
+Diferenciar es aplicar un filtro lineal: $\Delta x_t = x_t - x_{t-1} = (1 - L)\,x_t$. Una
+oscilación de período $P$ meses (frecuencia $\omega = 2\pi/P$) sale del filtro multiplicada en
+amplitud por su **ganancia**:
+
+$$
+G(\omega) = |1 - e^{-i\omega}| = 2 \sin(\omega / 2) = 2 \sin(\pi / P).
+$$
+
+Es un resultado exacto, que no depende de los datos. La tabla lo evalúa en los períodos que
+interesan a la tesis.
+
+```{r ra-ganancia}
+periodos <- c(6, 12, 24, 36, 60, 96, 120, 228, 360)
+ganancia <- 2 * sin(pi / periodos)
+ganancia_tab <- data.frame(periodo_meses = periodos, ganancia = ganancia, varianza_conservada = ganancia^2)
+knitr::kable(data.frame(`Período (meses)` = periodos, `Período (años)` = num(periodos / 12, 1),
+                        Ganancia = num(ganancia, 3), `Varianza que conserva (%)` = num(100 * ganancia^2, 2),
+                        check.names = FALSE), row.names = FALSE,
+             caption = "Ganancia del filtro de primera diferencia. Varianza que conserva = ganancia². 228 meses es la longitud de la muestra.")
+```
+
+```{r ra-g-ganancia, fig.height = 3.8}
+curva <- data.frame(P = exp(seq(log(2), log(400), length.out = 300)))
+curva$g <- 2 * sin(pi / curva$P)
+ggplot(curva, aes(P, g)) +
+  annotate("rect", xmin = 96, xmax = 360, ymin = -Inf, ymax = Inf, fill = gris_episodio, alpha = 0.8) +
+  annotate("text", x = 186, y = 1.75, label = "Ciclo financiero\n(8 a 30 años)", size = 3, color = "#52514e") +
+  geom_hline(yintercept = 1, color = "#9a9890", linetype = 3, linewidth = 0.3) +
+  geom_line(color = color_serie, linewidth = 0.9) +
+  scale_x_log10(breaks = c(2, 6, 12, 24, 60, 96, 228, 360)) +
+  labs(x = "Período de la oscilación (meses, escala log)", y = "Ganancia de Δ",
+       title = "Ganancia de la primera diferencia según el período de la oscilación",
+       subtitle = "Ganancia 1: la oscilación pasa sin cambios. Sobre 1: se amplifica (períodos menores a 6 meses).") +
+  tema_tesis()
+```
+
+La banda gris marca el rango de 8 a 30 años con que Drehmann, Borio y Tsatsaronis (2012) describen
+la duración del ciclo financiero; el gráfico solo la ubica sobre la curva.
+
+```{r ra-espectro}
+# Parte de la varianza de cada serie en oscilaciones de 2 años o más (periodograma sin ventana,
+# spec.pgram con su relleno por defecto hasta nextn(n): frecuencias k / nextn(n))
+frac_lenta <- function(x, P_min = 24) {
+  f <- spec.pgram(x - mean(x), taper = 0, detrend = FALSE, plot = FALSE)
+  sum(f$spec[1 / f$freq >= P_min]) / sum(f$spec)
+}
+espectro <- data.frame(serie = colnames(X),
+                       niv = apply(X, 2, frac_lenta),
+                       niv_det = apply(X, 2, function(x) frac_lenta(resid(lm(x ~ seq_along(x))))),
+                       tr = apply(Xt, 2, frac_lenta))
+knitr::kable(data.frame(Serie = espectro$serie,
+                        `Sin transformar (%)` = num(100 * espectro$niv, 0),
+                        `Sin transformar, sin tendencia lineal (%)` = num(100 * espectro$niv_det, 0),
+                        `Transformadas (%)` = num(100 * espectro$tr, 0), check.names = FALSE),
+             row.names = FALSE, caption = "Porcentaje de la varianza en oscilaciones de 24 meses o más (periodograma sin ventana). La columna central retira solo una recta, para separar el efecto de la tendencia.")
+```
+
+::: {.lectura}
+Una oscilación de 8 años sale de la diferencia con `r num(100 * (2 * sin(pi / 96))^2, 1)` % de
+su varianza; una de 1 año, con `r num(100 * (2 * sin(pi / 12))^2, 0)` %. En estos datos, la
+mediana de la varianza en oscilaciones de dos años o más es
+`r num(100 * median(espectro$niv_det), 0)` % sin transformar (después de retirar una recta) y
+`r num(100 * median(espectro$tr), 0)` % en las series transformadas.
+:::
+
+## R.a.3 Lo que la diferencia deja en primer plano: estacionalidad residual
+
+```{r ra-estacional}
+acf_k <- function(x, k) acf(x, lag.max = 12, plot = FALSE)$acf[k + 1]
+estac_t <- data.frame(serie = colnames(Xt), acf1 = apply(Xt, 2, acf_k, k = 1), acf12 = apply(Xt, 2, acf_k, k = 12))
+umbral_acf <- 2 / sqrt(nt)
+estac_o <- estac_t[order(-estac_t$acf12), ]
+knitr::kable(data.frame(Serie = estac_o$serie, `ACF a 1 mes` = num(estac_o$acf1, 2), `ACF a 12 meses` = num(estac_o$acf12, 2),
+                        `Sobre ±2/√n` = ifelse(estac_o$acf12 > umbral_acf, "sí", "no"), check.names = FALSE),
+             row.names = FALSE, caption = paste0("Autocorrelación de las series transformadas a 1 y 12 meses. Banda aproximada ±2/√n = ", num(umbral_acf, 2), "."))
+```
+
+::: {.lectura}
+En las series transformadas, la autocorrelación a 12 meses supera la banda aproximada de ±2/√n
+(`r num(umbral_acf, 2)`) en `r sum(estac_t$acf12 > umbral_acf)` de `r p` series. La ganancia de la
+diferencia a 12 meses (`r num(2 * sin(pi / 12), 2)`) es `r num(sin(pi / 12) / sin(pi / 96), 1)` veces
+la de 8 años.
+:::
+
+::: {.pregunta}
+¿El indicador de demanda interna (PN01774AM) está desestacionalizado? Si no lo está, hay que decidir
+si se desestacionaliza antes del análisis (otra transformación que sustentar) o si se reemplaza.
+:::
+
+## R.b Detección de episodios fuera de muestra
+
+**Pendiente.** Se calcula con el error *walk-forward* del PCA con 16 series (sin `torch`), los
+episodios de `data/referencia/episodios_referencia.csv` y la tolerancia de D7, después de D17. La
+ruta sin `torch` ya está comprobada con 17 series (criterio 8 del plan: `tests/test_episodios.py`
+reproduce byte a byte `09_discriminacion_episodios.csv` con las fechas antiguas). Los resultados de
+AE y LSTM quedan como antecedente con 17 series (decisión R1 pendiente).
 
 
 # Anexo P · Archivos de resultados y paridad con Python {-}
@@ -2115,12 +2293,43 @@ for (f in list.files(dir_final, pattern = "\\.csv$", full.names = TRUE)) {
   txt <- readLines(f, warn = FALSE, encoding = "UTF-8")
   stopifnot(!any(vapply(nombres_excluidos, function(s) any(grepl(s, txt, fixed = TRUE)), logical(1))))
 }
-knitr::kable(par_niv[, c("via", "seccion", "criterio", "archivo_python", "dif_max", "coincide")],
-             row.names = FALSE, caption = paste("Paridad R–Python. Escrito en", file.path(dir_final, "R_paridad_python.csv"), "."))
+# ---- Anexo R.a: sustento de no diferenciar (notebook 05c) --------------------
+write.csv(pasos_tab, file.path(dir_anexo, "R_anexo_pasos.csv"), row.names = FALSE)
+write.csv(ganancia_tab, file.path(dir_anexo, "R_anexo_ganancia.csv"), row.names = FALSE)
+write.csv(espectro, file.path(dir_anexo, "R_anexo_espectro.csv"), row.names = FALSE)
+write.csv(estac_t, file.path(dir_anexo, "R_anexo_estacional.csv"), row.names = FALSE)
+clave_pasos <- function(t) paste(t$version, t$medida, ifelse(is.na(t$componente), "", t$componente))
+sin_horn <- pasos_tab$medida != "horn_retenidas"
+sa <- "Anexo R.a (05c)"
+par_anexo <- rbind(
+  fila_num("transformadas", sa, "Inercia PC1-PC4, |r(PC1, t)| y congruencias con PC1-PC3 sin transformar (4 versiones)",
+           "05c_pasos.csv", pasos_tab$valor[sin_horn],
+           function(py) py$valor[match(clave_pasos(pasos_tab[sin_horn, ]), clave_pasos(py))], 1e-10),
+  fila_txt("transformadas", sa, "Componentes retenidos por Horn en cada versión (excepción de generadores: se compara el número)",
+           "05c_pasos.csv", pasos_tab$valor[!sin_horn],
+           function(py) py$valor[match(clave_pasos(pasos_tab[!sin_horn, ]), clave_pasos(py))]),
+  fila_num("transformadas", sa, "Ganancia 2 sin(π/P) y varianza conservada", "05c_ganancia.csv",
+           c(ganancia_tab$ganancia, ganancia_tab$varianza_conservada),
+           function(py) { q <- py[match(ganancia_tab$periodo_meses, py$periodo_meses), ]; c(q$ganancia, q$varianza_conservada) }, 1e-14),
+  fila_num("transformadas", sa, "Varianza en períodos ≥ 24 meses (periodograma): sin transformar, sin tendencia y transformadas",
+           "05c_espectro.csv", c(espectro$niv, espectro$niv_det, espectro$tr),
+           function(py) { q <- por_clave(py, "serie", espectro$serie); c(q$niv, q$niv_det, q$tr) }, 1e-10),
+  fila_num("transformadas", sa, "ACF a 1 y 12 meses de las series transformadas", "05c_estacional.csv",
+           c(estac_t$acf1, estac_t$acf12),
+           function(py) { q <- por_clave(py, "serie", estac_t$serie); c(q$acf1, q$acf12) }, 1e-10))
+write.csv(par_anexo, file.path(dir_anexo, "R_paridad_python.csv"), row.names = FALSE)
+for (f in list.files(dir_anexo, pattern = "\\.csv$", full.names = TRUE)) {
+  txt <- readLines(f, warn = FALSE, encoding = "UTF-8")
+  stopifnot(!any(vapply(nombres_excluidos, function(s) any(grepl(s, txt, fixed = TRUE)), logical(1))))
+}
+par_todas <- rbind(par_niv, par_anexo)
+knitr::kable(par_todas[, c("via", "seccion", "criterio", "archivo_python", "dif_max", "coincide")],
+             row.names = FALSE, caption = paste("Paridad R–Python. Escrito en", file.path(dir_final, "R_paridad_python.csv"), "y",
+                                                file.path(dir_anexo, "R_paridad_python.csv"), "."))
 ```
 
 ::: {.lectura}
-`r sum(par_niv$coincide == "sí")` de `r nrow(par_niv)` comprobaciones de paridad coinciden`r if (any(par_niv$coincide == "no")) paste0("; difieren: ", paste(with(par_niv, paste(via, seccion, criterio, sep = " · ")[coincide == "no"]), collapse = "; ")) else ""`.
+`r sum(par_todas$coincide == "sí")` de `r nrow(par_todas)` comprobaciones de paridad coinciden`r if (any(par_todas$coincide == "no")) paste0("; difieren: ", paste(with(par_todas, paste(via, seccion, criterio, sep = " · ")[coincide == "no"]), collapse = "; ")) else ""`.
 :::
 
 ```{r anexo-locale, include = FALSE}
