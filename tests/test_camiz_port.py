@@ -160,3 +160,12 @@ def test_aede_anchos_cortos_contra_R(via):
             for crit, kk, cc in criterios:
                 f = ref[(ref.nw == nw) & (ref.maxcl == 10) & (ref.pesos == pesos) & (ref.criterio == crit)].iloc[0]
                 assert int(f.k) == r[kk] and f.cortes == " ".join(r[cc]), (via, nw, pesos, crit)
+
+
+# ---- Iteración 3b (D5): n efectivo de Kish de los pesos de aede ----------------------------
+
+def test_n_kish_de_los_pesos_de_aede():
+    from src.multivariado import n_kish
+    for nw in (24, 36, 48, 60):
+        assert n_kish(cp.pesos_aede(nw, 0)) == pytest.approx(nw, abs=1e-9)   # uniformes: n_omega = nw
+        assert n_kish(cp.pesos_aede(nw, 3)) < nw                             # otros pesos: n_omega < nw

@@ -111,6 +111,28 @@ def horn(X, n_sim=1000, percentil=0.95, semilla=42):
     return {'observados': obs, 'umbral': umbral, 'retener': retener}
 
 
+def umbral_horn(n, p, n_sim=1000, percentil=0.95, semilla=2026):
+    """Percentil de Horn de los valores propios con n observaciones gaussianas de p series.
+
+    Es el umbral de `horn` sin los valores observados (iteración 3b, D5: umbral por ventana con
+    n = ceil(n_omega) de Kish). Generador PCG64 de numpy: distinto del de R (excepción de
+    generadores de la iteración 3a).
+    """
+    rng = np.random.default_rng(semilla)
+    sims = np.empty((n_sim, p))
+    for b in range(n_sim):
+        G = rng.standard_normal((n, p))
+        sims[b] = np.sort(np.linalg.eigvalsh(np.corrcoef(G, rowvar=False)))[::-1]
+    return np.quantile(sims, percentil, axis=0)
+
+
+def n_kish(w):
+    """n efectivo de Kish de unos pesos: 1 / sum(w^2), con los pesos normalizados a suma 1."""
+    w = np.asarray(w, dtype=float)
+    w = w / w.sum()
+    return float(1 / np.sum(w ** 2))
+
+
 # ---- Comparación de configuraciones -----------------------------------------------------
 
 def tucker(a, b):

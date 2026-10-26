@@ -4766,6 +4766,97 @@ knitr::kable(rbind(tabla_aede_ancha(grilla_aede_niv$tabla, "sin transformar"), t
              caption = "Número de clases de Fisher sobre λ1 elegido por cada criterio. *: k en el tope (k = maxcl). Fechas de corte en R_aede_cortes.csv de cada vía.")
 ```
 
+## D5 · Valores propios por ventana frente a Kaiser y Horn (apunte 7, D14)
+
+Para cada ancho y esquema de pesos se registran λ1 a λ3 de cada ventana, el $n$ efectivo de
+Kish de los pesos, $n_\omega = 1/\sum_i \omega_i^2$ (con $\sum_i \omega_i = 1$), el umbral de
+Kaiser (1, por tratarse de matrices de correlación) y el percentil 95 de Horn para λ1 a λ3,
+simulado con $n = \lceil n_\omega \rceil$ observaciones gaussianas independientes de 17 series
+(1 000 simulaciones, semilla del documento). $n_\omega$ depende solo de los pesos, no de los
+datos: con pesos uniformes es igual a $n_w$. Para Horn rige la excepción de generadores de la
+iteración 3a: R y Python sortean con generadores distintos. Como con 1 000 simulaciones los
+umbrales de los dos generadores difieren hasta en unas centésimas y muchas ventanas quedan cerca
+del umbral, el Rmd escribe sus umbrales (`R_aede_horn_umbrales.csv`) y Python cuenta con ellos
+(umbral compartido, como los índices bootstrap de 3a); el umbral propio de Python se informa
+aparte. **Empates con Kaiser:** con $n_w = 24$ la tasa de referencia es constante en algunas
+ventanas (2011–2013); `aede` la deja aislada y uno de los valores propios es 1 salvo redondeo.
+Una ventana cuenta como «bajo Kaiser» si $\lambda < 1 - 10^{-9}$, y las que están a menos de
+$10^{-9}$ de 1 se cuentan aparte (`en_umbral_kaiser`). Un **cruce λ2 ↔ λ3** se registra cuando el
+eje 2 de una ventana es más congruente (Tucker, en valor absoluto) con el eje 3 de la ventana
+anterior que con su eje 2: es el intercambio de orden de los ejes que A.3 anticipaba en ventanas
+cortas.
+
+```{r b3b-valores-propios}
+kish <- function(w) { w <- w / sum(w); 1 / sum(w^2) }
+# ceiling con una holgura de 1e-9: con pesos uniformes n_omega = nw salvo por redondeo (1/sum(w^2))
+n_horn <- function(n_om) ceiling(n_om - 1e-9)
+umbral_horn <- function(n_h, pm, n_sim = 1000, semilla = params$semilla) {
+  set.seed(semilla)
+  sims <- t(replicate(n_sim, eigen(cor(matrix(rnorm(n_h * pm), n_h)), symmetric = TRUE, only.values = TRUE)$values))
+  apply(sims, 2, quantile, probs = 0.95)
+}
+cache_horn <- list()
+horn_n <- function(n_h) {
+  if (is.null(cache_horn[[as.character(n_h)]])) cache_horn[[as.character(n_h)]] <<- umbral_horn(n_h, p)
+  cache_horn[[as.character(n_h)]]
+}
+tol_kaiser <- 1e-9
+# Ventanas en que alguna serie es constante (desviación ponderada nula): aede la deja aislada
+constante_ventana <- function(a, Mf_via) {
+  nw <- length(a$weights)
+  sapply(seq_len(nrow(a$eigenvalues)), function(i) any(apply(Mf_via[i:(i + nw - 1), , drop = FALSE], 2, function(x) all(x == x[1]))))
+}
+valores_ventana <- function(grilla, Mf_via) {
+  vp_l <- list(); res_l <- list(); cr_l <- list()
+  for (nw in nw_grilla) for (pz in names(pesos_grilla)) {
+    a <- grilla$corridas[[paste(nw, pz)]]$a
+    ev <- a$eigenvalues; n_om <- kish(a$weights); n_h <- n_horn(n_om); hu <- horn_n(n_h)[1:3]
+    stopifnot(all(rowSums(ev) <= p + 1e-9), pz != "uniformes" || abs(n_om - nw) < 1e-9)
+    fv <- format(as.Date(rownames(ev)), "%Y-%m")
+    vp_l[[length(vp_l) + 1]] <- data.frame(fecha = fv, nw = nw, pesos = pz, lambda1 = ev[, 1], lambda2 = ev[, 2], lambda3 = ev[, 3],
+                                           n_omega = n_om, n_horn = n_h, umbral_kaiser = 1,
+                                           horn_p95_1 = hu[1], horn_p95_2 = hu[2], horn_p95_3 = hu[3], row.names = NULL)
+    C <- a$correlationlsq
+    t22 <- sapply(2:nrow(ev), function(i) abs(tucker(C[i, , 2], C[i - 1, , 2])))
+    t23 <- sapply(2:nrow(ev), function(i) abs(tucker(C[i, , 2], C[i - 1, , 3])))
+    cruce <- which(t23 > t22) + 1
+    if (length(cruce)) cr_l[[length(cr_l) + 1]] <- data.frame(fecha = fv[cruce], nw = nw, pesos = pz,
+      tucker_22 = t22[cruce - 1], tucker_23 = t23[cruce - 1], brecha_23 = ev[cruce, 2] - ev[cruce, 3], row.names = NULL)
+    res_l[[length(res_l) + 1]] <- data.frame(nw = nw, pesos = pz, eje = 1:3, ventanas = nrow(ev), n_omega = n_om, n_horn = n_h,
+                                             bajo_kaiser = colSums(ev < 1 - tol_kaiser), en_umbral_kaiser = colSums(abs(ev - 1) <= tol_kaiser),
+                                             serie_constante = sum(constante_ventana(a, Mf_via)),
+                                             bajo_horn = colSums(sweep(ev, 2, hu, "<")),
+                                             horn_p95 = hu, cruces_2_3 = length(cruce), row.names = NULL)
+  }
+  vacio <- data.frame(fecha = character(0), nw = numeric(0), pesos = character(0), tucker_22 = numeric(0),
+                      tucker_23 = numeric(0), brecha_23 = numeric(0))
+  list(vp = do.call(rbind, vp_l), resumen = do.call(rbind, res_l), cruces = if (length(cr_l)) do.call(rbind, cr_l) else vacio)
+}
+vpv_niv <- valores_ventana(grilla_aede_niv, Xf)
+vpv_tr <- valores_ventana(grilla_aede_tr, Xtf)
+# Umbrales de Horn compartidos con Python (n de Horn × eje 1..3)
+horn_tab <- do.call(rbind, lapply(sort(as.integer(names(cache_horn))), function(nh)
+  data.frame(n_horn = nh, eje = 1:3, horn_p95 = cache_horn[[as.character(nh)]][1:3])))
+# Criterio 5 del plan: con pesos uniformes y nw = 60, las columnas son aede_u$a$eigenvalues
+s60u <- function(v) as.matrix(v$vp[v$vp$nw == 60 & v$vp$pesos == "uniformes", c("lambda1", "lambda2", "lambda3")])
+stopifnot(identical(unname(s60u(vpv_niv)), unname(aede_u$a$eigenvalues)), identical(unname(s60u(vpv_tr)), unname(aede_ut$a$eigenvalues)))
+for (v in list(list(vpv_niv, "data/results/niveles"), list(vpv_tr, "data/results"))) {
+  write.csv(v[[1]]$vp, file.path(v[[2]], "R_aede_valores_propios.csv"), row.names = FALSE)
+  write.csv(v[[1]]$resumen, file.path(v[[2]], "R_aede_valores_propios_resumen.csv"), row.names = FALSE)
+  write.csv(v[[1]]$cruces, file.path(v[[2]], "R_aede_cruces.csv"), row.names = FALSE)
+  write.csv(horn_tab, file.path(v[[2]], "R_aede_horn_umbrales.csv"), row.names = FALSE)
+}
+res_ancho <- function(r, via) { r <- r[r$eje == 1, c("nw", "pesos", "n_omega", "cruces_2_3")]
+  b <- function(col) sapply(seq_len(nrow(r)), function(i) paste(vpv_r[[via]]$resumen[[col]][vpv_r[[via]]$resumen$nw == r$nw[i] & vpv_r[[via]]$resumen$pesos == r$pesos[i]], collapse = " / "))
+  data.frame(Vía = via, r[, 1:3], kaiser = b("bajo_kaiser"), horn = b("bajo_horn"), ventanas = vpv_r[[via]]$resumen$ventanas[vpv_r[[via]]$resumen$eje == 1], cruces = r$cruces_2_3) }
+vpv_r <- list(`sin transformar` = vpv_niv, transformadas = vpv_tr)
+tab_vpv <- rbind(res_ancho(vpv_niv$resumen, "sin transformar"), res_ancho(vpv_tr$resumen, "transformadas"))
+tab_vpv$n_omega <- num(tab_vpv$n_omega, 1)
+knitr::kable(tab_vpv, row.names = FALSE,
+             col.names = c("Vía", "nw", "Pesos", "n de Kish", "Ventanas bajo Kaiser (λ1 / λ2 / λ3)", "Ventanas bajo Horn p95 (λ1 / λ2 / λ3)", "Ventanas", "Cruces λ2 ↔ λ3"),
+             caption = "Valores propios de aede por ventana frente a los umbrales. Detalle por ventana en R_aede_valores_propios.csv; cruces en R_aede_cruces.csv.")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -4979,7 +5070,9 @@ fila_tabla <- function(via, seccion, criterio, archivo, clave_r, f_py) {
   f <- file.path(dir_via[[via]], archivo)
   py <- leer_05(via, archivo)
   if (is.null(py)) return(fila_par(via, seccion, criterio, "—", "archivo ausente", f, NA_real_, FALSE))
-  clave_py <- f_py(py)
+  # Si el CSV de Python es de una versión anterior (faltan columnas), la fila queda como «no»
+  clave_py <- tryCatch(f_py(py), error = function(e) NULL)
+  if (is.null(clave_py)) return(fila_par(via, seccion, criterio, paste(length(clave_r), "filas"), "columnas ausentes", f, NA_real_, FALSE))
   ok <- length(clave_py) == length(clave_r)
   n_dif <- if (ok) sum(as.character(clave_r) != as.character(clave_py)) else NA_real_
   fila_par(via, seccion, criterio, paste(length(clave_r), "filas"), paste(length(clave_py), "filas"), f, n_dif,
@@ -5002,6 +5095,29 @@ paridad_aede_grilla <- function(via, tab) fila_tabla(via, "aede en grilla (D4)",
   function(py) with(py, paste(nw, maxcl, pesos, criterio, k, as.logical(k_en_tope), sin_na(cortes))))
 par_niv <- rbind(par_niv, paridad_aede_grilla("niveles", grilla_aede_niv$tabla))
 par_tr <- rbind(par_tr, paridad_aede_grilla("transformadas", grilla_aede_tr$tabla))
+paridad_vpv <- function(via, v) {
+  clave_vp <- function(t) paste(t$nw, t$pesos, t$fecha)
+  clave_res <- function(t) paste(t$nw, t$pesos, t$eje)
+  rbind(
+    fila_num(via, "Valores propios por ventana (D5)", "λ1-λ3 de cada ventana (4 anchos × 2 pesos)", "06c_aede_valores_propios.csv",
+             as.vector(as.matrix(v$vp[, c("lambda1", "lambda2", "lambda3")])),
+             function(py) { q <- py[match(clave_vp(v$vp), clave_vp(py)), ]; as.vector(as.matrix(q[, c("lambda1", "lambda2", "lambda3")])) }, 1e-10,
+             resumen = paste(nrow(v$vp), "ventanas")),
+    fila_num(via, "Valores propios por ventana (D5)", "n efectivo de Kish y n de Horn por ancho y pesos", "06c_aede_valores_propios_resumen.csv",
+             c(v$resumen$n_omega, v$resumen$n_horn),
+             function(py) { q <- py[match(clave_res(v$resumen), clave_res(py)), ]; c(q$n_omega, q$n_horn) }, 1e-12),
+    fila_tabla(via, "Valores propios por ventana (D5)", "Ventanas bajo Kaiser por eje y cruces λ2 ↔ λ3", "06c_aede_valores_propios_resumen.csv",
+               with(v$resumen, paste(nw, pesos, eje, ventanas, bajo_kaiser, en_umbral_kaiser, serie_constante, cruces_2_3)),
+               function(py) { q <- py[match(clave_res(v$resumen), clave_res(py)), ]; with(q, paste(nw, pesos, eje, ventanas, bajo_kaiser, en_umbral_kaiser, serie_constante, cruces_2_3)) }),
+    fila_tabla(via, "Valores propios por ventana (D5)",
+               "Ventanas bajo el p95 de Horn por eje (umbral compartido: R_aede_horn_umbrales.csv)",
+               "06c_aede_valores_propios_resumen.csv", with(v$resumen, paste(nw, pesos, eje, bajo_horn)),
+               function(py) { q <- py[match(clave_res(v$resumen), clave_res(py)), ]; with(q, paste(nw, pesos, eje, bajo_horn)) }),
+    fila_tabla(via, "Valores propios por ventana (D5)", "Fechas de los cruces λ2 ↔ λ3", "06c_aede_cruces.csv",
+               with(v$cruces, paste(nw, pesos, fecha)), function(py) with(py, paste(nw, pesos, fecha))))
+}
+par_niv <- rbind(par_niv, paridad_vpv("niveles", vpv_niv))
+par_tr <- rbind(par_tr, paridad_vpv("transformadas", vpv_tr))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {

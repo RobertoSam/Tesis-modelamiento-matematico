@@ -31,3 +31,8 @@
 "niveles","Estabilidad de cortes (D3)","Cortes de referencia y k","5 filas","5 filas","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"
 "niveles","Estabilidad de cortes (D3)","Frecuencia a ±3 meses (200 réplicas, L = 24, índices compartidos)","0,8500 0,9800 0,3500 0,9550 1,0000","0,8500 0,9800 0,3500 0,9550 1,0000","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"
 "niveles","aede en grilla (D4)","nw × pesos × maxcl × criterio: k, k en el tope y cortes (4 × 2 × 3 × 3)","72 filas","72 filas","data/results/niveles/06c_aede_cortes.csv",0,"sí"
+"niveles","Valores propios por ventana (D5)","λ1-λ3 de cada ventana (4 anchos × 2 pesos)","1496 ventanas","13,0797 12,9143 12,5785 12,3236 11,7558","data/results/niveles/06c_aede_valores_propios.csv",4.54123753475851e-15,"sí"
+"niveles","Valores propios por ventana (D5)","n efectivo de Kish y n de Horn por ancho y pesos","24,0000 24,0000 24,0000 18,2380 18,2380","24,0000 24,0000 24,0000 18,2380 18,2380","data/results/niveles/06c_aede_valores_propios_resumen.csv",6.42980642037398e-16,"sí"
+"niveles","Valores propios por ventana (D5)","Ventanas bajo Kaiser por eje y cruces λ2 ↔ λ3","24 filas","24 filas","data/results/niveles/06c_aede_valores_propios_resumen.csv",0,"sí"
+"niveles","Valores propios por ventana (D5)","Ventanas bajo el p95 de Horn por eje (umbral compartido: R_aede_horn_umbrales.csv)","24 filas","24 filas","data/results/niveles/06c_aede_valores_propios_resumen.csv",0,"sí"
+"niveles","Valores propios por ventana (D5)","Fechas de los cruces λ2 ↔ λ3","16 filas","16 filas","data/results/niveles/06c_aede_cruces.csv",0,"sí"
