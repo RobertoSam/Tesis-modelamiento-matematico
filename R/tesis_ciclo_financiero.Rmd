@@ -4696,6 +4696,76 @@ knitr::kable(rbind(data.frame(Vía = "sin transformar", grilla_dat_niv), data.fr
              caption = "Datación PCA-MM12 (PC1 a PC3, media móvil causal de 12 meses, segmentos de al menos 12 meses). Escrito en R_datacion_criterios.csv de cada vía.")
 ```
 
+## D4 · `aede` en grilla de anchos, pesos y maxcl
+
+`aede` (paso de un mes, tres dimensiones, Fisher sobre λ1) se corre con $n_w$ ∈ {24, 36, 48, 60},
+pesos uniformes y gaussianos (`nsd = 3`) y maxcl ∈ {10, 15, 20}, en las dos vías. Los tres
+criterios son los de A.3: codo por caída máxima y CH con $k$ y con $k-1$ grados de libertad (D11:
+se informan, no seleccionan). `R_aede_cortes.csv` pasa a formato largo con las columnas `nw`,
+`maxcl` y `k_en_tope` ($k$ igual a maxcl); sus filas con `nw = 60` y `maxcl = 10` son las de la
+versión anterior.
+
+```{r b3b-aede-grilla}
+nw_grilla <- c(24, 36, 48, 60)
+pesos_grilla <- c(uniformes = 0, gaussianos_nsd3 = 3)
+# Tabla de cortes de la iteración 3a (nw = 60, maxcl = 10): referencia de no regresión
+tabla_aede <- function(u, g) {
+  fila <- function(x, pesos, criterio, k, cortes) data.frame(pesos = pesos, criterio = criterio, k = k,
+                                                              cortes = paste(format(cortes, "%Y-%m"), collapse = " "))
+  rbind(fila(u, "uniformes", "codo (caída máxima)", u$k_codo, u$cortes_codo),
+        fila(u, "uniformes", "Calinski-Harabász k gl (aede)", u$k_ch, u$cortes_ch),
+        fila(u, "uniformes", "Calinski-Harabász k-1 gl (habitual)", u$k_ch1, u$cortes_ch1),
+        fila(g, "gaussianos_nsd3", "codo (caída máxima)", g$k_codo, g$cortes_codo),
+        fila(g, "gaussianos_nsd3", "Calinski-Harabász k gl (aede)", g$k_ch, g$cortes_ch),
+        fila(g, "gaussianos_nsd3", "Calinski-Harabász k-1 gl (habitual)", g$k_ch1, g$cortes_ch1))
+}
+# Resumen de una corrida de aede: el mismo de correr_aede (A.3) para cualquier ancho y maxcl
+resumir_aede <- function(a) {
+  part <- a$cutpoints$part
+  fv <- as.Date(rownames(a$eigenvalues))
+  wss <- part[, 2]; red <- c(-diff(wss) / head(wss, -1), NA)
+  caida <- red[1:(length(red) - 2)] - red[2:(length(red) - 1)]
+  k_codo <- which.max(caida) + 1
+  limites <- function(k) { l <- part[k, grep("^v_", colnames(part))]; l <- l[l > 0 & l < nrow(a$eigenvalues)]; fv[l + 1] }
+  ch <- ch_variantes(wss, nrow(a$eigenvalues))
+  stopifnot(isTRUE(all.equal(ch$k[-1], unname(part[-1, 3]))))
+  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, ch1 = ch$k1,
+       k_ch = which.max(part[, 3]), k_ch1 = which.max(ch$k1),
+       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])),
+       cortes_ch1 = limites(which.max(ch$k1)))
+}
+correr_grilla_aede <- function(Mf) {
+  corridas <- list()
+  tabla <- do.call(rbind, lapply(nw_grilla, function(nw) do.call(rbind, lapply(names(pesos_grilla), function(pz) {
+    do.call(rbind, lapply(maxcl_grilla, function(mc) {
+      r <- resumir_aede(aede_r(serie = Mf, ndim = 3, nw = nw, nsd = pesos_grilla[[pz]], maxcl = mc))
+      if (mc == maxcl_grilla[1]) corridas[[paste(nw, pz)]] <<- r
+      data.frame(nw = nw, maxcl = mc, pesos = pz,
+                 criterio = c("codo (caída máxima)", "Calinski-Harabász k gl (aede)", "Calinski-Harabász k-1 gl (habitual)"),
+                 k = c(r$k_codo, r$k_ch, r$k_ch1), k_en_tope = c(r$k_codo, r$k_ch, r$k_ch1) == mc,
+                 cortes = c(paste(format(r$cortes_codo, "%Y-%m"), collapse = " "), paste(format(r$cortes_ch, "%Y-%m"), collapse = " "),
+                            paste(format(r$cortes_ch1, "%Y-%m"), collapse = " ")), stringsAsFactors = FALSE)
+    }))
+  }))))
+  list(tabla = tabla, corridas = corridas)
+}
+grilla_aede_niv <- correr_grilla_aede(Xf)
+grilla_aede_tr <- correr_grilla_aede(Xtf)
+# No regresión: con nw = 60 y maxcl = 10 se reproducen exactamente las filas de A.3 y B.3
+sub60 <- function(t) { s <- t[t$nw == 60 & t$maxcl == 10, c("pesos", "criterio", "k", "cortes")]; rownames(s) <- NULL; s }
+stopifnot(isTRUE(all.equal(sub60(grilla_aede_niv$tabla), tabla_aede(aede_u, aede_g), check.attributes = FALSE)),
+          isTRUE(all.equal(sub60(grilla_aede_tr$tabla), tabla_aede(aede_ut, aede_gt), check.attributes = FALSE)))
+tabla_aede_ancha <- function(t, via) {
+  t$celda <- paste0(t$k, ifelse(t$k_en_tope, "*", ""))
+  w <- reshape(t[, c("nw", "pesos", "criterio", "maxcl", "celda")], idvar = c("nw", "pesos", "criterio"),
+               timevar = "maxcl", direction = "wide")
+  data.frame(Vía = via, w, check.names = FALSE)
+}
+knitr::kable(rbind(tabla_aede_ancha(grilla_aede_niv$tabla, "sin transformar"), tabla_aede_ancha(grilla_aede_tr$tabla, "transformadas")),
+             row.names = FALSE, col.names = c("Vía", "nw", "Pesos", "Criterio", "k (maxcl 10)", "k (maxcl 15)", "k (maxcl 20)"),
+             caption = "Número de clases de Fisher sobre λ1 elegido por cada criterio. *: k en el tope (k = maxcl). Fechas de corte en R_aede_cortes.csv de cada vía.")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -4926,6 +4996,12 @@ paridad_09a <- function(via, grilla_r, estab_r) rbind(
            "09a_estabilidad_cortes.csv", estab_r$frecuencia, function(py) py$frecuencia, 1e-12))
 par_niv <- rbind(par_niv, paridad_09a("niveles", grilla_dat_niv, estab_largo(estab_cortes, k_ref)))
 par_tr <- rbind(par_tr, paridad_09a("transformadas", grilla_dat_tr, estab_largo(estab_cortes_t, k_ref_t)))
+paridad_aede_grilla <- function(via, tab) fila_tabla(via, "aede en grilla (D4)",
+  "nw × pesos × maxcl × criterio: k, k en el tope y cortes (4 × 2 × 3 × 3)", "06c_aede_cortes.csv",
+  with(tab, paste(nw, maxcl, pesos, criterio, k, k_en_tope, cortes)),
+  function(py) with(py, paste(nw, maxcl, pesos, criterio, k, as.logical(k_en_tope), sin_na(cortes))))
+par_niv <- rbind(par_niv, paridad_aede_grilla("niveles", grilla_aede_niv$tabla))
+par_tr <- rbind(par_tr, paridad_aede_grilla("transformadas", grilla_aede_tr$tabla))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {
@@ -4960,16 +5036,7 @@ write.csv(tend_pc_t, "data/results/R_tendencia_componentes.csv", row.names = FAL
 write.csv(tend_series, "data/results/niveles/R_tendencia_series.csv", row.names = FALSE)
 
 # ---- Resultados propios del port del asesor, por vía ------------------------
-tabla_aede <- function(u, g) {
-  fila <- function(x, pesos, criterio, k, cortes) data.frame(pesos = pesos, criterio = criterio, k = k,
-                                                              cortes = paste(format(cortes, "%Y-%m"), collapse = " "))
-  rbind(fila(u, "uniformes", "codo (caída máxima)", u$k_codo, u$cortes_codo),
-        fila(u, "uniformes", "Calinski-Harabász k gl (aede)", u$k_ch, u$cortes_ch),
-        fila(u, "uniformes", "Calinski-Harabász k-1 gl (habitual)", u$k_ch1, u$cortes_ch1),
-        fila(g, "gaussianos_nsd3", "codo (caída máxima)", g$k_codo, g$cortes_codo),
-        fila(g, "gaussianos_nsd3", "Calinski-Harabász k gl (aede)", g$k_ch, g$cortes_ch),
-        fila(g, "gaussianos_nsd3", "Calinski-Harabász k-1 gl (habitual)", g$k_ch1, g$cortes_ch1))
-}
+# tabla_aede (formato de la iteración 3a, nw = 60 y maxcl = 10) se define en el bloque b3b-aede-grilla
 # Jerarquía de la HFC con las hojas identificadas: los nodos 1..p son las series en el orden de
 # meta_an (columnas de X y Xt); los nodos > p son fusiones. Se agregan el nombre y el código BCRP
 # de cada hoja para que el archivo pueda compararse entre versiones aunque cambie la numeración.
@@ -4983,17 +5050,19 @@ jerarquia_con_series <- function(jer_v) {
         N2_serie = etiqueta(jer_v$N2), N2_codigo = codigo(jer_v$N2),
         jer_v[, (pos + 1):ncol(jer_v)])
 }
-escribir_via <- function(dir, par, jer_v, fechas_e, cofen_v, ari_v, u, g, dat_v) {
+escribir_via <- function(dir, par, jer_v, fechas_e, cofen_v, ari_v, aede_tabla, dat_v) {
   dir.create(dir, showWarnings = FALSE, recursive = TRUE)
   write.csv(par, file.path(dir, "R_paridad_python.csv"), row.names = FALSE)
   write.csv(jerarquia_con_series(jer_v), file.path(dir, "R_hfc_jerarquia.csv"))
   write.csv(data.frame(fecha = format(fechas_e[-1], "%Y-%m"), cofenetica = cofen_v, rand_ajustado_4g = ari_v),
             file.path(dir, "R_ehfc_cofenetica.csv"), row.names = FALSE)
-  write.csv(tabla_aede(u, g), file.path(dir, "R_aede_cortes.csv"), row.names = FALSE)
+  # Iteración 3b (D4): formato largo con nw, maxcl y k_en_tope; las filas nw = 60, maxcl = 10
+  # son las de la iteración 3a (se comprueba en b3b-aede-grilla)
+  write.csv(aede_tabla, file.path(dir, "R_aede_cortes.csv"), row.names = FALSE)
   write.csv(dat_v$tabla, file.path(dir, "R_regimenes_criterios.csv"), row.names = FALSE)
 }
-escribir_via("data/results/niveles", par_niv, jer, fechas_epca, cofen, ari, aede_u, aede_g, dat3)
-escribir_via("data/results", par_tr, jer_t, fechas_epca_t, cofen_t, ari_t, aede_ut, aede_gt, dat3t)
+escribir_via("data/results/niveles", par_niv, jer, fechas_epca, cofen, ari, grilla_aede_niv$tabla, dat3)
+escribir_via("data/results", par_tr, jer_t, fechas_epca_t, cofen_t, ari_t, grilla_aede_tr$tabla, dat3t)
 knitr::kable(rbind(par_niv, par_tr)[, c("via", "seccion", "criterio", "archivo_python", "dif_max", "coincide")],
              row.names = FALSE, caption = "Paridad R–Python por vía. Escrito en data/results/niveles/R_paridad_python.csv y data/results/R_paridad_python.csv.")
 ```

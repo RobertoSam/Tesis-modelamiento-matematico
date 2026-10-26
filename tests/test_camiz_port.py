@@ -135,3 +135,28 @@ def test_regresion_jerarquia_niveles_contra_R():
     ref = pd.read_csv(RAIZ / "data/results/niveles/R_hfc_jerarquia.csv", index_col=0)
     assert (h["hierar"][["N1", "N2"]].to_numpy() == ref[["N1", "N2"]].to_numpy()).all()
     assert np.max(np.abs(h["hierar"][["Eigenv", "Index"]].to_numpy() - ref[["Eigenv", "Index"]].to_numpy())) < 1e-10
+
+
+# ---- Iteración 3b (D4): aede con nw ∈ {24, 36, 48} contra R --------------------------
+
+@pytest.mark.skipif(not (RAIZ / "data/results/niveles/R_aede_cortes.csv").exists(), reason="sin CSV de R")
+@pytest.mark.parametrize("via", ["niveles", "transformadas"])
+def test_aede_anchos_cortos_contra_R(via):
+    from src.datos import cargar_vias
+    X, Xt = cargar_vias(RAIZ)
+    M, d = (X, RAIZ / "data/results/niveles") if via == "niveles" else (Xt, RAIZ / "data/results")
+    ref = pd.read_csv(d / "R_aede_cortes.csv", keep_default_na=False)
+    if "nw" not in ref.columns:
+        pytest.skip("R_aede_cortes.csv aún en el formato de la iteración 3a")
+    criterios = [("codo (caída máxima)", "k_codo", "cortes_codo"),
+                 ("Calinski-Harabász k gl (aede)", "k_ch", "cortes_ch"),
+                 ("Calinski-Harabász k-1 gl (habitual)", "k_ch1", "cortes_ch1")]
+    for nw in (24, 36, 48):
+        for pesos, nsd in (("uniformes", 0), ("gaussianos_nsd3", 3)):
+            a = cp.aede(M, nw=nw, ndim=3, nsd=nsd, maxcl=10)
+            # Convención de fechado: la ventana que empieza en la fila i (1-based) se fecha en i + nw/2
+            assert a["eigenvalues"].index[0] == M.index[nw // 2]
+            r = cp.resumen_aede(a)
+            for crit, kk, cc in criterios:
+                f = ref[(ref.nw == nw) & (ref.maxcl == 10) & (ref.pesos == pesos) & (ref.criterio == crit)].iloc[0]
+                assert int(f.k) == r[kk] and f.cortes == " ".join(r[cc]), (via, nw, pesos, crit)

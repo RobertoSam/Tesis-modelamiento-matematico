@@ -30,3 +30,4 @@
 "niveles","Datación 09a (D3)","Grilla maxcl × criterio: k, k en el tope, regla y cortes","12 filas","12 filas","data/results/niveles/09a_datacion_criterios.csv",0,"sí"
 "niveles","Estabilidad de cortes (D3)","Cortes de referencia y k","5 filas","5 filas","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"
 "niveles","Estabilidad de cortes (D3)","Frecuencia a ±3 meses (200 réplicas, L = 24, índices compartidos)","0,8500 0,9800 0,3500 0,9550 1,0000","0,8500 0,9800 0,3500 0,9550 1,0000","data/results/niveles/09a_estabilidad_cortes.csv",0,"sí"
+"niveles","aede en grilla (D4)","nw × pesos × maxcl × criterio: k, k en el tope y cortes (4 × 2 × 3 × 3)","72 filas","72 filas","data/results/niveles/06c_aede_cortes.csv",0,"sí"
