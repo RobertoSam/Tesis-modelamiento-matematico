@@ -21,6 +21,35 @@ cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). E
 recuperable en el commit `57104ff` de `main`.
 :::
 
+## D17 · 26 de octubre de 2026 · Criterios de la parte dinámica con 16 series
+
+**Contexto.** La adenda al plan de la iteración 3b (`asesoria/2026-10-26_adenda-plan-iteracion-3b.md`)
+dejó cuatro criterios por fijar antes de rehacer la parte dinámica con 16 series (D15, D16).
+Todavía no existe ningún resultado de esa parte con 16 series. Roberto aprobó las cuatro
+recomendaciones del asesor sin ajustes.
+
+**Decisión.**
+
+1. **Regla K (D12):** maxcl = 10 como especificación principal, que es la anterior a la iteración 3b.
+   Con maxcl = 15 y maxcl = 20 se informa como sensibilidad, y se marcan como artefacto las
+   soluciones en que todos los tramos tienen la longitud mínima de 12 meses.
+2. **RV entre ventanas (D10):** el criterio principal es el RV de las cargas 16 × 3 sin centrar las
+   columnas; el RV de la matriz de correlación completa se informa como sensibilidad. El p5 del
+   nulo de estructura constante se toma por posición, y el criterio de OE4 compara la proporción
+   de pares bajo el p5 con su propia distribución nula.
+3. **D13 y la regla del 06:** la regla del 06, que no tiene pesos, cuenta como evidencia de pesos
+   uniformes. La condición con pesos gaussianos solo puede cumplirla `aede` con pesos gaussianos.
+4. **AE y LSTM:** con 16 series quedan en `\pendiente` hasta la iteración 4, cuando haya `torch`.
+   Sus resultados con 17 series se conservan como antecedente.
+
+Roberto ratificó además que el análisis se queda con 16 series: no se hace la comparación de 16
+frente a 17 ni se incluye M2 como variable suplementaria.
+
+**Alternativas descartadas.** Las de la sección 4 de la adenda.
+
+**Rastro.** Registrada antes de cualquier resultado dinámico con 16 series; HEAD previo `2d6be97`
+de la rama `iteracion-3b`.
+
 ## D16 · 26 de octubre de 2026 · Se excluye la Liquidez M2 (16 series)
 
 **Contexto.** Al revisar el Rmd, Roberto observó que M1, M2 y M3 son muy parecidas. En los datos
