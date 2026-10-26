@@ -1,14 +1,21 @@
 """Carga verificada de las dos vías mensuales (iteración 3b).
 
 Reúne en un solo lugar la lectura que repetían `notebooks/999_port_camiz.ipynb` y el 05: las
-17 series del análisis en el orden de `meta_an` del Rmd, leídas con los mismos bits que
+series del análisis en el orden de `meta_an` del Rmd, leídas con los mismos bits que
 `read.csv` de R (`camiz_port.leer_csv_como_r`), y los controles que exige el repositorio antes
 de modelar:
 
 - versión congelada de los datos (D4, md5);
 - calendario mensual continuo y sin faltantes;
-- dimensiones vigentes: 228 × 17 en niveles (2007-01 a 2025-12, D1) y 227 × 17 en las
-  transformadas (2007-02 a 2025-12, D2).
+- dimensiones: 228 meses en niveles (2007-01 a 2025-12, D1) y 227 en las transformadas
+  (2007-02 a 2025-12), con 17 − len(excluidas) series.
+
+Series excluidas (D16, 26-oct-2026). `EXCLUIDAS_D16` es el **parámetro único** con la lista de
+series que se retiran al leer: hoy, la Liquidez M2 (16 series vigentes). Los archivos de D4 no se
+modifican; la exclusión se aplica al leer, como la del crédito total del SF y la del IPC
+subyacente. `cargar_vias(excluidas=())` (valor por defecto) conserva las 17 series del antecedente
+(tag `v0.4-17series-dos-vias`), de modo que los notebooks antecedentes no cambian si se vuelven a
+ejecutar; los vigentes pasan `excluidas=EXCLUIDAS_D16` desde su bloque de parámetros.
 
 Las filas se etiquetan con «AAAA-MM», como las fechas de corte de los CSV `R_*`.
 """
@@ -46,6 +53,9 @@ MD5_D4 = {'dataset_niveles_mensual.csv': '8088c28cf277419388d9562722faa1ad',
 
 CREDITOS = ['Crédito empresarial', 'Crédito consumo', 'Crédito hipotecario']
 
+# Parámetro único de D16: columnas del archivo que se retiran al leer (análisis vigente, 16 series)
+EXCLUIDAS_D16 = ('Liquidez M2',)
+
 
 def raiz_repositorio(desde=None):
     """Sube desde `desde` (o el directorio actual) hasta la carpeta que contiene _quarto.yml."""
@@ -69,11 +79,23 @@ def _verificar(d, n_esperado, inicio, fin):
     assert len(d) == n_esperado, f'se esperaban {n_esperado} meses y hay {len(d)}'
 
 
-def cargar_vias(raiz=None):
-    """Devuelve (X, Xt): niveles 228 × 17 y transformadas 227 × 17, con índice «AAAA-MM».
+def meta_vigente(excluidas=()):
+    """Filas de META sin las series excluidas (por nombre de columna del archivo), en el mismo orden."""
+    excluidas = tuple(excluidas)
+    desconocidas = set(excluidas) - set(META.columna)
+    assert not desconocidas, f'series excluidas que no están en META: {sorted(desconocidas)}'
+    return META[~META.columna.isin(excluidas)].reset_index(drop=True)
 
-    Falla (AssertionError) si los datos no son la versión congelada o están incompletos.
+
+def cargar_vias(raiz=None, excluidas=()):
+    """Devuelve (X, Xt): niveles 228 × p y transformadas 227 × p, con índice «AAAA-MM».
+
+    p = 17 − len(excluidas). `excluidas` son nombres de columna del archivo (`META.columna`); para
+    el análisis vigente se pasa `EXCLUIDAS_D16`. Falla (AssertionError) si los datos no son la
+    versión congelada o están incompletos.
     """
+    meta = meta_vigente(excluidas)
+    p = len(meta)
     raiz = Path(raiz) if raiz else raiz_repositorio()
     proc = raiz / 'data' / 'processed'
     for nombre, h in MD5_D4.items():
@@ -82,13 +104,13 @@ def cargar_vias(raiz=None):
     tr = cp.leer_csv_como_r(proc / 'dataset_transformado_mensual.csv')
     _verificar(niv, 228, '2007-01-01', '2025-12-01')
     _verificar(tr, 227, '2007-02-01', '2025-12-01')
-    X = niv[META.columna].astype(float).copy()
-    X.columns = list(META.nombre_corto)
+    X = niv[meta.columna].astype(float).copy()
+    X.columns = list(meta.nombre_corto)
     X.index = niv['fecha'].str[:7]
     base = {c.replace('_log_diff', '').replace('_diff', ''): c for c in tr.columns if c != 'fecha'}
-    Xt = tr[[base[c] for c in META.columna]].astype(float).copy()
-    Xt.columns = list(META.nombre_corto)
+    Xt = tr[[base[c] for c in meta.columna]].astype(float).copy()
+    Xt.columns = list(meta.nombre_corto)
     Xt.index = tr['fecha'].str[:7]
-    assert X.shape == (228, 17) and Xt.shape == (227, 17)
+    assert X.shape == (228, p) and Xt.shape == (227, p)
     assert not X.isna().any().any() and not Xt.isna().any().any()
     return X, Xt
