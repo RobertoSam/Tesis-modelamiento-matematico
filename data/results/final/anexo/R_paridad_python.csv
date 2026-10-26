@@ -4,3 +4,7 @@
 "transformadas","Anexo R.a (05c)","Ganancia 2 sin(π/P) y varianza conservada","1,0000 0,5176 0,2611 0,1743 0,1047","1,0000 0,5176 0,2611 0,1743 0,1047","data/results/final/anexo/05c_ganancia.csv",0,"sí"
 "transformadas","Anexo R.a (05c)","Varianza en períodos ≥ 24 meses (periodograma): sin transformar, sin tendencia y transformadas","0,9743 0,9732 0,9726 0,9686 0,9727","0,9743 0,9732 0,9726 0,9686 0,9727","data/results/final/anexo/05c_espectro.csv",1.4432899320127e-15,"sí"
 "transformadas","Anexo R.a (05c)","ACF a 1 y 12 meses de las series transformadas","0,3813 0,3079 0,2549 -0,0860 0,1259","0,3813 0,3079 0,2549 -0,0860 0,1259","data/results/final/anexo/05c_estacional.csv",2.88657986402541e-15,"sí"
+"transformadas","Anexo R.b (09b)","Razón de error walk-forward del PCA por mes (16 series; transformadas y niveles)","360 meses","0,4486 0,1410 0,1310 0,1475 0,5427","data/results/final/anexo/09b_walkforward_pca.csv",2.77555756156289e-15,"sí"
+"transformadas","Anexo R.b (09b)","Año de modelo de cada mes","360 filas","360 filas","data/results/final/anexo/09b_walkforward_pca.csv",0,"sí"
+"transformadas","Anexo R.b (09b)","Discriminación de episodios: medianas, falsas alarmas y sensibilidad (tolerancias 0, 3, 6; vigente y antecedente con 17 series)","288 filas","0,2925 3,8760 0,3568 0,0000 0,2833","data/results/final/anexo/09b_discriminacion_episodios.csv",1.32039863313566e-15,"sí"
+"transformadas","Anexo R.b (09b)","Meses de cada medida de la discriminación","288 filas","288 filas","data/results/final/anexo/09b_discriminacion_episodios.csv",0,"sí"

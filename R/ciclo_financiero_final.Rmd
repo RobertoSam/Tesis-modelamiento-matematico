@@ -1,6 +1,6 @@
 ---
 title: "Ciclo financiero del Perú · documento final"
-subtitle: "Series sin transformar, 16 series (D15, D16): datos, diagnóstico y PCA estático, con el anexo de robustez de las series transformadas"
+subtitle: "Series sin transformar, 16 series (D15, D16, D17): datos, diagnóstico, PCA estático, EPCA, HFC y datación, con el anexo de robustez de las series transformadas"
 author: "Roberto Samaniego Salcedo · Asesor: Dr. Sergio Camiz"
 date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
@@ -114,12 +114,12 @@ exploración y no se modifica; sus resultados son antecedente (tag `v0.4-17serie
 | 1 | Series y criterio de inclusión (16 series; qué entra y por qué) | este documento |
 | 2 | Diagnóstico sin transformar: regla D5, deriva HAC, $n$ efectivo, adecuación, nulo de tendencias (con el nulo mixto de D8) y contraste sin tendencia | este documento |
 | 3 | PCA estático: retención, cargas, bootstrap y sensibilidad de la dimensión (d = 3, con 2 y 4; D9) | este documento |
-| 4 | EPCA (`aede` en grilla, valores propios por ventana, regla del 06, nulo de estructura) | pendiente: espera D17 |
-| 5 | HFC (3 y 4 clases, factores, representantes, bootstrap) | pendiente: espera D17 |
-| 6 | Datación de regímenes | pendiente: espera D17 |
-| 7 | Autoencoders y LSTM | pendiente: espera la decisión R1 |
-| 8 | Síntesis descriptiva | pendiente |
-| Anexo R | Robustez con las series transformadas: R.a, sustento de no diferenciar | R.a en este documento; R.b espera D17 |
+| 4 | EPCA: `aede` en grilla, valores propios por ventana, regla del 06, nulo de estructura con el criterio de OE4 (D10, D17.2), transiciones con borde de ventana y lectura de 2017-10 (D13, D17.3) | este documento |
+| 5 | HFC (3 y 4 clases, factores, representantes, bootstrap) | este documento |
+| 6 | Datación de regímenes: regla K con maxcl = 10 (D12, D17.1), grilla de maxcl × criterio, d ∈ {2, 3, 4}, estabilidad de cortes y fases | este documento |
+| 7 | Autoencoders y LSTM | pendiente hasta la iteración 4 (D17.4) |
+| 8 | Síntesis descriptiva | pendiente (regla 7) |
+| Anexo R | Robustez con las series transformadas: R.a, sustento de no diferenciar; R.b, detección de episodios con el *walk-forward* del PCA | este documento |
 | Anexo P | Paridad con Python | este documento |
 
 Los resultados se escriben en `r params$carpeta` (niveles) y en `r file.path(params$carpeta, "anexo")`
@@ -145,10 +145,13 @@ Algo que contradice o matiza lo establecido en avances previos y que conviene re
 consolidada (regla 7): los recuadros «Lectura» solo describen las cifras. Las lecturas del
 documento de exploración se escribieron con 17 series y no se trasladan.
 
-**Ejecución.** Todo el documento corre en R puro. La HFC y la EPCA del asesor (secciones 4 y 5,
-pendientes) usan `R/camiz_port.R`, la traducción a R de `AedeClahfac` 1.2 validada contra el
-original. Orden: este documento, luego `notebooks/05_pca.ipynb` y `notebooks/05c_anexo_no_diferenciar.ipynb`,
-y de nuevo este documento para la paridad.
+**Ejecución.** Todo el documento corre en R puro. La HFC y la EPCA del asesor (secciones 4 y 5) usan
+`R/camiz_port.R`, la traducción a R de `AedeClahfac` 1.2 validada contra el original. El nulo de
+estructura constante se calcula aparte, por su costo (`R/07b_nulo_estructura.R`). Orden: el guion
+del nulo; este documento; los notebooks `05_pca`, `05c_anexo_no_diferenciar`, `06_epca`,
+`06c_aede_grilla`, `07c_hfc_clases`, `09a_datacion_pca`, `07b_nulo_estructura` y
+`09b_walkforward_pca`; y de nuevo este documento, para la paridad y para leer las cifras del nulo
+con 200 réplicas.
 
 ```{r funciones}
 # ---- Datos ------------------------------------------------------------------
@@ -407,8 +410,8 @@ horn <- function(X, n_sim = 1000, percentil = 0.95, semilla = 42) {
 
 # Coeficiente RV de Robert y Escoufier (1976) entre dos configuraciones de las mismas filas.
 # centrar = TRUE (por defecto) es el comportamiento de siempre; centrar = FALSE compara las cargas
-# sin restar la carga media de cada eje (adenda del 26-oct-2026, §1.2). Su uso espera D17; la
-# prueba tests/test_coef_rv.py extrae esta función y la compara con la de Python.
+# sin restar la carga media de cada eje (adenda del 26-oct-2026, §1.2): es la lectura principal de
+# D17.2 (sección 4.4). La prueba tests/test_coef_rv.py extrae esta función y la compara con la de Python.
 coef_rv <- function(X, Y, centrar = TRUE) {
   X <- as.matrix(X); Y <- as.matrix(Y)
   if (centrar) { X <- scale(X, scale = FALSE); Y <- scale(Y, scale = FALSE) }
@@ -1902,29 +1905,627 @@ cat("\n**Rcamiz no disponible: verificación no ejecutada.** El bloque anterior 
 
 # 4. EPCA {#epca}
 
-**Pendiente.** Se calcula con 16 series cuando Roberto registre D17 (maxcl de la regla K, lectura
-del RV, aplicación de D13 a la regla del 06) en `decisiones.qmd`, con un commit anterior al primer
-resultado (criterio 18 de la adenda). Contenido previsto: `aede` en grilla, $\lambda$ por ventana,
-regla del 06 por ancho, nulo de estructura constante, criterio de OE4 y tabla de 2017-10. El
-antecedente con 17 series está en el documento de exploración (Anexo 3b).
+El PCA de la sección 3 supone una sola estructura de correlaciones para todo el periodo. El análisis
+evolutivo de componentes principales (EPCA) calcula un PCA en cada ventana móvil de meses
+consecutivos y estudia cómo cambian los valores propios y las cargas. Esta sección reúne, con las
+`r p` series sin transformar, los cálculos que fijan de antemano D10 a D14 y D17:
+
+- `aede` del asesor en la grilla de anchos $n_w \in \{24, 36, 48, 60\}$ (D10, lectura multiescala),
+  pesos uniformes y gaussianos (`nsd = 3`) y maxcl $\in \{10, 15, 20\}$ (D17.1: maxcl = 10 es la
+  especificación principal; 15 y 20, sensibilidad);
+- los valores propios de cada ventana frente a Kaiser y al p95 de Horn con el $n$ efectivo de Kish
+  (D14);
+- la regla del notebook 06 por ancho de ventana;
+- el nulo de estructura constante (tarea D7 del plan) con el criterio de OE4 de D17.2, y la lectura
+  de las transiciones con la marca de borde de ventana (D7) y de 2017-10 (D13 con D17.3).
+
+Las fechas de cada ventana son las de su fila central, $i + n_w/2$, como en `aede`. Ninguna cifra de
+esta sección tiene interpretación consolidada (regla 7).
+
+## 4.1 `aede` en grilla de anchos, pesos y maxcl
+
+`aede` (paso de un mes, tres dimensiones, D9) segmenta la serie del **primer valor propio** con la
+partición óptima de Fisher. Los criterios son el codo por caída máxima de la reducción relativa de
+la suma de cuadrados y el índice de Calinski-Harabász con $k$ y con $k-1$ grados de libertad (D11: se
+informan, no seleccionan).
+
+```{r b4-aede-grilla}
+nw_grilla <- c(24, 36, 48, 60)
+pesos_grilla <- c(uniformes = 0, gaussianos_nsd3 = 3)
+maxcl_grilla <- c(10, 15, 20)
+MAXCL_PRINCIPAL <- 10                      # D17.1
+PASO <- 3                                  # paso de la regla del notebook 06
+Xf <- X; rownames(Xf) <- format(fechas, "%Y-%m-%d")
+# Resumen de una corrida de aede (bloque b4-aede del documento de exploración, cualquier ancho y maxcl)
+resumir_aede <- function(a) {
+  part <- a$cutpoints$part
+  fv <- as.Date(rownames(a$eigenvalues))
+  wss <- part[, 2]; red <- c(-diff(wss) / head(wss, -1), NA)
+  caida <- red[1:(length(red) - 2)] - red[2:(length(red) - 1)]
+  k_codo <- which.max(caida) + 1
+  limites <- function(k) { l <- part[k, grep("^v_", colnames(part))]; l <- l[l > 0 & l < nrow(a$eigenvalues)]; fv[l + 1] }
+  ch <- ch_variantes(wss, nrow(a$eigenvalues))
+  stopifnot(isTRUE(all.equal(ch$k[-1], unname(part[-1, 3]))))
+  list(a = a, part = part, fechas = fv, red = red, k_codo = k_codo, ch1 = ch$k1,
+       k_ch = which.max(part[, 3]), k_ch1 = which.max(ch$k1),
+       cortes_codo = limites(k_codo), cortes_ch = limites(which.max(part[, 3])),
+       cortes_ch1 = limites(which.max(ch$k1)))
+}
+correr_grilla_aede <- function(Mf) {
+  corridas <- list()
+  tabla <- do.call(rbind, lapply(nw_grilla, function(nw) do.call(rbind, lapply(names(pesos_grilla), function(pz) {
+    do.call(rbind, lapply(maxcl_grilla, function(mc) {
+      r <- resumir_aede(aede_r(serie = Mf, ndim = 3, nw = nw, nsd = pesos_grilla[[pz]], maxcl = mc))
+      if (mc == maxcl_grilla[1]) corridas[[paste(nw, pz)]] <<- r
+      data.frame(nw = nw, maxcl = mc, pesos = pz,
+                 criterio = c("codo (caída máxima)", "Calinski-Harabász k gl (aede)", "Calinski-Harabász k-1 gl (habitual)"),
+                 k = c(r$k_codo, r$k_ch, r$k_ch1), k_en_tope = c(r$k_codo, r$k_ch, r$k_ch1) == mc,
+                 cortes = c(paste(format(r$cortes_codo, "%Y-%m"), collapse = " "), paste(format(r$cortes_ch, "%Y-%m"), collapse = " "),
+                            paste(format(r$cortes_ch1, "%Y-%m"), collapse = " ")), stringsAsFactors = FALSE)
+    }))
+  }))))
+  list(tabla = tabla, corridas = corridas)
+}
+grilla_aede <- correr_grilla_aede(Xf)
+write.csv(grilla_aede$tabla, file.path(dir_final, "R_aede_cortes.csv"), row.names = FALSE)
+tabla_aede_ancha <- function(t) {
+  t$celda <- paste0(t$k, ifelse(t$k_en_tope, "*", ""))
+  reshape(t[, c("nw", "pesos", "criterio", "maxcl", "celda")], idvar = c("nw", "pesos", "criterio"),
+          timevar = "maxcl", direction = "wide")
+}
+knitr::kable(tabla_aede_ancha(grilla_aede$tabla), row.names = FALSE,
+             col.names = c("nw", "Pesos", "Criterio", "k (maxcl 10)", "k (maxcl 15)", "k (maxcl 20)"),
+             caption = "Número de clases de Fisher sobre λ1 elegido por cada criterio. *: k en el tope (k = maxcl). Fechas de corte en R_aede_cortes.csv.")
+codo10 <- grilla_aede$tabla[grilla_aede$tabla$maxcl == MAXCL_PRINCIPAL & grilla_aede$tabla$criterio == "codo (caída máxima)", ]
+```
+
+::: {.lectura}
+Con maxcl = `r MAXCL_PRINCIPAL` (D17.1), el codo por caída máxima elige entre
+`r min(codo10$k)` y `r max(codo10$k)` clases según el ancho y los pesos; el CH con $k$ grados de
+libertad queda en el tope en `r sum(grilla_aede$tabla$k_en_tope[grilla_aede$tabla$criterio == "Calinski-Harabász k gl (aede)"])`
+de las `r sum(grilla_aede$tabla$criterio == "Calinski-Harabász k gl (aede)")` combinaciones
+de ancho, pesos y maxcl.
+:::
+
+## 4.2 Valores propios por ventana frente a Kaiser y Horn (D14)
+
+Para cada ancho y esquema de pesos se registran λ1 a λ3 de cada ventana, el $n$ efectivo de Kish de
+los pesos, $n_\omega = 1/\sum_i \omega_i^2$ (con $\sum_i \omega_i = 1$), el umbral de Kaiser (1) y el
+percentil 95 de Horn para λ1 a λ3, simulado con $n = \lceil n_\omega \rceil$ observaciones gaussianas
+independientes de `r p` series (1 000 simulaciones, semilla del documento). Python cuenta con los
+umbrales que escribe este documento (`R_aede_horn_umbrales.csv`). **Empates con Kaiser:** una
+ventana cuenta como «bajo Kaiser» si $\lambda < 1 - 10^{-9}$; las que están a menos de $10^{-9}$ de 1
+se cuentan aparte. Un **cruce λ2 ↔ λ3** se registra cuando el eje 2 de una ventana es más congruente
+(Tucker, en valor absoluto) con el eje 3 de la ventana anterior que con su eje 2 (definición
+operativa declarada).
+
+```{r b4-valores-propios}
+kish <- function(w) { w <- w / sum(w); 1 / sum(w^2) }
+# ceiling con una holgura de 1e-9: con pesos uniformes n_omega = nw salvo por redondeo (1/sum(w^2))
+n_horn <- function(n_om) ceiling(n_om - 1e-9)
+umbral_horn <- function(n_h, pm, n_sim = 1000, semilla = params$semilla) {
+  set.seed(semilla)
+  sims <- t(replicate(n_sim, eigen(cor(matrix(rnorm(n_h * pm), n_h)), symmetric = TRUE, only.values = TRUE)$values))
+  apply(sims, 2, quantile, probs = 0.95)
+}
+cache_horn <- list()
+horn_n <- function(n_h) {
+  if (is.null(cache_horn[[as.character(n_h)]])) cache_horn[[as.character(n_h)]] <<- umbral_horn(n_h, p)
+  cache_horn[[as.character(n_h)]]
+}
+tol_kaiser <- 1e-9
+# Ventanas en que alguna serie es constante (desviación ponderada nula): aede la deja aislada
+constante_ventana <- function(a, Mf_via) {
+  nw <- length(a$weights)
+  sapply(seq_len(nrow(a$eigenvalues)), function(i) any(apply(Mf_via[i:(i + nw - 1), , drop = FALSE], 2, function(x) all(x == x[1]))))
+}
+valores_ventana <- function(grilla, Mf_via) {
+  vp_l <- list(); res_l <- list(); cr_l <- list()
+  for (nw in nw_grilla) for (pz in names(pesos_grilla)) {
+    a <- grilla$corridas[[paste(nw, pz)]]$a
+    ev <- a$eigenvalues; n_om <- kish(a$weights); n_h <- n_horn(n_om); hu <- horn_n(n_h)[1:3]
+    # Criterio 5 (adenda): λ1 + λ2 + λ3 <= p; n_omega = nw con pesos uniformes
+    stopifnot(all(rowSums(ev) <= p + 1e-9), pz != "uniformes" || abs(n_om - nw) < 1e-9)
+    fv <- format(as.Date(rownames(ev)), "%Y-%m")
+    vp_l[[length(vp_l) + 1]] <- data.frame(fecha = fv, nw = nw, pesos = pz, lambda1 = ev[, 1], lambda2 = ev[, 2], lambda3 = ev[, 3],
+                                           n_omega = n_om, n_horn = n_h, umbral_kaiser = 1,
+                                           horn_p95_1 = hu[1], horn_p95_2 = hu[2], horn_p95_3 = hu[3], row.names = NULL)
+    C <- a$correlationlsq
+    t22 <- sapply(2:nrow(ev), function(i) abs(tucker(C[i, , 2], C[i - 1, , 2])))
+    t23 <- sapply(2:nrow(ev), function(i) abs(tucker(C[i, , 2], C[i - 1, , 3])))
+    cruce <- which(t23 > t22) + 1
+    if (length(cruce)) cr_l[[length(cr_l) + 1]] <- data.frame(fecha = fv[cruce], nw = nw, pesos = pz,
+      tucker_22 = t22[cruce - 1], tucker_23 = t23[cruce - 1], brecha_23 = ev[cruce, 2] - ev[cruce, 3], row.names = NULL)
+    res_l[[length(res_l) + 1]] <- data.frame(nw = nw, pesos = pz, eje = 1:3, ventanas = nrow(ev), n_omega = n_om, n_horn = n_h,
+                                             bajo_kaiser = colSums(ev < 1 - tol_kaiser), en_umbral_kaiser = colSums(abs(ev - 1) <= tol_kaiser),
+                                             serie_constante = sum(constante_ventana(a, Mf_via)),
+                                             bajo_horn = colSums(sweep(ev, 2, hu, "<")),
+                                             horn_p95 = hu, cruces_2_3 = length(cruce), row.names = NULL)
+  }
+  vacio <- data.frame(fecha = character(0), nw = numeric(0), pesos = character(0), tucker_22 = numeric(0),
+                      tucker_23 = numeric(0), brecha_23 = numeric(0))
+  list(vp = do.call(rbind, vp_l), resumen = do.call(rbind, res_l), cruces = if (length(cr_l)) do.call(rbind, cr_l) else vacio)
+}
+vpv <- valores_ventana(grilla_aede, Xf)
+horn_tab <- do.call(rbind, lapply(sort(as.integer(names(cache_horn))), function(nh)
+  data.frame(n_horn = nh, eje = 1:3, horn_p95 = cache_horn[[as.character(nh)]][1:3])))
+write.csv(vpv$vp, file.path(dir_final, "R_aede_valores_propios.csv"), row.names = FALSE)
+write.csv(vpv$resumen, file.path(dir_final, "R_aede_valores_propios_resumen.csv"), row.names = FALSE)
+write.csv(vpv$cruces, file.path(dir_final, "R_aede_cruces.csv"), row.names = FALSE)
+write.csv(horn_tab, file.path(dir_final, "R_aede_horn_umbrales.csv"), row.names = FALSE)
+r1 <- vpv$resumen[vpv$resumen$eje == 1, ]
+bxe <- function(col, i) paste(vpv$resumen[[col]][vpv$resumen$nw == r1$nw[i] & vpv$resumen$pesos == r1$pesos[i]], collapse = " / ")
+knitr::kable(data.frame(nw = r1$nw, Pesos = r1$pesos, `n de Kish` = num(r1$n_omega, 1),
+                        `Bajo Kaiser (λ1 / λ2 / λ3)` = sapply(seq_len(nrow(r1)), bxe, col = "bajo_kaiser"),
+                        `Bajo Horn p95 (λ1 / λ2 / λ3)` = sapply(seq_len(nrow(r1)), bxe, col = "bajo_horn"),
+                        Ventanas = r1$ventanas, `Cruces λ2 ↔ λ3` = r1$cruces_2_3, check.names = FALSE),
+             row.names = FALSE, caption = "Valores propios de aede por ventana frente a los umbrales. Detalle en R_aede_valores_propios.csv; cruces en R_aede_cruces.csv.")
+```
+
+::: {.lectura}
+Con pesos gaussianos, el $n$ efectivo de Kish es `r paste(num(r1$n_omega[r1$pesos == "gaussianos_nsd3"], 1), collapse = ", ")`
+para $n_w$ = `r paste(nw_grilla, collapse = ", ")`. La tabla da, por ancho y pesos, el número de
+ventanas en que cada valor propio queda bajo Kaiser o bajo el p95 de Horn.
+:::
+
+## 4.3 Regla del notebook 06 por ancho de ventana
+
+Paso de 3 meses; se sigue el **PC2** (el PC1 sin transformar está dominado por la tendencia común,
+sección 3). En cada ventana se estandarizan las series, se calcula el PCA y se guardan las cargas
+del eje; las cargas se alinean en signo con la ventana anterior y se marca una transición cuando la
+correlación entre cargas consecutivas cae por debajo de su media menos una desviación estándar.
+Fechas: centro de la ventana posterior de cada par. La regla no tiene pesos: cuenta como evidencia
+de pesos uniformes (D17.3).
+
+```{r b4-regla06}
+# Estandarización como StandardScaler: una columna constante (criterio _is_constant_feature de
+# scikit-learn) se deja con escala 1, de modo que queda centrada en 0
+estandarizar_sk <- function(M) {
+  M <- as.matrix(M); nm <- nrow(M)
+  m <- colMeans(M); v <- colMeans(sweep(M, 2, m)^2)
+  eps <- .Machine$double.eps
+  s <- sqrt(v); s[v <= nm * eps * v + (nm * m * eps)^2] <- 1
+  sweep(sweep(M, 2, m), 2, s, "/")
+}
+regla06 <- function(M, fechas_M, k, nw, paso = PASO) {
+  ini <- seq(1, nrow(M) - nw + 1, by = paso)
+  fe <- fechas_M[ini + nw %/% 2]
+  C <- t(sapply(ini, function(i) eigen(crossprod(estandarizar_sk(M[i:(i + nw - 1), ])) / nw, symmetric = TRUE)$vectors[, k]))
+  for (i in 2:nrow(C)) if (cor(C[i, ], C[i - 1, ]) < 0) C[i, ] <- -C[i, ]
+  est <- sapply(2:nrow(C), function(i) cor(C[i, ], C[i - 1, ]))
+  umbral <- mean(est) - sqrt(mean((est - mean(est))^2))
+  list(estabilidad = data.frame(ventana = nw, fecha = format(fe[-1], "%Y-%m"), estabilidad = est, umbral = umbral),
+       transiciones = data.frame(ventana = rep(nw, sum(est < umbral)), fecha = format(fe[-1][est < umbral], "%Y-%m")))
+}
+regla06_grilla <- function(M, fechas_M, k) {
+  r <- lapply(nw_grilla, function(nw) regla06(M, fechas_M, k, nw))
+  list(estabilidad = do.call(rbind, lapply(r, `[[`, "estabilidad")), transiciones = do.call(rbind, lapply(r, `[[`, "transiciones")))
+}
+r06 <- regla06_grilla(X, fechas, 2)
+# No regresión (17 series): con 60 meses, las transiciones del notebook 06 del antecedente
+if (length(params$excluidas) == 0) {
+  ant06 <- format(as.Date(read.csv("data/results/06_epca_transiciones_detectadas_niveles.csv")[[1]]), "%Y-%m")
+  stopifnot(identical(r06$transiciones$fecha[r06$transiciones$ventana == 60], ant06))
+}
+write.csv(r06$transiciones, file.path(dir_final, "R_epca_regla06_transiciones.csv"), row.names = FALSE)
+write.csv(r06$estabilidad, file.path(dir_final, "R_epca_regla06_estabilidad.csv"), row.names = FALSE)
+knitr::kable(data.frame(Ventana = nw_grilla, Transiciones = sapply(nw_grilla, function(w)
+  paste(r06$transiciones$fecha[r06$transiciones$ventana == w], collapse = ", "))),
+  row.names = FALSE, caption = "Regla del notebook 06 por ancho (PC2, paso 3). Fechas: centro de la ventana posterior de cada par.")
+```
+
+## 4.4 Nulo de estructura constante y criterio de OE4 (D10, D17.2)
+
+Remuestreo por bloques **conjunto** (los mismos inicios de bloque para las `r p` series, $L = 24$ y,
+como sensibilidad, $L = 12$ y $L = 36$): se remuestrean los incrementos mensuales, que luego se
+acumulan desde 0. Se conservan la correlación contemporánea y la dinámica corta, y se dispersa en el
+tiempo cualquier cambio de estructura. En cada réplica y para cada ancho y pesos se calculan el $k^*$
+de los tres criterios de `aede` con maxcl = 20 y el perfil del RV entre **ventanas adyacentes no
+solapadas** (la que empieza en la fila $i$ y la que empieza en $i + n_w$; D10), con los dos objetos de
+D17.2:
+
+- **principal:** las cargas de `aede` ($p \times 3$) **sin centrar** las columnas: compara los
+  subespacios de d = 3 ponderados por sus cargas y es invariante al signo, al orden y a las
+  rotaciones de los ejes;
+- **sensibilidad:** las matrices de correlación completas $p \times p$ de cada ventana, con los pesos
+  de `aede`: $\mathrm{RV} = \operatorname{tr}(R_a R_b)/\sqrt{\operatorname{tr}(R_a^2)\operatorname{tr}(R_b^2)}$.
+
+**Criterio de OE4 (D17.2).** El p5 del nulo se toma **por posición**: cada par de ventanas tiene su
+propio p5 entre las réplicas. El estadístico es la proporción de pares observados con RV bajo su p5,
+y se compara con la **distribución nula de esa misma proporción**, en la que el p5 de cada réplica se
+calcula dejándola fuera. El p-valor es la proporción de réplicas con una proporción mayor o igual que
+la observada (definición operativa declarada). La especificación principal es $L = 24$, 200 réplicas
+y las cargas sin centrar.
+
+**Cómputo fuera del documento (declarado).** Por su costo (cerca de 500 corridas de `aede` con
+maxcl = 20), el cálculo en R está en el guion `R/07b_nulo_estructura.R`, que sortea los inicios (200
+réplicas por $L$, semilla del documento), calcula las 20 primeras réplicas de cada $L$ y su criterio
+de OE4, y escribe los CSV `R_nulo_estructura_*`. El notebook `07b_nulo_estructura.ipynb` calcula las
+mismas 20 réplicas (paridad) y además las réplicas 21 a 200 con $L = 24$ (**solo en Python**,
+excepción declarada en el anexo P). Las cifras oficiales con 200 réplicas se leen aquí de los CSV de
+Python. Ninguna réplica se reduce: si los CSV faltan, la paridad lo marca.
+
+```{r b4-nulo}
+leer_final <- function(f) { ruta <- file.path(dir_final, f); if (file.exists(ruta)) read.csv(ruta, stringsAsFactors = FALSE, check.names = FALSE) else NULL }
+nulo_r <- list(kstar = leer_final("R_nulo_estructura_kstar.csv"), rv = leer_final("R_nulo_estructura_rv.csv"),
+               rv_resumen = leer_final("R_nulo_estructura_rv_resumen.csv"), oe4 = leer_final("R_nulo_estructura_oe4.csv"),
+               posicion = leer_final("R_nulo_estructura_rv_posicion.csv"))
+nulo_py <- list(kpos = leer_final("07b_nulo_estructura_kstar_posicion.csv"), oe4 = leer_final("07b_nulo_estructura_oe4.csv"),
+                posicion = leer_final("07b_nulo_estructura_rv_posicion.csv"))
+tiene_nulo <- !any(vapply(nulo_r, is.null, logical(1)))
+tiene_nulo_py <- !any(vapply(nulo_py, is.null, logical(1)))
+if (tiene_nulo) {
+  # La réplica 0 del guion (serie observada) reproduce los k* de b4-aede-grilla con maxcl = 20
+  o <- nulo_r$kstar[nulo_r$kstar$replica == 0, ]; g <- grilla_aede$tabla[grilla_aede$tabla$maxcl == 20, ]
+  stopifnot(identical(as.integer(o$k[match(paste(g$nw, g$pesos, g$criterio), paste(o$nw, o$pesos, o$criterio))]), as.integer(g$k)))
+}
+if (tiene_nulo_py) {
+  kp <- nulo_py$kpos[nulo_py$kpos$L == 24, ]
+  knitr::kable(data.frame(nw = kp$nw, Pesos = kp$pesos, Criterio = kp$criterio, `k observado` = kp$k_obs,
+                          `Nulo p5 / p50 / p95` = paste(num(kp$nulo_p05, 0), num(kp$nulo_p50, 0), num(kp$nulo_p95, 0), sep = " / "),
+                          `P(k nulo ≥ k obs.)` = num(kp$prop_nulo_ge_obs, 3), `P(k nulo ≤ k obs.)` = num(kp$prop_nulo_le_obs, 3),
+                          `Réplicas nulas en el tope` = pct(100 * kp$prop_nulo_en_tope, 1), check.names = FALSE),
+               row.names = FALSE, caption = "k* de aede con maxcl = 20 frente al nulo de estructura constante (L = 24, 200 réplicas; 07b_nulo_estructura_kstar_posicion.csv).")
+}
+```
+
+```{r b4-oe4, eval = tiene_nulo_py}
+oe <- nulo_py$oe4[nulo_py$oe4$L == 24 & nulo_py$oe4$replicas == 200, ]
+oe <- oe[order(oe$objeto != "cargas_sin_centrar", oe$nw, oe$pesos), ]
+knitr::kable(data.frame(`Objeto del RV` = ifelse(oe$objeto == "cargas_sin_centrar", "cargas 3 ejes sin centrar (principal)", "correlación completa (sensibilidad)"),
+                        nw = oe$nw, Pesos = oe$pesos, Pares = oe$n_pares, `Pares bajo su p5` = oe$pares_bajo_p5,
+                        `Proporción observada` = num(oe$prop_obs, 3),
+                        `Proporción nula p50 / p95` = paste(num(oe$prop_nulo_p50, 3), num(oe$prop_nulo_p95, 3), sep = " / "),
+                        `p-valor` = num(oe$p_valor, 3), check.names = FALSE),
+             row.names = FALSE, caption = "Criterio de OE4 (D17.2): proporción de pares de ventanas adyacentes no solapadas con RV bajo su p5 por posición, frente a la distribución nula de esa proporción (L = 24, 200 réplicas; 07b_nulo_estructura_oe4.csv). L = 12 y 36 (20 réplicas) en el mismo archivo.")
+oe_p <- oe[oe$objeto == "cargas_sin_centrar", ]
+```
+
+```{r b4-nulo-ausente, eval = !(tiene_nulo && tiene_nulo_py), echo = FALSE, results = "asis"}
+cat("**Faltan CSV del nulo de estructura.** Ejecutar `Rscript R/07b_nulo_estructura.R` y el notebook `07b_nulo_estructura.ipynb` antes de volver a renderizar; la tabla de paridad marca las filas del nulo como «no».\n")
+```
+
+`r if (tiene_nulo_py) paste0("::: {.lectura}\nCon el RV principal (cargas sin centrar, L = 24, 200 réplicas), la proporción de pares bajo su p5 va de ", num(min(oe_p$prop_obs), 3), " a ", num(max(oe_p$prop_obs), 3), " según el ancho y los pesos, con p-valores entre ", num(min(oe_p$p_valor), 3), " y ", num(max(oe_p$p_valor), 3), ". Bajo el nulo, la proporción esperada es cercana a 0,05.\n:::") else ""`
+
+## 4.5 Transiciones, bordes de ventana y la lectura de 2017-10 (D10, D13, D17.3)
+
+Candidatos: la regla del 06 (sección 4.3; sin pesos, se lee con los pares de pesos uniformes, D17.3)
+y los cortes de `aede` por el codo con maxcl = 10 (D17.1), con los dos esquemas de pesos. Para cada
+candidato se marca si coincide a ±3 meses (±6 como sensibilidad) con el centro en que un episodio
+entra o sale de la ventana (D7; la ventana de $n_w$ meses con centro $f$ va de $f - n_w/2$ a
+$f + n_w/2 - 1$), y si queda **fuera del nulo**: algún par adyacente del mismo ancho y pesos, con
+frontera (primer mes de la segunda ventana) a ±3 meses del candidato, tiene un RV observado bajo su
+p5 por posición (principal de D17.2, $L = 24$, 200 réplicas). Las dos marcas son definiciones
+operativas declaradas.
+
+**Regla de 2017-10 (D13 con D17.3).** Se confirma solo si hay candidatos a ±3 meses de 2017-10 que no
+son borde y quedan fuera del nulo con al menos **dos anchos** (en la regla del 06 o en `aede` con
+pesos uniformes) **y** al menos uno en `aede` con **pesos gaussianos**. En otro caso se informa como
+«transición no confirmada».
+
+```{r b4-d10, eval = tiene_nulo_py}
+# Traducción de src/dinamica.py: marcar_transiciones y tabla_2017_10
+mes <- function(f) as.Date(paste0(substr(f, 1, 7), "-01"))
+fuera_del_nulo <- function(fecha, pares, tol = 3) {
+  cerca <- meses_entre(mes(fecha), mes(pares$frontera)) <= tol
+  n_bajo <- sum(as.logical(pares$bajo_p5)[cerca])
+  c(fuera = n_bajo > 0, n_cerca = sum(cerca), n_bajo = n_bajo)
+}
+cand <- rbind(data.frame(metodo = "regla 06 (PC2)", nw = r06$transiciones$ventana, pesos = "uniformes", fecha = r06$transiciones$fecha),
+              do.call(rbind, lapply(seq_len(nrow(codo10)), function(i)
+                data.frame(metodo = "aede codo", nw = codo10$nw[i], pesos = codo10$pesos[i], fecha = strsplit(codo10$cortes[i], " ")[[1]]))))
+pos200 <- nulo_py$posicion[nulo_py$posicion$L == 24 & nulo_py$posicion$replicas == 200, ]
+marcar <- function(obj) {
+  pp <- pos200[pos200$objeto == obj, ]
+  do.call(rbind, lapply(seq_len(nrow(cand)), function(i) {
+    pares <- pp[pp$nw == cand$nw[i] & pp$pesos == cand$pesos[i], ]
+    fn <- fuera_del_nulo(cand$fecha[i], pares)
+    b3 <- borde_ventana(mes(cand$fecha[i]), cand$nw[i], tol = 3); b6 <- borde_ventana(mes(cand$fecha[i]), cand$nw[i], tol = 6)
+    data.frame(objeto = obj, metodo = cand$metodo[i], nw = cand$nw[i], pesos = cand$pesos[i], fecha = cand$fecha[i],
+               borde_3 = b3, es_borde_3 = b3 != "—", borde_6 = b6, es_borde_6 = b6 != "—",
+               pares_cercanos = unname(fn["n_cerca"]), pares_cercanos_bajo_p5 = unname(fn["n_bajo"]),
+               fuera_del_nulo = as.logical(fn["fuera"]), stringsAsFactors = FALSE)
+  }))
+}
+tabla_2017 <- function(m, objetivo = "2017-10", tol = 3) {
+  comb <- rbind(data.frame(metodo = "regla 06 (PC2)", nw = nw_grilla, pesos = "uniformes"),
+                data.frame(metodo = "aede codo", nw = nw_grilla, pesos = "uniformes"),
+                data.frame(metodo = "aede codo", nw = nw_grilla, pesos = "gaussianos_nsd3"))
+  t <- do.call(rbind, lapply(seq_len(nrow(comb)), function(i) {
+    g <- m[m$metodo == comb$metodo[i] & m$nw == comb$nw[i] & m$pesos == comb$pesos[i], ]
+    g <- g[meses_entre(mes(objetivo), mes(g$fecha)) <= tol, ]
+    data.frame(metodo = comb$metodo[i], nw = comb$nw[i], pesos = comb$pesos[i],
+               candidatos = paste(g$fecha, collapse = " "), candidato = nrow(g) > 0,
+               algun_no_borde = any(!g$es_borde_3), algun_fuera_del_nulo = any(g$fuera_del_nulo),
+               cuenta = any(!g$es_borde_3 & g$fuera_del_nulo), stringsAsFactors = FALSE)
+  }))
+  anchos_u <- sort(unique(t$nw[t$pesos == "uniformes" & t$cuenta]))
+  anchos_g <- sort(unique(t$nw[t$pesos == "gaussianos_nsd3" & t$cuenta]))
+  res <- data.frame(objetivo = objetivo, anchos_que_cuentan_06_o_aede_uniformes = paste(anchos_u, collapse = " "),
+                    condicion_dos_anchos = length(anchos_u) >= 2, anchos_que_cuentan_aede_gaussianos = paste(anchos_g, collapse = " "),
+                    condicion_gaussianos = length(anchos_g) > 0,
+                    clasificacion = if (length(anchos_u) >= 2 && length(anchos_g) > 0) "confirmada" else "transición no confirmada",
+                    stringsAsFactors = FALSE)
+  list(tabla = t, resumen = res)
+}
+objetos_rv <- c("cargas_sin_centrar", "correlacion")
+marcas <- do.call(rbind, lapply(objetos_rv, marcar))
+t2017 <- lapply(objetos_rv, function(o) tabla_2017(marcas[marcas$objeto == o, ]))
+tabla2017 <- do.call(rbind, lapply(seq_along(objetos_rv), function(i) data.frame(objeto = objetos_rv[i], t2017[[i]]$tabla)))
+clas2017 <- do.call(rbind, lapply(seq_along(objetos_rv), function(i) data.frame(objeto = objetos_rv[i], principal = objetos_rv[i] == "cargas_sin_centrar", t2017[[i]]$resumen)))
+write.csv(marcas, file.path(dir_final, "R_transiciones_d10.csv"), row.names = FALSE)
+write.csv(tabla2017, file.path(dir_final, "R_tabla_2017_10.csv"), row.names = FALSE)
+write.csv(clas2017, file.path(dir_final, "R_clasificacion_2017_10.csv"), row.names = FALSE)
+mp <- marcas[marcas$objeto == "cargas_sin_centrar", ]
+knitr::kable(data.frame(Método = mp$metodo, nw = mp$nw, Pesos = mp$pesos, Fecha = mp$fecha, `Borde (±3)` = mp$borde_3,
+                        `Borde (±6)` = mp$borde_6, `Pares cercanos bajo p5` = paste(mp$pares_cercanos_bajo_p5, "de", mp$pares_cercanos),
+                        `Fuera del nulo` = ifelse(mp$fuera_del_nulo, "sí", "no"), check.names = FALSE),
+             row.names = FALSE, caption = "Transiciones candidatas con la marca de borde de ventana (D7) y su posición frente al nulo (RV principal). Escrito en R_transiciones_d10.csv.")
+tp <- tabla2017[tabla2017$objeto == "cargas_sin_centrar", ]
+knitr::kable(data.frame(Método = tp$metodo, nw = tp$nw, Pesos = tp$pesos, `Candidatos a ±3 meses` = ifelse(nzchar(tp$candidatos), tp$candidatos, "—"),
+                        `Alguno no es borde` = ifelse(tp$algun_no_borde, "sí", "no"), `Alguno fuera del nulo` = ifelse(tp$algun_fuera_del_nulo, "sí", "no"),
+                        Cuenta = ifelse(tp$cuenta, "sí", "no"), check.names = FALSE),
+             row.names = FALSE, caption = "2017-10 por ancho × pesos × método (D13 con D17.3; RV principal). Escrito en R_tabla_2017_10.csv.")
+cp_ <- clas2017[clas2017$principal, ]
+```
+
+`r if (tiene_nulo_py) paste0("::: {.lectura}\nCon la regla de D13 leída según D17.3 y el RV principal, 2017-10 queda como **", cp_$clasificacion, "**: anchos que cuentan en la regla del 06 o en aede uniforme: ", ifelse(nzchar(cp_$anchos_que_cuentan_06_o_aede_uniformes), cp_$anchos_que_cuentan_06_o_aede_uniformes, "ninguno"), "; en aede gaussiano: ", ifelse(nzchar(cp_$anchos_que_cuentan_aede_gaussianos), cp_$anchos_que_cuentan_aede_gaussianos, "ninguno"), ". Con el RV de las correlaciones completas (sensibilidad): ", clas2017$clasificacion[!clas2017$principal], ".\n:::") else ""`
+
+::: {.pregunta}
+Las marcas de «borde» y de «fuera del nulo» son definiciones operativas (tolerancia de ±3 meses
+alrededor de la frontera del par). ¿Las acepta el Dr. Camiz, o prefiere otra forma de ubicar en el
+tiempo el RV entre dos ventanas adyacentes?
+:::
 
 # 5. Clasificación Factorial Jerárquica (HFC) {#hfc}
 
-**Pendiente** (DR, después de D17): 3 y 4 clases, factores, representantes y bootstrap.
+La HFC agrupa **variables**, no meses: empieza con cada serie por separado y en cada paso une los dos
+grupos cuya fusión pierde menos información; cada grupo se representa por su primer factor y el costo
+de unir dos grupos es el segundo valor propio de la fusión (el índice del nodo). Se usa la
+implementación del asesor (`clahfac`, traducida a R en `R/camiz_port.R`) sobre las `r p` series sin
+transformar.
+
+Particiones en 3 y 4 clases, obtenidas deshaciendo las últimas fusiones (`.partclas_ac`, la misma
+partición que `clahpart_r`). Las clases se identifican **por su composición** (C1, C2, … en el orden
+de la primera serie de cada clase), no por el número de nodo. El **factor** de una clase es el
+factor A de su nodo (`repvar`), o la serie estandarizada si la clase tiene una sola serie; su **serie
+representante** es la serie de la clase más correlacionada (en valor absoluto) con ese factor
+(definición operativa declarada, que se lleva como pregunta al Dr. Camiz). Para 3 clases se calculan
+las correlaciones entre factores y entre representantes, con intervalos p5–p95 por bootstrap de
+bloques de 24 meses sobre las filas (series fijas; índices `R_bootstrap_indices_L24.csv`), también
+sobre las series sin su tendencia lineal. Por último, la HFC se recalcula en cada réplica: Rand
+ajustado de las particiones en 3 y 4 clases frente a las originales, correlación cofenética con la
+jerarquía original y frecuencia con que cada par de series queda en la misma clase.
+
+```{r b5-hfc}
+invisible(capture.output(hfc <- clahfac_r(as.data.frame(X), out = TRUE)))
+particiones <- do.call(rbind, lapply(1:4, function(k) {
+  invisible(capture.output(pc_k <- clahpart_r(hfc, noeud = k)))
+  g <- tapply(pc_k$itemclas$label, pc_k$itemclas$class, paste, collapse = ", ")
+  data.frame(Grupos = k + 1, Nodo = names(g), Series = as.character(g))
+}))
+clases_hfc <- function(hier, ncl) {
+  pos <- .partclas_ac(hier, ncl)$partition$Position
+  u <- unique(pos)                              # orden de aparición en el orden de las series
+  lapply(seq_along(u), function(i) list(clase = paste0("C", i), miembros = which(pos == u[i]),
+                                         nodo = if (u[i] > 0) p + u[i] else -u[i]))
+}
+factor_clase <- function(hfc_v, Zv, cl) if (cl$nodo <= p) Zv[, cl$nodo] else hfc_v$repvar[, 2 * (cl$nodo - p) - 1]
+composicion_hfc <- function(hfc_v, Zv) do.call(rbind, lapply(3:4, function(ncl) do.call(rbind, lapply(clases_hfc(hfc_v$hier, ncl), function(cl) {
+  f <- factor_clase(hfc_v, Zv, cl)
+  r <- sapply(cl$miembros, function(j) cor(Zv[, j], f))
+  data.frame(particion = ncl, clase = cl$clase, nodo = cl$nodo, serie = colnames(Zv)[cl$miembros],
+             codigo = as.character(meta_an$codigo)[cl$miembros], r_factor = r,
+             representante = seq_along(cl$miembros) == which.max(abs(r)), stringsAsFactors = FALSE)
+}))))
+pares3 <- rbind(c(1, 2), c(1, 3), c(2, 3))
+cor_boot <- function(Fm, inicios, largo) {
+  nm <- nrow(Fm)
+  rb <- t(sapply(seq_len(nrow(inicios)), function(b) { C <- cor(Fm[indices_desde_inicios(inicios[b, ], largo, nm), ]); C[pares3] }))
+  C0 <- cor(Fm)
+  data.frame(clase_a = paste0("C", pares3[, 1]), clase_b = paste0("C", pares3[, 2]), r = C0[pares3],
+             p5 = apply(rb, 2, quantile, 0.05), p95 = apply(rb, 2, quantile, 0.95), replicas = nrow(inicios))
+}
+correlaciones_hfc <- function(hfc_v, Zv, comp, inicios) {
+  cl3 <- clases_hfc(hfc_v$hier, 3)
+  Fm <- sapply(cl3, function(cl) factor_clase(hfc_v, Zv, cl))
+  Rm <- Zv[, comp$serie[comp$particion == 3 & comp$representante]]
+  rbind(data.frame(version = "original", tipo = "factores", cor_boot(Fm, inicios, 24)),
+        data.frame(version = "original", tipo = "representantes", cor_boot(Rm, inicios, 24)),
+        data.frame(version = "sin_tendencia", tipo = "factores", cor_boot(quitar_tendencia(Fm), inicios, 24)),
+        data.frame(version = "sin_tendencia", tipo = "representantes", cor_boot(quitar_tendencia(Rm), inicios, 24)))
+}
+bootstrap_hfc <- function(hfc_v, M, inicios) {
+  nm <- nrow(M); B <- nrow(inicios)
+  pos0 <- lapply(c(`3` = 3, `4` = 4), function(k) .partclas_ac(hfc_v$hier, k)$partition$Position)
+  dend0 <- as.dendrogram(hfc_v$hier)
+  junto <- list(`3` = matrix(0, p, p), `4` = matrix(0, p, p))
+  filas <- lapply(seq_len(B), function(b) {
+    idx <- indices_desde_inicios(inicios[b, ], 24, nm)
+    invisible(capture.output(hb <- clahfac_r(as.data.frame(M[idx, ]), out = TRUE)))
+    ari <- sapply(c("3", "4"), function(k) {
+      pb <- .partclas_ac(hb$hier, as.integer(k))$partition$Position
+      junto[[k]] <<- junto[[k]] + outer(pb, pb, "==")
+      rand_ajustado(pb, pos0[[k]])
+    })
+    data.frame(replica = b, ari_3 = ari[["3"]], ari_4 = ari[["4"]],
+               cofenetica = cor_cophenetic(as.dendrogram(hb$hier), dend0))
+  })
+  iu <- which(upper.tri(diag(p)), arr.ind = TRUE); iu <- iu[order(iu[, 1], iu[, 2]), ]
+  list(replicas = do.call(rbind, filas),
+       coclasificacion = data.frame(serie_a = colnames(M)[iu[, 1]], serie_b = colnames(M)[iu[, 2]],
+                                    codigo_a = as.character(meta_an$codigo)[iu[, 1]], codigo_b = as.character(meta_an$codigo)[iu[, 2]],
+                                    frec_3 = junto[["3"]][iu] / B, frec_4 = junto[["4"]][iu] / B))
+}
+comp_hfc <- composicion_hfc(hfc, Z)
+# Las clases coinciden con las de clahpart_r: 3 clases = noeud 2, 4 clases = noeud 3
+for (ncl in 3:4) {
+  a <- sort(sapply(split(comp_hfc$serie[comp_hfc$particion == ncl], comp_hfc$clase[comp_hfc$particion == ncl]), function(s) paste(sort(s), collapse = "|")))
+  b <- sort(sapply(strsplit(particiones$Series[particiones$Grupos == ncl], ", "), function(s) paste(sort(s), collapse = "|")))
+  stopifnot(identical(unname(a), unname(b)))
+}
+corr_hfc <- correlaciones_hfc(hfc, Z, comp_hfc, inicios_boot$L24)
+boot_hfc <- bootstrap_hfc(hfc, X, inicios_boot$L24)
+write.csv(comp_hfc, file.path(dir_final, "R_hfc_clases3.csv"), row.names = FALSE)
+write.csv(corr_hfc, file.path(dir_final, "R_hfc_correlaciones3.csv"), row.names = FALSE)
+write.csv(boot_hfc$replicas, file.path(dir_final, "R_hfc_bootstrap.csv"), row.names = FALSE)
+write.csv(boot_hfc$coclasificacion, file.path(dir_final, "R_hfc_coclasificacion.csv"), row.names = FALSE)
+resumen_comp <- do.call(rbind, lapply(split(comp_hfc, list(comp_hfc$particion, comp_hfc$clase), drop = TRUE), function(g) data.frame(
+  Clases = g$particion[1], Clase = g$clase[1], Series = paste(g$serie, collapse = ", "), Representante = g$serie[g$representante])))
+knitr::kable(resumen_comp[order(resumen_comp$Clases, resumen_comp$Clase), ], row.names = FALSE,
+             caption = "Clases de la HFC por composición. Detalle (código BCRP, correlación con el factor) en R_hfc_clases3.csv.")
+```
+
+```{r b5-g-dendro, fig.height = 6.5}
+par(mar = c(9, 4, 3, 1))
+invisible(capture.output(part4 <- dendhier_r(hfc$hier, 4, hiertit = paste("HFC de las", p, "series sin transformar"))))
+```
+
+```{r b5-resumen}
+knitr::kable(data.frame(Versión = corr_hfc$version, Tipo = corr_hfc$tipo, Par = paste(corr_hfc$clase_a, "–", corr_hfc$clase_b),
+                        r = num(corr_hfc$r, 3), `p5–p95` = paste(num(corr_hfc$p5, 3), "a", num(corr_hfc$p95, 3)), check.names = FALSE),
+             row.names = FALSE, caption = "Correlaciones entre los factores y entre los representantes de las 3 clases, con intervalos bootstrap (500 réplicas, L = 24). Escrito en R_hfc_correlaciones3.csv.")
+knitr::kable(data.frame(`Rand ajustado mediano (3 / 4 clases)` = paste(num(median(boot_hfc$replicas$ari_3), 2), num(median(boot_hfc$replicas$ari_4), 2), sep = " / "),
+                        `Réplicas con la partición exacta (3 / 4 clases)` = paste(pct(100 * mean(boot_hfc$replicas$ari_3 == 1), 1), pct(100 * mean(boot_hfc$replicas$ari_4 == 1), 1), sep = " / "),
+                        `Cofenética mediana` = num(median(boot_hfc$replicas$cofenetica), 3), Réplicas = nrow(boot_hfc$replicas), check.names = FALSE),
+             row.names = FALSE, caption = "HFC recalculada en cada réplica bootstrap (bloques de 24 meses). Detalle en R_hfc_bootstrap.csv y R_hfc_coclasificacion.csv.")
+```
+
+::: {.lectura}
+La partición en 3 clases se reproduce exactamente en `r pct(100 * mean(boot_hfc$replicas$ari_3 == 1), 1)`
+de las réplicas, y la de 4 clases en `r pct(100 * mean(boot_hfc$replicas$ari_4 == 1), 1)`. El bootstrap
+por bloques en niveles mide estabilidad descriptiva, no incertidumbre muestral.
+:::
+
+::: {.pregunta}
+¿Coincide la definición de «serie representante» (la de mayor |r| con el factor de su clase) con la
+que usa el Dr. Camiz?
+:::
 
 # 6. Datación de regímenes {#datacion}
 
-**Pendiente** (DR, después de D17): PCA-MM12, grilla de maxcl × criterio, estabilidad de cortes y
-d ∈ {2, 3, 4}.
+Como en el notebook 09, los regímenes se datan con la partición óptima de Fisher sobre los scores del
+PCA suavizados con una media móvil **causal** de 12 meses (cada mes usa solo el año anterior), con
+regímenes de al menos 12 meses. El número de regímenes sale de la **regla K** de D12 (el menor $k$
+cuya reducción relativa de la suma de cuadrados al pasar a $k + 1$ es menor que 10 %; si ninguno lo
+es, la caída máxima de esa reducción), con **maxcl = 10** como especificación principal (D17.1) y
+maxcl = 15 y 20 como sensibilidad. La especificación principal usa **d = 3** componentes (D9); d = 2 y
+d = 4 son la sensibilidad de D12. El CH se informa y no selecciona (D11).
+
+Con tramos de al menos 12 meses, el mayor $k$ factible puede ser menor que maxcl (`k_max_efectivo`).
+D17.1 marca como artefacto las soluciones en que **todos** los tramos miden 12 meses
+(`segmentos_en_minimo`); como con `r n - 11` meses suavizados esa condición literal no puede
+cumplirse (no es múltiplo de 12), se informa además el número de tramos de exactamente 12 meses
+(`n_segmentos_en_minimo`).
+
+```{r b6-datacion}
+L_mm <- 12
+fechas_z <- fechas[L_mm:n]
+mm_scores <- function(S) apply(S, 2, mm_causal, w = L_mm)[L_mm:n, , drop = FALSE]
+grilla_datacion <- function(Sm, fechas_seg) do.call(rbind, lapply(maxcl_grilla, function(mc) {
+  d <- datar(Sm, k_max = mc)
+  el <- data.frame(criterio = c("codo (caída máxima)", "Calinski-Harabász k gl (aede)",
+                                "Calinski-Harabász k-1 gl (habitual)", "regla K (D12)"),
+                   k = c(d$k_caida, d$k_ch, d$k_ch1, d$k_codo),
+                   regla_k = c("caida", "", "", d$regla_codo), stringsAsFactors = FALSE)
+  largos <- lapply(el$k, function(k) diff(c(0, d$res[[as.character(k)]]$cortes, nrow(Sm))))
+  data.frame(maxcl = mc, k_max_efectivo = d$k_max_efectivo, criterio = el$criterio, k = el$k,
+             k_en_tope = el$k == d$k_max_efectivo, regla_k = el$regla_k,
+             cortes = sapply(el$k, function(k) paste(fechas_corte(d$res[[as.character(k)]]$cortes, fechas_seg), collapse = " ")),
+             n_segmentos_en_minimo = sapply(largos, function(l) sum(l == 12)),
+             segmentos_en_minimo = sapply(largos, function(l) all(l == 12)), stringsAsFactors = FALSE)
+}))
+dat3 <- datar(mm_scores(scores[, 1:3]), k_max = MAXCL_PRINCIPAL)
+cortes3 <- dat3$res[[as.character(dat3$k_codo)]]$cortes
+grilla_dat <- grilla_datacion(mm_scores(scores[, 1:3]), fechas_z)
+stopifnot(grilla_dat$k[grilla_dat$maxcl == MAXCL_PRINCIPAL & grilla_dat$criterio == "regla K (D12)"] == dat3$k_codo)
+# D12: sensibilidad de la dimensión (d = 2, 3, 4)
+grilla_dim <- do.call(rbind, lapply(c(2, 3, 4), function(d) data.frame(d = d, grilla_datacion(mm_scores(scores[, 1:d, drop = FALSE]), fechas_z))))
+stopifnot(isTRUE(all.equal(grilla_dim[grilla_dim$d == 3, -1], grilla_dat, check.attributes = FALSE)))
+write.csv(grilla_dat, file.path(dir_final, "R_datacion_criterios.csv"), row.names = FALSE)
+write.csv(grilla_dim, file.path(dir_final, "R_datacion_dimension.csv"), row.names = FALSE)
+knitr::kable(grilla_dat[, c("maxcl", "k_max_efectivo", "criterio", "k", "k_en_tope", "n_segmentos_en_minimo", "cortes")],
+             row.names = FALSE, col.names = c("maxcl", "k máx. factible", "Criterio", "k", "En el tope", "Tramos de 12 meses", "Inicio de cada régimen nuevo"),
+             caption = "Datación PCA-MM12 (PC1 a PC3, media móvil causal de 12 meses, tramos de al menos 12 meses). Escrito en R_datacion_criterios.csv.")
+rk_dim <- grilla_dim[grilla_dim$criterio == "regla K (D12)", ]
+knitr::kable(data.frame(d = rk_dim$d, maxcl = rk_dim$maxcl, k = rk_dim$k, `Paso de la regla K` = rk_dim$regla_k,
+                        `Inicio de cada régimen nuevo` = rk_dim$cortes, check.names = FALSE),
+             row.names = FALSE, caption = "Regla K con d = 2, 3 y 4 componentes (D12). La grilla completa por criterio está en R_datacion_dimension.csv.")
+```
+
+::: {.lectura}
+Con d = 3 y maxcl = `r MAXCL_PRINCIPAL`, la regla K elige **`r dat3$k_codo` regímenes** (paso
+«`r dat3$regla_codo`»), con cortes en `r paste(fechas_corte(cortes3, fechas_z), collapse = ", ")`.
+Con maxcl = 15 y 20 elige `r paste(grilla_dat$k[grilla_dat$criterio == "regla K (D12)" & grilla_dat$maxcl > 10], collapse = " y ")`.
+Con d = 2 y d = 4 (maxcl = 10): `r paste(rk_dim$k[rk_dim$maxcl == 10 & rk_dim$d != 3], collapse = " y ")` regímenes.
+:::
+
+### Estabilidad de los cortes y fases
+
+Se repite la datación con las cargas de cada réplica bootstrap (200 réplicas, L = 24, con el mismo
+número de regímenes) y se cuenta en qué proporción de réplicas aparece cada corte a ±3 meses de su
+fecha original. Mide la estabilidad de las fechas ante la incertidumbre de las cargas con $k$ fijo,
+no la del número de regímenes. Fases (regla del 09): expansión si el promedio del componente de
+crédito (media de los tres créditos estandarizados) es mayor que 0,25, contracción si es menor que
+−0,25 y transición si está entre ambos o si el régimen dura menos de 18 meses. Los episodios
+contenidos se leen del archivo único (D7, D9).
+
+```{r b6-estabilidad}
+B_cortes <- min(200, params$bootstrap_reps)
+k_ref <- dat3$k_codo
+cortes_boot <- lapply(1:B_cortes, function(b) {
+  V <- sapply(1:3, function(k) boot_c[b, , k] / sqrt(boot_vp[b, k]))
+  Sb <- mm_scores(Z %*% V)
+  particion_fisher(estandarizar(Sb), k_max = k_ref, tam_min = 12)[[as.character(k_ref)]]$cortes
+})
+frecuencia <- sapply(cortes3, function(c0) mean(sapply(cortes_boot, function(cb) any(abs(cb - c0) <= 3))))
+estab_cortes <- data.frame(corte = fechas_corte(cortes3, fechas_z), frecuencia = frecuencia, k_ref = k_ref,
+                           replicas = B_cortes, L = 24, tolerancia_meses = 3)
+write.csv(estab_cortes, file.path(dir_final, "R_estabilidad_cortes.csv"), row.names = FALSE)
+comp_credito <- rowMeans(Z[, c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario")])
+clasificar <- function(seg, umbral = 0.25, dur_min = 18) {
+  do.call(rbind, lapply(seq_len(nrow(seg)), function(i) {
+    sel <- fechas >= seg$inicio[i] & fechas <= seg$fin[i]
+    m <- mean(comp_credito[sel]); dur <- sum(sel)
+    fase <- if (dur < dur_min || abs(m) <= umbral) "Transición" else if (m > 0) "Expansión" else "Contracción"
+    epi <- episodios$nombre[episodios$inicio <= seg$fin[i] & episodios$fin_efectivo >= seg$inicio[i]]
+    data.frame(inicio = format(seg$inicio[i], "%Y-%m"), fin = format(seg$fin[i], "%Y-%m"), meses = dur,
+               componente_credito_medio = round(m, 2), fase = fase, episodios_contenidos = paste(epi, collapse = ", "),
+               stringsAsFactors = FALSE)
+  }))
+}
+regimenes <- clasificar(segmentos(cortes3, fechas_z))
+write.csv(regimenes, file.path(dir_final, "R_regimenes_pca.csv"), row.names = FALSE)
+knitr::kable(data.frame(estab_cortes[, c("corte", "frecuencia")]), row.names = FALSE, col.names = c("Inicio del régimen", "Réplicas que lo reproducen a ±3 meses"),
+             digits = 3, caption = paste(B_cortes, "réplicas bootstrap por bloques de 24 meses. Escrito en R_estabilidad_cortes.csv."))
+knitr::kable(regimenes, row.names = FALSE, col.names = c("Inicio", "Fin", "Meses", "Componente de crédito", "Fase", "Episodios contenidos"),
+             caption = "Regímenes de la datación principal y su fase (regla del 09). Escrito en R_regimenes_pca.csv.")
+r_credito_tiempo <- cor(comp_credito, seq_len(n))
+```
+
+::: {.lectura}
+`r sum(frecuencia >= 0.8)` de `r length(frecuencia)` cortes aparecen en al menos el 80 % de las
+réplicas. El componente de crédito correlaciona `r num(r_credito_tiempo, 3)` con el tiempo: sin
+transformar, la regla de fases del 09 ordena los regímenes según la tendencia.
+:::
+
+::: {.pregunta}
+La regla de fases del 09 se escribió para series transformadas. Sin transformar, ¿con qué regla se
+clasifican las fases (pendiente del crédito dentro del régimen, PC2 y PC3, u otra), sin introducir
+una transformación que haya que sustentar?
+:::
 
 # 7. Autoencoders y LSTM {#redes}
 
-**Pendiente** hasta reentrenar con 16 series (decisión R1 de la adenda, sin registrar). `torch` no
-está disponible en el entorno de la iteración 3b.
+**Pendiente** (D17.4): con 16 series quedan en `\pendiente` hasta la iteración 4, cuando haya `torch`
+para reentrenarlos. Sus resultados con 17 series se conservan como antecedente (documento de
+exploración, Parte A.5 y B.5); en el anexo R.b solo se recalcula su discriminación de episodios con
+el archivo único, rotulada como antecedente.
 
 # 8. Síntesis descriptiva {#sintesis}
 
-**Pendiente.** Sin conclusiones sobre la Parte C (regla 7).
+**Pendiente.** Sin conclusiones sobre la Parte C (regla 7): la síntesis se escribe cuando Roberto
+consolide la interpretación de las secciones 2 a 6.
 
 
 # Anexo R · Robustez con las series transformadas {#anexo-r}
@@ -1933,8 +2534,7 @@ Por D15, las series transformadas (log-diferencias para saldos e índices y dife
 tasas y spread, como en el notebook `04`) pasan a este anexo. Contiene (R.a) el **sustento de no
 diferenciar**: qué paso de la transformación cambia la estructura, qué hace la diferencia con las
 frecuencias del ciclo y qué deja en primer plano; y (R.b) la detección de episodios fuera de
-muestra, que **queda pendiente** hasta que se registre D17 (necesita el error *walk-forward* del PCA
-con 16 series). Las salidas van en `r dir_anexo`.
+muestra con el error *walk-forward* del PCA con 16 series. Las salidas van en `r dir_anexo`.
 
 ```{r ra-datos}
 # Las mismas series que la sección 2, transformadas (notebook 04), en el mismo orden de columnas
@@ -2103,11 +2703,101 @@ si se desestacionaliza antes del análisis (otra transformación que sustentar) 
 
 ## R.b Detección de episodios fuera de muestra
 
-**Pendiente.** Se calcula con el error *walk-forward* del PCA con 16 series (sin `torch`), los
-episodios de `data/referencia/episodios_referencia.csv` y la tolerancia de D7, después de D17. La
-ruta sin `torch` ya está comprobada con 17 series (criterio 8 del plan: `tests/test_episodios.py`
-reproduce byte a byte `09_discriminacion_episodios.csv` con las fechas antiguas). Los resultados de
-AE y LSTM quedan como antecedente con 17 series (decisión R1 pendiente).
+Validación *walk-forward* del **PCA** (la parte PCA del notebook 09, sección 2), sin `torch` y con las
+`r p` series: para cada año de evaluación $a$ = 2011, …, 2025 se estandariza con la media y la
+desviación (divisor $n$) de los meses anteriores a enero de $a$, se ajusta un PCA de $d = 3$
+componentes (D9) sobre esos meses y se mide el error cuadrático medio de reconstrucción de los meses
+de $a$, dividido por el percentil 95 del error en entrenamiento. Un mes es alarma si la razón es
+mayor que 1 (regla del 09). Los episodios se leen del archivo único (D7, D9); la crisis financiera
+global no puede evaluarse, porque el primer año de evaluación es 2011. Por D15, la vía de este anexo
+es la transformada; la vía sin transformar se calcula como **contraste**, con el mismo código.
+
+**Tolerancia.** La regla del 09 no tiene tolerancia (`tolerancia_meses = 0`). Como lectura propia de
+esta tarea se informa también cada episodio ampliado ±3 meses (tolerancia principal de D7) y
+±6 meses (sensibilidad); cada episodio se evalúa por separado. **AE y LSTM** (D17.4) siguen en
+`\pendiente` con 16 series: su discriminación con los episodios nuevos se recalcula con sus errores
+*walk-forward* de 17 series (`09_walkforward_errores.csv` del antecedente, sin reentrenar) y se
+rotula como antecedente.
+
+```{r rb-walkforward}
+# Traducción de src/deteccion.py (parte PCA de la sección 2 del notebook 09)
+error_walkforward_pca <- function(M, fechas_M, anios = 2011:2025, d = 3) {
+  do.call(rbind, lapply(anios, function(a) {
+    ent <- fechas_M < as.Date(sprintf("%d-01-01", a))
+    ev <- fechas_M >= as.Date(sprintf("%d-01-01", a)) & fechas_M < as.Date(sprintf("%d-01-01", a + 1))
+    if (!any(ev)) return(NULL)
+    m <- colMeans(M[ent, ]); s <- sqrt(colMeans(sweep(M[ent, ], 2, m)^2))     # divisor n (StandardScaler)
+    Xs <- sweep(sweep(M, 2, m), 2, s, "/")
+    E <- Xs[ent, ]; mu <- colMeans(E)
+    V <- eigen(crossprod(sweep(E, 2, mu)) / nrow(E), symmetric = TRUE)$vectors[, 1:d]
+    rec <- function(Zm) sweep(sweep(Zm, 2, mu) %*% V %*% t(V), 2, mu, "+")
+    ref <- unname(quantile(rowMeans((E - rec(E))^2), 0.95))
+    data.frame(fecha = fechas_M[ev], anio_modelo = a, pca = rowMeans((Xs[ev, , drop = FALSE] - rec(Xs[ev, , drop = FALSE]))^2) / ref)
+  }))
+}
+# Discriminación en formato largo (src/deteccion.discriminacion_larga): episodio ampliado ±tol meses;
+# «fuera de episodios» = meses fuera de todo episodio ampliado; cada episodio se evalúa por separado
+discriminacion_larga <- function(wf, metodos = "pca", tol = 0, umbral = 1) {
+  mv <- function(f, k) if (k == 0) f else mover_meses(f, k)
+  ini <- do.call(c, lapply(seq_len(nrow(episodios)), function(i) mv(episodios$inicio[i], -tol)))
+  fin <- do.call(c, lapply(seq_len(nrow(episodios)), function(i) mv(episodios$fin_efectivo[i], tol)))
+  masc <- lapply(seq_len(nrow(episodios)), function(i) wf$fecha >= ini[i] & wf$fecha <= fin[i])
+  en_alguno <- Reduce(`|`, masc)
+  do.call(rbind, lapply(metodos, function(mt) {
+    v <- wf[[mt]]; fuera <- v[!en_alguno]
+    rbind(data.frame(metodo = mt, tolerancia_meses = tol, medida = c("mediana_fuera_de_episodios", "falsas_alarmas_%"),
+                     episodio = "", meses = length(fuera), valor = c(median(fuera), 100 * mean(fuera > umbral))),
+          do.call(rbind, lapply(seq_len(nrow(episodios)), function(i) if (any(masc[[i]]))
+            data.frame(metodo = mt, tolerancia_meses = tol, medida = c("mediana", "sensibilidad_%"),
+                       episodio = episodios$nombre[i], meses = sum(masc[[i]]),
+                       valor = c(median(v[masc[[i]]]), 100 * mean(v[masc[[i]]] > umbral))))))
+  }))
+}
+# No regresión con 17 series (solo lectura del antecedente): la columna pca de 09_walkforward_errores.csv
+cols17 <- meta$columna[meta$entra == "Sí" | meta$columna %in% params$excluidas]
+X17 <- as.matrix(niv[, cols17])
+Xt17 <- as.matrix(tr[, cols_tr[match(cols17, base_tr)]])
+wf_ant <- list(transformadas = read.csv("data/results/09_walkforward_errores.csv"),
+               niveles = read.csv("data/results/niveles/09_walkforward_errores.csv"))
+for (v in names(wf_ant)) wf_ant[[v]]$fecha <- as.Date(wf_ant[[v]]$fecha)
+dif_wf17 <- c(transformadas = max(abs(error_walkforward_pca(Xt17, fechas_t)$pca - wf_ant$transformadas$pca)),
+              niveles = max(abs(error_walkforward_pca(X17, fechas)$pca - wf_ant$niveles$pca)))
+stopifnot(all(dif_wf17 < 1e-10))
+# Series vigentes
+wf_vig <- list(transformadas = error_walkforward_pca(Xt, fechas_t), niveles = error_walkforward_pca(X, fechas))
+wf_tab <- do.call(rbind, lapply(names(wf_vig), function(v) data.frame(via = v, series = p, fecha = format(wf_vig[[v]]$fecha, "%Y-%m"),
+                                                                       anio_modelo = wf_vig[[v]]$anio_modelo, pca = wf_vig[[v]]$pca)))
+disc_tab <- do.call(rbind, lapply(names(wf_vig), function(v) rbind(
+  do.call(rbind, lapply(c(0, 3, 6), function(tl) data.frame(via = v, series = p, fuente = "vigente (sin torch)",
+                                                             discriminacion_larga(wf_vig[[v]], "pca", tl)))),
+  do.call(rbind, lapply(c(0, 3, 6), function(tl) data.frame(via = v, series = 17, fuente = "antecedente (09_walkforward_errores.csv)",
+                                                             discriminacion_larga(wf_ant[[v]], c("pca", "ae", "lstm"), tl)))))))
+disc_tab <- disc_tab[, c("via", "series", "fuente", "metodo", "tolerancia_meses", "medida", "episodio", "meses", "valor")]
+write.csv(wf_tab, file.path(dir_anexo, "R_anexo_walkforward_pca.csv"), row.names = FALSE)
+write.csv(disc_tab, file.path(dir_anexo, "R_anexo_discriminacion.csv"), row.names = FALSE)
+vista <- disc_tab[disc_tab$medida %in% c("falsas_alarmas_%", "sensibilidad_%") & disc_tab$tolerancia_meses == 0, ]
+vista$columna <- ifelse(vista$medida == "falsas_alarmas_%", "Falsas alarmas (%)", paste0(vista$episodio, " (%)"))
+ancha <- reshape(vista[, c("via", "series", "metodo", "columna", "valor")], idvar = c("via", "series", "metodo"), timevar = "columna", direction = "wide")
+names(ancha) <- sub("^valor\\.", "", names(ancha))
+ancha[, -(1:3)] <- lapply(ancha[, -(1:3)], function(x) num(x, 1))
+knitr::kable(ancha, row.names = FALSE,
+             caption = "Falsas alarmas fuera de episodios y sensibilidad (meses del episodio con razón > 1), tolerancia 0 (regla del 09). Filas de 17 series: antecedente sin reentrenar. Tolerancias de ±3 y ±6 meses en R_anexo_discriminacion.csv.")
+fa <- function(v, s, mt, tl = 0) disc_tab$valor[disc_tab$via == v & disc_tab$series == s & disc_tab$metodo == mt &
+                                                   disc_tab$tolerancia_meses == tl & disc_tab$medida == "falsas_alarmas_%"]
+```
+
+::: {.lectura}
+Con 17 series, la versión en R del *walk-forward* reproduce la columna `pca` de
+`09_walkforward_errores.csv` (diferencia máxima `r format(max(dif_wf17), digits = 2)`). Con las `r p`
+series, el PCA da `r num(fa("transformadas", p, "pca"), 1)` % de falsas alarmas en las series
+transformadas y `r num(fa("niveles", p, "pca"), 1)` % sin transformar (tolerancia 0).
+:::
+
+::: {.pregunta}
+La tolerancia de ±3 meses de D7 se pensó para fechar transiciones (HT3). Aquí amplía cada episodio.
+¿Es la lectura que corresponde para la detección, o la discriminación debe quedarse con la regla del
+09 sin tolerancia?
+:::
 
 
 # Anexo P · Archivos de resultados y paridad con Python {-}
@@ -2261,6 +2951,145 @@ par_niv <- rbind(par_niv,
   fila_num("niveles", "Dimensiones (05)", paste0("n y p de la vía en niveles (", n, " × ", p, ")"), "05_dimensiones.csv", dims_r,
            function(py) c(py$n[py$via == "niveles"], py$p[py$via == "niveles"]), 0.5))
 
+# ---- Parte dinámica (secciones 4 a 6): DR, D10 y D12 -------------------------------
+# Tablas discretas (k, cortes, clases, fechas, marcas): se comparan fila a fila como texto;
+# dif_max = número de filas distintas. Si el CSV de Python no existe, la fila queda como «no».
+fila_tabla <- function(via, seccion, criterio, archivo, clave_r, f_py) {
+  f <- file.path(dir_via[[via]], archivo)
+  py <- leer_05(via, archivo)
+  if (is.null(py)) return(fila_par(via, seccion, criterio, "—", "archivo ausente", f, NA_real_, FALSE))
+  clave_py <- tryCatch(f_py(py), error = function(e) NULL)
+  if (is.null(clave_py)) return(fila_par(via, seccion, criterio, paste(length(clave_r), "filas"), "columnas ausentes", f, NA_real_, FALSE))
+  ok <- length(clave_py) == length(clave_r)
+  n_dif <- if (ok) sum(as.character(clave_r) != as.character(clave_py)) else NA_real_
+  fila_par(via, seccion, criterio, paste(length(clave_r), "filas"), paste(length(clave_py), "filas"), f, n_dif,
+           ok && n_dif == 0)
+}
+sin_na <- function(x) ifelse(is.na(x), "", as.character(x))
+s4 <- "EPCA (sección 4)"
+clave_vp <- function(t) paste(t$nw, t$pesos, t$fecha)
+clave_res <- function(t) paste(t$nw, t$pesos, t$eje)
+clave_06 <- function(t) paste(t$ventana, substr(t$fecha, 1, 7))
+par_dr <- rbind(
+  fila_tabla("niveles", s4, "aede en grilla: nw × pesos × maxcl × criterio (4 × 2 × 3 × 3): k, k en el tope y cortes", "06c_aede_cortes.csv",
+             with(grilla_aede$tabla, paste(nw, maxcl, pesos, criterio, k, k_en_tope, cortes)),
+             function(py) with(py, paste(nw, maxcl, pesos, criterio, k, as.logical(k_en_tope), sin_na(cortes)))),
+  fila_num("niveles", s4, "λ1-λ3 de cada ventana (4 anchos × 2 pesos)", "06c_aede_valores_propios.csv",
+           as.vector(as.matrix(vpv$vp[, c("lambda1", "lambda2", "lambda3")])),
+           function(py) { q <- py[match(clave_vp(vpv$vp), clave_vp(py)), ]; as.vector(as.matrix(q[, c("lambda1", "lambda2", "lambda3")])) }, 1e-10,
+           resumen = paste(nrow(vpv$vp), "ventanas")),
+  fila_num("niveles", s4, "n efectivo de Kish y n de Horn por ancho y pesos", "06c_aede_valores_propios_resumen.csv",
+           c(vpv$resumen$n_omega, vpv$resumen$n_horn),
+           function(py) { q <- py[match(clave_res(vpv$resumen), clave_res(py)), ]; c(q$n_omega, q$n_horn) }, 1e-12),
+  fila_tabla("niveles", s4, "Ventanas bajo Kaiser por eje, series constantes y cruces λ2 ↔ λ3", "06c_aede_valores_propios_resumen.csv",
+             with(vpv$resumen, paste(nw, pesos, eje, ventanas, bajo_kaiser, en_umbral_kaiser, serie_constante, cruces_2_3)),
+             function(py) { q <- py[match(clave_res(vpv$resumen), clave_res(py)), ]; with(q, paste(nw, pesos, eje, ventanas, bajo_kaiser, en_umbral_kaiser, serie_constante, cruces_2_3)) }),
+  fila_tabla("niveles", s4, "Ventanas bajo el p95 de Horn por eje (umbral compartido: R_aede_horn_umbrales.csv)",
+             "06c_aede_valores_propios_resumen.csv", with(vpv$resumen, paste(nw, pesos, eje, bajo_horn)),
+             function(py) { q <- py[match(clave_res(vpv$resumen), clave_res(py)), ]; with(q, paste(nw, pesos, eje, bajo_horn)) }),
+  fila_tabla("niveles", s4, "Fechas de los cruces λ2 ↔ λ3", "06c_aede_cruces.csv",
+             with(vpv$cruces, paste(nw, pesos, fecha)), function(py) with(py, paste(nw, pesos, fecha))),
+  fila_tabla("niveles", s4, "Regla del 06 (PC2): transiciones por ancho (24, 36, 48, 60)", "06_epca_transiciones_ventanas_niveles.csv",
+             clave_06(r06$transiciones), function(py) paste(py$ventana, substr(py$fecha_transicion_candidata, 1, 7))),
+  fila_num("niveles", s4, "Regla del 06 (PC2): estabilidad de cada par de ventanas y umbral", "06_epca_estabilidad_ventanas_niveles.csv",
+           c(r06$estabilidad$estabilidad, r06$estabilidad$umbral),
+           function(py) { q <- py[match(clave_06(r06$estabilidad), clave_06(py)), ]; c(q$estabilidad, q$umbral) }, 1e-10,
+           resumen = paste(nrow(r06$estabilidad), "pares")))
+# Nulo de estructura constante: R = guion R/07b_nulo_estructura.R (20 réplicas por L)
+sn <- "Nulo de estructura y OE4 (sección 4.4; D10, D17.2)"
+if (tiene_nulo) {
+  ck <- function(t) paste(t$L, t$replica, t$nw, t$pesos, t$criterio)
+  cv <- function(t) paste(t$replica, t$objeto, t$nw, t$pesos, t$fecha_a, t$fecha_b, t$frontera)
+  cr <- function(t) paste(t$L, t$replica, t$objeto, t$nw, t$pesos)
+  cpo <- function(t) paste(t$L, t$replicas, t$objeto, t$nw, t$pesos, t$fecha_a, t$frontera)
+  co <- function(t) paste(t$L, t$replicas, t$objeto, t$nw, t$pesos)
+  pos20 <- function(py) py[py$replicas == 20, ]
+  par_dr <- rbind(par_dr,
+    fila_tabla("niveles", sn, "k* de aede con maxcl = 20 (3 criterios × 4 anchos × 2 pesos), serie observada y réplicas 1-20 de L = 12, 24, 36",
+               "07b_nulo_estructura_kstar.csv", with(nulo_r$kstar, paste(ck(nulo_r$kstar), k, k_en_tope)),
+               function(py) { q <- py[match(ck(nulo_r$kstar), ck(py)), ]; paste(ck(nulo_r$kstar), q$k, as.logical(q$k_en_tope)) }),
+    fila_num("niveles", sn, "Perfil RV entre ventanas adyacentes no solapadas, cargas sin centrar y correlación completa (L = 24, réplicas 0-20)",
+             "07b_nulo_estructura_rv.csv", nulo_r$rv$rv, function(py) py$rv[match(cv(nulo_r$rv), cv(py))], 1e-10,
+             resumen = paste(nrow(nulo_r$rv), "pares")),
+    fila_num("niveles", sn, "Resumen del RV por réplica y objeto (mín., p5, mediana, media; L = 12, 24, 36)", "07b_nulo_estructura_rv_resumen.csv",
+             as.vector(as.matrix(nulo_r$rv_resumen[, c("rv_min", "rv_p05", "rv_p50", "rv_media")])),
+             function(py) { q <- py[match(cr(nulo_r$rv_resumen), cr(py)), ]; as.vector(as.matrix(q[, c("rv_min", "rv_p05", "rv_p50", "rv_media")])) }, 1e-10),
+    fila_num("niveles", sn, "p5 por posición con 20 réplicas (L = 12, 24, 36; dos objetos)", "07b_nulo_estructura_rv_posicion.csv",
+             nulo_r$posicion$p5, function(py) { q <- pos20(py); q$p5[match(cpo(nulo_r$posicion), cpo(q))] }, 1e-10,
+             resumen = paste(nrow(nulo_r$posicion), "pares")),
+    fila_tabla("niveles", sn, "Pares bajo su p5 por posición (20 réplicas)", "07b_nulo_estructura_rv_posicion.csv",
+               paste(cpo(nulo_r$posicion), as.logical(nulo_r$posicion$bajo_p5)),
+               function(py) { q <- pos20(py); q <- q[match(cpo(nulo_r$posicion), cpo(q)), ]; paste(cpo(nulo_r$posicion), as.logical(q$bajo_p5)) }),
+    fila_num("niveles", sn, "Criterio de OE4 con 20 réplicas: proporción observada, nula p50 y p95, p-valor", "07b_nulo_estructura_oe4.csv",
+             as.vector(as.matrix(nulo_r$oe4[, c("prop_obs", "prop_nulo_p50", "prop_nulo_p95", "p_valor")])),
+             function(py) { q <- pos20(py); q <- q[match(co(nulo_r$oe4), co(q)), ]; as.vector(as.matrix(q[, c("prop_obs", "prop_nulo_p50", "prop_nulo_p95", "p_valor")])) }, 1e-12),
+    # Excepción declarada (plan, D7): las réplicas 21-200 de L = 24 solo se calculan en Python. Se
+    # comprueba que existan todas; las cifras oficiales del criterio de OE4 usan las 200.
+    fila_tabla("niveles", sn, "Excepción declarada: réplicas 21-200 de L = 24 solo en Python (se comprueba que estén las 200)",
+               "07b_nulo_estructura_kstar.csv", paste(24, 1:200),
+               function(py) { u <- unique(py[py$L == 24 & py$replica > 0, c("L", "replica")]); paste(u$L, u$replica) }))
+} else {
+  par_dr <- rbind(par_dr, fila_par("niveles", sn, "k*, RV, p5 por posición y criterio de OE4", "archivo ausente", "—",
+                                   file.path(dir_final, "R_nulo_estructura_kstar.csv"), NA_real_, FALSE))
+}
+s45 <- "Transiciones y 2017-10 (sección 4.5; D10, D13, D17.3)"
+if (tiene_nulo_py) {
+  cm <- function(t) paste(t$objeto, t$metodo, t$nw, t$pesos, t$fecha)
+  ct <- function(t) paste(t$objeto, t$metodo, t$nw, t$pesos)
+  par_dr <- rbind(par_dr,
+    fila_tabla("niveles", s45, "Candidatos con borde (±3, ±6) y posición frente al nulo (p5 de 200 réplicas de Python, compartido)",
+               "07b_transiciones_d10.csv", with(marcas, paste(cm(marcas), borde_3, borde_6, pares_cercanos, pares_cercanos_bajo_p5, fuera_del_nulo)),
+               function(py) { q <- py[match(cm(marcas), cm(py)), ]; with(q, paste(cm(marcas), borde_3, borde_6, pares_cercanos, pares_cercanos_bajo_p5, as.logical(fuera_del_nulo))) }),
+    fila_tabla("niveles", s45, "Tabla de 2017-10 por método × ancho × pesos (dos objetos del RV)", "07b_tabla_2017_10.csv",
+               with(tabla2017, paste(ct(tabla2017), candidatos, candidato, algun_no_borde, algun_fuera_del_nulo, cuenta)),
+               function(py) { q <- py[match(ct(tabla2017), ct(py)), ]; with(q, paste(ct(tabla2017), sin_na(candidatos), as.logical(candidato),
+                                                                                  as.logical(algun_no_borde), as.logical(algun_fuera_del_nulo), as.logical(cuenta))) }),
+    fila_tabla("niveles", s45, "Clasificación de 2017-10 (D13 con D17.3)", "07b_clasificacion_2017_10.csv",
+               with(clas2017, paste(objeto, sin_na(anchos_que_cuentan_06_o_aede_uniformes), condicion_dos_anchos, sin_na(anchos_que_cuentan_aede_gaussianos), condicion_gaussianos, clasificacion)),
+               function(py) { q <- py[match(clas2017$objeto, py$objeto), ]; with(q, paste(objeto, sin_na(anchos_que_cuentan_06_o_aede_uniformes), as.logical(condicion_dos_anchos),
+                                                                                       sin_na(anchos_que_cuentan_aede_gaussianos), as.logical(condicion_gaussianos), clasificacion)) }))
+} else {
+  par_dr <- rbind(par_dr, fila_par("niveles", s45, "Transiciones y 2017-10", "requiere 07b de Python", "—",
+                                   file.path(dir_final, "07b_nulo_estructura_rv_posicion.csv"), NA_real_, FALSE))
+}
+s5 <- "HFC (sección 5)"
+clave_c <- function(t) paste(t$version, t$tipo, t$clase_a, t$clase_b)
+par_dr <- rbind(par_dr,
+  fila_tabla("niveles", s5, "Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante", "07c_hfc_clases3.csv",
+             with(comp_hfc, paste(particion, clase, nodo, codigo, representante)),
+             function(py) with(py, paste(particion, clase, nodo, codigo, as.logical(representante)))),
+  fila_num("niveles", s5, "Correlación de cada serie con el factor de su clase", "07c_hfc_clases3.csv", comp_hfc$r_factor,
+           function(py) py$r_factor, 1e-10),
+  fila_num("niveles", s5, "Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap (original y sin tendencia)", "07c_hfc_correlaciones3.csv",
+           c(corr_hfc$r, corr_hfc$p5, corr_hfc$p95),
+           function(py) { q <- py[match(clave_c(corr_hfc), clave_c(py)), ]; c(q$r, q$p5, q$p95) }, 1e-10),
+  fila_num("niveles", s5, "Rand ajustado (3 y 4 clases) y cofenética por réplica (500, L = 24)", "07c_hfc_bootstrap.csv",
+           as.vector(as.matrix(boot_hfc$replicas[, c("ari_3", "ari_4", "cofenetica")])),
+           function(py) as.vector(as.matrix(py[match(boot_hfc$replicas$replica, py$replica), c("ari_3", "ari_4", "cofenetica")])), 1e-10,
+           resumen = paste(nrow(boot_hfc$replicas), "réplicas")),
+  fila_num("niveles", s5, paste("Frecuencia de coclasificación de los", nrow(boot_hfc$coclasificacion), "pares (3 y 4 clases)"), "07c_hfc_coclasificacion.csv",
+           c(boot_hfc$coclasificacion$frec_3, boot_hfc$coclasificacion$frec_4),
+           function(py) { q <- py[match(paste(boot_hfc$coclasificacion$codigo_a, boot_hfc$coclasificacion$codigo_b), paste(py$codigo_a, py$codigo_b)), ]
+             c(q$frec_3, q$frec_4) }, 1e-12))
+s6 <- "Datación (sección 6; D12, D17.1)"
+clave_grilla <- function(t) with(t, paste(maxcl, k_max_efectivo, criterio, k, as.logical(k_en_tope), sin_na(regla_k), sin_na(cortes),
+                                          n_segmentos_en_minimo, as.logical(segmentos_en_minimo)))
+par_dr <- rbind(par_dr,
+  fila_tabla("niveles", s6, "Grilla maxcl × criterio (d = 3): k, tope, regla, cortes y tramos de 12 meses", "09a_datacion_criterios.csv",
+             clave_grilla(grilla_dat), clave_grilla),
+  fila_tabla("niveles", s6, "Grilla d ∈ {2, 3, 4} × maxcl × criterio (D12)", "09a_datacion_dimension.csv",
+             paste(grilla_dim$d, clave_grilla(grilla_dim)), function(py) paste(py$d, clave_grilla(py))),
+  fila_tabla("niveles", s6, "Cortes de referencia y k de la estabilidad", "09a_estabilidad_cortes.csv",
+             with(estab_cortes, paste(corte, k_ref, replicas)), function(py) with(py, paste(corte, k_ref, replicas))),
+  fila_num("niveles", s6, "Frecuencia de cada corte a ±3 meses (200 réplicas, L = 24, índices compartidos)",
+           "09a_estabilidad_cortes.csv", estab_cortes$frecuencia, function(py) py$frecuencia, 1e-12),
+  fila_tabla("niveles", s6, "Regímenes: inicio, fin, meses, fase y episodios contenidos", "09a_regimenes_pca.csv",
+             with(regimenes, paste(inicio, fin, meses, fase, episodios_contenidos)),
+             function(py) with(py, paste(inicio, fin, meses, fase, sin_na(episodios_contenidos)))),
+  fila_num("niveles", s6, "Componente de crédito medio de cada régimen (2 decimales)", "09a_regimenes_pca.csv",
+           regimenes$componente_credito_medio, function(py) py$componente_credito_medio, 0.0051))
+par_niv <- rbind(par_niv, par_dr)
+
 # ---- Archivos de resultados (índices compartidos y cifras para la paridad) -------
 escribir_inicios <- function(ini, archivo) {
   d <- data.frame(replica = seq_len(nrow(ini)), ini); names(d)[-1] <- paste0("inicio_", seq_len(ncol(ini)))
@@ -2317,6 +3146,19 @@ par_anexo <- rbind(
   fila_num("transformadas", sa, "ACF a 1 y 12 meses de las series transformadas", "05c_estacional.csv",
            c(estac_t$acf1, estac_t$acf12),
            function(py) { q <- por_clave(py, "serie", estac_t$serie); c(q$acf1, q$acf12) }, 1e-10))
+sb <- "Anexo R.b (09b)"
+clave_disc <- function(t) paste(t$via, t$series, t$metodo, t$tolerancia_meses, t$medida, sin_na(t$episodio))
+par_anexo <- rbind(par_anexo,
+  fila_num("transformadas", sb, paste0("Razón de error walk-forward del PCA por mes (", p, " series; transformadas y niveles)"), "09b_walkforward_pca.csv",
+           wf_tab$pca, function(py) py$pca[match(paste(wf_tab$via, wf_tab$fecha), paste(py$via, py$fecha))], 1e-10,
+           resumen = paste(nrow(wf_tab), "meses")),
+  fila_tabla("transformadas", sb, "Año de modelo de cada mes", "09b_walkforward_pca.csv",
+             paste(wf_tab$via, wf_tab$series, wf_tab$fecha, wf_tab$anio_modelo), function(py) paste(py$via, py$series, py$fecha, py$anio_modelo)),
+  fila_num("transformadas", sb, "Discriminación de episodios: medianas, falsas alarmas y sensibilidad (tolerancias 0, 3, 6; vigente y antecedente con 17 series)",
+           "09b_discriminacion_episodios.csv", disc_tab$valor, function(py) py$valor[match(clave_disc(disc_tab), clave_disc(py))], 1e-10,
+           resumen = paste(nrow(disc_tab), "filas")),
+  fila_tabla("transformadas", sb, "Meses de cada medida de la discriminación", "09b_discriminacion_episodios.csv",
+             paste(clave_disc(disc_tab), disc_tab$meses), function(py) { q <- py[match(clave_disc(disc_tab), clave_disc(py)), ]; paste(clave_disc(disc_tab), q$meses) }))
 write.csv(par_anexo, file.path(dir_anexo, "R_paridad_python.csv"), row.names = FALSE)
 for (f in list.files(dir_anexo, pattern = "\\.csv$", full.names = TRUE)) {
   txt <- readLines(f, warn = FALSE, encoding = "UTF-8")
