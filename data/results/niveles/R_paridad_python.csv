@@ -38,3 +38,8 @@
 "niveles","Valores propios por ventana (D5)","Fechas de los cruces λ2 ↔ λ3","16 filas","16 filas","data/results/niveles/06c_aede_cruces.csv",0,"sí"
 "niveles","EPCA regla 06 por ventana (D6, PC2)","Transiciones por ancho (24, 36, 48, 60)","26 filas","26 filas","data/results/niveles/../06_epca_transiciones_ventanas_niveles.csv",0,"sí"
 "niveles","EPCA regla 06 por ventana (D6, PC2)","Estabilidad de cada par de ventanas y umbral","248 pares","0,8901 0,9209 0,8430 0,7260 0,9395","data/results/niveles/../06_epca_estabilidad_ventanas_niveles.csv",2.78665979180914e-14,"sí"
+"niveles","HFC: clases (D8)","Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante","34 filas","34 filas","data/results/niveles/07c_hfc_clases3.csv",0,"sí"
+"niveles","HFC: clases (D8)","Correlación de cada serie con el factor de su clase","0,9926 0,9792 0,9939 0,9736 0,9900","0,9926 0,9792 0,9939 0,9736 0,9900","data/results/niveles/07c_hfc_clases3.csv",1.11022302462516e-16,"sí"
+"niveles","HFC: factores (D8)","Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap","-0,0788 -0,4861 0,1136 0,0763 -0,2632","-0,0788 -0,4861 0,1136 0,0763 -0,2632","data/results/niveles/07c_hfc_correlaciones3.csv",1.58206781009085e-15,"sí"
+"niveles","HFC: bootstrap (D8)","Rand ajustado (3 y 4 clases) y cofenética por réplica (500, L = 24)","500 réplicas","1,0000 1,0000 1,0000 1,0000 0,8077","data/results/niveles/07c_hfc_bootstrap.csv",4.44089209850063e-16,"sí"
+"niveles","HFC: bootstrap (D8)","Frecuencia de coclasificación de los 136 pares (3 y 4 clases)","0,9960 0,9960 1,0000 1,0000 1,0000","0,9960 0,9960 1,0000 1,0000 1,0000","data/results/niveles/07c_hfc_coclasificacion.csv",0,"sí"

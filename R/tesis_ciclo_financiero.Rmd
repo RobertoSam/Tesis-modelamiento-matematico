@@ -4905,6 +4905,110 @@ knitr::kable(rbind(
   row.names = FALSE, caption = "Regla del notebook 06 por ancho (paso 3). Fechas: centro de la ventana posterior de cada par.")
 ```
 
+## D8 · HFC: clases, factores, representantes y bootstrap (apunte 12, OE5)
+
+Particiones en 3 y 4 clases de la HFC de A.4 y B.4, obtenidas deshaciendo las últimas fusiones
+(`.partclas_ac`, la misma partición que `clahpart_r` y que la HFC por ventanas). Las clases se
+identifican **por su composición** (C1, C2, … en el orden de la primera serie de cada clase), no
+por el número de nodo. El **factor** de una clase es el factor A de su nodo (`repvar`), o la serie
+estandarizada si la clase tiene una sola serie; su **serie representante** es la serie de la clase
+más correlacionada (en valor absoluto) con ese factor. Para la partición en 3 clases se calculan
+las matrices de correlación entre factores y entre representantes, con intervalos p5–p95 por
+bootstrap de bloques de 24 meses sobre las filas (las series se mantienen fijas; índices
+compartidos `R_bootstrap_indices_L24.csv`); sin transformar, también sobre las series sin su
+tendencia lineal. Por último, la HFC se recalcula en cada réplica: Rand ajustado de las
+particiones en 3 y 4 clases frente a las originales, correlación cofenética con la jerarquía
+original y frecuencia con que cada par de series queda en la misma clase.
+
+```{r b3b-hfc}
+clases_hfc <- function(hier, ncl) {
+  pos <- .partclas_ac(hier, ncl)$partition$Position
+  u <- unique(pos)                              # orden de aparición en el orden de las series
+  lapply(seq_along(u), function(i) list(clase = paste0("C", i), miembros = which(pos == u[i]),
+                                         nodo = if (u[i] > 0) p + u[i] else -u[i]))
+}
+factor_clase <- function(hfc_v, Zv, cl) if (cl$nodo <= p) Zv[, cl$nodo] else hfc_v$repvar[, 2 * (cl$nodo - p) - 1]
+composicion_hfc <- function(hfc_v, Zv) do.call(rbind, lapply(3:4, function(ncl) do.call(rbind, lapply(clases_hfc(hfc_v$hier, ncl), function(cl) {
+  f <- factor_clase(hfc_v, Zv, cl)
+  r <- sapply(cl$miembros, function(j) cor(Zv[, j], f))
+  data.frame(particion = ncl, clase = cl$clase, nodo = cl$nodo, serie = colnames(Zv)[cl$miembros],
+             codigo = as.character(meta_an$codigo)[cl$miembros], r_factor = r,
+             representante = seq_along(cl$miembros) == which.max(abs(r)), stringsAsFactors = FALSE)
+}))))
+# Correlaciones entre los 3 factores (y entre los 3 representantes), con intervalos bootstrap p5-p95
+pares3 <- rbind(c(1, 2), c(1, 3), c(2, 3))
+cor_boot <- function(Fm, inicios, largo) {
+  nm <- nrow(Fm)
+  rb <- t(sapply(seq_len(nrow(inicios)), function(b) { C <- cor(Fm[indices_desde_inicios(inicios[b, ], largo, nm), ]); C[pares3] }))
+  C0 <- cor(Fm)
+  data.frame(clase_a = paste0("C", pares3[, 1]), clase_b = paste0("C", pares3[, 2]), r = C0[pares3],
+             p5 = apply(rb, 2, quantile, 0.05), p95 = apply(rb, 2, quantile, 0.95), replicas = nrow(inicios))
+}
+correlaciones_hfc <- function(hfc_v, Zv, comp, inicios, con_sin_tendencia) {
+  cl3 <- clases_hfc(hfc_v$hier, 3)
+  Fm <- sapply(cl3, function(cl) factor_clase(hfc_v, Zv, cl))
+  rep3 <- comp$serie[comp$particion == 3 & comp$representante]
+  Rm <- Zv[, rep3]
+  out <- rbind(data.frame(version = "original", tipo = "factores", cor_boot(Fm, inicios, 24)),
+               data.frame(version = "original", tipo = "representantes", cor_boot(Rm, inicios, 24)))
+  if (con_sin_tendencia) out <- rbind(out,
+    data.frame(version = "sin_tendencia", tipo = "factores", cor_boot(quitar_tendencia(Fm), inicios, 24)),
+    data.frame(version = "sin_tendencia", tipo = "representantes", cor_boot(quitar_tendencia(Rm), inicios, 24)))
+  out
+}
+# HFC recalculada en cada réplica bootstrap (filas remuestreadas en bloques de 24 meses)
+bootstrap_hfc <- function(hfc_v, M, inicios) {
+  nm <- nrow(M); B <- nrow(inicios)
+  pos0 <- lapply(c(`3` = 3, `4` = 4), function(k) .partclas_ac(hfc_v$hier, k)$partition$Position)
+  dend0 <- as.dendrogram(hfc_v$hier)
+  junto <- list(`3` = matrix(0, p, p), `4` = matrix(0, p, p))
+  filas <- lapply(seq_len(B), function(b) {
+    idx <- indices_desde_inicios(inicios[b, ], 24, nm)
+    invisible(capture.output(hb <- clahfac_r(as.data.frame(M[idx, ]), out = TRUE)))
+    ari <- sapply(c("3", "4"), function(k) {
+      pb <- .partclas_ac(hb$hier, as.integer(k))$partition$Position
+      junto[[k]] <<- junto[[k]] + outer(pb, pb, "==")
+      rand_ajustado(pb, pos0[[k]])
+    })
+    data.frame(replica = b, ari_3 = ari[["3"]], ari_4 = ari[["4"]],
+               cofenetica = cor_cophenetic(as.dendrogram(hb$hier), dend0))
+  })
+  iu <- which(upper.tri(diag(p)), arr.ind = TRUE); iu <- iu[order(iu[, 1], iu[, 2]), ]
+  list(replicas = do.call(rbind, filas),
+       coclasificacion = data.frame(serie_a = colnames(M)[iu[, 1]], serie_b = colnames(M)[iu[, 2]],
+                                    codigo_a = as.character(meta_an$codigo)[iu[, 1]], codigo_b = as.character(meta_an$codigo)[iu[, 2]],
+                                    frec_3 = junto[["3"]][iu] / B, frec_4 = junto[["4"]][iu] / B))
+}
+comp_hfc_niv <- composicion_hfc(hfc, Z)
+comp_hfc_tr <- composicion_hfc(hfc_t, Zt)
+# Las clases coinciden con las de clahpart_r (b5-particiones y bB4-particiones): 3 clases = noeud 2, 4 clases = noeud 3
+for (v in list(list(comp_hfc_niv, particiones), list(comp_hfc_tr, particiones_t))) for (ncl in 3:4) {
+  a <- sort(sapply(split(v[[1]]$serie[v[[1]]$particion == ncl], v[[1]]$clase[v[[1]]$particion == ncl]), function(s) paste(sort(s), collapse = "|")))
+  b <- sort(sapply(strsplit(v[[2]]$Series[v[[2]]$Grupos == ncl], ", "), function(s) paste(sort(s), collapse = "|")))
+  stopifnot(identical(unname(a), unname(b)))
+}
+corr_hfc_niv <- correlaciones_hfc(hfc, Z, comp_hfc_niv, inicios_boot$L24, TRUE)
+corr_hfc_tr <- correlaciones_hfc(hfc_t, Zt, comp_hfc_tr, inicios_boot_t$L24, FALSE)
+boot_hfc_niv <- bootstrap_hfc(hfc, X, inicios_boot$L24)
+boot_hfc_tr <- bootstrap_hfc(hfc_t, Xt, inicios_boot_t$L24)
+for (v in list(list(comp_hfc_niv, corr_hfc_niv, boot_hfc_niv, "data/results/niveles"),
+               list(comp_hfc_tr, corr_hfc_tr, boot_hfc_tr, "data/results"))) {
+  write.csv(v[[1]], file.path(v[[4]], "R_hfc_clases3.csv"), row.names = FALSE)
+  write.csv(v[[2]], file.path(v[[4]], "R_hfc_correlaciones3.csv"), row.names = FALSE)
+  write.csv(v[[3]]$replicas, file.path(v[[4]], "R_hfc_bootstrap.csv"), row.names = FALSE)
+  write.csv(v[[3]]$coclasificacion, file.path(v[[4]], "R_hfc_coclasificacion.csv"), row.names = FALSE)
+}
+resumen_comp <- function(cm, via) { q <- cm[cm$particion == 3 | cm$particion == 4, ]
+  do.call(rbind, lapply(split(q, list(q$particion, q$clase), drop = TRUE), function(g) data.frame(
+    Vía = via, Clases = g$particion[1], Clase = g$clase[1], Series = paste(g$serie, collapse = ", "), Representante = g$serie[g$representante]))) }
+knitr::kable(rbind(resumen_comp(comp_hfc_niv, "sin transformar"), resumen_comp(comp_hfc_tr, "transformadas")), row.names = FALSE,
+             caption = "Clases de la HFC por composición. Detalle (código BCRP, correlación con el factor) en R_hfc_clases3.csv.")
+resumen_boot <- function(bh, via) data.frame(Vía = via, `Rand ajustado mediano (3 / 4 clases)` = paste(num(median(bh$replicas$ari_3), 2), num(median(bh$replicas$ari_4), 2), sep = " / "),
+                                             `Cofenética mediana` = num(median(bh$replicas$cofenetica), 2), Réplicas = nrow(bh$replicas), check.names = FALSE)
+knitr::kable(rbind(resumen_boot(boot_hfc_niv, "sin transformar"), resumen_boot(boot_hfc_tr, "transformadas")), row.names = FALSE,
+             caption = "HFC recalculada en cada réplica bootstrap (bloques de 24 meses). Detalle en R_hfc_bootstrap.csv y R_hfc_coclasificacion.csv.")
+```
+
 # Anexo · Archivos de resultados y paridad con Python {-}
 
 Este documento escribe sus resultados de control en `data/results/`. La convención es la de los notebooks que corren las dos vías: los archivos de la
@@ -5180,6 +5284,28 @@ paridad_r06 <- function(via, r, sufijo, comp) {
 }
 par_niv <- rbind(par_niv, paridad_r06("niveles", r06_niv, "_niveles", "PC2"))
 par_tr <- rbind(par_tr, paridad_r06("transformadas", r06_tr, "", "PC1"))
+paridad_hfc <- function(via, cm, cr, bh) {
+  clave_c <- function(t) paste(t$version, t$tipo, t$clase_a, t$clase_b)
+  rbind(
+    fila_tabla(via, "HFC: clases (D8)", "Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante", "07c_hfc_clases3.csv",
+               with(cm, paste(particion, clase, nodo, codigo, representante)),
+               function(py) with(py, paste(particion, clase, nodo, codigo, as.logical(representante)))),
+    fila_num(via, "HFC: clases (D8)", "Correlación de cada serie con el factor de su clase", "07c_hfc_clases3.csv", cm$r_factor,
+             function(py) py$r_factor, 1e-10),
+    fila_num(via, "HFC: factores (D8)", "Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap", "07c_hfc_correlaciones3.csv",
+             c(cr$r, cr$p5, cr$p95),
+             function(py) { q <- py[match(clave_c(cr), clave_c(py)), ]; c(q$r, q$p5, q$p95) }, 1e-10),
+    fila_num(via, "HFC: bootstrap (D8)", "Rand ajustado (3 y 4 clases) y cofenética por réplica (500, L = 24)", "07c_hfc_bootstrap.csv",
+             as.vector(as.matrix(bh$replicas[, c("ari_3", "ari_4", "cofenetica")])),
+             function(py) as.vector(as.matrix(py[match(bh$replicas$replica, py$replica), c("ari_3", "ari_4", "cofenetica")])), 1e-10,
+             resumen = paste(nrow(bh$replicas), "réplicas")),
+    fila_num(via, "HFC: bootstrap (D8)", "Frecuencia de coclasificación de los 136 pares (3 y 4 clases)", "07c_hfc_coclasificacion.csv",
+             c(bh$coclasificacion$frec_3, bh$coclasificacion$frec_4),
+             function(py) { q <- py[match(paste(bh$coclasificacion$codigo_a, bh$coclasificacion$codigo_b), paste(py$codigo_a, py$codigo_b)), ]
+               c(q$frec_3, q$frec_4) }, 1e-12))
+}
+par_niv <- rbind(par_niv, paridad_hfc("niveles", comp_hfc_niv, corr_hfc_niv, boot_hfc_niv))
+par_tr <- rbind(par_tr, paridad_hfc("transformadas", comp_hfc_tr, corr_hfc_tr, boot_hfc_tr))
 
 # ---- Archivos de resultados de la iteración 3a (índices compartidos y cifras inline) ----
 escribir_inicios <- function(ini, archivo) {

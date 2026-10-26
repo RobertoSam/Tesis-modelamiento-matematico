@@ -31,3 +31,8 @@
 "transformadas","Valores propios por ventana (D5)","Fechas de los cruces λ2 ↔ λ3","26 filas","26 filas","data/results/06c_aede_cruces.csv",0,"sí"
 "transformadas","EPCA regla 06 por ventana (D6, PC1)","Transiciones por ancho (24, 36, 48, 60)","19 filas","19 filas","data/results/06_epca_transiciones_ventanas.csv",0,"sí"
 "transformadas","EPCA regla 06 por ventana (D6, PC1)","Estabilidad de cada par de ventanas y umbral","244 pares","0,9782 0,9652 0,9978 0,9939 0,9981","data/results/06_epca_estabilidad_ventanas.csv",1.32671651442706e-14,"sí"
+"transformadas","HFC: clases (D8)","Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante","34 filas","34 filas","data/results/07c_hfc_clases3.csv",0,"sí"
+"transformadas","HFC: clases (D8)","Correlación de cada serie con el factor de su clase","0,1867 0,5681 0,9401 0,8793 -0,2648","0,1867 0,5681 0,9401 0,8793 -0,2648","data/results/07c_hfc_clases3.csv",1.11022302462516e-16,"sí"
+"transformadas","HFC: factores (D8)","Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap","-0,2350 0,2166 0,1377 -0,1835 0,1113","-0,2350 0,2166 0,1377 -0,1835 0,1113","data/results/07c_hfc_correlaciones3.csv",8.32667268468867e-17,"sí"
+"transformadas","HFC: bootstrap (D8)","Rand ajustado (3 y 4 clases) y cofenética por réplica (500, L = 24)","500 réplicas","0,5225 0,3264 0,5152 0,4323 0,4491","data/results/07c_hfc_bootstrap.csv",4.44089209850063e-16,"sí"
+"transformadas","HFC: bootstrap (D8)","Frecuencia de coclasificación de los 136 pares (3 y 4 clases)","0,3560 0,5520 0,3700 0,1940 0,1940","0,3560 0,5520 0,3700 0,1940 0,1940","data/results/07c_hfc_coclasificacion.csv",0,"sí"
