@@ -1,0 +1,289 @@
+"via","series","fuente","metodo","tolerancia_meses","medida","episodio","meses","valor"
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana_fuera_de_episodios","",129,0.292469561932347
+"transformadas",16,"vigente (sin torch)","pca",0,"falsas_alarmas_%","",129,3.87596899224806
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana","Taper tantrum",8,0.35676991985108
+"transformadas",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Taper tantrum",8,0
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana","Colapso de las materias primas",20,0.28327558140552
+"transformadas",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Colapso de las materias primas",20,0
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana","Kuczynski / Odebrecht",1,1.42382606791811
+"transformadas",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Kuczynski / Odebrecht",1,100
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana","Guerra comercial EE. UU.–China",20,0.175396344916505
+"transformadas",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,0
+"transformadas",16,"vigente (sin torch)","pca",0,"mediana","COVID-19",2,26.0911672459071
+"transformadas",16,"vigente (sin torch)","pca",0,"sensibilidad_%","COVID-19",2,100
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana_fuera_de_episodios","",109,0.287103782659186
+"transformadas",16,"vigente (sin torch)","pca",3,"falsas_alarmas_%","",109,0.917431192660551
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana","Taper tantrum",14,0.323574228062447
+"transformadas",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Taper tantrum",14,0
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana","Colapso de las materias primas",26,0.29670451399355
+"transformadas",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Colapso de las materias primas",26,0
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana","Kuczynski / Odebrecht",7,0.296202852683823
+"transformadas",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Kuczynski / Odebrecht",7,28.5714285714286
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana","Guerra comercial EE. UU.–China",26,0.181633631112673
+"transformadas",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,15.3846153846154
+"transformadas",16,"vigente (sin torch)","pca",3,"mediana","COVID-19",8,3.76882301616842
+"transformadas",16,"vigente (sin torch)","pca",3,"sensibilidad_%","COVID-19",8,62.5
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana_fuera_de_episodios","",97,0.287103782659186
+"transformadas",16,"vigente (sin torch)","pca",6,"falsas_alarmas_%","",97,1.03092783505155
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana","Taper tantrum",20,0.287276294026588
+"transformadas",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Taper tantrum",20,0
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana","Colapso de las materias primas",32,0.28327558140552
+"transformadas",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Colapso de las materias primas",32,0
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana","Kuczynski / Odebrecht",13,0.23299058856919
+"transformadas",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Kuczynski / Odebrecht",13,15.3846153846154
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana","Guerra comercial EE. UU.–China",32,0.190869405651666
+"transformadas",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,21.875
+"transformadas",16,"vigente (sin torch)","pca",6,"mediana","COVID-19",14,0.472683920385125
+"transformadas",16,"vigente (sin torch)","pca",6,"sensibilidad_%","COVID-19",14,35.7142857142857
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana_fuera_de_episodios","",129,0.292357784147879
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"falsas_alarmas_%","",129,3.87596899224806
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Taper tantrum",8,0.369281731243193
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Taper tantrum",8,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Colapso de las materias primas",20,0.278889261485126
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Colapso de las materias primas",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Kuczynski / Odebrecht",1,1.35585112629389
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Kuczynski / Odebrecht",1,100
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Guerra comercial EE. UU.–China",20,0.169546393195229
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","COVID-19",2,26.0088396082982
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","COVID-19",2,100
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana_fuera_de_episodios","",129,0.245645672473156
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"falsas_alarmas_%","",129,3.87596899224806
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Taper tantrum",8,0.267764064708514
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Taper tantrum",8,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Colapso de las materias primas",20,0.269620344633252
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Colapso de las materias primas",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Kuczynski / Odebrecht",1,1.09347445320852
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Kuczynski / Odebrecht",1,100
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Guerra comercial EE. UU.–China",20,0.16322819622265
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","COVID-19",2,26.1735187793655
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","COVID-19",2,100
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana_fuera_de_episodios","",129,0.201529874281705
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"falsas_alarmas_%","",129,3.10077519379845
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Taper tantrum",8,0.134956609593002
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Taper tantrum",8,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Colapso de las materias primas",20,0.118085890725579
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Colapso de las materias primas",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Kuczynski / Odebrecht",1,0.972897366723391
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Kuczynski / Odebrecht",1,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Guerra comercial EE. UU.–China",20,0.128425300095711
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","COVID-19",2,22.7562833838855
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","COVID-19",2,100
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana_fuera_de_episodios","",109,0.291421973160588
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"falsas_alarmas_%","",109,0.917431192660551
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Taper tantrum",14,0.338396637615685
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Taper tantrum",14,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Colapso de las materias primas",26,0.2914559511251
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Colapso de las materias primas",26,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Kuczynski / Odebrecht",7,0.282676528254266
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Kuczynski / Odebrecht",7,28.5714285714286
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Guerra comercial EE. UU.–China",26,0.178754889444521
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,15.3846153846154
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","COVID-19",8,3.69787378796027
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","COVID-19",8,62.5
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana_fuera_de_episodios","",109,0.243606174989814
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"falsas_alarmas_%","",109,0.917431192660551
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Taper tantrum",14,0.264591248124532
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Taper tantrum",14,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Colapso de las materias primas",26,0.273487720521035
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Colapso de las materias primas",26,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Kuczynski / Odebrecht",7,0.232847679374583
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Kuczynski / Odebrecht",7,28.5714285714286
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Guerra comercial EE. UU.–China",26,0.170654974894739
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,15.3846153846154
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","COVID-19",8,4.34747625750523
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","COVID-19",8,62.5
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana_fuera_de_episodios","",109,0.206286189482623
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"falsas_alarmas_%","",109,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Taper tantrum",14,0.122958362032287
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Taper tantrum",14,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Colapso de las materias primas",26,0.118085890725579
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Colapso de las materias primas",26,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Kuczynski / Odebrecht",7,0.416572569652047
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Kuczynski / Odebrecht",7,14.2857142857143
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Guerra comercial EE. UU.–China",26,0.153047151916388
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,11.5384615384615
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","COVID-19",8,4.51659353531055
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","COVID-19",8,62.5
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana_fuera_de_episodios","",97,0.291421973160588
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"falsas_alarmas_%","",97,1.03092783505155
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Taper tantrum",20,0.293828144124176
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Taper tantrum",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Colapso de las materias primas",32,0.278889261485126
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Colapso de las materias primas",32,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Kuczynski / Odebrecht",13,0.2179940435113
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Kuczynski / Odebrecht",13,15.3846153846154
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Guerra comercial EE. UU.–China",32,0.188027058330802
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,21.875
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","COVID-19",14,0.46090786644923
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","COVID-19",14,35.7142857142857
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana_fuera_de_episodios","",97,0.245645672473156
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"falsas_alarmas_%","",97,1.03092783505155
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Taper tantrum",20,0.244165348732925
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Taper tantrum",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Colapso de las materias primas",32,0.269620344633252
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Colapso de las materias primas",32,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Kuczynski / Odebrecht",13,0.223067924043475
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Kuczynski / Odebrecht",13,15.3846153846154
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Guerra comercial EE. UU.–China",32,0.182535061185078
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,21.875
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","COVID-19",14,0.39913255823725
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","COVID-19",14,35.7142857142857
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana_fuera_de_episodios","",97,0.208408521879787
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"falsas_alarmas_%","",97,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Taper tantrum",20,0.11980875608331
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Taper tantrum",20,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Colapso de las materias primas",32,0.124727724611459
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Colapso de las materias primas",32,0
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Kuczynski / Odebrecht",13,0.199767696811113
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Kuczynski / Odebrecht",13,7.69230769230769
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Guerra comercial EE. UU.–China",32,0.182375401825494
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,18.75
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","COVID-19",14,0.373054328359371
+"transformadas",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","COVID-19",14,35.7142857142857
+"niveles",16,"vigente (sin torch)","pca",0,"mediana_fuera_de_episodios","",129,1.10369412106752
+"niveles",16,"vigente (sin torch)","pca",0,"falsas_alarmas_%","",129,59.6899224806201
+"niveles",16,"vigente (sin torch)","pca",0,"mediana","Taper tantrum",8,2.04119371186182
+"niveles",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Taper tantrum",8,100
+"niveles",16,"vigente (sin torch)","pca",0,"mediana","Colapso de las materias primas",20,3.27062201701226
+"niveles",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Colapso de las materias primas",20,95
+"niveles",16,"vigente (sin torch)","pca",0,"mediana","Kuczynski / Odebrecht",1,0.813694943895141
+"niveles",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Kuczynski / Odebrecht",1,0
+"niveles",16,"vigente (sin torch)","pca",0,"mediana","Guerra comercial EE. UU.–China",20,0.665511193274081
+"niveles",16,"vigente (sin torch)","pca",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,5
+"niveles",16,"vigente (sin torch)","pca",0,"mediana","COVID-19",2,2.67583924193155
+"niveles",16,"vigente (sin torch)","pca",0,"sensibilidad_%","COVID-19",2,100
+"niveles",16,"vigente (sin torch)","pca",3,"mediana_fuera_de_episodios","",109,1.10005668594574
+"niveles",16,"vigente (sin torch)","pca",3,"falsas_alarmas_%","",109,59.6330275229358
+"niveles",16,"vigente (sin torch)","pca",3,"mediana","Taper tantrum",14,1.80591628644895
+"niveles",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Taper tantrum",14,85.7142857142857
+"niveles",16,"vigente (sin torch)","pca",3,"mediana","Colapso de las materias primas",26,2.50467329243056
+"niveles",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Colapso de las materias primas",26,92.3076923076923
+"niveles",16,"vigente (sin torch)","pca",3,"mediana","Kuczynski / Odebrecht",7,0.829929235574924
+"niveles",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Kuczynski / Odebrecht",7,14.2857142857143
+"niveles",16,"vigente (sin torch)","pca",3,"mediana","Guerra comercial EE. UU.–China",26,0.700056499288202
+"niveles",16,"vigente (sin torch)","pca",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,11.5384615384615
+"niveles",16,"vigente (sin torch)","pca",3,"mediana","COVID-19",8,1.51771979826515
+"niveles",16,"vigente (sin torch)","pca",3,"sensibilidad_%","COVID-19",8,62.5
+"niveles",16,"vigente (sin torch)","pca",6,"mediana_fuera_de_episodios","",97,1.09209249643
+"niveles",16,"vigente (sin torch)","pca",6,"falsas_alarmas_%","",97,56.701030927835
+"niveles",16,"vigente (sin torch)","pca",6,"mediana","Taper tantrum",20,1.78717329884866
+"niveles",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Taper tantrum",20,85
+"niveles",16,"vigente (sin torch)","pca",6,"mediana","Colapso de las materias primas",32,2.12826230938515
+"niveles",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Colapso de las materias primas",32,93.75
+"niveles",16,"vigente (sin torch)","pca",6,"mediana","Kuczynski / Odebrecht",13,0.841683228965234
+"niveles",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Kuczynski / Odebrecht",13,23.0769230769231
+"niveles",16,"vigente (sin torch)","pca",6,"mediana","Guerra comercial EE. UU.–China",32,0.800941241922974
+"niveles",16,"vigente (sin torch)","pca",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,21.875
+"niveles",16,"vigente (sin torch)","pca",6,"mediana","COVID-19",14,1.34531859911259
+"niveles",16,"vigente (sin torch)","pca",6,"sensibilidad_%","COVID-19",14,57.1428571428571
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana_fuera_de_episodios","",129,1.10583334500287
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"falsas_alarmas_%","",129,59.6899224806201
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Taper tantrum",8,2.09144768552494
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Taper tantrum",8,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Colapso de las materias primas",20,3.30637044417327
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Colapso de las materias primas",20,95
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Kuczynski / Odebrecht",1,0.833086964316941
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Kuczynski / Odebrecht",1,0
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","Guerra comercial EE. UU.–China",20,0.684265833557726
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,10
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"mediana","COVID-19",2,2.75066094190106
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",0,"sensibilidad_%","COVID-19",2,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana_fuera_de_episodios","",129,1.895329
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"falsas_alarmas_%","",129,92.2480620155039
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Taper tantrum",8,2.771942
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Taper tantrum",8,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Colapso de las materias primas",20,3.11063035
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Colapso de las materias primas",20,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Kuczynski / Odebrecht",1,1.495906
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Kuczynski / Odebrecht",1,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","Guerra comercial EE. UU.–China",20,1.2920948
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,70
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"mediana","COVID-19",2,3.005146
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",0,"sensibilidad_%","COVID-19",2,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana_fuera_de_episodios","",129,1.5369773
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"falsas_alarmas_%","",129,75.968992248062
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Taper tantrum",8,2.1119482
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Taper tantrum",8,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Colapso de las materias primas",20,1.9682451
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Colapso de las materias primas",20,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Kuczynski / Odebrecht",1,1.1889828
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Kuczynski / Odebrecht",1,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","Guerra comercial EE. UU.–China",20,1.3353072
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","Guerra comercial EE. UU.–China",20,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"mediana","COVID-19",2,2.4812299
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",0,"sensibilidad_%","COVID-19",2,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana_fuera_de_episodios","",109,1.09462867595964
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"falsas_alarmas_%","",109,58.7155963302752
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Taper tantrum",14,1.81814866336987
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Taper tantrum",14,92.8571428571429
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Colapso de las materias primas",26,2.5416738706336
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Colapso de las materias primas",26,92.3076923076923
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Kuczynski / Odebrecht",7,0.840946888087496
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Kuczynski / Odebrecht",7,14.2857142857143
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","Guerra comercial EE. UU.–China",26,0.717040254929614
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,15.3846153846154
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"mediana","COVID-19",8,1.56131310452277
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",3,"sensibilidad_%","COVID-19",8,62.5
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana_fuera_de_episodios","",109,1.8454256
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"falsas_alarmas_%","",109,90.8256880733945
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Taper tantrum",14,2.42316985
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Taper tantrum",14,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Colapso de las materias primas",26,2.72842525
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Colapso de las materias primas",26,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Kuczynski / Odebrecht",7,1.495906
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Kuczynski / Odebrecht",7,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","Guerra comercial EE. UU.–China",26,1.49675535
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,76.9230769230769
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"mediana","COVID-19",8,3.005146
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",3,"sensibilidad_%","COVID-19",8,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana_fuera_de_episodios","",109,1.4976251
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"falsas_alarmas_%","",109,71.5596330275229
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Taper tantrum",14,1.871041
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Taper tantrum",14,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Colapso de las materias primas",26,1.8186595
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Colapso de las materias primas",26,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Kuczynski / Odebrecht",7,1.1889828
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Kuczynski / Odebrecht",7,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","Guerra comercial EE. UU.–China",26,1.34882405
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","Guerra comercial EE. UU.–China",26,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"mediana","COVID-19",8,2.4812299
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",3,"sensibilidad_%","COVID-19",8,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana_fuera_de_episodios","",97,1.07990942006678
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"falsas_alarmas_%","",97,55.6701030927835
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Taper tantrum",20,1.78853188690969
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Taper tantrum",20,90
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Colapso de las materias primas",32,2.17883658756128
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Colapso de las materias primas",32,93.75
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Kuczynski / Odebrecht",13,0.861566890157687
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Kuczynski / Odebrecht",13,23.0769230769231
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","Guerra comercial EE. UU.–China",32,0.825584877598645
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,25
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"mediana","COVID-19",14,1.38206370140913
+"niveles",17,"antecedente (09_walkforward_errores.csv)","pca",6,"sensibilidad_%","COVID-19",14,57.1428571428571
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana_fuera_de_episodios","",97,1.801537
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"falsas_alarmas_%","",97,89.6907216494845
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Taper tantrum",20,2.3895418
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Taper tantrum",20,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Colapso de las materias primas",32,2.49129425
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Colapso de las materias primas",32,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Kuczynski / Odebrecht",13,1.641408
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Kuczynski / Odebrecht",13,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","Guerra comercial EE. UU.–China",32,1.550234
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,81.25
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"mediana","COVID-19",14,3.005146
+"niveles",17,"antecedente (09_walkforward_errores.csv)","ae",6,"sensibilidad_%","COVID-19",14,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana_fuera_de_episodios","",97,1.4839449
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"falsas_alarmas_%","",97,68.0412371134021
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Taper tantrum",20,1.8580931
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Taper tantrum",20,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Colapso de las materias primas",32,1.7949268
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Colapso de las materias primas",32,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Kuczynski / Odebrecht",13,1.2900547
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Kuczynski / Odebrecht",13,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","Guerra comercial EE. UU.–China",32,1.38306685
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","Guerra comercial EE. UU.–China",32,100
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"mediana","COVID-19",14,2.4812299
+"niveles",17,"antecedente (09_walkforward_errores.csv)","lstm",6,"sensibilidad_%","COVID-19",14,100
