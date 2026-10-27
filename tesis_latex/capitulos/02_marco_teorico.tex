@@ -160,14 +160,14 @@ series ni de un indicador. Todas las fechas se leen de un único archivo,
 \end{definicion}
 
 \begin{definicion}[Compatibilidad con tolerancia]\label{def:tolerancia}
-Para $h\ge0$, un mes $f$ es \emph{compatible} con el episodio $\epi$ con tolerancia $h$ si su
+Para $h\ge0$, un mes $\tau$ es \emph{compatible} con el episodio $\epi$ con tolerancia $h$ si su
 distancia al intervalo $[\tini{\epi},\tfin{\epi}]$ no supera $h$ meses, es decir, si
-$\tini{\epi}-h\le f\le\tfin{\epi}+h$. Por la decisión D7, la tolerancia principal es $h=3$ y la de
+$\tini{\epi}-h\le\tau\le\tfin{\epi}+h$. Por la decisión D7, la tolerancia principal es $h=3$ y la de
 sensibilidad, $h=6$.
 \end{definicion}
 
 \begin{observacion}[Alcance de la tolerancia]\label{obs:tolerancia}
-Para un episodio puntual, la \cref{def:tolerancia} se reduce a $\abs{f-\tini{\epi}}\le h$. Para un
+Para un episodio puntual, la \cref{def:tolerancia} se reduce a $\abs{\tau-\tini{\epi}}\le h$. Para un
 período, un mes interior está a distancia cero. D7 fija el valor de $h$, pero no dice si la
 distancia se mide al intervalo o solo a sus extremos. La definición adopta la primera lectura, que
 es la que implementa el código cuando amplía los episodios en el anexo de robustez
@@ -953,10 +953,10 @@ Sean $\omega_u\ge0$, $u=1,\dots,\nw$, con $\sum_u\omega_u=1$.
     y $\nw\ge3$.
   \item Con los pesos de la \cref{def:pesos}, $\nomega$ depende solo de $\nw$ y de $\nu$, no de los
     datos.
-  \item Para $\nu>0$ fijo y $a=\nu/\sqrt2$, cuando $\nw\to\infty$,
+  \item Para $\nu>0$ fijo y $a_\nu=\nu/\sqrt2$, cuando $\nw\to\infty$,
     \[
       \frac{\nomega}{\nw}\;\longrightarrow\;c(\nu)=
-      \frac{\Bigl(\int_{-a}^{a}e^{-x^2/2}\,dx\Bigr)^2}{2a\int_{-a}^{a}e^{-x^2}\,dx},
+      \frac{\Bigl(\int_{-a_\nu}^{a_\nu}e^{-x^2/2}\,dx\Bigr)^2}{2a_\nu\int_{-a_\nu}^{a_\nu}e^{-x^2}\,dx},
       \qquad 0<c(\nu)<1 .
     \]
 \end{enumerate}
@@ -973,18 +973,18 @@ solo si todos los pesos valen cero o uno, lo que, con suma uno, deja un único p
 estrictamente decreciente en $\abs{u-(\nw+1)/2}$. Si $\nw\ge3$, esa distancia vale $(\nw-1)/2$ en
 $u=1$ y $(\nw-3)/2$ en $u=2$, de modo que $\tilde\omega_2>\tilde\omega_1$; los pesos no son todos
 iguales y (a) da la desigualdad estricta. (c) La \cref{eq:pesos} solo contiene $u$, $\nw$ y $\nu$.
-(d) Sea $x_u=a(2u-\nw-1)/(\nw-1)$, de modo que $\tilde\omega_u=e^{-x_u^2/2}$ y los $x_u$ son
-$\nw$ puntos equiespaciados de $-a$ a $a$, con separación $2a/(\nw-1)$. Para $k\in\{1, 2\}$ sea
-$S_k=\frac{2a}{\nw-1}\sum_u e^{-kx_u^2/2}$. Son sumas de Riemann de funciones continuas en
-$[-a,a]$, salvo un término de orden $1/\nw$, de modo que $S_1\to I_1=\int_{-a}^{a}e^{-x^2/2}dx$ y
-$S_2\to I_2=\int_{-a}^{a}e^{-x^2}dx$. Como $\nomega=(\sum_u\tilde\omega_u)^2/\sum_u\tilde\omega_u^2$,
+(d) Sea $\xi_u=a_\nu(2u-\nw-1)/(\nw-1)$, de modo que $\tilde\omega_u=e^{-\xi_u^2/2}$ y los $\xi_u$ son
+$\nw$ puntos equiespaciados de $-a_\nu$ a $a_\nu$, con separación $2a_\nu/(\nw-1)$. Para $k\in\{1, 2\}$ sea
+$S_k=\frac{2a_\nu}{\nw-1}\sum_u e^{-k\xi_u^2/2}$. Son sumas de Riemann de funciones continuas en
+$[-a_\nu,a_\nu]$, salvo un término de orden $1/\nw$, de modo que $S_1\to I_1=\int_{-a_\nu}^{a_\nu}e^{-x^2/2}dx$ y
+$S_2\to I_2=\int_{-a_\nu}^{a_\nu}e^{-x^2}dx$. Como $\nomega=(\sum_u\tilde\omega_u)^2/\sum_u\tilde\omega_u^2$,
 \[
-  \frac{\nomega}{\nw}=\frac{\nw-1}{\nw}\cdot\frac{S_1^2}{2a\,S_2}\;\longrightarrow\;
-  \frac{I_1^2}{2a\,I_2}=c(\nu).
+  \frac{\nomega}{\nw}=\frac{\nw-1}{\nw}\cdot\frac{S_1^2}{2a_\nu\,S_2}\;\longrightarrow\;
+  \frac{I_1^2}{2a_\nu\,I_2}=c(\nu).
 \]
-Por la desigualdad de Cauchy-Schwarz en $[-a,a]$,
-$I_1^2=\bigl(\int e^{-x^2/2}\cdot1\,dx\bigr)^2\le2a\int e^{-x^2}dx=2a\,I_2$, con igualdad solo si
-$e^{-x^2/2}$ fuera constante en $[-a,a]$, lo que no ocurre con $a>0$. Luego $c(\nu)<1$, y
+Por la desigualdad de Cauchy-Schwarz en $[-a_\nu,a_\nu]$,
+$I_1^2=\bigl(\int e^{-x^2/2}\cdot1\,dx\bigr)^2\le2a_\nu\int e^{-x^2}dx=2a_\nu\,I_2$, con igualdad solo si
+$e^{-x^2/2}$ fuera constante en $[-a_\nu,a_\nu]$, lo que no ocurre con $a_\nu>0$. Luego $c(\nu)<1$, y
 $c(\nu)>0$ porque $I_1>0$.
 \end{proof}
 
@@ -1102,8 +1102,8 @@ Para el episodio $\epi$ y el ancho $\nw$, el \emph{centro de entrada} es
 $c^{\mathrm{ent}}_{\epi}=\tini{\epi}-\lceil\nw/2\rceil+1$, el primer centro cuya ventana contiene el
 inicio, y el \emph{centro de salida} es $c^{\mathrm{sal}}_{\epi}=\tfin{\epi}+\lfloor\nw/2\rfloor$, el
 último cuya ventana contiene el fin (\cref{lem:ventana-mes}). Una transición fechada en el centro
-$f$ es un \emph{borde de ventana} con tolerancia $h$ si
-$\abs{f-c^{\mathrm{ent}}_{\epi}}\le h$ o $\abs{f-c^{\mathrm{sal}}_{\epi}}\le h$ para algún
+$\tau$ es un \emph{borde de ventana} con tolerancia $h$ si
+$\abs{\tau-c^{\mathrm{ent}}_{\epi}}\le h$ o $\abs{\tau-c^{\mathrm{sal}}_{\epi}}\le h$ para algún
 $\epi\in\Epis$. La tolerancia principal es $h=3$ y la de sensibilidad, $h=6$ (decisión D7).
 \end{definicion}
 
@@ -1519,9 +1519,9 @@ manual del bootstrap por bloques.}.
 
 \begin{definicion}[Índices por bloques]\label{def:bloques}
 Para una longitud $n'$ y una longitud de bloque $\Lb\le n'$, sean $\mb=\lceil n'/\Lb\rceil$ y
-$s_1,\dots,s_{\mb}$ inicios independientes y uniformes en $\{1,\dots,n'-\Lb+1\}$. La sucesión de
-índices $\pi(1),\dots,\pi(n')$ son los $n'$ primeros términos de
-$(s_1,s_1+1,\dots,s_1+\Lb-1,\;s_2,\dots,s_2+\Lb-1,\;\dots)$.
+$\iota_1,\dots,\iota_{\mb}$ inicios independientes y uniformes en $\{1,\dots,n'-\Lb+1\}$. La sucesión de
+índices $\pib(1),\dots,\pib(n')$ son los $n'$ primeros términos de
+$(\iota_1,\iota_1+1,\dots,\iota_1+\Lb-1,\;\iota_2,\dots,\iota_2+\Lb-1,\;\dots)$.
 \end{definicion}
 
 \subsection{Nulo de tendencias mixto}
@@ -1536,12 +1536,13 @@ West) y DOI sin comprobar; texto no consultado. El núcleo, los 12 rezagos y el 
 son elecciones de la tesis (D8) y no se atribuyen a la fuente.}.
 
 \begin{definicion}[Estadístico HAC de la deriva]\label{def:hac}
-Para la serie $j$, sean $u_t=\Delta x_{tj}-\overline{\Delta x}_j$, $t=1,\dots,n'$, los incrementos
-centrados, con $n'=n-1$ y $\overline{\Delta x}_j$ su media, y $m_{\mathrm{HAC}}\ge0$ un número de
-rezagos. Con $\hat\gamma_k=\frac1{n'}\sum_{t=k+1}^{n'}u_tu_{t-k}$,
+Para la serie $j$, sean $\dot x_t=\Delta x_{t+1,j}-\overline{\Delta x}_j$, $t=1,\dots,n'$, sus
+incrementos centrados, con $n'=n-1$ y $\overline{\Delta x}_j$ la media de los incrementos, y sea
+$m_{\mathrm{HAC}}\ge0$ un número de rezagos. Con $\hat\Gamma_k=\frac1{n'}\sum_{t=k+1}^{n'}\dot x_t
+\dot x_{t-k}$,
 \[
-  \hat\sigma^2_{\mathrm{HAC},j}=\hat\gamma_0+2\sum_{k=1}^{m_{\mathrm{HAC}}}
-  \Bigl(1-\frac{k}{m_{\mathrm{HAC}}+1}\Bigr)\hat\gamma_k ,
+  \hat\sigma^2_{\mathrm{HAC},j}=\hat\Gamma_0+2\sum_{k=1}^{m_{\mathrm{HAC}}}
+  \Bigl(1-\frac{k}{m_{\mathrm{HAC}}+1}\Bigr)\hat\Gamma_k ,
   \qquad
   t^{\mathrm{HAC}}_j=\frac{\overline{\Delta x}_j}{\sqrt{\hat\sigma^2_{\mathrm{HAC},j}/n'}} .
 \]
@@ -1549,20 +1550,23 @@ La decisión D8 fija $m_{\mathrm{HAC}}=12$, sin corrección por grados de libert
 \end{definicion}
 
 \begin{lema}[El estimador es no negativo]\label{lem:hac}
-Con $u_t=0$ para $t\notin\{1,\dots,n'\}$ y $M=m_{\mathrm{HAC}}+1$,
+Con $\dot x_t=0$ para $t\notin\{1,\dots,n'\}$ y $\bar m=m_{\mathrm{HAC}}+1$,
 \[
-  \hat\sigma^2_{\mathrm{HAC},j}=\frac{1}{n'M}\sum_{t=1}^{n'+M-1}\Bigl(\sum_{r=0}^{M-1}u_{t-r}\Bigr)^2\ge0,
+  \hat\sigma^2_{\mathrm{HAC},j}=\frac{1}{n'\bar m}\sum_{t=1}^{n'+\bar m-1}
+  \Bigl(\sum_{k=0}^{\bar m-1}\dot x_{t-k}\Bigr)^2\ge0,
 \]
-con igualdad si y solo si todos los $u_t$ son nulos, es decir, si los incrementos de la serie son
-constantes. En otro caso, $t^{\mathrm{HAC}}_j$ está bien definido.
+con igualdad si y solo si todos los $\dot x_t$ son nulos, es decir, si los incrementos de la serie
+son constantes. En otro caso, $t^{\mathrm{HAC}}_j$ está bien definido.
 \end{lema}
 
 \begin{proof}
-Al desarrollar el cuadrado, el término $u_su_{s'}$ con $\abs{s-s'}=k\le M-1$ aparece una vez por
-cada $t$ con $s,s'\in\{t-M+1,\dots,t\}$, es decir, $M-k$ veces. Por tanto, la suma vale
-$M\sum_su_s^2+2\sum_{k=1}^{M-1}(M-k)\sum_su_su_{s-k}=n'M\bigl[\hat\gamma_0+2\sum_{k=1}^{M-1}
-(1-k/M)\hat\gamma_k\bigr]$, que es $n'M\,\hat\sigma^2_{\mathrm{HAC},j}$. Si la suma es nula, todas las
-sumas móviles lo son; la primera, $t=1$, da $u_1=0$, y por inducción $u_t=0$ para todo $t$.
+Al desarrollar el cuadrado, el producto $\dot x_s\dot x_{s'}$ con $\abs{s-s'}=k\le\bar m-1$
+aparece una vez por cada $t$ con $s,s'\in\{t-\bar m+1,\dots,t\}$, es decir, $\bar m-k$ veces. Por
+tanto, la suma vale
+$\bar m\sum_s\dot x_s^2+2\sum_{k=1}^{\bar m-1}(\bar m-k)\sum_s\dot x_s\dot x_{s-k}
+=n'\bar m\bigl[\hat\Gamma_0+2\sum_{k=1}^{\bar m-1}(1-k/\bar m)\hat\Gamma_k\bigr]$, que es
+$n'\bar m\,\hat\sigma^2_{\mathrm{HAC},j}$. Si la suma es nula, todas las sumas móviles lo son; la
+primera, $t=1$, da $\dot x_1=0$, y por inducción $\dot x_t=0$ para todo $t$.
 \end{proof}
 
 La propiedad del \cref{lem:hac} es la que da nombre al estimador de \textcite{newey_west_1987}; la
@@ -1572,11 +1576,11 @@ demostración anterior es propia y solo usa la forma del núcleo.
 Cada serie $j$ recibe un tratamiento según su clase de la decisión D5 y el estadístico de la
 \cref{def:hac}:
 \begin{enumerate}[label=(\alph*)]
-  \item serie TS: $x^\ast_{tj}=\hat x_{tj}+\hat\epsilon_{\pi(t)j}$, donde $\hat x_{tj}$ es la recta
+  \item serie TS: $x^\ast_{tj}=\hat x_{tj}+\hat\epsilon_{\pib(t)j}$, donde $\hat x_{tj}$ es la recta
     de mínimos cuadrados de la serie sobre el tiempo y $\hat\epsilon_{tj}=x_{tj}-\hat x_{tj}$ son sus
     residuos, remuestreados en bloques;
   \item serie DS con $\abs{t^{\mathrm{HAC}}_j}>2$ (con deriva): $x^\ast_{1j}=0$ y
-    $x^\ast_{t+1,j}=x^\ast_{tj}+\Delta x_{\pi(t)j}$;
+    $x^\ast_{t+1,j}=x^\ast_{tj}+\Delta x_{\pib(t)+1,j}$;
   \item serie DS con $\abs{t^{\mathrm{HAC}}_j}\le2$ (sin deriva): como (b), con los incrementos menos
     su media;
   \item serie indeterminada: el nulo se calcula dos veces, una tratándola como TS y otra como DS.
@@ -1605,11 +1609,11 @@ la estructura de correlación fuera la misma en toda la muestra. En el análisis
 series sin transformar, se remuestrean los incrementos y se acumulan.
 
 \begin{definicion}[Nulo de estructura constante]\label{def:nulo-estructura}
-Sean $\Delta\vx_t=\vx_{t+1}-\vx_t$, $t=1,\dots,n-1$, los incrementos mensuales de las $p$ series y
-$\pi$ una sucesión de índices por bloques (\cref{def:bloques}) con $n'=n-1$, \emph{la misma para
+Sean $\Delta\vx_{t}=\vx_{t}-\vx_{t-1}$, $t=2,\dots,n$, los incrementos mensuales de las $p$ series y
+$\pib$ una sucesión de índices por bloques (\cref{def:bloques}) con $n'=n-1$, \emph{la misma para
 todas las series}. La réplica es la matriz $\mX^{(\zeta)}$ con filas
 \[
-  \vx^{(\zeta)}_1=\mathbf{0},\qquad \vx^{(\zeta)}_{t+1}=\vx^{(\zeta)}_t+\Delta\vx_{\pi(t)},\qquad
+  \vx^{(\zeta)}_1=\mathbf{0},\qquad \vx^{(\zeta)}_{t+1}=\vx^{(\zeta)}_t+\Delta\vx_{\pib(t)+1},\qquad
   t=1,\dots,n-1 .
 \]
 Con $B$ réplicas independientes, $\zeta=1,\dots,B$, se calculan para cada ancho y esquema de pesos
@@ -1620,7 +1624,7 @@ $(\RVad{i})_i$ de la \cref{def:pares}.
 \begin{proposicion}[Propiedades del nulo de estructura]\label{prop:nulo-estructura}
 \begin{enumerate}[label=(\alph*)]
   \item Cada incremento de la réplica es un vector de incrementos observado completo,
-    $\vx^{(\zeta)}_{t+1}-\vx^{(\zeta)}_t=\Delta\vx_{\pi(t)}$, y dentro de cada bloque se conservan
+    $\vx^{(\zeta)}_{t+1}-\vx^{(\zeta)}_t=\Delta\vx_{\pib(t)+1}$, y dentro de cada bloque se conservan
     $\Lb$ incrementos consecutivos en su orden.
   \item Si cada serie se transforma como $x_{tj}\mapsto a_j+b_jx_{tj}$, con $b_j>0$, y se usan los
     mismos índices, cada réplica pasa a ser $\mX^{(\zeta)}\mathbf{G}_b$. Por tanto, las matrices
@@ -1682,26 +1686,26 @@ dependientes y porque comparar $m$ pares con un mismo nivel multiplica las falsa
 criterio responde a OE4 por ancho de ventana, sin elegir uno.
 
 \begin{supuesto}[Intercambiabilidad bajo el nulo]\label{sup:intercambiable}
-Bajo la hipótesis de estructura constante, el perfil observado $P_0$ y los perfiles de las réplicas
-$P_1,\dots,P_B$ son intercambiables: su distribución conjunta no cambia al permutarlos.
+Bajo la hipótesis de estructura constante, el perfil observado $\mathcal{P}_0$ y los perfiles de las réplicas
+$\mathcal{P}_1,\dots,\mathcal{P}_B$ son intercambiables: su distribución conjunta no cambia al permutarlos.
 \end{supuesto}
 
 \begin{proposicion}[Validez de la versión simétrica]\label{prop:oe4}
-Para $j=0,\dots,B$, sea $T_j$ la proporción de posiciones $i$ en que $P_{j,i}$ queda bajo el
-cuantil de nivel 5\,\% de $\{P_{c,i}\}_{c\ne j}$, calculado con los otros $B$ perfiles, y sea
-$\tilde p=\bigl(1+\#\{\zeta\ge1:T_\zeta\ge T_0\}\bigr)/(B+1)$. Bajo el \cref{sup:intercambiable},
-$\Pr(\tilde p\le u)\le u$ para todo $u\in[0,1]$.
+Para $j=0,\dots,B$, sea $\tilde\varpi_j$ la proporción de posiciones $i$ en que $\mathcal{P}_{j,i}$ queda bajo el
+cuantil de nivel 5\,\% de $\{\mathcal{P}_{c,i}\}_{c\ne j}$, calculado con los otros $B$ perfiles, y sea
+$\widetilde{\pval}=\bigl(1+\#\{\zeta\ge1:\tilde\varpi_\zeta\ge\tilde\varpi_0\}\bigr)/(B+1)$. Bajo el \cref{sup:intercambiable},
+$\Pr(\widetilde{\pval}\le\alpha_0)\le\alpha_0$ para todo $\alpha_0\in[0,1]$.
 \end{proposicion}
 
 \begin{proof}
-Cada $T_j$ es la misma función de $P_j$ y del conjunto de los demás perfiles, de modo que permutar
-los perfiles permuta los $T_j$; por el supuesto, $(T_0,\dots,T_B)$ es intercambiable. Para
-$k\in\{1,\dots,B+1\}$ sea $S=\{j:\#\{c\ne j:T_c\ge T_j\}\le k-1\}$. Si $S$ tuviera $k+1$ elementos
-o más, el de menor $T$ en $S$ tendría al menos $k$ índices distintos con $T$ mayor o igual, contra
-la definición de $S$; luego $\#S\le k$. Por la intercambiabilidad, cada índice pertenece a $S$ con
-la misma probabilidad, de modo que $\Pr(0\in S)=\mathbb{E}[\#S]/(B+1)\le k/(B+1)$. Como $0\in S$
-equivale a $\tilde p\le k/(B+1)$, y $\tilde p$ solo toma valores $k/(B+1)$, se sigue
-$\Pr(\tilde p\le u)\le\lfloor u(B+1)\rfloor/(B+1)\le u$.
+Cada $\tilde\varpi_j$ es la misma función de $\mathcal{P}_j$ y del conjunto de los demás perfiles, de modo que permutar
+los perfiles permuta los $\tilde\varpi_j$; por el supuesto, $(\tilde\varpi_0,\dots,\tilde\varpi_B)$ es intercambiable. Para
+$k\in\{1,\dots,B+1\}$ sea $\mathcal{J}=\{j:\#\{c\ne j:\tilde\varpi_c\ge\tilde\varpi_j\}\le k-1\}$. Si $\mathcal{J}$ tuviera $k+1$ elementos
+o más, el de menor $\tilde\varpi$ en $\mathcal{J}$ tendría al menos $k$ índices distintos con $\tilde\varpi$ mayor o igual, contra
+la definición de $\mathcal{J}$; luego $\#\mathcal{J}\le k$. Por la intercambiabilidad, cada índice pertenece a $\mathcal{J}$ con
+la misma probabilidad, de modo que $\Pr(0\in\mathcal{J})=\mathbb{E}[\#\mathcal{J}]/(B+1)\le k/(B+1)$. Como $0\in\mathcal{J}$
+equivale a $\widetilde{\pval}\le k/(B+1)$, y $\widetilde{\pval}$ solo toma valores $k/(B+1)$, se sigue
+$\Pr(\widetilde{\pval}\le\alpha_0)\le\lfloor\alpha_0(B+1)\rfloor/(B+1)\le\alpha_0$.
 \end{proof}
 
 \begin{observacion}[La versión implementada]\label{obs:oe4}
@@ -1713,8 +1717,8 @@ réplicas se remuestrean a partir de los propios incrementos observados.
 \end{observacion}
 
 \begin{definicion}[Transición fuera del nulo]\label{def:fuera-nulo}
-Una transición candidata fechada en $f$, con un ancho y un esquema de pesos, está \emph{fuera del
-nulo} si algún par $i$ del mismo ancho y pesos, con $\abs{\fr(i)-f}\le h$, cumple
+Una transición candidata fechada en $\tau$, con un ancho y un esquema de pesos, está \emph{fuera del
+nulo} si algún par $i$ del mismo ancho y pesos, con $\abs{\fr(i)-\tau}\le h$, cumple
 $\RVad{i}<\umbralRV{i}$. Para la regla del 06, que no tiene pesos, se usan los pares con pesos
 uniformes (\cref{cor:regla06}; decisión D17.3). La tolerancia es la principal de D7, $h=3$.
 \end{definicion}
@@ -1723,9 +1727,9 @@ La \cref{def:fuera-nulo} es la definición operativa del código; no figura en e
 decisiones, y queda como pregunta para el asesor.
 
 \begin{definicion}[Transición confirmada]\label{def:confirmada}
-Sea $f_0$ un mes. Una transición candidata a lo sumo a $h=3$ meses de $f_0$ \emph{cuenta} si no es
+Sea $\tau^\circ$ un mes. Una transición candidata a lo sumo a $h=3$ meses de $\tau^\circ$ \emph{cuenta} si no es
 un borde de ventana (\cref{def:borde}, $h=3$) y está fuera del nulo (\cref{def:fuera-nulo}). La
-transición de $f_0$ está \emph{confirmada} si se cumplen las dos condiciones siguientes; en otro
+transición de $\tau^\circ$ está \emph{confirmada} si se cumplen las dos condiciones siguientes; en otro
 caso es una \emph{transición no confirmada} (decisiones D13 y D17.3):
 \begin{enumerate}[label=(\alph*)]
   \item hay candidatas que cuentan con al menos dos anchos distintos, entre la regla del 06 y

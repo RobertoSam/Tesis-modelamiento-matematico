@@ -41,8 +41,8 @@ El diseño adoptado tiene dos partes (decisión D15):
 \end{enumerate}
 
 Entre las decisiones D2 y D15, el proyecto ejecutó la cadena en dos vías, con las series sin
-transformar y con las transformadas, sin elegir una. Esos resultados, calculados además con 17
-series, quedan como antecedente y no se usan en esta tesis. El diseño en niveles con anexo
+transformar y con las transformadas, sin elegir una. Esos resultados, calculados además con la
+liquidez M2 incluida, quedan como antecedente y no se usan en esta tesis. El diseño en niveles con anexo
 resuelve en la práctica la propuesta que D2 dejaba pendiente, pero se presenta al Dr.~Camiz
 como \textbf{propuesta, no como hecho consumado}: es reversible, porque el código conserva la
 vía transformada como parámetro, y queda sujeto a la reunión con el asesor.
@@ -287,9 +287,9 @@ del notebook 09, aplicada al PCA.
 Para cada año de evaluación $a$, sean $\mathcal{T}_a$ los meses anteriores a enero de $a$. Los datos
 se estandarizan con la media y la desviación típica (divisor igual al número de meses) de
 $\mathcal{T}_a$, y se ajusta un PCA de $d$ componentes con esos meses. El error de reconstrucción
-del mes $t$, $e_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes
-(\cref{eq:pca}). La \emph{razón de error} de cada mes del año $a$ es $e_t/e^{(95)}_a$, donde
-$e^{(95)}_a$ es el percentil 95 de los errores de los meses de $\mathcal{T}_a$. Un mes con razón
+del mes $t$, $E_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes
+(\cref{eq:pca}). La \emph{razón de error} de cada mes del año $a$ es $E_t/E^{(95)}_a$, donde
+$E^{(95)}_a$ es el percentil 95 de los errores de los meses de $\mathcal{T}_a$. Un mes con razón
 mayor que uno es una \emph{alarma}.
 \end{definicion}
 
@@ -303,7 +303,7 @@ Los autoencoders y las redes LSTM complementan esta detección en el diseño de 
 (\cref{sec:dl}). Con \nSeries{} series, todavía no se han vuelto a entrenar (decisión D17.4).
 \pendiente{autoencoders y redes LSTM con las \nSeries{} series vigentes: diseño, entrenamiento y
 detección, a la espera de la iteración 4, cuando el entorno disponga de \texttt{torch}. Sus
-resultados con 17 series se conservan como antecedente y no se usan.}
+resultados anteriores, con la liquidez M2 incluida, se conservan como antecedente y no se usan.}
 
 % -----------------------------------------------------------------------------
 \section{Criterios fijados de antemano}
@@ -394,7 +394,8 @@ se calculan en Python y se comprueba que estén todas.
 
 \paragraph{Reproducibilidad.} Los datos están congelados y se verifican por su md5 (decisión D4).
 Las semillas son fijas y el orden de ejecución está documentado. Una prueba de no regresión
-comprueba que, con las 17 series del antecedente, el código vigente reproduce sus archivos, de modo
+comprueba que, con las series del antecedente (la liquidez M2 incluida), el código vigente
+reproduce sus archivos, de modo
 que lo único que cambió es la exclusión de la decisión D16. Las cifras de esta tesis se generan con
 \texttt{herramientas/generar\_cifras.py} a partir de los archivos de resultados y de la lista de
 episodios, y la opción \texttt{--comprobar} verifica que estén al día.

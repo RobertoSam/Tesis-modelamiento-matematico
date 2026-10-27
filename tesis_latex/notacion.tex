@@ -83,6 +83,7 @@
 \newcommand{\RVadr}[2]{\RV^{\mathrm{ad},(#2)}_{#1}}       % RV adyacente de la réplica #2
 \newcommand{\umbralRVr}[2]{\underline{\RV}^{\,\mathrm{ad},(#2)}_{#1}} % p5 sin la réplica
 \newcommand{\ind}{\mathbb{I}}          % función indicadora
+\newcommand{\pib}{\pi^{\mathrm{b}}}    % sucesión de índices por bloques (no confundir con la constante pi)
 \DeclareMathOperator{\fr}{fr}          % frontera de un par de ventanas adyacentes
 \DeclareMathOperator{\red}{red}        % reducción relativa del costo de Fisher
 \newcommand{\pval}{\mathrm{pv}}        % p-valor de Monte Carlo
@@ -126,17 +127,19 @@ $\lfloor\cdot\rfloor$, $\lceil\cdot\rceil$ & Parte entera inferior y superior. \
 $\abs{\cdot}$, $\operatorname{sgn}$ & Valor absoluto o módulo de un número complejo; función signo. \\
 $\mathrm{i}$, $e$ & Unidad imaginaria; base de los logaritmos naturales ($\ln$). \\
 $O(\cdot)$ & Orden del número de operaciones de un algoritmo. \\
+$\ind\{\cdot\}$, $\Pr$, $\mathbb{E}$, $\#$ & Función indicadora; probabilidad; esperanza; número de elementos de un conjunto. \\
 $\mathbf{a}$, $\mathbf{b}$, $\xi$ & Vectores y escalares genéricos en enunciados y demostraciones. \\
 $\mathbf{G}\succeq 0$ & Matriz simétrica semidefinida positiva. \\
 $\odot$, $\sigma(\cdot)$, $\tanh$ & Producto elemento a elemento; función logística; tangente hiperbólica. \\[4pt]
 \gruposimbolos{Datos}
-$n$, $p$ & Número de meses (observaciones) y de series (variables). \\
+$n$, $p$ & Número de meses (observaciones) y de series (variables); en el análisis oficial, $n=\nMesesNiveles$ y $p=\nSeries$ (\cref{sec:met-datos}). \\
 $t$, $s$ & Índices de mes, $t,s\in\{1,\dots,n\}$. \\
 $j$, $j'$ & Índices de serie, $j,j'\in\{1,\dots,p\}$. \\
 $\mX$, $\vx_t$, $x_{tj}$ & Matriz de datos $n\times p$ (series sin transformar o transformadas); su fila $t$; su elemento. \\
 $\mZ$, $\vz_t$, $\vz_j$, $z_{tj}$ & Datos centrados y estandarizados con divisor $n$; fila $t$; columna $j$; elemento. \\
 $\bar x_j$, $\hat\sigma_j$ & Media y desviación típica (divisor $n$) de la serie $j$. \\
-$\Delta$ & Primera diferencia, $\Delta x_t=x_t-x_{t-1}$. \\
+$\Delta$ & Primera diferencia, $\Delta x_t=x_t-x_{t-1}$; para vectores, $\Delta\vx_t=\vx_t-\vx_{t-1}$. \\
+$\hat x_t$, $\hat\epsilon_t$ & Recta de mínimos cuadrados de una serie sobre el tiempo y sus residuos (regla D5, nulo mixto). \\
 $P$, $\vartheta$, $\gamma(P)$ & Período de una oscilación en meses; frecuencia angular $2\pi/P$; ganancia de $\Delta$. \\
 $\varrho$, $\psi_0$ & Amplitud y fase de una oscilación. \\
 $t_0$, $T$ & Mes anterior al primero de un tramo de meses consecutivos y longitud del tramo (\cref{prop:ganancia}). \\
@@ -156,7 +159,7 @@ $\cos^2_{j\ell}$, $\ctr_{j\ell}$, $\ctr_{t\ell}$ & Calidad de representación de
 $\qlt_j(\ell,\ell')$ & Calidad de representación de la serie $j$ en el plano $(\ell,\ell')$. \\
 $\mN$, $\varsigma_\ell$ & Matriz genérica que se aproxima (teorema de Eckart y Young) y sus valores singulares. \\
 $\mM$, $\mO$ & Aplicación lineal de reconstrucción de rango a lo sumo $d$; matriz ortogonal. \\
-$\lambda^{\mathrm{H}}_\ell$, $\beta_\ell$ & Umbral del análisis paralelo de Horn; valor esperado de la vara quebrada. \\
+$\lambda^{\mathrm{H}}_\ell$, $\lambda^{\mathrm{H}}_\ell(n',p)$, $\beta_\ell$ & Umbral del análisis paralelo de Horn, en general o con una tabla de $n'$ filas y $p$ columnas; valor esperado de la vara quebrada. \\
 $r^{jj'}$, $q_{jj'}$ & Elemento de $\mR^{-1}$; correlación anti-imagen (parcial) entre las series $j$ y $j'$. \\
 $\KMO$, $\KMO_j$ & Medida global e individual de Kaiser-Meyer-Olkin. \\
 $\chi^2_{\mathrm{B}}$ & Estadístico de esfericidad de Bartlett. \\[4pt]
@@ -179,7 +182,16 @@ $\nu$ & Parámetro de forma de los pesos gaussianos (argumento \texttt{nsd} de \
 $\vm_t$, $\mC_t$, $\mD_t$, $\mR_t$ & Media, covarianza, diagonal de la covarianza y correlación ponderadas de la ventana. \\
 $\lambda_\ell(t)$, $\vv_\ell(t)$ & Valor y vector propio $\ell$ de $\mR_t$. \\
 $\tilde\omega_u$, $\tilde\vz_s$ & Peso sin normalizar; mes $s$ estandarizado con la media y la varianza ponderadas. \\
-$\mathbf{G}_b$ & Matriz diagonal de factores de escala $b_j>0$ (con desplazamientos $a_j$). \\[4pt]
+$\mathbf{G}_b$ & Matriz diagonal de factores de escala $b_j>0$ (con desplazamientos $a_j$). \\
+$\nomega$ & Tamaño efectivo de Kish de los pesos de la ventana, $(\sum_u\omega_u^2)^{-1}$ (\cref{def:kish}). \\
+$c(\nu)$, $a_\nu$ & Límite de $\nomega/\nw$ con pesos gaussianos y $a_\nu=\nu/\sqrt2$ (\cref{prop:kish}). \\
+$\xi_u$, $S_k$, $I_k$ & Puntos equiespaciados, sumas de Riemann e integrales de la demostración de la \cref{prop:kish}. \\
+$\nhorn$ & Filas del análisis paralelo por ventana, $\lceil\nomega\rceil$ (\cref{def:umbral-ventana}). \\
+$\paso$, $M$, $\ell_0$ & Paso entre ventanas, número de ventanas y eje que sigue la regla del 06 (\cref{def:regla06}). \\
+$\mathbf{a}_k$, $\tilde{\mathbf{a}}_k$ & Vector propio unitario del eje $\ell_0$ en la ventana $k$ de la regla del 06, sin alinear y alineado. \\
+$\rho(\cdot,\cdot)$, $\operatorname{sgn}^{+}$ & Correlación de Pearson entre las coordenadas de dos vectores; signo con $\operatorname{sgn}^{+}(0)=1$. \\
+$\rho^{(06)}_k$, $\bar\rho$, $s_\rho$ & Estabilidad de la regla del 06 en la ventana $k$; su media y su desviación típica. \\
+$c^{\mathrm{ent}}_{\epi}$, $c^{\mathrm{sal}}_{\epi}$ & Centros de entrada y de salida del episodio $\epi$ en la ventana (\cref{def:borde}). \\[4pt]
 \gruposimbolos{Partición de Fisher y número de clases}
 $\vy_t\in\RR^{q}$, $q$ & Punto $t$ de la trayectoria que se particiona; su dimensión. \\
 $K$, $k$ & Número de segmentos (clases); índice de segmento. \\
@@ -189,6 +201,10 @@ $Q(a,b)$, $\bar\vy_{a:b}$ & Suma de cuadrados intrasegmento de los puntos $a,\do
 $Q^\ast_K(b)$ & Mínimo de la suma de cuadrados intra al dividir los puntos $1,\dots,b$ en $K$ segmentos. \\
 $T$ & Suma de cuadrados total de la trayectoria. \\
 $K_{\max}$, $Q_K$ & Número máximo de segmentos; $Q^\ast_K(N)$. \\
+$\Kef$ & Mayor número de segmentos factible, $\min(K_{\max},\lfloor N/n_{\min}\rfloor)$ (\cref{cor:fisher-factible}). \\
+$\Kest$, $\Kest_{\mathrm{codo}}$, $\Kest_{\mathrm K}$ & Número de segmentos que elige un criterio (el $k^\ast$ del código); el del codo por caída máxima y el de la regla K (\cref{def:criterios-k}). \\
+$\red_K$, $\upsilon$ & Reducción relativa del costo al pasar de $K$ a $K+1$ segmentos; umbral de la regla K. \\
+$w_{\mathrm m}$, $\bar c_{t\ell}$ & Longitud de la media móvil causal y \emph{score} suavizado de la datación PCA-MM12 (\cref{def:datacion}). \\
 $\CH^{\mathrm{h}}_K$, $\CH^{\mathrm{a}}_K$ & Índice de Caliński y Harabasz en su forma habitual y en la variante de \texttt{aede}. \\
 $K^{\mathrm h}$, $K^{\mathrm a}$ & Número de segmentos elegido por cada variante. \\[4pt]
 \gruposimbolos{Régimen, transición y comparación de estructuras}
@@ -197,7 +213,10 @@ $\tau$ & Mes de una transición (\cref{def:transicion}); no confundir con $\tau_
 $\Wt_\tau^{-}$, $\Wt_\tau^{+}$ & Conjuntos de meses contiguos adyacentes, antes y después de $\tau$. \\
 $\delta(\cdot,\cdot)$, $\varepsilon$ & Disimilitud entre estructuras; tolerancia. \\
 $\interv_k$, $\Wt$, $\Wt'$ & Intervalo de un régimen; conjuntos de meses contiguos (ventanas). \\
-$\mF_1$, $\mF_2$, $m$ & Configuraciones centradas de las mismas $m$ filas. \\
+$\mF_1$, $\mF_2$, $m$ & Configuraciones no nulas de las mismas $m$ filas (centradas o no, \cref{def:rv}). \\
+$\mF_t$, $\mR^{[d]}_t$ & Matriz $p\times d$ de cargas de la ventana de centro $t$ y su producto $\mF_t\mF_t^{\T}$ (\cref{def:rv-cargas}). \\
+$\RV^{(d)}(t,t')$, $\rho_{\mR}(t,t')$ & RV de cargas sin centrar con $d$ ejes; coeficiente entre las matrices de correlación completas. \\
+$\fr(i)$, $\RVad{i}$ & Frontera y RV del par $i$ de ventanas adyacentes no solapadas (\cref{def:pares}). \\
 $\RV(\mF_1,\mF_2)$ & Coeficiente RV. \\
 $c$ & Constante de proporcionalidad positiva en la \cref{prop:rv}(a). \\
 $a_1$, $a_2$ & Factores de escala no nulos en la \cref{prop:rv}(b). \\
@@ -205,6 +224,22 @@ $\mathbf{G}$, $\mathbf{H}$ & En la demostración de la \cref{prop:rv}, $\mF_1\mF
 $\mO_1$, $\boldsymbol{\Sigma}$, $\mO_2$, $\boldsymbol{\Theta}$ & Descomposición en valores singulares de $\mF_1^{\T}\mF_2$; matriz ortogonal auxiliar de la \cref{prop:procrustes}. \\
 $\mO^\ast$ & Rotación de Procrustes. \\
 $\congr(\mathbf{a},\mathbf{b})$ & Coeficiente de congruencia de Tucker entre dos vectores. \\[4pt]
+\gruposimbolos{Episodios de referencia y nulos}
+$\epi$, $\Epis$ & Episodio de referencia; conjunto de episodios. \\
+$\tini{\epi}$, $\tfin{\epi}$ & Mes de inicio y mes de fin (efectivo) del episodio $\epi$ (\cref{def:episodio}). \\
+$h$ & Tolerancia en meses (\cref{def:tolerancia}). \\
+$\tau^\circ$ & Mes de una transición que se quiere confirmar (\cref{def:confirmada}). \\
+$\Lb$, $\mb$, $\iota_k$ & Longitud de bloque, número de bloques e inicios de bloque (\cref{def:bloques}); $\Lb$ no es la $L$ del LSTM. \\
+$\pib(t)$, $n'$ & Sucesión de índices por bloques; su longitud. \\
+$\dot x_t$, $\overline{\Delta x}_j$ & Incrementos centrados y media de los incrementos de la serie $j$ (\cref{def:hac}). \\
+$\hat\Gamma_k$, $m_{\mathrm{HAC}}$, $\bar m$ & Autocovarianza de rezago $k$ de los incrementos; número de rezagos; $m_{\mathrm{HAC}}+1$. \\
+$\hat\sigma^2_{\mathrm{HAC},j}$, $t^{\mathrm{HAC}}_j$ & Varianza de largo plazo y estadístico $t$ de la deriva de la serie $j$. \\
+$x^\ast_{tj}$ & Serie simulada del nulo de tendencias mixto (\cref{def:nulo-mixto}). \\
+$B$, $\zeta$, $\mX^{(\zeta)}$ & Número de réplicas; índice de réplica; réplica del nulo de estructura (\cref{def:nulo-estructura}). \\
+$\RVadr{i}{\zeta}$, $\umbralRV{i}$, $\umbralRVr{i}{-\zeta}$ & RV adyacente de la réplica $\zeta$; cuantil de 5\,\% por posición; el mismo sin la réplica $\zeta$ (\cref{def:oe4}). \\
+$\varpi_0$, $\varpi_\zeta$, $\pval$ & Proporción de pares bajo el umbral, observada y de la réplica $\zeta$; p-valor del criterio de OE4. \\
+$\mathcal{P}_j$, $\tilde\varpi_j$, $\widetilde{\pval}$, $\mathcal{J}$, $\alpha_0$ & Perfiles, proporciones y p-valor de la versión simétrica; conjunto y nivel auxiliares (\cref{prop:oe4}). \\
+$\mathcal{T}_a$, $E_t$, $E^{(95)}_a$ & Meses de entrenamiento del año $a$; error de reconstrucción del mes $t$; su percentil 95 en $\mathcal{T}_a$ (\cref{def:walkforward}). \\[4pt]
 \gruposimbolos{Aprendizaje profundo}
 $f_\theta$, $g_\phi$ & Codificador y decodificador, con parámetros $\theta$ y $\phi$. \\
 $\veta_t\in\RR^{d}$ & Código latente del mes $t$. \\

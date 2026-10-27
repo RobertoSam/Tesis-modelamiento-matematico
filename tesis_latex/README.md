@@ -13,6 +13,9 @@ latexmk -lualatex -cd tesis_latex/tesis.tex
 ```
 
 El PDF queda en `tesis_latex/tesis.pdf` (ignorado por git, igual que los auxiliares).
+Paquetes de Debian necesarios, además de `texlive-latex-extra`: `texlive-lang-spanish` (babel),
+`texlive-bibtex-extra` (biblatex y biblatex-apa), `biber` y `texlive-luatex` (luaotfload). En la
+sesión del 27-10-2026 faltaban los cuatro y se instalaron con `apt-get`.
 `tesis.tex` empieza con `\nonstopmode` porque, con `-cd`, latexmk no lee `tesis_latex/latexmkrc`
 (solo lo lee si se ejecuta desde dentro de `tesis_latex/`).
 
@@ -23,9 +26,9 @@ El PDF queda en `tesis_latex/tesis.pdf` (ignorado por git, igual que los auxilia
 | `tesis.tex` | Documento principal: clase, orden de los capítulos, bibliografía y apéndices |
 | `preambulo.tex` | Paquetes, formato de página, entornos `amsthm`, `cleveref`, `\pendiente{}` y `\verificar{}` |
 | `notacion.tex` | **Notación única**: macros y lista de símbolos (`\listadesimbolos`) |
-| `cifras.tex` | **Generado** por `herramientas/generar_cifras.py` desde `data/results/`. No se edita a mano |
+| `cifras.tex` | **Generado** por `herramientas/generar_cifras.py` desde `data/results/final/` (cifras vigentes, D15 y D16) y `data/referencia/` (fechas de los episodios, D7). No se edita a mano |
 | `cifras_stub.tex` | Define como `\pendiente{cifra}` toda macro de cifras que falte en `cifras.tex` (`\providecommand`) |
-| `capitulos/NN_*.tex` | Portada y capítulos 1 a 5 (3, 4 y 5 vacíos en la iteración 3a; el 4 sigue la regla 7) |
+| `capitulos/NN_*.tex` | Portada y capítulos 1 a 5 (el 3, de métodos sin resultados, desde la iteración 3b; el 4 y el 5 siguen vacíos por la regla 7) |
 | `apendices/apendices.tex` | Índice de apéndices (vacío) |
 | `latexmkrc` | Configuración de latexmk cuando se compila desde `tesis_latex/` |
 
@@ -74,6 +77,9 @@ que dependan de los datos) entra por una macro de `cifras.tex`.
 | Fechas de episodios externos | Año o mes de un evento citado como hecho histórico, con su fuente o su `\pendiente` | 2008, 2013, 2020 en la descripción de los episodios |
 | Constantes y parámetros matemáticos | Números que forman parte de una definición, proposición o demostración y no dependen de los datos | $P\ge2$, $\pi/6$, $1/2$, $\gamma(2)=2$ |
 | Numeración y estructura | Capítulos, secciones, ítems, apuntes o decisiones (D1–D6) | «apunte 11», «decisión D5» |
-| Parámetros fijados de antemano | Valores de diseño declarados en `decisiones.qmd` antes de calcular | Nivel de 5 % y rezagos de la regla D5 |
+| Parámetros fijados de antemano | Valores de diseño declarados en `decisiones.qmd` antes de calcular | Nivel de 5 % y rezagos de la regla D5; grilla {24, 36, 48, 60} (D10); ±3 y ±6 meses (D7); d = 3, 2 y 4 (D9); 12 rezagos y \|t\| > 2 (D8); 10 % (D12); maxcl 10, 15 y 20 y n_min = 12 (D17.1); maxcl = 20 del nulo (D11); 2017-10 (D13) |
+| Identificadores y fechas de registro | Fechas de las decisiones de `decisiones.qmd`, de versionado de los datos (D4) y de los manuscritos; nombres de archivos, notebooks y etiquetas de versión | «16 de octubre de 2026» (D4), `05_tendencia_series.csv`, notebook 09 |
+| Metadatos bibliográficos | Páginas, números de informe y fechas dentro de las notas `\verificar` | 789–798, FKI-207-95 |
+| Parámetros de diseño del plan (provisional) | Valores fijados en el plan aprobado de la iteración 3b o en el código anterior a ella, que `decisiones.qmd` no recoge. **Pendiente:** que el desarrollador los exporte a un CSV de `data/results/final/` para leerlos por macro | ν = 3 (`nsd`), paso 3 y eje 2 de la regla del 06, media móvil de 12 meses (PCA-MM12), particiones en 3 y 4 clases de la HFC, percentil 95 de la razón de error *walk-forward* |
 
 Si un número no encaja en ninguna clase, se reemplaza por una macro o se lleva al auditor.
