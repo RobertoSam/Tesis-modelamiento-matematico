@@ -24,8 +24,9 @@ la fuente; los resultados que se citan sin demostrar se señalan como tales.
 El antecedente más directo es el de
 \textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026 sin datos
 de revista, volumen ni DOI. Debe confirmarse con el Dr.~Camiz su estado de publicación.}, que,
-según esa misma fuente, continúa la tesis de maestría de Atoche Murrieta \pendiente{Atoche
-Murrieta (2022), tesis de maestría, PUCP; sin ficha}. Los autores aplican PCA, HFC y EPCA a 17
+según esa misma fuente, continúa la tesis de maestría de
+\textcite{atoche_murrieta_2022}\verificar{la portada y el registro del repositorio difieren en el
+período del título; se usa el de la portada.}. Los autores aplican PCA, HFC y EPCA a 17
 series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020.
 El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario
 y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del
@@ -169,8 +170,8 @@ sensibilidad, $h=6$.
 Para un episodio puntual, la \cref{def:tolerancia} se reduce a $\abs{f-\tini{\epi}}\le h$. Para un
 período, un mes interior está a distancia cero. D7 fija el valor de $h$, pero no dice si la
 distancia se mide al intervalo o solo a sus extremos. La definición adopta la primera lectura, que
-es la que implementa el código cuando amplía los episodios en el anexo de robustez (decisión
-D15); la segunda queda como pregunta abierta y no se usa.
+es la que implementa el código cuando amplía los episodios en el anexo de robustez
+(\cref{sec:met-validacion}); la segunda queda como pregunta abierta y no se usa.
 \end{observacion}
 
 La \cref{tab:episodios} reúne los seis episodios con sus fuentes. Ninguna fecha se derivó de las
@@ -293,7 +294,7 @@ $\abs{1-e^{-\mathrm{i}\vartheta}}^2=(1-\cos\vartheta)^2+\sin^2\vartheta=2-2\cos\
 \textup{(a)} Por \cref{eq:ganancia}, $x$ y $\Delta x$ son de la forma
 $y_t=\varrho_y\cos(\vartheta t+\psi_y)$, con $(\varrho_y,\psi_y)=(\varrho,\psi_0)$ y
 $(\varrho_y,\psi_y)=\bigl(\gamma(P)\varrho,\,\psi_0+(\pi-\vartheta)/2\bigr)$, respectivamente.
-Para $k\in\{1,2\}$ y $\xi\in\RR$, si $e^{\mathrm{i}k\vartheta}\ne1$, la suma geométrica da
+Para $k\in\{1, 2\}$ y $\xi\in\RR$, si $e^{\mathrm{i}k\vartheta}\ne1$, la suma geométrica da
 \[
   \Bigl\lvert\sum_{t=t_0+1}^{t_0+T}e^{\mathrm{i}(k\vartheta t+\xi)}\Bigr\rvert
   =\frac{\abs{e^{\mathrm{i}k\vartheta T}-1}}{\abs{e^{\mathrm{i}k\vartheta}-1}}
@@ -330,7 +331,7 @@ junto con las transformadas en \textbf{dos vías}, con el mismo código y los mi
 (decisión D2). Desde la decisión D15, el análisis principal se hace solo con las series sin
 transformar, y las transformadas pasan a un anexo de robustez que conserva el sustento de no
 diferenciar y la detección de episodios fuera de muestra. Ese diseño se presenta al asesor como
-propuesta, no como hecho consumado (\cref{cap:metodologia}).
+propuesta, no como hecho consumado (\cref{sec:met-diseno}).
 
 La segunda consecuencia, y la tensión central del marco, se refiere a los autoencoders y las
 redes LSTM. Estos modelos introducen \textbf{supuestos arquitectónicos} que no provienen de los
@@ -966,14 +967,14 @@ Sean $\omega_u\ge0$, $u=1,\dots,\nw$, con $\sum_u\omega_u=1$.
 $1=\bigl(\sum_u\omega_u\cdot1\bigr)^2\le\nw\sum_u\omega_u^2$, es decir, $\nomega\le\nw$, con
 igualdad si y solo si $(\omega_u)$ es proporcional a $(1,\dots,1)$, o sea, si $\omega_u=1/\nw$.
 Como $0\le\omega_u\le1$, se tiene $\omega_u^2\le\omega_u$, con igualdad si y solo si
-$\omega_u\in\{0,1\}$; sumando, $\sum_u\omega_u^2\le1$, es decir, $\nomega\ge1$, con igualdad si y
+$\omega_u\in\{0, 1\}$; sumando, $\sum_u\omega_u^2\le1$, es decir, $\nomega\ge1$, con igualdad si y
 solo si todos los pesos valen cero o uno, lo que, con suma uno, deja un único peso igual a uno.
 (b) Con $\nu=0$ los pesos son uniformes y se aplica (a). Con $\nu>0$, $\tilde\omega_u$ es
 estrictamente decreciente en $\abs{u-(\nw+1)/2}$. Si $\nw\ge3$, esa distancia vale $(\nw-1)/2$ en
 $u=1$ y $(\nw-3)/2$ en $u=2$, de modo que $\tilde\omega_2>\tilde\omega_1$; los pesos no son todos
 iguales y (a) da la desigualdad estricta. (c) La \cref{eq:pesos} solo contiene $u$, $\nw$ y $\nu$.
 (d) Sea $x_u=a(2u-\nw-1)/(\nw-1)$, de modo que $\tilde\omega_u=e^{-x_u^2/2}$ y los $x_u$ son
-$\nw$ puntos equiespaciados de $-a$ a $a$, con separación $2a/(\nw-1)$. Para $k\in\{1,2\}$ sea
+$\nw$ puntos equiespaciados de $-a$ a $a$, con separación $2a/(\nw-1)$. Para $k\in\{1, 2\}$ sea
 $S_k=\frac{2a}{\nw-1}\sum_u e^{-kx_u^2/2}$. Son sumas de Riemann de funciones continuas en
 $[-a,a]$, salvo un término de orden $1/\nw$, de modo que $S_1\to I_1=\int_{-a}^{a}e^{-x^2/2}dx$ y
 $S_2\to I_2=\int_{-a}^{a}e^{-x^2}dx$. Como $\nomega=(\sum_u\tilde\omega_u)^2/\sum_u\tilde\omega_u^2$,
@@ -1109,7 +1110,7 @@ $\epi\in\Epis$. La tolerancia principal es $h=3$ y la de sensibilidad, $h=6$ (de
 \subsection{Lectura multiescala del ancho de ventana}
 \label{sec:multiescala}
 
-La decisión D10 fija la grilla de anchos $\nw\in\{24,36,48,60\}$ y su lectura. El ancho de 48 meses
+La decisión D10 fija la grilla de anchos $\nw\in\{24, 36, 48, 60\}$ y su lectura. El ancho de 48 meses
 es el de \textcite{camiz_cerda_atoche_2026} y da comparabilidad con el antecedente. Los otros tres
 no compiten con él: cada ancho es una escala de observación distinta, y la grilla no busca la
 ventana «correcta».

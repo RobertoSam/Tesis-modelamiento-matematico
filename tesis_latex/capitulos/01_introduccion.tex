@@ -20,8 +20,8 @@ reducción dimensional sobre series de tiempo multivariadas.
 Para el Perú, el antecedente más directo es
 \textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026, sin
 datos de revista, volumen ni DOI; confirmar con el Dr.~Camiz su estado de publicación.}, que
-continúa la tesis de maestría de Atoche Murrieta \pendiente{Atoche Murrieta (2022), tesis de
-maestría, PUCP; sin ficha}. Ese trabajo aplica el Análisis de Componentes Principales (PCA), la
+continúa la tesis de maestría de \textcite{atoche_murrieta_2022}\verificar{la portada y el
+registro del repositorio difieren en el período del título; se usa el de la portada.}. Ese trabajo aplica el Análisis de Componentes Principales (PCA), la
 Clasificación Factorial Jerárquica (HFC) y el Análisis Evolutivo de Componentes Principales
 (EPCA) a 17 indicadores mensuales del Banco Central de Reserva del Perú (BCRP). Deja abiertas,
 sin embargo, cuatro cuestiones: no evalúa el aprendizaje profundo, no clasifica fases del ciclo
@@ -32,11 +32,11 @@ el ancho de la ventana del EPCA sin un criterio objetivo.
 % dimensiones que escribe notebooks/05_pca.ipynb en data/results/.
 Esta tesis analiza \nSeries{} series mensuales del BCRP de crédito, liquidez, tasas, precios,
 tipo de cambio, bolsa, riesgo soberano, actividad y reservas. El análisis oficial, sobre las
-series sin transformar (decisión D1), cubre \nMesesNiveles{} meses, de \fechaInicioNiveles{} a
-\fechaFinDatos{}. La vía transformada tiene \nMesesTransformadas{} meses, de
-\fechaInicioTransformadas{} a \fechaFinDatos{}, porque la diferenciación pierde el primer mes.
-Ambas vías se ejecutan con el mismo código (decisión D2), y la forma de combinarlas está
-pendiente de discusión con el asesor.
+series sin transformar (decisiones D1 y D15), cubre \nMesesNiveles{} meses, de
+\fechaInicioNiveles{} a \fechaFinDatos{}. Las series transformadas, que cubren
+\nMesesTransformadas{} meses, de \fechaInicioTransformadas{} a \fechaFinDatos{}, porque la
+diferenciación pierde el primer mes, se usan en un anexo de robustez. Ese diseño se presenta al
+asesor como propuesta (\cref{sec:met-diseno}).
 
 \textbf{Problema de investigación:} ¿cómo identificar, fechar y caracterizar los regímenes del
 ciclo financiero peruano entre \anioInicioDatos{} y \anioFinDatos{} a partir de la estructura
@@ -99,7 +99,8 @@ indicadores macrofinancieros del BCRP.
   \item\label{oe:dimension} Triangular el número de componentes con la vara quebrada, el
     criterio de Rencher y el análisis paralelo de Horn
     \parencite{horn_1965}\verificar{ficha preliminar: se leyó el resumen, no el texto; solo se
-    cita el aporte general.} \pendiente{fuentes de la vara quebrada y del criterio de Rencher}.
+    cita el aporte general.}, tal como los describen \textcite{camiz_pillar_2018}
+    \pendiente{Frontier (1976), fuente primaria de la vara quebrada; sin ficha}.
   \item\label{oe:dl} Diseñar autoencoders y redes LSTM adaptados a la escala de los datos, con
     pesos atados, preentrenamiento por capas, regularización y validación por bloques temporales
     y \emph{walk-forward}.

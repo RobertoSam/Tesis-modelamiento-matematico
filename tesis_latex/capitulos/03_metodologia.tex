@@ -1,7 +1,400 @@
-% Capítulo 3 · Vacío en la iteración 3a. Se redacta cuando se discuta con el asesor la
-% propuesta de la Parte C (decisión D2) y se fijen las decisiones de la iteración 3b.
+% =============================================================================
+% Capítulo 3 · Metodología y desarrollo del modelo
+% Iteración 3b (tarea L3). Fuentes: decisiones.qmd (D1 a D17), plan de la iteración 3b y su
+% adenda (asesoria/), notas del desarrollador del 26-10-2026 y el código vigente
+% (R/ciclo_financiero_final.Rmd, src/, notebooks 05 a 09b). Sin resultados (regla 7): las únicas
+% cifras son de datos y de métodos, y salen de cifras.tex; los parámetros de diseño escritos a
+% mano son los declarados en decisiones.qmd (lista de excepciones de tesis_latex/README.md).
+% =============================================================================
 \chapter{Metodología y desarrollo del modelo}
 \label{cap:metodologia}
 
-\pendiente{capítulo por redactar: diseño, datos, preprocesamiento y análisis en dos vías
-(decisiones D1 a D6)}
+Este capítulo describe el diseño de la investigación, los datos, el procedimiento que encadena los
+métodos del \cref{cap:marco} y los criterios que se fijaron antes de calcular. No contiene
+resultados: estos se presentan en el \cref{cap:resultados}, sujetos a la regla de aprobación del
+proyecto. Cada parámetro remite a la decisión que lo fija, registrada en el archivo
+\texttt{decisiones.qmd} del repositorio.
+
+% -----------------------------------------------------------------------------
+\section{Tipo y diseño de la investigación}
+\label{sec:met-diseno}
+
+La investigación es cuantitativa, longitudinal y no experimental, de alcance exploratorio y
+descriptivo. Analiza series de tiempo observadas, sin intervenir sobre ellas, y no formula
+hipótesis contrastables en sentido estricto, sino las hipótesis de trabajo de la
+\cref{sec:hipotesis}. Sigue la posición «datos primero» de la \cref{sec:epistemologia}: la
+estructura se describe con métodos que no postulan un modelo generador, y los nulos de la
+\cref{sec:nulos} solo dan una referencia para leerla.
+
+\subsection{Análisis en niveles y anexo de robustez}
+
+El diseño adoptado tiene dos partes (decisión D15):
+
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Análisis principal.} La cadena completa (diagnóstico, PCA, EPCA, HFC y datación) se
+    aplica a las series sin transformar, solo estandarizadas (\cref{def:datos}). Es el análisis
+    oficial desde la decisión D1.
+  \item \textbf{Anexo de robustez.} Las series transformadas se conservan para dos fines: el
+    sustento de no diferenciar, con el PCA de cada paso de la transformación y la ganancia de la
+    primera diferencia (\cref{prop:ganancia}), y la detección de episodios fuera de muestra
+    (\cref{sec:met-validacion}).
+\end{enumerate}
+
+Entre las decisiones D2 y D15, el proyecto ejecutó la cadena en dos vías, con las series sin
+transformar y con las transformadas, sin elegir una. Esos resultados, calculados además con 17
+series, quedan como antecedente y no se usan en esta tesis. El diseño en niveles con anexo
+resuelve en la práctica la propuesta que D2 dejaba pendiente, pero se presenta al Dr.~Camiz
+como \textbf{propuesta, no como hecho consumado}: es reversible, porque el código conserva la
+vía transformada como parámetro, y queda sujeto a la reunión con el asesor.
+
+\subsection{Qué vía mide qué}
+\label{sec:met-vias}
+
+\pendiente{sección por redactar después de la reunión con el Dr.~Camiz sobre la Parte~C de la
+decisión D2 (decisión N del plan de la iteración 3b): qué aspecto del ciclo mide cada vía y cómo
+se combinan en la interpretación}
+
+% -----------------------------------------------------------------------------
+\section{Datos}
+\label{sec:met-datos}
+
+\subsection{Series, período y criterio de inclusión}
+
+Los datos son \nSeries{} series mensuales del Banco Central de Reserva del Perú (BCRP), de
+\fechaInicioNiveles{} a \fechaFinDatos{}, es decir, $n=\nMesesNiveles$ meses y $p=\nSeries$ series
+en el análisis principal. Se usa solo la frecuencia mensual (decisión D3). Las series son:
+
+\begin{itemize}[leftmargin=*]
+  \item \emph{crédito}: crédito a empresas, de consumo e hipotecario;
+  \item \emph{liquidez}: los agregados monetarios M1 y M3;
+  \item \emph{tasas de interés}: tasa de referencia del BCRP, tasa interbancaria, tasa activa (TAMN)
+    y tasa pasiva (TIPMN) en moneda nacional;
+  \item \emph{precios, mercados y riesgo}: índice de precios al consumidor de Lima, tipo de cambio,
+    índice de la Bolsa de Valores de Lima y EMBIG Perú;
+  \item \emph{actividad y sector externo}: PBI desestacionalizado, demanda interna y reservas
+    internacionales netas.
+\end{itemize}
+
+Los códigos BCRP de cada serie constan en los archivos de resultados del notebook 05
+(\texttt{data/results/final/05\_tendencia\_series.csv}). El archivo de datos trae además columnas
+que no entran en el análisis. El crédito total del sistema financiero y el IPC subyacente se
+conservan solo como referencia (decisión D1). La liquidez M2 se excluye (decisión D16), porque en
+los datos congelados es casi colineal con M3 y un par casi duplicado pesa dos veces en un PCA sin
+ponderar; se conservan M1, el componente transaccional, y M3, la liquidez amplia, que incluye los
+depósitos en moneda extranjera. La exclusión se decidió con las correlaciones de los datos, no con
+resultados del análisis, y se aplica al leer los archivos, que no se modifican.
+
+Las series transformadas del anexo de robustez cubren $\nMesesTransformadas$ meses, de
+\fechaInicioTransformadas{} a \fechaFinDatos{}, porque la diferenciación pierde el primer mes.
+
+\subsection{Versión congelada de los datos}
+
+El BCRP revisa el ajuste estacional de algunas series, de modo que sus valores cambian con la fecha
+de descarga. La tesis usa la versión de los datos versionada en el repositorio el 16 de octubre de
+2026 (decisión D4), identificada por la huella md5 de cada archivo, que figura en
+\texttt{decisiones.qmd}. El código comprueba esas huellas antes de leer los datos y se detiene si
+no coinciden, y verifica además que no haya valores faltantes y que el calendario mensual sea
+continuo, de modo que se cumple el \cref{sup:datos}. Cualquier actualización de los datos requiere
+una nueva decisión.
+
+% -----------------------------------------------------------------------------
+\section{Procedimiento}
+\label{sec:met-procedimiento}
+
+La \cref{tab:etapas} resume la cadena. Cada etapa usa los métodos del \cref{cap:marco} con los
+parámetros que fijan las decisiones citadas.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Etapas del análisis principal y del anexo de robustez}
+\label{tab:etapas}
+\begin{tabular}{@{}p{0.22\textwidth}p{0.42\textwidth}p{0.28\textwidth}@{}}
+\toprule
+Etapa & Métodos (\cref{cap:marco}) & Decisiones \\
+\midrule
+Diagnóstico & Regla de tendencia, $n$ efectivo, KMO y Bartlett, nulo de tendencias mixto &
+  D5, D8 \\
+PCA estático & PCA de correlaciones, retención, bootstrap por bloques & D9 \\
+Parte dinámica & \texttt{aede} en grilla, umbrales por ventana, regla del 06, nulo de estructura,
+  criterio de OE4, bordes de ventana & D7, D10, D11, D13, D14, D17 \\
+HFC & Particiones en 3 y 4 clases, factores, representantes, bootstrap & --- \\
+Datación & Trayectoria PCA-MM12, partición de Fisher, regla K & D9, D12, D17 \\
+Validación externa & Episodios de referencia, bordes, detección fuera de muestra (anexo) & D7,
+  D15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Diagnóstico de las series sin transformar}
+\label{sec:met-diagnostico}
+
+La regla de la decisión D5 clasifica la tendencia de cada serie y de cada componente principal. Se
+formula aquí porque es un criterio fijado antes de calcular.
+
+\begin{definicion}[Regla de tendencia de la decisión D5]\label{def:regla-d5}
+Sea $\hat x_t$ la recta de mínimos cuadrados de una serie sobre el tiempo y
+$\hat\epsilon_t=x_t-\hat x_t$ sus residuos. A los residuos se les aplican las pruebas ADF y KPSS,
+con especificación y rezagos fijos y declarados en el código, al nivel de 5\,\%. La serie es
+\emph{estacionaria en tendencia} (TS) si la ADF rechaza y la KPSS no; \emph{integrada} (DS) si la
+ADF no rechaza y la KPSS sí; e \emph{indeterminada} en cualquier otro caso.
+\end{definicion}
+
+La prueba ADF se remite a \textcite{dickey_fuller_1979}\verificar{ficha preliminar: páginas solo en
+fuentes secundarias. La versión aumentada que usa el código no se atribuye a esta obra.}
+\pendiente{Said y Dickey (1984), versión aumentada de la prueba ADF; sin ficha}, y la KPSS, a
+Kwiatkowski et al. \pendiente{Kwiatkowski et al. (1992): ficha preliminar sin entrada en el
+\texttt{.bib}; falta verificar la lista de autores de la versión publicada}. El análisis de las
+series sin su tendencia lineal es un diagnóstico y no una tercera vía (decisión D5).
+
+Sobre esa clasificación se calculan:
+
+\begin{itemize}[leftmargin=*]
+  \item el tamaño muestral efectivo de cada par de series y la sensibilidad de la prueba de
+    Bartlett a reemplazar $n$ por su mediana (\cref{obs:bartlett-series});
+  \item la medida KMO y la prueba de Bartlett (\cref{def:kmo,def:bartlett}), leídas como
+    descripciones de $\mR$;
+  \item el nulo de tendencias mixto (\cref{def:nulo-mixto}), con $m_{\mathrm{HAC}}=12$ rezagos y el
+    umbral $\abs{t^{\mathrm{HAC}}_j}>2$ de la decisión D8, en sus dos variantes para las series
+    indeterminadas; las proporciones de réplicas se calculan para la inercia de las primeras
+    componentes;
+  \item el PCA de las series sin su tendencia lineal, como contraste descriptivo.
+\end{itemize}
+
+\subsection{PCA estático}
+\label{sec:met-pca}
+
+El PCA de correlaciones (\cref{def:pca}) se interpreta con $d=3$ ejes, la especificación principal
+fijada en la iteración 1, antes de conocer las cifras de la iteración 3a; $d=2$ y $d=4$ se informan
+como sensibilidad (decisión D9). Los criterios de retención de la \cref{sec:retencion} (Kaiser,
+Horn y vara quebrada) se informan, pero no fijan $d$: D9 descarta elegir un umbral cuando las
+cifras ya se conocen. La estabilidad de los ejes se mide con un bootstrap por bloques
+(\cref{def:bloques}), con tres longitudes de bloque, las mismas del nulo de estructura, emparejando
+cada eje original con el de la réplica por su congruencia de Tucker (\cref{def:tucker}). Con
+series no estacionarias, ese bootstrap mide estabilidad descriptiva de los ejes, no incertidumbre
+muestral.
+
+\subsection{Parte dinámica}
+\label{sec:met-dinamica}
+
+\paragraph{EPCA en grilla.} El algoritmo \texttt{aede} (\cref{alg:aede}) se ejecuta con $d=3$ ejes
+sobre la grilla de anchos $\nw\in\{24, 36, 48, 60\}$ (decisión D10), con dos esquemas de pesos
+(\cref{def:pesos}), uniformes ($\nu=0$) y gaussianos con $\nu=3$, y con $K_{\max}\in\{10, 15, 20\}$
+para la partición de $\lambda_1$. El valor $\nu=3$ es el parámetro de la grilla del plan de la
+iteración 3b. Para cada combinación se informan el codo por caída máxima y las dos variantes del
+índice de Caliński y Harabasz, con la marca de los números que quedan en el tope
+(\cref{def:criterios-k}); el índice no se usa como selector (decisión D11).
+
+\paragraph{Umbrales por ventana.} Los tres primeros valores propios de cada ventana se comparan con
+los umbrales de Kaiser y de Horn de la \cref{def:umbral-ventana} (decisión D14). Con pesos
+uniformes, $\nomega=\nw$ (\cref{prop:kish}); con pesos gaussianos, el tamaño efectivo y el número
+de filas del análisis paralelo son los de la \cref{tab:kish}. Se registran también los cruces entre
+$\lambda_2$ y $\lambda_3$, con la definición operativa del código.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Tamaño efectivo de los pesos gaussianos ($\nu=3$) y filas del análisis paralelo por
+ventana}
+\label{tab:kish}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Ancho $\nw$ (meses) & 24 & 36 & 48 & 60 \\
+\midrule
+Tamaño efectivo $\nomega$ (\cref{def:kish}) & \nOmegaGaussVeinticuatro & \nOmegaGaussTreintayseis &
+  \nOmegaGaussCuarentayocho & \nOmegaGaussSesenta \\
+Filas de Horn $\nhorn=\lceil\nomega\rceil$ & \nHornGaussVeinticuatro & \nHornGaussTreintayseis &
+  \nHornGaussCuarentayocho & \nHornGaussSesenta \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Por la \cref{prop:kish}(c), los valores de la \cref{tab:kish} dependen solo de los pesos y no de
+los datos.
+
+\paragraph{Regla del 06.} La regla de la \cref{def:regla06} se aplica con cada ancho de la grilla,
+paso $\paso=3$ y el eje $\ell_0=2$, el que sigue el notebook 06 para las series sin transformar desde
+la iteración 2. Por el \cref{cor:regla06}, sus transiciones cuentan como evidencia de pesos
+uniformes (decisión D17.3).
+
+\paragraph{Nulo de estructura constante.} El nulo de la \cref{def:nulo-estructura} se calcula con
+longitud de bloque $\Lb=\largoBloqueNulo$ y $B=\replicasNuloEstructura$ réplicas, y, como
+sensibilidad, con $\Lb=\largoBloqueNuloCorto$ y $\Lb=\largoBloqueNuloLargo$ y
+\replicasNuloSensibilidad{} réplicas cada una. Los inicios de bloque se sortean una sola vez, con
+semilla fija, y los leen las dos implementaciones. En cada réplica se calculan, para cada ancho y
+esquema de pesos, el número que elige cada criterio de \texttt{aede} con $K_{\max}=20$ y el perfil
+del RV entre ventanas adyacentes con los dos objetos de la decisión D17.2. Cada número observado
+se acompaña de su posición en la distribución nula.
+
+\paragraph{Criterio de OE4.} Para cada ancho y esquema de pesos se calcula el criterio de la
+\cref{def:oe4}, con el RV de cargas de tres ejes como objeto principal y el coeficiente entre
+matrices de correlación completas como sensibilidad (decisión D17.2).
+
+\paragraph{Transiciones y lectura de octubre de 2017.} Las transiciones candidatas son las de la
+regla del 06 y los cortes del codo de \texttt{aede} con $K_{\max}=10$. Cada una se marca como borde
+de ventana, con tolerancia de 3 y de 6 meses (\cref{def:borde}), y como fuera o dentro del nulo
+(\cref{def:fuera-nulo}). La transición de octubre de 2017, que la decisión D13 menciona por su
+nombre, se clasifica con la regla de la \cref{def:confirmada}.
+
+\subsection{Clasificación Factorial Jerárquica}
+\label{sec:met-hfc}
+
+La HFC (\cref{def:hfc}) se corta en 3 y en 4 clases. Las clases se comparan por su composición,
+nunca por el número del nodo, que depende del orden de las fusiones. De cada clase se informan su
+factor y su serie representante, que el código define como la serie de la clase más
+correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. Las
+correlaciones entre los factores y entre los representantes se acompañan de intervalos bootstrap,
+también sin la tendencia lineal de cada serie. La estabilidad de la jerarquía se mide con las
+réplicas del bootstrap por bloques: el índice de Rand ajustado de cada partición frente a la
+original \parencite{hubert_arabie_1985}\verificar{ficha preliminar: metadatos de una fuente
+secundaria; no se verificó en el texto la atribución del índice de Rand ajustado.}, la frecuencia
+con que cada par de series queda en la misma clase y la correlación cofenética. La evaluación de
+la estabilidad de clasificaciones bajo remuestreo tiene un antecedente en
+\textcite{hennig_2007}\verificar{metadatos de fuentes secundarias; texto no consultado.}, que trata
+grupos de observaciones; la HFC agrupa variables, y la analogía se declara como tal.
+
+\subsection{Datación de regímenes y fases}
+\label{sec:met-datacion}
+
+La datación de la \cref{def:datacion} usa los $d=3$ primeros \emph{scores} del PCA estático
+(decisión D9), suavizados con la media móvil causal de 12 meses del notebook 09 (de ahí el nombre
+PCA-MM12), con longitud mínima $n_{\min}=12$ meses. El número de regímenes lo fija la regla K de la
+\cref{def:criterios-k}(b) (decisión D12), con $K_{\max}=10$ como especificación principal y
+$K_{\max}\in\{15, 20\}$ como sensibilidad (decisión D17.1). Las soluciones en que todos los
+segmentos miden $n_{\min}$ se marcarían como artefacto; como esa marca solo puede activarse si el
+número de meses suavizados es múltiplo de $n_{\min}$ (\cref{cor:fisher-factible}), el código
+informa además cuántos segmentos miden exactamente $n_{\min}$. El codo y las dos variantes del
+índice de Caliński y Harabasz se informan junto a la regla K. La datación se repite con $d=2$ y
+$d=4$.
+
+La estabilidad de cada corte se mide con las réplicas del bootstrap por bloques: en cada réplica se
+recalculan los \emph{scores} con las cargas de la réplica, se suavizan y se particionan con el mismo
+número de regímenes, y se cuenta la proporción de réplicas que reproducen el corte con la tolerancia
+principal de D7. Cada régimen recibe después la etiqueta de fase de la regla del notebook 09
+(\cref{def:fase}), que es una propuesta preliminar pendiente de discusión con el asesor.
+
+\subsection{Validación externa}
+\label{sec:met-validacion}
+
+Los cortes se contrastan con los episodios de la \cref{tab:episodios}, con la compatibilidad de la
+\cref{def:tolerancia} y la marca de borde de la \cref{def:borde}. Con pocos episodios, la
+correspondencia de HT3 es descriptiva.
+
+El anexo de robustez incluye la detección de episodios fuera de muestra. Se formaliza con la regla
+del notebook 09, aplicada al PCA.
+
+\begin{definicion}[Razón de error \emph{walk-forward} del PCA]\label{def:walkforward}
+Para cada año de evaluación $a$, sean $\mathcal{T}_a$ los meses anteriores a enero de $a$. Los datos
+se estandarizan con la media y la desviación típica (divisor igual al número de meses) de
+$\mathcal{T}_a$, y se ajusta un PCA de $d$ componentes con esos meses. El error de reconstrucción
+del mes $t$, $e_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes
+(\cref{eq:pca}). La \emph{razón de error} de cada mes del año $a$ es $e_t/e^{(95)}_a$, donde
+$e^{(95)}_a$ es el percentil 95 de los errores de los meses de $\mathcal{T}_a$. Un mes con razón
+mayor que uno es una \emph{alarma}.
+\end{definicion}
+
+Con la razón de error se calculan la proporción de falsas alarmas, fuera de los episodios, y la
+sensibilidad, la proporción de alarmas dentro de cada episodio, sin tolerancia y con los episodios
+ampliados en 3 y en 6 meses (\cref{def:tolerancia}). El cálculo se hace con $d=3$ y con las series
+transformadas, que es la vía en la que D15 conserva la detección, y con las series sin transformar
+como contraste.
+
+Los autoencoders y las redes LSTM complementan esta detección en el diseño de la tesis
+(\cref{sec:dl}). Con \nSeries{} series, todavía no se han vuelto a entrenar (decisión D17.4).
+\pendiente{autoencoders y redes LSTM con las \nSeries{} series vigentes: diseño, entrenamiento y
+detección, a la espera de la iteración 4, cuando el entorno disponga de \texttt{torch}. Sus
+resultados con 17 series se conservan como antecedente y no se usan.}
+
+% -----------------------------------------------------------------------------
+\section{Criterios fijados de antemano}
+\label{sec:met-criterios}
+
+Las decisiones que fijan los criterios se registraron en \texttt{decisiones.qmd} antes de calcular
+los resultados que dependen de ellas; el historial de versiones del repositorio permite comprobar
+el orden. La \cref{tab:decisiones} las resume.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.1\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}p{0.59\textwidth}@{}}
+\caption{Decisiones metodológicas vigentes y fecha de registro}\label{tab:decisiones}\\
+\toprule
+Decisión & Registro & Qué fija \\
+\midrule
+\endfirsthead
+\toprule
+Decisión & Registro & Qué fija \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+D1 & 8 de octubre de 2026 & Las series sin transformar son el análisis oficial. \\
+D2 & 16 de octubre de 2026 & Análisis en dos vías (antecedente; la Parte~C, pendiente). \\
+D3 & 20 de octubre de 2026 & Solo frecuencia mensual. \\
+D4 & 20 de octubre de 2026 & Datos congelados, identificados por su md5. \\
+D5 & 20 de octubre de 2026 & Regla de tendencia (\cref{def:regla-d5}), fijada antes de calcular. \\
+D6 & 20 de octubre de 2026 & Los métodos del asesor también en Python, con paridad Python--R. \\
+D7 & 24 de octubre de 2026 & Fechado de episodios por el evento externo; tolerancia de 3 meses
+  (6 como sensibilidad); episodios sin fin con fuente, puntuales. \\
+D8 & 24 de octubre de 2026 & Nulo de tendencias mixto por serie (\cref{def:nulo-mixto}). \\
+D9 & 24 de octubre de 2026 & $d=3$ como especificación principal; $d=2$ y $d=4$, sensibilidad. \\
+D10 & 24 de octubre de 2026 & Grilla de anchos y criterio de OE4 con ventanas adyacentes no
+  solapadas, leída como multiescala. \\
+D11 & 24 de octubre de 2026 & El índice de Caliński y Harabasz se informa, pero no selecciona. \\
+D12 & 24 de octubre de 2026 & Regla K en dos pasos (\cref{def:criterios-k}(b)). \\
+D13 & 24 de octubre de 2026 & Lectura de la transición de octubre de 2017
+  (\cref{def:confirmada}). \\
+D14 & 24 de octubre de 2026 & Umbrales de Kaiser y de Horn por ventana
+  (\cref{def:umbral-ventana}). \\
+D15 & 26 de octubre de 2026 & Análisis principal en niveles; transformadas en un anexo de
+  robustez. \\
+D16 & 26 de octubre de 2026 & Se excluye la liquidez M2. \\
+D17 & 26 de octubre de 2026 & $K_{\max}=10$ para la regla K; RV de cargas sin centrar y criterio
+  de OE4 por posición; la regla del 06 como evidencia de pesos uniformes; autoencoders y LSTM
+  hasta la iteración 4. Registrada antes de cualquier resultado dinámico con \nSeries{} series. \\
+\end{longtable}
+\endgroup
+
+Quedan, además, puntos que las decisiones no fijan y que el código resuelve con una lectura propia.
+Se declaran aquí para que no se confundan con criterios fijados de antemano:
+
+\begin{enumerate}[label=(\roman*)]
+  \item la distancia de la tolerancia se mide al intervalo del episodio y no solo a sus extremos
+    (\cref{obs:tolerancia});
+  \item la definición de transición fuera del nulo (\cref{def:fuera-nulo});
+  \item el codo de \texttt{aede} como fuente de candidatas para la regla de D13
+    (\cref{def:confirmada});
+  \item el conteo de segmentos en la longitud mínima como sustituto de la marca de artefacto de
+    D17.1 (\cref{sec:met-datacion});
+  \item qué distancia a 2 cuenta como «cercana» para el estadístico HAC (\cref{obs:nulo-mixto});
+  \item la serie representante de cada clase de la HFC (\cref{sec:met-hfc}).
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+\section{Implementación, paridad y reproducibilidad}
+\label{sec:met-implementacion}
+
+\paragraph{Implementación.} Todo el análisis se programa dos veces. En Python, los notebooks 05
+(diagnóstico y PCA), 05c (anexo de robustez), 06 (regla del 06), 06c (\texttt{aede} en grilla),
+07b (nulo de estructura y criterio de OE4), 07c (HFC), 09a (datación) y 09b (detección fuera de
+muestra) usan las funciones de \texttt{src/}. En R, el documento final
+\texttt{R/ciclo\_financiero\_final.Rmd} ejecuta la misma cadena (decisión D15), con el guion
+\texttt{R/07b\_nulo\_estructura.R} para el nulo de estructura. Las funciones \texttt{aede} y
+\texttt{clahfac} del asesor existen en R puro (\texttt{R/camiz\_port.R}), validadas contra el binario
+del paquete \texttt{AedeClahfac}, y se portaron a Python (decisión D6).
+
+\paragraph{Paridad.} La versión en R es la referencia. Cada resultado se calcula en las dos lenguas
+y se compara en una tabla de paridad (\texttt{R\_paridad\_python.csv}, una para el análisis
+principal y otra para el anexo), con la tolerancia numérica declarada en cada fila. Los sorteos
+aleatorios (inicios de bloque del bootstrap y de los nulos) los hace R con semilla fija y los
+escribe en archivos que Python lee, de modo que la paridad no depende de los generadores de números
+aleatorios. Hay dos excepciones, declaradas en la propia tabla: los umbrales de Horn, que requieren
+generar tablas gaussianas, se calculan una vez y se comparten, y se compara el número de ventanas o
+componentes bajo el umbral; y el nulo de estructura se compara en las dos lenguas solo en un
+subconjunto inicial de réplicas, porque su costo en R es alto, mientras que las demás réplicas solo
+se calculan en Python y se comprueba que estén todas.
+
+\paragraph{Reproducibilidad.} Los datos están congelados y se verifican por su md5 (decisión D4).
+Las semillas son fijas y el orden de ejecución está documentado. Una prueba de no regresión
+comprueba que, con las 17 series del antecedente, el código vigente reproduce sus archivos, de modo
+que lo único que cambió es la exclusión de la decisión D16. Las cifras de esta tesis se generan con
+\texttt{herramientas/generar\_cifras.py} a partir de los archivos de resultados y de la lista de
+episodios, y la opción \texttt{--comprobar} verifica que estén al día.
