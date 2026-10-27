@@ -65,6 +65,26 @@
 \newcommand{\estr}{\mathcal{S}}        % estructura estimada de un conjunto de meses
 \newcommand{\interv}{\mathcal{I}}      % intervalo de un régimen
 
+% ---- Episodios de referencia y validación externa (iteración 3b) --------------
+\newcommand{\epi}{\mathsf{e}}          % episodio de referencia
+\newcommand{\Epis}{\mathcal{E}}        % conjunto de episodios de referencia
+\newcommand{\tini}[1]{\underline{t}_{#1}} % mes de inicio de un episodio
+\newcommand{\tfin}[1]{\overline{t}_{#1}}  % mes de fin (efectivo) de un episodio
+
+% ---- Ventanas, nulos y criterios de la parte dinámica (iteración 3b) ---------
+\newcommand{\nomega}{n_{\omega}}       % n efectivo de Kish de los pesos de una ventana
+\newcommand{\nhorn}{n_{\mathrm{H}}}    % filas del análisis paralelo de Horn por ventana
+\newcommand{\Kest}{K^{\ast}}           % número de segmentos (clases) elegido por un criterio
+\newcommand{\Kef}{K_{\mathrm{ef}}}     % mayor número de segmentos factible con n_min
+\newcommand{\Lb}{L_{\mathrm{b}}}       % longitud de bloque del remuestreo (no confundir con L del LSTM)
+\newcommand{\mb}{m_{\mathrm{b}}}       % número de bloques de una réplica
+\newcommand{\RVad}[1]{\RV^{\mathrm{ad}}_{#1}}            % RV entre ventanas adyacentes no solapadas
+\newcommand{\umbralRV}[1]{\underline{\RV}^{\,\mathrm{ad}}_{#1}} % p5 por posición del nulo
+\DeclareMathOperator{\fr}{fr}          % frontera de un par de ventanas adyacentes
+\DeclareMathOperator{\red}{red}        % reducción relativa del costo de Fisher
+\newcommand{\pval}{\mathrm{pv}}        % p-valor de Monte Carlo
+\newcommand{\paso}{\mathsf{s}}         % paso entre ventanas de la regla del 06
+
 % ---- Aprendizaje profundo ----------------------------------------------------
 \newcommand{\mA}{\mathbf{A}}           % codificador lineal
 \newcommand{\mB}{\mathbf{B}}           % decodificador lineal

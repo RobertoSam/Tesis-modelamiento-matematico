@@ -1,12 +1,12 @@
 macro,archivo,filtro,columna,formato,descripcion
-nMesesNiveles,data/results/05_dimensiones.csv,via=niveles,n,entero,Meses de la vía en niveles
-nMesesTransformadas,data/results/05_dimensiones.csv,via=transformadas,n,entero,Meses de la vía transformada
-nSeries,data/results/05_dimensiones.csv,via=niveles,p,entero,Series del análisis (D1)
-fechaInicioNiveles,data/results/05_dimensiones.csv,via=niveles,fecha_inicio,fecha_mes,Primer mes de la vía en niveles
-fechaInicioTransformadas,data/results/05_dimensiones.csv,via=transformadas,fecha_inicio,fecha_mes,Primer mes de la vía transformada
-fechaFinDatos,data/results/05_dimensiones.csv,via=niveles,fecha_fin,fecha_mes,Último mes de los datos (ambas vías)
-anioInicioDatos,data/results/05_dimensiones.csv,via=niveles,fecha_inicio,anio,Año inicial del período de estudio
-anioFinDatos,data/results/05_dimensiones.csv,via=niveles,fecha_fin,anio,Año final del período de estudio
+nMesesNiveles,data/results/final/05_dimensiones.csv,via=niveles,n,entero,Meses de la vía en niveles
+nMesesTransformadas,data/results/final/05_dimensiones.csv,via=transformadas,n,entero,Meses de la vía transformada (anexo de robustez, D15)
+nSeries,data/results/final/05_dimensiones.csv,via=niveles,p,entero,Series del análisis (D1 y D16)
+fechaInicioNiveles,data/results/final/05_dimensiones.csv,via=niveles,fecha_inicio,fecha_mes,Primer mes de la vía en niveles
+fechaInicioTransformadas,data/results/final/05_dimensiones.csv,via=transformadas,fecha_inicio,fecha_mes,Primer mes de la vía transformada (anexo de robustez, D15)
+fechaFinDatos,data/results/final/05_dimensiones.csv,via=niveles,fecha_fin,fecha_mes,Último mes de los datos (ambas vías)
+anioInicioDatos,data/results/final/05_dimensiones.csv,via=niveles,fecha_inicio,anio,Año inicial del período de estudio
+anioFinDatos,data/results/final/05_dimensiones.csv,via=niveles,fecha_fin,anio,Año final del período de estudio
 inerciaPCUnoNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=1,inercia,decimal:1,Inercia (%) de PC1 en niveles
 inerciaPCDosNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=2,inercia,decimal:1,Inercia (%) de PC2 en niveles
 inerciaPCTresNiveles,data/results/niveles/05_pca_valores_propios.csv,componente=3,inercia,decimal:1,Inercia (%) de PC3 en niveles
@@ -53,3 +53,27 @@ inerciaPCUnoSinTendencia,data/results/niveles/05_pca_contraste_tendencia.csv,ver
 kmoSinTendencia,data/results/niveles/05_pca_contraste_tendencia.csv,version=niveles_sin_tendencia;medida=kmo,valor,decimal:2,KMO de las series en niveles sin tendencia lineal
 congruenciaBootPCDosNiveles,data/results/niveles/05_bootstrap_congruencia.csv,L=24;componente=2,p5,decimal:3,Percentil 5 de la congruencia bootstrap de PC2 (niveles; L = 24)
 congruenciaBootPCCuatroNiveles,data/results/niveles/05_bootstrap_congruencia.csv,L=24;componente=4,p5,decimal:3,Percentil 5 de la congruencia bootstrap de PC4 (niveles; L = 24)
+episodioCrisisInicio,data/referencia/episodios_referencia.csv,nombre=Crisis financiera global,inicio,fecha_mes,Inicio del episodio de referencia «Crisis financiera global» (D7)
+episodioCrisisFin,data/referencia/episodios_referencia.csv,nombre=Crisis financiera global,fin,fecha_mes,Fin del episodio de referencia «Crisis financiera global» (D7)
+episodioTaperInicio,data/referencia/episodios_referencia.csv,nombre=Taper tantrum,inicio,fecha_mes,Inicio del episodio de referencia «Taper tantrum» (D7)
+episodioTaperFin,data/referencia/episodios_referencia.csv,nombre=Taper tantrum,fin,fecha_mes,Fin del episodio de referencia «Taper tantrum» (D7)
+episodioMateriasInicio,data/referencia/episodios_referencia.csv,nombre=Colapso de las materias primas,inicio,fecha_mes,Inicio del episodio de referencia «Colapso de las materias primas» (D7)
+episodioMateriasFin,data/referencia/episodios_referencia.csv,nombre=Colapso de las materias primas,fin,fecha_mes,Fin del episodio de referencia «Colapso de las materias primas» (D7)
+episodioKuczynskiInicio,data/referencia/episodios_referencia.csv,nombre=Kuczynski / Odebrecht,inicio,fecha_mes,Inicio del episodio de referencia «Kuczynski / Odebrecht» (D7)
+episodioGuerraInicio,data/referencia/episodios_referencia.csv,nombre=Guerra comercial EE. UU.–China,inicio,fecha_mes,Inicio del episodio de referencia «Guerra comercial EE. UU.–China» (D7)
+episodioGuerraFin,data/referencia/episodios_referencia.csv,nombre=Guerra comercial EE. UU.–China,fin,fecha_mes,Fin del episodio de referencia «Guerra comercial EE. UU.–China» (D7)
+episodioCovidInicio,data/referencia/episodios_referencia.csv,nombre=COVID-19,inicio,fecha_mes,Inicio del episodio de referencia «COVID-19» (D7)
+episodioCovidFin,data/referencia/episodios_referencia.csv,nombre=COVID-19,fin,fecha_mes,Fin del episodio de referencia «COVID-19» (D7)
+nOmegaGaussVeinticuatro,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=gaussianos_nsd3;eje=1,n_omega,decimal:1,n efectivo de Kish de los pesos gaussianos con nw = 24 (método; no depende de los datos)
+nHornGaussVeinticuatro,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=gaussianos_nsd3;eje=1,n_horn,entero,Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 24 (método)
+nOmegaGaussTreintayseis,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=gaussianos_nsd3;eje=1,n_omega,decimal:1,n efectivo de Kish de los pesos gaussianos con nw = 36 (método; no depende de los datos)
+nHornGaussTreintayseis,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=gaussianos_nsd3;eje=1,n_horn,entero,Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 36 (método)
+nOmegaGaussCuarentayocho,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=gaussianos_nsd3;eje=1,n_omega,decimal:1,n efectivo de Kish de los pesos gaussianos con nw = 48 (método; no depende de los datos)
+nHornGaussCuarentayocho,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=gaussianos_nsd3;eje=1,n_horn,entero,Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 48 (método)
+nOmegaGaussSesenta,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=gaussianos_nsd3;eje=1,n_omega,decimal:1,n efectivo de Kish de los pesos gaussianos con nw = 60 (método; no depende de los datos)
+nHornGaussSesenta,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=gaussianos_nsd3;eje=1,n_horn,entero,Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 60 (método)
+largoBloqueNulo,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,L,entero,Longitud de bloque principal del nulo de estructura constante (fila principal de OE4)
+replicasNuloEstructura,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,replicas,entero,Réplicas del nulo de estructura constante con la longitud de bloque principal
+largoBloqueNuloCorto,data/results/final/07b_nulo_estructura_oe4.csv,L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,L,entero,Longitud de bloque corta del nulo de estructura (sensibilidad)
+largoBloqueNuloLargo,data/results/final/07b_nulo_estructura_oe4.csv,L=36;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,L,entero,Longitud de bloque larga del nulo de estructura (sensibilidad)
+replicasNuloSensibilidad,data/results/final/07b_nulo_estructura_oe4.csv,L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,replicas,entero,Réplicas del nulo de estructura en las sensibilidades de longitud de bloque

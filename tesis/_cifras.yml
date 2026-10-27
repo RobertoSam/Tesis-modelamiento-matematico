@@ -1,14 +1,14 @@
 # Archivo generado por herramientas/generar_cifras.py a partir de herramientas/cifras_mapa.csv.
 # No editar a mano. Uso en Quarto: {{< meta cifras.<macro> >}} (ver herramientas/README.md).
 cifras:
-  nMesesNiveles: "228"  # data/results/05_dimensiones.csv | via=niveles | n
-  nMesesTransformadas: "227"  # data/results/05_dimensiones.csv | via=transformadas | n
-  nSeries: "17"  # data/results/05_dimensiones.csv | via=niveles | p
-  fechaInicioNiveles: "enero de 2007"  # data/results/05_dimensiones.csv | via=niveles | fecha_inicio
-  fechaInicioTransformadas: "febrero de 2007"  # data/results/05_dimensiones.csv | via=transformadas | fecha_inicio
-  fechaFinDatos: "diciembre de 2025"  # data/results/05_dimensiones.csv | via=niveles | fecha_fin
-  anioInicioDatos: "2007"  # data/results/05_dimensiones.csv | via=niveles | fecha_inicio
-  anioFinDatos: "2025"  # data/results/05_dimensiones.csv | via=niveles | fecha_fin
+  nMesesNiveles: "228"  # data/results/final/05_dimensiones.csv | via=niveles | n
+  nMesesTransformadas: "227"  # data/results/final/05_dimensiones.csv | via=transformadas | n
+  nSeries: "16"  # data/results/final/05_dimensiones.csv | via=niveles | p
+  fechaInicioNiveles: "enero de 2007"  # data/results/final/05_dimensiones.csv | via=niveles | fecha_inicio
+  fechaInicioTransformadas: "febrero de 2007"  # data/results/final/05_dimensiones.csv | via=transformadas | fecha_inicio
+  fechaFinDatos: "diciembre de 2025"  # data/results/final/05_dimensiones.csv | via=niveles | fecha_fin
+  anioInicioDatos: "2007"  # data/results/final/05_dimensiones.csv | via=niveles | fecha_inicio
+  anioFinDatos: "2025"  # data/results/final/05_dimensiones.csv | via=niveles | fecha_fin
   inerciaPCUnoNiveles: "67,2"  # data/results/niveles/05_pca_valores_propios.csv | componente=1 | inercia
   inerciaPCDosNiveles: "18,3"  # data/results/niveles/05_pca_valores_propios.csv | componente=2 | inercia
   inerciaPCTresNiveles: "7,1"  # data/results/niveles/05_pca_valores_propios.csv | componente=3 | inercia
@@ -55,3 +55,27 @@ cifras:
   kmoSinTendencia: "0,70"  # data/results/niveles/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=kmo | valor
   congruenciaBootPCDosNiveles: "0,793"  # data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=2 | p5
   congruenciaBootPCCuatroNiveles: "0,608"  # data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=4 | p5
+  episodioCrisisInicio: "septiembre de 2008"  # data/referencia/episodios_referencia.csv | nombre=Crisis financiera global | inicio
+  episodioCrisisFin: "junio de 2009"  # data/referencia/episodios_referencia.csv | nombre=Crisis financiera global | fin
+  episodioTaperInicio: "mayo de 2013"  # data/referencia/episodios_referencia.csv | nombre=Taper tantrum | inicio
+  episodioTaperFin: "diciembre de 2013"  # data/referencia/episodios_referencia.csv | nombre=Taper tantrum | fin
+  episodioMateriasInicio: "junio de 2014"  # data/referencia/episodios_referencia.csv | nombre=Colapso de las materias primas | inicio
+  episodioMateriasFin: "enero de 2016"  # data/referencia/episodios_referencia.csv | nombre=Colapso de las materias primas | fin
+  episodioKuczynskiInicio: "marzo de 2018"  # data/referencia/episodios_referencia.csv | nombre=Kuczynski / Odebrecht | inicio
+  episodioGuerraInicio: "junio de 2018"  # data/referencia/episodios_referencia.csv | nombre=Guerra comercial EE. UU.–China | inicio
+  episodioGuerraFin: "enero de 2020"  # data/referencia/episodios_referencia.csv | nombre=Guerra comercial EE. UU.–China | fin
+  episodioCovidInicio: "marzo de 2020"  # data/referencia/episodios_referencia.csv | nombre=COVID-19 | inicio
+  episodioCovidFin: "abril de 2020"  # data/referencia/episodios_referencia.csv | nombre=COVID-19 | fin
+  nOmegaGaussVeinticuatro: "18,2"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=1 | n_omega
+  nHornGaussVeinticuatro: "19"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=1 | n_horn
+  nOmegaGaussTreintayseis: "27,6"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=1 | n_omega
+  nHornGaussTreintayseis: "28"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=1 | n_horn
+  nOmegaGaussCuarentayocho: "37,0"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=1 | n_omega
+  nHornGaussCuarentayocho: "38"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=1 | n_horn
+  nOmegaGaussSesenta: "46,4"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=1 | n_omega
+  nHornGaussSesenta: "47"  # data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=1 | n_horn
+  largoBloqueNulo: "24"  # data/results/final/07b_nulo_estructura_oe4.csv | principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+  replicasNuloEstructura: "200"  # data/results/final/07b_nulo_estructura_oe4.csv | principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | replicas
+  largoBloqueNuloCorto: "12"  # data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+  largoBloqueNuloLargo: "36"  # data/results/final/07b_nulo_estructura_oe4.csv | L=36;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+  replicasNuloSensibilidad: "20"  # data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | replicas

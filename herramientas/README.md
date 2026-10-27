@@ -2,10 +2,11 @@
 
 Scripts compartidos por la tesis (`tesis_latex/`) y el informe (`tesis/`).
 
-## `generar_cifras.py` · cifras desde `data/results/`
+## `generar_cifras.py` · cifras desde `data/results/` y `data/referencia/`
 
 Regla 3 de `CLAUDE.md`: ninguna cifra se escribe a mano. Este script lee las cifras de los CSV de
-`data/results/` según el mapa versionado `cifras_mapa.csv` y escribe:
+`data/results/` (y, para las fechas de los episodios de D7, de `data/referencia/`) según el mapa
+versionado `cifras_mapa.csv` y escribe:
 
 | Salida | Uso |
 |---|---|
@@ -30,7 +31,9 @@ Una fila por cifra, con las columnas `macro, archivo, filtro, columna, formato, 
 
 - `macro`: nombre de la macro, solo letras (los nombres de macro de LaTeX no admiten dígitos; por
   eso `inerciaPCUnoNiveles` y no `inerciaPC1Niveles`). El mismo nombre es la clave en el YAML.
-- `archivo`: CSV dentro de `data/results/` (el script rechaza cualquier otra carpeta).
+- `archivo`: CSV dentro de `data/results/` o de `data/referencia/` (el script rechaza cualquier otra
+  carpeta). Desde D15 y D16, las cifras vigentes salen de `data/results/final/`; las carpetas del
+  antecedente con 17 series no deben consumirse (`data/results/LEEME.md`).
 - `filtro`: condiciones `columna=valor` separadas por `;`, que deben seleccionar **exactamente una
   fila**; la comparación es de texto, con el valor tal como está escrito en el CSV (p. ej.
   `ambito=global;medida=kmo_global` o `L=24;componente=2`).

@@ -1,22 +1,22 @@
 % Archivo generado por herramientas/generar_cifras.py a partir de herramientas/cifras_mapa.csv.
-% No editar a mano: cada cifra se lee de data/results/ (regla 3 de CLAUDE.md).
+% No editar a mano: cada cifra se lee de data/results/ o data/referencia/ (regla 3 de CLAUDE.md).
 % Para regenerarlo: python3 herramientas/generar_cifras.py
 
-% Meses de la vía en niveles | data/results/05_dimensiones.csv | via=niveles | n
+% Meses de la vía en niveles | data/results/final/05_dimensiones.csv | via=niveles | n
 \newcommand{\nMesesNiveles}{228}
-% Meses de la vía transformada | data/results/05_dimensiones.csv | via=transformadas | n
+% Meses de la vía transformada (anexo de robustez | data/results/final/05_dimensiones.csv | via=transformadas | n
 \newcommand{\nMesesTransformadas}{227}
-% Series del análisis (D1) | data/results/05_dimensiones.csv | via=niveles | p
-\newcommand{\nSeries}{17}
-% Primer mes de la vía en niveles | data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+% Series del análisis (D1 y D16) | data/results/final/05_dimensiones.csv | via=niveles | p
+\newcommand{\nSeries}{16}
+% Primer mes de la vía en niveles | data/results/final/05_dimensiones.csv | via=niveles | fecha_inicio
 \newcommand{\fechaInicioNiveles}{enero de 2007}
-% Primer mes de la vía transformada | data/results/05_dimensiones.csv | via=transformadas | fecha_inicio
+% Primer mes de la vía transformada (anexo de robustez | data/results/final/05_dimensiones.csv | via=transformadas | fecha_inicio
 \newcommand{\fechaInicioTransformadas}{febrero de 2007}
-% Último mes de los datos (ambas vías) | data/results/05_dimensiones.csv | via=niveles | fecha_fin
+% Último mes de los datos (ambas vías) | data/results/final/05_dimensiones.csv | via=niveles | fecha_fin
 \newcommand{\fechaFinDatos}{diciembre de 2025}
-% Año inicial del período de estudio | data/results/05_dimensiones.csv | via=niveles | fecha_inicio
+% Año inicial del período de estudio | data/results/final/05_dimensiones.csv | via=niveles | fecha_inicio
 \newcommand{\anioInicioDatos}{2007}
-% Año final del período de estudio | data/results/05_dimensiones.csv | via=niveles | fecha_fin
+% Año final del período de estudio | data/results/final/05_dimensiones.csv | via=niveles | fecha_fin
 \newcommand{\anioFinDatos}{2025}
 % Inercia (%) de PC1 en niveles | data/results/niveles/05_pca_valores_propios.csv | componente=1 | inercia
 \newcommand{\inerciaPCUnoNiveles}{67{,}2}
@@ -110,3 +110,51 @@
 \newcommand{\congruenciaBootPCDosNiveles}{0{,}793}
 % Percentil 5 de la congruencia bootstrap de PC4 (niveles; L = 24) | data/results/niveles/05_bootstrap_congruencia.csv | L=24;componente=4 | p5
 \newcommand{\congruenciaBootPCCuatroNiveles}{0{,}608}
+% Inicio del episodio de referencia «Crisis financiera global» (D7) | data/referencia/episodios_referencia.csv | nombre=Crisis financiera global | inicio
+\newcommand{\episodioCrisisInicio}{septiembre de 2008}
+% Fin del episodio de referencia «Crisis financiera global» (D7) | data/referencia/episodios_referencia.csv | nombre=Crisis financiera global | fin
+\newcommand{\episodioCrisisFin}{junio de 2009}
+% Inicio del episodio de referencia «Taper tantrum» (D7) | data/referencia/episodios_referencia.csv | nombre=Taper tantrum | inicio
+\newcommand{\episodioTaperInicio}{mayo de 2013}
+% Fin del episodio de referencia «Taper tantrum» (D7) | data/referencia/episodios_referencia.csv | nombre=Taper tantrum | fin
+\newcommand{\episodioTaperFin}{diciembre de 2013}
+% Inicio del episodio de referencia «Colapso de las materias primas» (D7) | data/referencia/episodios_referencia.csv | nombre=Colapso de las materias primas | inicio
+\newcommand{\episodioMateriasInicio}{junio de 2014}
+% Fin del episodio de referencia «Colapso de las materias primas» (D7) | data/referencia/episodios_referencia.csv | nombre=Colapso de las materias primas | fin
+\newcommand{\episodioMateriasFin}{enero de 2016}
+% Inicio del episodio de referencia «Kuczynski / Odebrecht» (D7) | data/referencia/episodios_referencia.csv | nombre=Kuczynski / Odebrecht | inicio
+\newcommand{\episodioKuczynskiInicio}{marzo de 2018}
+% Inicio del episodio de referencia «Guerra comercial EE. UU.–China» (D7) | data/referencia/episodios_referencia.csv | nombre=Guerra comercial EE. UU.–China | inicio
+\newcommand{\episodioGuerraInicio}{junio de 2018}
+% Fin del episodio de referencia «Guerra comercial EE. UU.–China» (D7) | data/referencia/episodios_referencia.csv | nombre=Guerra comercial EE. UU.–China | fin
+\newcommand{\episodioGuerraFin}{enero de 2020}
+% Inicio del episodio de referencia «COVID-19» (D7) | data/referencia/episodios_referencia.csv | nombre=COVID-19 | inicio
+\newcommand{\episodioCovidInicio}{marzo de 2020}
+% Fin del episodio de referencia «COVID-19» (D7) | data/referencia/episodios_referencia.csv | nombre=COVID-19 | fin
+\newcommand{\episodioCovidFin}{abril de 2020}
+% n efectivo de Kish de los pesos gaussianos con nw = 24 (método; no depende de los datos) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=1 | n_omega
+\newcommand{\nOmegaGaussVeinticuatro}{18{,}2}
+% Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 24 (método) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=1 | n_horn
+\newcommand{\nHornGaussVeinticuatro}{19}
+% n efectivo de Kish de los pesos gaussianos con nw = 36 (método; no depende de los datos) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=1 | n_omega
+\newcommand{\nOmegaGaussTreintayseis}{27{,}6}
+% Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 36 (método) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=1 | n_horn
+\newcommand{\nHornGaussTreintayseis}{28}
+% n efectivo de Kish de los pesos gaussianos con nw = 48 (método; no depende de los datos) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=1 | n_omega
+\newcommand{\nOmegaGaussCuarentayocho}{37{,}0}
+% Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 48 (método) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=1 | n_horn
+\newcommand{\nHornGaussCuarentayocho}{38}
+% n efectivo de Kish de los pesos gaussianos con nw = 60 (método; no depende de los datos) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=1 | n_omega
+\newcommand{\nOmegaGaussSesenta}{46{,}4}
+% Filas del análisis paralelo de Horn por ventana con pesos gaussianos y nw = 60 (método) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=1 | n_horn
+\newcommand{\nHornGaussSesenta}{47}
+% Longitud de bloque principal del nulo de estructura constante (fila principal de OE4) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+\newcommand{\largoBloqueNulo}{24}
+% Réplicas del nulo de estructura constante con la longitud de bloque principal | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | replicas
+\newcommand{\replicasNuloEstructura}{200}
+% Longitud de bloque corta del nulo de estructura (sensibilidad) | data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+\newcommand{\largoBloqueNuloCorto}{12}
+% Longitud de bloque larga del nulo de estructura (sensibilidad) | data/results/final/07b_nulo_estructura_oe4.csv | L=36;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
+\newcommand{\largoBloqueNuloLargo}{36}
+% Réplicas del nulo de estructura en las sensibilidades de longitud de bloque | data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | replicas
+\newcommand{\replicasNuloSensibilidad}{20}

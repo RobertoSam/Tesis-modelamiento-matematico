@@ -145,13 +145,91 @@ global y la pandemia de COVID-19 como crisis del mercado estadounidense.
 \textcite{camiz_cerda_atoche_2026} asocian a eventos como la renuncia de Kuczynski y la guerra
 comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de
 Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no
-pueden usarse como fechas externas. Cada evento se fechará con una cronología independiente:
-crisis financiera global \pendiente{fuente externa para fechar la crisis financiera global en el
-Perú}, \emph{taper tantrum} \pendiente{fuente externa para fechar el \emph{taper tantrum}},
-pandemia de COVID-19 \pendiente{fuente externa para fechar el choque de la COVID-19 en el Perú},
-renuncia de Kuczynski \pendiente{fuente externa para fechar la renuncia de Kuczynski} y guerra
-comercial entre Estados Unidos y China \pendiente{fuente externa para fechar la guerra comercial
-entre Estados Unidos y China}.
+pueden usarse como fechas externas. Cada evento se fecha, en cambio, con un documento externo al
+análisis y con la convención de la decisión D7.
+
+\begin{definicion}[Episodio de referencia y convención de fechado]\label{def:episodio}
+Un \emph{episodio de referencia} $\epi\in\Epis$ es un par de meses $\tini{\epi}\le\tfin{\epi}$.
+El inicio $\tini{\epi}$ es el mes del \emph{evento o anuncio externo} que lo abre, no el de su
+impacto en el Perú, tomado del texto de una fuente con ficha. El fin $\tfin{\epi}$ es el mes del
+evento externo que lo cierra, si existe una fuente para él. Si no la hay, el episodio es
+\emph{puntual} y se toma $\tfin{\epi}=\tini{\epi}$ como fin efectivo: el fin no se infiere ni de las
+series ni de un indicador. Todas las fechas se leen de un único archivo,
+\texttt{data/referencia/episodios\_referencia.csv}.
+\end{definicion}
+
+\begin{definicion}[Compatibilidad con tolerancia]\label{def:tolerancia}
+Para $h\ge0$, un mes $f$ es \emph{compatible} con el episodio $\epi$ con tolerancia $h$ si su
+distancia al intervalo $[\tini{\epi},\tfin{\epi}]$ no supera $h$ meses, es decir, si
+$\tini{\epi}-h\le f\le\tfin{\epi}+h$. Por la decisión D7, la tolerancia principal es $h=3$ y la de
+sensibilidad, $h=6$.
+\end{definicion}
+
+\begin{observacion}[Alcance de la tolerancia]\label{obs:tolerancia}
+Para un episodio puntual, la \cref{def:tolerancia} se reduce a $\abs{f-\tini{\epi}}\le h$. Para un
+período, un mes interior está a distancia cero. D7 fija el valor de $h$, pero no dice si la
+distancia se mide al intervalo o solo a sus extremos. La definición adopta la primera lectura, que
+es la que implementa el código cuando amplía los episodios en el anexo de robustez (decisión
+D15); la segunda queda como pregunta abierta y no se usa.
+\end{observacion}
+
+La \cref{tab:episodios} reúne los seis episodios con sus fuentes. Ninguna fecha se derivó de las
+series, de los cortes de \textcite{camiz_cerda_atoche_2026} ni de un indicador.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Episodios de referencia (decisión D7). Las fechas salen de
+\texttt{data/referencia/episodios\_referencia.csv}.}
+\label{tab:episodios}
+\begin{tabular}{@{}p{0.27\textwidth}p{0.33\textwidth}p{0.33\textwidth}@{}}
+\toprule
+Episodio & Inicio (evento externo) & Fin (evento externo) \\
+\midrule
+Crisis financiera global & \episodioCrisisInicio{} \parencite{lehman_brothers_2008} &
+  \episodioCrisisFin{} \parencite{nber_2010} \\
+\emph{Taper tantrum} & \episodioTaperInicio{} \parencite{bernanke_2013} &
+  \episodioTaperFin{} \parencite{reserva_federal_2013} \\
+Colapso de los precios de las materias primas & \episodioMateriasInicio{}
+  \parencite{stocker_et_al_2015} & \episodioMateriasFin{} \parencite{fmi_2016} \\
+Renuncia de Kuczynski (caso Odebrecht) & \episodioKuczynskiInicio{} \parencite{congreso_2018} &
+  --- (episodio puntual) \\
+Guerra comercial entre Estados Unidos y China & \episodioGuerraInicio{} \parencite{ustr_2018} &
+  \episodioGuerraFin{} \parencite{ustr_2020} \\
+Pandemia de COVID-19 & \episodioCovidInicio{} \parencite{oms_2020b} &
+  \episodioCovidFin{} \parencite{nber_2021} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cada fecha corresponde a un hecho que consta en su fuente. La crisis financiera global se abre con
+el anuncio de la solicitud de quiebra de Lehman Brothers \parencite{lehman_brothers_2008} y se
+cierra con el valle de la recesión estadounidense que fijó el comité de fechado del NBER
+\parencite{nber_2010}. El \emph{taper tantrum} se abre con el testimonio del presidente de la
+Reserva Federal ante el Comité Económico Conjunto del Congreso de los Estados Unidos
+\parencite{bernanke_2013}\verificar{la ficha registra la fecha y la descripción del testimonio,
+pero no se leyó el pasaje sobre la reducción del ritmo de compras de activos.} y se cierra con el
+comunicado del FOMC que decidió reducir ese ritmo \parencite{reserva_federal_2013}. El colapso de
+las materias primas se fecha por la caída del precio del petróleo, que según
+\textcite{stocker_et_al_2015} empezó a mediados de 2014, y termina el mes anterior al primer
+aumento de los precios de los metales y del índice general que informa el FMI
+\parencite{fmi_2016}. Para los metales que exporta el Perú, la caída empieza antes, desde 2011
+\parencite{fmi_2015b}, pero esa fuente no da el mes. La renuncia de Kuczynski es un episodio puntual: se fecha
+con la resolución del Congreso que la acepta \parencite{congreso_2018}\verificar{la ficha se
+elaboró con la nota oficial del Congreso; no se leyó el texto de la resolución ni su publicación
+en \emph{El Peruano}.}, y no hay una fuente que fije su fin. La guerra comercial se abre con el
+anuncio de los aranceles de la Oficina del Representante Comercial de los Estados Unidos
+\parencite{ustr_2018} y se cierra con la firma del acuerdo de la «fase uno»
+\parencite{ustr_2020}. La pandemia se abre con la declaración de la OMS que la caracteriza como
+tal \parencite{oms_2020b} y se cierra con el valle de la actividad mensual estadounidense que fijó
+el NBER \parencite{nber_2021}, con el mismo criterio que el fin de la crisis global.
+
+Dos advertencias acompañan la tabla. Primero, el fin de la guerra comercial y el inicio de la
+pandemia distan menos que la tolerancia principal, de modo que una transición en ese tramo no
+puede atribuirse a uno solo de los dos episodios. Segundo, las fechas son las de eventos
+externos, casi todos estadounidenses o globales: miden cuándo ocurrió el choque, no cuándo se
+transmitió a las series del BCRP. Con pocos episodios, algunos puntuales, la correspondencia de la
+hipótesis HT3 es descriptiva y no un contraste con poder estadístico.
 
 % -----------------------------------------------------------------------------
 \section{Posición epistemológica: «datos primero»}
