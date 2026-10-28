@@ -1,10 +1,10 @@
-<!-- Derivado de tesis_latex/capitulos/02_marco_teorico.tex (iteración 3a), con la notación de tesis_latex/notacion.tex. Versión condensada: se enuncian las definiciones y proposiciones y se omiten las demostraciones, que están en la tesis. No agregar contenido que la tesis no sostenga. Correspondencia de secciones y etiquetas en tesis/README.md. -->
+<!-- Derivado de tesis_latex/capitulos/02_marco_teorico.tex (iteración 3b, tareas L1 y L2 del redactor, commits f904b5c y 50db7a6), con la notación de tesis_latex/notacion.tex. Versión condensada: se enuncian las definiciones y proposiciones y se omiten las demostraciones, que están en la tesis. No agregar contenido que la tesis no sostenga. Correspondencia de secciones y etiquetas en tesis/README.md. -->
 
-Este capítulo reúne los antecedentes y formaliza los métodos que usa la tesis. Primero resume el antecedente peruano y fija el objeto de estudio y la posición epistemológica. Luego formaliza los métodos, cada uno con su definición, sus supuestos y, cuando corresponde, una proposición. Cierra con los criterios de comparación y los vacíos que justifican el aporte. Las proposiciones se enuncian sin demostración; la tesis las demuestra, salvo los resultados que se citan y que se señalan como tales.
+Este capítulo reúne los antecedentes y formaliza los métodos que usa la tesis. Primero resume el antecedente peruano y fija el objeto de estudio y la posición epistemológica. Luego formaliza los métodos y los nulos de referencia que permiten leerlos, cada uno con su definición, sus supuestos y, cuando corresponde, una proposición. Cierra con los criterios de comparación y los vacíos que justifican el aporte. Las proposiciones se enuncian sin demostración; la tesis las demuestra, salvo los resultados que se citan y que se señalan como tales.
 
 ## Antecedentes peruanos
 
-El antecedente más directo es el de @camiz_cerda_atoche_2026[^v2-cca], que, según esa misma fuente, continúa la tesis de maestría de Atoche Murrieta [CITA PENDIENTE: Atoche Murrieta (2022), tesis de maestría, PUCP; sin ficha]. Los autores aplican PCA, HFC y EPCA a 17 series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020. El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima, EMBIG y coeficiente de dolarización)[^v2-res]. A continuación, el EPCA se aplica al conjunto completo y a cada grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio se particiona en subperíodos de estabilidad mediante el algoritmo de @fisher_1958[^v2-fis], y el número de cortes se elige con el criterio de @calinski_harabasz_1974[^v2-ch].
+El antecedente más directo es el de @camiz_cerda_atoche_2026[^v2-cca], que, según esa misma fuente, continúa la tesis de maestría de @atoche_murrieta_2022[^v2-atm]. Los autores aplican PCA, HFC y EPCA a 17 series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020. El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos, circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima, EMBIG y coeficiente de dolarización)[^v2-res]. A continuación, el EPCA se aplica al conjunto completo y a cada grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio se particiona en subperíodos de estabilidad mediante el algoritmo de @fisher_1958[^v2-fis], y el número de cortes se elige con el criterio de @calinski_harabasz_1974[^v2-ch].
 
 Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases del ciclo.
 
@@ -48,7 +48,38 @@ Esta separación evita que la clasificación se reduzca a una relectura del crec
 
 ### Validación externa
 
-Los episodios con los que se contrastan los regímenes se fechan con fuentes externas al análisis, nunca a partir de las propias series ni de un indicador derivado de ellas. De lo contrario, la validación sería circular. La bibliografía revisada sirve aquí **solo para identificar eventos candidatos, no para fecharlos**. @tuhin_et_al_2025[^v2-tu] tratan la crisis financiera global y la pandemia de COVID-19 como crisis del mercado estadounidense. @camiz_cerda_atoche_2026 asocian a eventos como la renuncia de Kuczynski y la guerra comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no pueden usarse como fechas externas. Cada evento se fechará con una cronología independiente: crisis financiera global [CITA PENDIENTE: fuente externa para fechar la crisis financiera global en el Perú], *taper tantrum* [CITA PENDIENTE: fuente externa para fechar el *taper tantrum*], pandemia de COVID-19 [CITA PENDIENTE: fuente externa para fechar el choque de la COVID-19 en el Perú], renuncia de Kuczynski [CITA PENDIENTE: fuente externa para fechar la renuncia de Kuczynski] y guerra comercial entre Estados Unidos y China [CITA PENDIENTE: fuente externa para fechar la guerra comercial entre Estados Unidos y China].
+Los episodios con los que se contrastan los regímenes se fechan con fuentes externas al análisis, nunca a partir de las propias series ni de un indicador derivado de ellas. De lo contrario, la validación sería circular. La bibliografía revisada sirve aquí **solo para identificar eventos candidatos, no para fecharlos**. @tuhin_et_al_2025[^v2-tu] tratan la crisis financiera global y la pandemia de COVID-19 como crisis del mercado estadounidense. @camiz_cerda_atoche_2026 asocian a eventos como la renuncia de Kuczynski y la guerra comercial entre Estados Unidos y China transiciones que obtienen del EPCA y de la partición de Fisher sobre series del BCRP muy parecidas a las de esta tesis. Por esa razón, sus cortes no pueden usarse como fechas externas. Cada evento se fecha, en cambio, con un documento externo al análisis y con la convención de la decisión D7.
+
+::: {#def-episodio name="Episodio de referencia y convención de fechado"}
+Un *episodio de referencia* $\mathsf{e}\in\mathcal{E}$ es un par de meses $\underline{t}_{\mathsf{e}}\le\overline{t}_{\mathsf{e}}$. El inicio $\underline{t}_{\mathsf{e}}$ es el mes del *evento o anuncio externo* que lo abre, no el de su impacto en el Perú, tomado del texto de una fuente con ficha. El fin $\overline{t}_{\mathsf{e}}$ es el mes del evento externo que lo cierra, si existe una fuente para él. Si no la hay, el episodio es *puntual* y se toma $\overline{t}_{\mathsf{e}}=\underline{t}_{\mathsf{e}}$ como fin efectivo: el fin no se infiere ni de las series ni de un indicador. Todas las fechas se leen de un único archivo, `data/referencia/episodios_referencia.csv`.
+:::
+
+::: {#def-tolerancia name="Compatibilidad con tolerancia"}
+Para $h\ge0$, un mes $\tau$ es *compatible* con el episodio $\mathsf{e}$ con tolerancia $h$ si su distancia al intervalo $[\underline{t}_{\mathsf{e}},\overline{t}_{\mathsf{e}}]$ no supera $h$ meses, es decir, si $\underline{t}_{\mathsf{e}}-h\le\tau\le\overline{t}_{\mathsf{e}}+h$. Por la decisión D7, la tolerancia principal es $h=3$ y la de sensibilidad, $h=6$.
+:::
+
+**Observación (alcance de la tolerancia).** Para un episodio puntual, la @def-tolerancia se reduce a $|\tau-\underline{t}_{\mathsf{e}}|\le h$. Para un período, un mes interior está a distancia cero. D7 fija el valor de $h$, pero no dice si la distancia se mide al intervalo o solo a sus extremos. La definición adopta la primera lectura, que es la que implementa el código cuando amplía los episodios en el anexo de robustez (capítulo 3, «Validación externa»); la segunda queda como pregunta abierta y no se usa.
+
+La @tbl-episodios reúne los seis episodios con sus fuentes. Ninguna fecha se derivó de las series, de los cortes de @camiz_cerda_atoche_2026 ni de un indicador.
+
+<!-- fuente de las fechas: tesis/_cifras.yml (herramientas/generar_cifras.py, a partir de data/referencia/episodios_referencia.csv) -->
+
+| Episodio | Inicio (evento externo) | Fin (evento externo) |
+|---|---|---|
+| Crisis financiera global | {{< meta cifras.episodioCrisisInicio >}} [@lehman_brothers_2008] | {{< meta cifras.episodioCrisisFin >}} [@nber_2010] |
+| *Taper tantrum* | {{< meta cifras.episodioTaperInicio >}} [@bernanke_2013][^v2-bern] | {{< meta cifras.episodioTaperFin >}} [@reserva_federal_2013] |
+| Colapso de los precios de las materias primas | {{< meta cifras.episodioMateriasInicio >}} [@stocker_et_al_2015] | {{< meta cifras.episodioMateriasFin >}} [@fmi_2016] |
+| Renuncia de Kuczynski (caso Odebrecht) | {{< meta cifras.episodioKuczynskiInicio >}} [@congreso_2018][^v2-cong] | — (episodio puntual) |
+| Guerra comercial entre Estados Unidos y China | {{< meta cifras.episodioGuerraInicio >}} [@ustr_2018] | {{< meta cifras.episodioGuerraFin >}} [@ustr_2020] |
+| Pandemia de COVID-19 | {{< meta cifras.episodioCovidInicio >}} [@oms_2020b] | {{< meta cifras.episodioCovidFin >}} [@nber_2021] |
+
+: *Episodios de referencia (decisión D7)* {#tbl-episodios}
+
+*Nota.* Elaboración propia a partir de `data/referencia/episodios_referencia.csv` y de las fuentes citadas en cada celda.
+
+Cada fecha corresponde a un hecho que consta en su fuente. La crisis financiera global se abre con el anuncio de la solicitud de quiebra de Lehman Brothers [@lehman_brothers_2008] y se cierra con el valle de la recesión estadounidense que fijó el comité de fechado del NBER [@nber_2010]. El *taper tantrum* se abre con el testimonio del presidente de la Reserva Federal ante el Comité Económico Conjunto del Congreso de los Estados Unidos [@bernanke_2013] y se cierra con el comunicado del FOMC que decidió reducir el ritmo de compras de activos [@reserva_federal_2013]. El colapso de las materias primas se fecha por la caída del precio del petróleo, que según @stocker_et_al_2015 empezó a mediados de 2014, y termina el mes anterior al primer aumento de los precios de los metales y del índice general que informa el FMI [@fmi_2016]. Para los metales que exporta el Perú, la caída empieza antes, desde 2011 [@fmi_2015b], pero esa fuente no da el mes. La renuncia de Kuczynski es un episodio puntual: se fecha con la resolución del Congreso que la acepta [@congreso_2018], y no hay una fuente que fije su fin. La guerra comercial se abre con el anuncio de los aranceles de la Oficina del Representante Comercial de los Estados Unidos [@ustr_2018] y se cierra con la firma del acuerdo de la «fase uno» [@ustr_2020]. La pandemia se abre con la declaración de la OMS que la caracteriza como tal [@oms_2020b] y se cierra con el valle de la actividad mensual estadounidense que fijó el NBER [@nber_2021], con el mismo criterio que el fin de la crisis global.
+
+Dos advertencias acompañan la tabla. Primero, el fin de la guerra comercial y el inicio de la pandemia distan menos que la tolerancia principal, de modo que una transición en ese tramo no puede atribuirse a uno solo de los dos episodios. Segundo, las fechas son las de eventos externos, casi todos estadounidenses o globales: miden cuándo ocurrió el choque, no cuándo se transmitió a las series del BCRP. Con pocos episodios, algunos puntuales, la correspondencia de la hipótesis HT3 es descriptiva y no un contraste con poder estadístico.
 
 ## Posición epistemológica: «datos primero»
 
@@ -66,7 +97,7 @@ $$ {#eq-ganancia}
 Para una sucesión $(y_t)_{t\in\mathbb{Z}}$, un mes $t_0\in\mathbb{Z}$ y una longitud $T\in\mathbb{N}$, sean $\langle y\rangle_{t_0,T}=\frac1T\sum_{t=t_0+1}^{t_0+T}y_t$ y $\operatorname{var}_{t_0,T}(y)=\langle y^2\rangle_{t_0,T}-\langle y\rangle_{t_0,T}^2$ la media y la varianza temporales de $y$ en los $T$ meses consecutivos $t_0+1,\dots,t_0+T$. En consecuencia: (a) si $P$ es entero, $\operatorname{var}_{t_0,P}(\Delta x)=\gamma(P)^2\,\operatorname{var}_{t_0,P}(x)$ para todo $t_0\in\mathbb{Z}$, es decir, sobre cualquier período completo de $P$ meses consecutivos la varianza temporal se multiplica por $\gamma(P)^2$; y, para todo $P\ge2$ real, los límites $\lim_{T\to\infty}\operatorname{var}_{t_0,T}(x)$ y $\lim_{T\to\infty}\operatorname{var}_{t_0,T}(\Delta x)$ existen, no dependen de $t_0$ y el segundo es $\gamma(P)^2$ veces el primero, que vale $\varrho^2/2$ si $P>2$ y $\varrho^2\cos^2\psi_0$ si $P=2$. La razón de varianzas es, por tanto, $\gamma(P)^2$ en los dos sentidos, salvo en el caso degenerado $P=2$, $\cos\psi_0=0$, en que $x\equiv0$; (b) $\gamma$ es decreciente en $P$ y $\gamma(P)\to 0$ cuando $P\to\infty$, con $\gamma(P)\sim 2\pi/P$; (c) $\gamma(P)<1$ si y solo si $P>6$.
 :::
 
-La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo financiero: todas las de período mayor de seis meses salen atenuadas, y tanto más cuanto más lentas. Trabajar sin transformar respeta los datos tal como los publica la fuente, pero mezcla la tendencia de profundización financiera con la estructura de régimen. Por eso el proyecto mantiene las series sin transformar como análisis oficial (decisión D1) y las analiza, junto con las transformadas, en **dos vías** con el mismo código y los mismos parámetros (decisión D2). D2 no elige una vía como definitiva para la interpretación, y la propuesta de cómo combinarlas está pendiente de discusión con el asesor.
+La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo financiero: todas las de período mayor de seis meses salen atenuadas, y tanto más cuanto más lentas. Trabajar sin transformar respeta los datos tal como los publica la fuente, pero mezcla la tendencia de profundización financiera con la estructura de régimen. Por eso el proyecto mantiene las series sin transformar como análisis oficial (decisión D1). Hasta la iteración 3b, las analizó junto con las transformadas en **dos vías**, con el mismo código y los mismos parámetros (decisión D2). Desde la decisión D15, el análisis principal se hace solo con las series sin transformar, y las transformadas pasan a un anexo de robustez que conserva el sustento de no diferenciar y la detección de episodios fuera de muestra. Ese diseño se presenta al asesor como propuesta, no como hecho consumado (capítulo 3, «Tipo y diseño de la investigación»).
 
 La segunda consecuencia, y la tensión central del marco, se refiere a los autoencoders y las redes LSTM. Estos modelos introducen **supuestos arquitectónicos** que no provienen de los datos: el número de capas y su ancho, la función de activación, la dimensión latente, la longitud de la ventana, la regularización y la semilla aleatoria. Cada uno es una decisión del analista. La tesis no oculta esa tensión, sino que la acota con cuatro principios:
 
@@ -107,7 +138,7 @@ el error cuadrático medio de reconstrucción.
 Para todo $\mathbf{E}$ con $\mathbf{E}^{\top}\mathbf{E}=\mathbf{I}_d$, $J(\mathbf{E})=p-\operatorname{tr}(\mathbf{E}^{\top}\mathbf{R}\mathbf{E})\ge\sum_{\ell=d+1}^{p}\lambda_\ell$, con igualdad si $\mathbf{E}=\mathbf{V}_d$. Si además $\lambda_d>\lambda_{d+1}$, la igualdad se cumple si y solo si $\mathbf{E}\mathbf{E}^{\top}=\mathbf{V}_d\mathbf{V}_d^{\top}$, es decir, si las columnas de $\mathbf{E}$ generan el subespacio de los $d$ primeros vectores propios. En particular, el error mínimo por celda es $J(\mathbf{V}_d)/p=1-\sum_{\ell\le d}\lambda_\ell/p$.
 :::
 
-La @prp-pca es un caso particular del teorema de aproximación de rango bajo de @eckart_young_1936[^v2-ey]: entre las matrices de rango a lo sumo $d$, la descomposición en valores singulares truncada en $d$ términos minimiza el error en norma de Frobenius [CITA PENDIENTE: obra de referencia del PCA, por ejemplo Jolliffe (2002); sin ficha]. La tesis lo enuncia sin demostrarlo, porque no lo usa en ninguna prueba.
+La @prp-pca es un caso particular del teorema de aproximación de rango bajo de @eckart_young_1936[^v2-ey]: entre las matrices de rango a lo sumo $d$, la descomposición en valores singulares truncada en $d$ términos minimiza el error en norma de Frobenius. La tesis lo enuncia sin demostrarlo, porque no lo usa en ninguna prueba. Una exposición general del PCA, que la tesis toma como obra de referencia del método, es la de @jolliffe_2002[^v2-jol].
 
 **Observación (identificación y signo).** $J$ depende de $\mathbf{E}$ solo a través del proyector $\mathbf{E}\mathbf{E}^{\top}$: el PCA identifica un subespacio, y la base que lo genera, incluido el signo de cada eje, se fija por convención. Con valores propios simples, cada $\mathbf{v}_\ell$ está determinado salvo el signo. La convención de esta tesis, que es la de `Rcamiz` y la de la función `pca_basico` del documento en R, es la *cuadrática*: se invierte $\mathbf{v}_\ell$ si $\sum_{j:\,v_{j\ell}<0}v_{j\ell}^2>\sum_{j:\,v_{j\ell}>0}v_{j\ell}^2$. El EPCA del asesor usa otra regla (algoritmo `aede`, más adelante).
 
@@ -130,12 +161,12 @@ Una serie con $\operatorname{cal}_j(1,2)$ baja está mal representada en el prim
 El objetivo OE6 compromete triangular el número $d$ con tres criterios. Se formalizan los dos que tienen una definición operativa en el código; las fuentes están pendientes.
 
 ::: {#def-retencion name="Vara quebrada y análisis paralelo"}
-(a) *Vara quebrada* [CITA PENDIENTE: fuente del modelo de vara quebrada; sin ficha]: la proporción de inercia esperada de la componente $\ell$ cuando la inercia total se reparte al azar entre $p$ componentes es $\beta_\ell=\frac1p\sum_{i=\ell}^{p}\frac1i$. Se retienen las componentes iniciales consecutivas con $\lambda_\ell/p>\beta_\ell$.
+(a) *Vara quebrada*, cuya aplicación al PCA @camiz_pillar_2018 atribuyen a Frontier (1976) [CITA PENDIENTE: Frontier (1976), fuente primaria de la vara quebrada; sin ficha]: la proporción de inercia esperada de la componente $\ell$ cuando la inercia total se reparte al azar entre $p$ componentes es $\beta_\ell=\frac1p\sum_{i=\ell}^{p}\frac1i$. Se retienen las componentes iniciales consecutivas con $\lambda_\ell/p>\beta_\ell$.
 
 (b) *Análisis paralelo de Horn* [@horn_1965][^v2-horn]: $\lambda^{\mathrm{H}}_\ell$ es un percentil superior, fijado de antemano, de la distribución del valor propio $\ell$ de la matriz de correlaciones de una tabla $n\times p$ de variables gaussianas independientes, estimado por simulación. Se retienen las componentes iniciales consecutivas con $\lambda_\ell>\lambda^{\mathrm{H}}_\ell$.
 :::
 
-El criterio de Kaiser retiene las componentes con $\lambda_\ell>1$ [@kaiser_1960][^v2-kai]. El criterio de Rencher no se formaliza hasta disponer de su fuente [CITA PENDIENTE: fuente del criterio de Rencher; sin ficha]. El análisis paralelo compara con un nulo de variables *independientes en el tiempo*; con series autocorrelacionadas, ese nulo no es el pertinente, y la tesis lo declara al usarlo.
+El criterio de Kaiser retiene las componentes con $\lambda_\ell>1$ [@kaiser_1960][^v2-kai]. Según @camiz_pillar_2018, el criterio de Rencher generaliza la prueba de esfericidad de Bartlett: contrasta, con un estadístico ji cuadrado, si cada valor propio sucesivo difiere de los restantes, y cuenta la dimensión como señal si la prueba es significativa al nivel elegido. Su fórmula no se formaliza hasta leer la fuente directa [@rencher_christensen_2012][^v2-ren]. El análisis paralelo compara con un nulo de variables *independientes en el tiempo*; con series autocorrelacionadas, ese nulo no es el pertinente, y la tesis lo declara al usarlo.
 
 ### Adecuación muestral: medida KMO y prueba de esfericidad de Bartlett
 
@@ -175,7 +206,7 @@ Para toda matriz de correlaciones $\mathbf{R}$, $0\le\det\mathbf{R}\le1$, con $\
 
 ## Clasificación Factorial Jerárquica
 
-La HFC, cuya formulación original los autores atribuyen a Denimal [2007, como se cita en @camiz_et_al_2020][^v2-c20], es una clasificación jerárquica ascendente de las **variables**, no de las observaciones. Cada grupo de variables tiene un representante, su *factor*, y las fusiones se deciden con el PCA de dos factores.
+La HFC, cuya formulación original se debe a @denimal_2007[^v2-c20], es una clasificación jerárquica ascendente de las **variables**, no de las observaciones. Cada grupo de variables tiene un representante, su *factor*, y las fusiones se deciden con el PCA de dos factores.
 
 ::: {#def-hfc name="Clasificación Factorial Jerárquica"}
 Para dos vectores centrados $\boldsymbol{\varphi}_{\mathcal{A}},\boldsymbol{\varphi}_{\mathcal{B}}\in\mathbb{R}^n$, sean $\kappa_{\mathcal{A}}$ y $\kappa_{\mathcal{B}}$ sus varianzas y $\kappa_{\mathcal{AB}}$ su covarianza (con divisor $n$), y sean $\mu_1^{\mathcal{AB}}\ge\mu_2^{\mathcal{AB}}$ los valores propios de la matriz $\mathbf{K}_{\mathcal{AB}}$ que forman, con $(\alpha,\beta)$ un vector propio unitario asociado a $\mu_1^{\mathcal{AB}}$. La HFC procede así:
@@ -207,7 +238,7 @@ Sean $j\ne j'$ dos series con $r=r_{jj'}$. Su PCA de dos factores tiene $\mu_1=1
 Sea $\mu_1^{\text{raíz}}$ el primer valor propio de la última fusión. Entonces (a) $p=\mu_1^{\text{raíz}}+\sum_{\text{nodos}}\mu_2^{\text{nodo}}$: la inercia total se reparte entre la varianza del factor raíz y los índices de los $p-1$ nodos; y (b) el factor de todo grupo $\mathcal{A}$ es una combinación $\sum_{j\in\mathcal{A}}w^{\mathcal{A}}_j\mathbf{z}_j$ con coeficientes de norma unitaria, de modo que su varianza es a lo sumo $\lambda_1(\mathbf{R}_{\mathcal{A}})$, el mayor valor propio de la submatriz de correlaciones del grupo, con igualdad cuando el grupo tiene dos series.
 :::
 
-**Observación (correspondencia con el código).** (a) La descomposición de la @prp-hfc-inercia es la tabla de inercia de `clahfac` (columnas `Hierarchy`, `Repr_Var` y `Total`). (b) La implementación no recorre todos los pares en cada paso, como sugiere (@eq-hfc), sino que usa un grafo de vecinos reducibles con un umbral [CITA PENDIENTE: fuente de la técnica de vecinos reducibles (Bruynooghe); sin ficha]. Su equivalencia con (@eq-hfc) depende de una propiedad de reducibilidad del índice que no se demuestra en la tesis. (c) La varianza del factor de un grupo de más de dos series no es, en general, el primer valor propio de la submatriz de correlaciones del grupo; la salida `eigentab_convergido` de `clahfacsub_r` es este último. (d) El signo de cada factor se orienta de modo que domine la suma de los cuadrados de las correlaciones positivas con las series del grupo.
+**Observación (correspondencia con el código).** (a) La descomposición de la @prp-hfc-inercia es la tabla de inercia de `clahfac` (columnas `Hierarchy`, `Repr_Var` y `Total`). (b) La implementación no recorre todos los pares en cada paso, como sugiere (@eq-hfc), sino que usa un grafo de vecinos reducibles con un umbral, técnica que se remonta a @bruynooghe_1978[^v2-bru]. Su equivalencia con (@eq-hfc) depende de una propiedad de reducibilidad del índice que no se demuestra en la tesis. (c) La varianza del factor de un grupo de más de dos series no es, en general, el primer valor propio de la submatriz de correlaciones del grupo; la salida `eigentab_convergido` de `clahfacsub_r` es este último. (d) El signo de cada factor se orienta de modo que domine la suma de los cuadrados de las correlaciones positivas con las series del grupo.
 
 ## Análisis evolutivo de componentes principales
 
@@ -238,7 +269,7 @@ $$ {#eq-pesos}
 El parámetro $\nu$ es el argumento `nsd` de `aede`. Con $\nu=0$ se obtienen los pesos uniformes, $\omega_u=1/n_w$.
 :::
 
-Los pesos son positivos, suman uno y son simétricos respecto del centro de la ventana. El cociente entre el peso de los extremos y el del centro es $e^{-\nu^2/4}$, con independencia de $n_w$. Los pesos uniformes corresponden a la ventana rectangular del trabajo de 2010. La alternativa que siguen @camiz_cerda_atoche_2026 privilegia el centro de la ventana [CITA PENDIENTE: Camiz y Diblasi (2013), fuente del esquema de ponderación gaussiana; sin ficha].
+Los pesos son positivos, suman uno y son simétricos respecto del centro de la ventana. El cociente entre el peso de los extremos y el del centro es $e^{-\nu^2/4}$, con independencia de $n_w$. Los pesos uniformes corresponden a la ventana rectangular del trabajo de 2010. La alternativa que siguen @camiz_cerda_atoche_2026 privilegia el centro de la ventana [CITA PENDIENTE: Camiz y Diblasi (2013), fuente del esquema de ponderación gaussiana; sin ficha]. @atoche_murrieta_2022[^v2-atm2] usa pesos gaussianos con un parámetro igual a 3, elegido, según el texto, tras experimentar con varios valores; la ficha no permite confirmar que ese parámetro sea el $\nu$ de la (@eq-pesos).
 
 ### Correlación ponderada
 
@@ -278,9 +309,71 @@ Por último, se aplica la partición de Fisher (@def-fisher) a la trayectoria un
 
 **Observación (alcance de las convenciones).** (a) Los valores propios no dependen del signo de los vectores, de modo que las reglas de los pasos 3 y 4 no afectan a la datación, que solo usa $\lambda_1$. (b) La alineación del paso 4 compara el vector $\ell$ con el vector $\ell$ de la ventana anterior; si $\lambda_\ell(t)$ y $\lambda_{\ell+1}(t)$ se cruzan entre dos ventanas, el orden de los ejes cambia y la alineación de signo no lo detecta. (c) La regla lineal del paso 3 no es la regla cuadrática del PCA global: los dos signos pueden diferir en un mismo eje. (d) La partición de `aede` no impone longitud mínima de segmento; la datación con la partición de Fisher sobre otras trayectorias sí la impone.
 
-La descomposición espectral de cada $\mathbf{R}_t$ produce series temporales de valores propios $\lambda_\ell(t)$ y de correlaciones entre variables y componentes. Que el primer valor propio descienda significa que el conjunto pierde coherencia unidimensional; que cambien las correlaciones indica qué series provocan la reconfiguración. @camiz_maulucci_roig_2010 enmarcan el procedimiento en el análisis exploratorio: sus resultados describen la muestra y no se generalizan a una población [CITA PENDIENTE: Tukey (1977); sin ficha]. En el mismo trabajo, el análisis STATIS dual, que compara las matrices de correlación de todas las ventanas en un espacio común, identifica años de quiebre coherentes con el EPCA.
+La descomposición espectral de cada $\mathbf{R}_t$ produce series temporales de valores propios $\lambda_\ell(t)$ y de correlaciones entre variables y componentes. Que el primer valor propio descienda significa que el conjunto pierde coherencia unidimensional; que cambien las correlaciones indica qué series provocan la reconfiguración. @camiz_maulucci_roig_2010 enmarcan el procedimiento en el análisis exploratorio: sus resultados describen la muestra y no se generalizan a una población, en la línea del análisis exploratorio de @tukey_1977[^v2-tuk]. En el mismo trabajo, el análisis STATIS dual, que compara las matrices de correlación de todas las ventanas en un espacio común, identifica años de quiebre coherentes con el EPCA.
 
 Un problema que estos trabajos no resuelven es la elección de $n_w$. @camiz_maulucci_roig_2010 fijan la ventana sin un criterio estadístico explícito, @camiz_roig_2011[^v2-cr] comparan dos anchos de manera informal y, como se señaló, @camiz_cerda_atoche_2026 eligen la ventana por experimentación. El ancho regula un compromiso: una ventana corta estima mal las matrices de correlación cuando $p$ se acerca a $n_w$, y una ventana larga atenúa la sensibilidad al cambio estructural. Si $n_w\le p$ y los pesos son positivos, además, $\operatorname{rango}\mathbf{R}_t\le n_w-1<p$ y la matriz es singular.
+
+### Tamaño efectivo de una ventana y umbrales por ventana
+
+Con pesos no uniformes, una ventana de $n_w$ meses no aporta la información de $n_w$ observaciones de igual peso. La medida habitual de esa pérdida es el tamaño efectivo que se atribuye a @kish_1965[^v2-kish].
+
+::: {#def-kish name="Tamaño efectivo de Kish"}
+Para pesos $\omega_1,\dots,\omega_{n_w}\ge0$ con $\sum_u\omega_u=1$, el tamaño efectivo es
+
+$$
+n_\omega=\Bigl(\sum_{u=1}^{n_w}\omega_u^2\Bigr)^{-1}.
+$$ {#eq-kish}
+:::
+
+::: {#prp-kish name="Tamaño efectivo de los pesos de la ventana"}
+Sean $\omega_u\ge0$, $u=1,\dots,n_w$, con $\sum_u\omega_u=1$. (a) $1\le n_\omega\le n_w$; además, $n_\omega=n_w$ si y solo si $\omega_u=1/n_w$ para todo $u$, y $n_\omega=1$ si y solo si un peso vale uno y los demás, cero. (b) Con los pesos de la @def-pesos, $n_\omega=n_w$ si $\nu=0$, y $n_\omega<n_w$ si $\nu>0$ y $n_w\ge3$. (c) Con esos pesos, $n_\omega$ depende solo de $n_w$ y de $\nu$, no de los datos. (d) Para $\nu>0$ fijo y $a_\nu=\nu/\sqrt2$, cuando $n_w\to\infty$,
+
+$$
+\frac{n_\omega}{n_w}\;\longrightarrow\;c(\nu)=\frac{\Bigl(\int_{-a_\nu}^{a_\nu}e^{-x^2/2}\,dx\Bigr)^2}{2a_\nu\int_{-a_\nu}^{a_\nu}e^{-x^2}\,dx},\qquad 0<c(\nu)<1 .
+$$
+:::
+
+La tesis demuestra la proposición con la desigualdad de Cauchy-Schwarz. Por (c) y (d), la reducción de $n_\omega$ frente a $n_w$ con pesos gaussianos es una propiedad de los pesos, aproximadamente proporcional al ancho, y no un rasgo de los datos. Por eso el tamaño efectivo, y no el ancho, fija la escala con que se juzgan los valores propios de cada ventana.
+
+::: {#def-umbral-ventana name="Umbrales por ventana"}
+Sea $\lambda^{\mathrm H}_\ell(n',p)$ el umbral del análisis paralelo de la @def-retencion (b) calculado con una tabla de $n'$ filas y $p$ columnas, con el mismo percentil que el análisis global. Para la ventana de centro $t$ y pesos de tamaño efectivo $n_\omega$, sean $n_{\mathrm H}=\lceil n_\omega\rceil$ y (a) el umbral de Kaiser, $\lambda_\ell(t)>1$; (b) el umbral de Horn por ventana, $\lambda_\ell(t)>\lambda^{\mathrm H}_\ell(n_{\mathrm H},p)$. Para cada eje $\ell$, ancho y esquema de pesos, se informa el número de ventanas en que $\lambda_\ell(t)$ *no* supera cada umbral (decisión D14).
+:::
+
+**Observación (alcance de los umbrales por ventana).** (a) Con pesos uniformes, $n_{\mathrm H}=n_w$, y el umbral es el del análisis paralelo con $n_w$ observaciones. Con pesos gaussianos, sustituir el ancho por el tamaño efectivo es una aproximación: el nulo de Horn usa filas gaussianas independientes de igual peso, no la correlación ponderada de la @def-epca, y la tesis no demuestra que ambos nulos coincidan. (b) Como en el análisis global, ese nulo supone meses independientes, que las series autocorrelacionadas no cumplen. (c) Por la @prp-epca (c), $\sum_{\ell\le d}\lambda_\ell(t)\le p$ en toda ventana sin series constantes. Las ventanas en que una serie es constante quedan fuera de la @def-epca: el código las señala, y en ellas la matriz que diagonaliza `aede` tiene un cero en la diagonal y traza menor que $p$. (d) En el cálculo, $n_{\mathrm H}$ se obtiene como $\lceil n_\omega-10^{-9}\rceil$, para que el error de redondeo de la (@eq-kish) no convierta $n_\omega=n_w$ en $n_w+1$.
+
+### La regla de transiciones del notebook 06
+
+La regla del notebook `06_epca.ipynb`, anterior a la iteración 3b, marca transiciones con la estabilidad de un eje entre ventanas sucesivas. Se formaliza porque las decisiones D13 y D17 la usan como evidencia.
+
+::: {#def-regla06 name="Regla del 06"}
+Sean $n_w$ el ancho, $\mathsf{s}\ge1$ el paso entre ventanas y $\ell_0$ el eje que se sigue. Las ventanas empiezan en los meses $i_k=1+(k-1)\mathsf{s}$, $k=1,\dots,M$, con $i_M+n_w-1\le n$, y se fechan en $t_{i_k}=i_k+\lfloor n_w/2\rfloor$ (@def-ventana). En cada ventana, las series se estandarizan con la media y la desviación típica de la ventana, sin ponderar, y $\mathbf{a}_k\in\mathbb{R}^p$ es el vector propio unitario del eje $\ell_0$ de la matriz de correlaciones resultante. Con $\rho(\cdot,\cdot)$ la correlación de Pearson entre las $p$ coordenadas de dos vectores, se alinea el signo de forma sucesiva, $\tilde{\mathbf{a}}_1=\mathbf{a}_1$ y $\tilde{\mathbf{a}}_k=\operatorname{sgn}^{+}\!\bigl(\rho(\mathbf{a}_k,\tilde{\mathbf{a}}_{k-1})\bigr)\mathbf{a}_k$, donde $\operatorname{sgn}^{+}(x)=-1$ si $x<0$ y $1$ en otro caso, y se define la *estabilidad* $\rho^{(06)}_k=\rho(\tilde{\mathbf{a}}_k,\tilde{\mathbf{a}}_{k-1})=|\rho(\mathbf{a}_k,\tilde{\mathbf{a}}_{k-1})|$, $k=2,\dots,M$. Con $\bar\rho$ y $s_\rho$ la media y la desviación típica (divisor $M-1$, el número de valores) de las estabilidades, hay una *transición candidata* en $t_{i_k}$ si $\rho^{(06)}_k<\bar\rho-s_\rho$.
+:::
+
+::: {#cor-regla06 name="La regla del 06 usa pesos uniformes"}
+Si ninguna serie es constante en la ventana, la matriz de correlaciones de cada ventana de la regla del 06 es la $\mathbf{R}_t$ de la @def-epca con pesos uniformes ($\nu=0$) y el mismo centro. En consecuencia, sus valores propios coinciden con los de `aede` con pesos uniformes, y sus vectores propios coinciden salvo el signo.
+:::
+
+El @cor-regla06 es la base formal de la lectura de la decisión D17.3: la regla del 06 cuenta como evidencia de pesos uniformes, no de pesos gaussianos.
+
+**Observación (alcance de la regla del 06).** (a) El umbral $\bar\rho-s_\rho$ es relativo al propio perfil de estabilidades: la regla puede marcar transiciones aunque la estructura sea constante, porque no compara con un nulo. Por eso la decisión D10 la contrasta con el nulo de estructura (sección «Nulos de referencia y criterio del ancho de ventana»). (b) La estabilidad usa la correlación de Pearson, que centra los vectores de cargas, es decir, resta la carga media del eje; es el mismo centrado que la decisión D17.2 descarta para el coeficiente RV (@prp-rv-cargas (d)). (c) La regla sigue el eje $\ell_0$ por su posición. Si $\lambda_{\ell_0}$ y $\lambda_{\ell_0+1}$ se cruzan entre dos ventanas, el eje seguido cambia, como en la observación sobre el alcance de las convenciones de `aede`.
+
+### Bordes de ventana
+
+Una ventana móvil cambia de composición cada mes. Cuando un episodio con valores extremos entra en la ventana o sale de ella, la correlación de la ventana puede saltar aunque la estructura no cambie. Por eso las decisiones D7 y D13 descuentan las transiciones que coinciden con esos meses.
+
+::: {#lem-ventana-mes name="Ventanas que contienen un mes"}
+Con la @def-ventana, el mes $s$ pertenece a $\mathcal{W}_t$ si y solo si $s-\lceil n_w/2\rceil+1\le t\le s+\lfloor n_w/2\rfloor$. Hay, por tanto, $n_w$ centros cuya ventana contiene a $s$, si ninguno queda fuera de la muestra.
+:::
+
+::: {#def-borde name="Borde de ventana"}
+Para el episodio $\mathsf{e}$ y el ancho $n_w$, el *centro de entrada* es $c^{\mathrm{ent}}_{\mathsf{e}}=\underline{t}_{\mathsf{e}}-\lceil n_w/2\rceil+1$, el primer centro cuya ventana contiene el inicio, y el *centro de salida* es $c^{\mathrm{sal}}_{\mathsf{e}}=\overline{t}_{\mathsf{e}}+\lfloor n_w/2\rfloor$, el último cuya ventana contiene el fin (@lem-ventana-mes). Una transición fechada en el centro $\tau$ es un *borde de ventana* con tolerancia $h$ si $|\tau-c^{\mathrm{ent}}_{\mathsf{e}}|\le h$ o $|\tau-c^{\mathrm{sal}}_{\mathsf{e}}|\le h$ para algún $\mathsf{e}\in\mathcal{E}$. La tolerancia principal es $h=3$ y la de sensibilidad, $h=6$ (decisión D7).
+:::
+
+### Lectura multiescala del ancho de ventana
+
+La decisión D10 fija la grilla de anchos $n_w\in\{24, 36, 48, 60\}$ y su lectura. El ancho de 48 meses es el de @camiz_cerda_atoche_2026 y da comparabilidad con el antecedente. Los otros tres no compiten con él: cada ancho es una escala de observación distinta, y la grilla no busca la ventana «correcta».
+
+**Observación (qué cambia con el ancho).** (a) Cada ancho se analiza por separado (`aede`, regla del 06 y coeficiente RV) y se compara con el nulo de estructura constante del *mismo* ancho; ningún criterio compara anchos entre sí para elegir uno. (b) Con pesos gaussianos, la escala efectiva es $n_\omega<n_w$ (@prp-kish). (c) Un par de ventanas adyacentes no solapadas (@def-pares) compara dos bloques de $n_w$ meses. Si dos transiciones distan menos de $n_w$ meses, ningún par compara dos tramos de estructura constante a ambos lados de la primera, porque la segunda ventana contiene ya la segunda transición. El ancho fija, así, la resolución temporal con que pueden separarse dos cambios. (d) Las ventanas largas estiman mejor cada $\mathbf{R}_t$, porque la razón entre meses y series es mayor, pero promedian más meses y atenúan los cambios breves. Es el compromiso descrito antes, que la grilla expone en lugar de resolver.
 
 ## Partición óptima de Fisher y número de clases
 
@@ -310,6 +403,42 @@ Una partición óptima en $K$ segmentos se obtiene agregando el último segmento
 
 La recurrencia (@eq-bellman) es la que implementan las funciones `fisher_r` y `particion_fisher`. Cuando el mínimo se alcanza en varios puntos de corte, ambas eligen el primero.
 
+### La longitud mínima de segmento
+
+La longitud mínima $n_{\min}$ restringe las particiones admisibles. Esa restricción tiene dos consecuencias que importan para leer la grilla de $K_{\max}$.
+
+::: {#cor-fisher-factible name="Factibilidad y segmentos en el mínimo"}
+(a) Existe una partición admisible de $\{1,\dots,N\}$ en $K$ segmentos si y solo si $Kn_{\min}\le N$. El mayor número de segmentos que puede evaluarse con un máximo $K_{\max}$ es, por tanto, $K_{\mathrm{ef}}=\min\bigl(K_{\max},\lfloor N/n_{\min}\rfloor\bigr)$. (b) Existe una partición admisible en $K$ segmentos de longitud exactamente $n_{\min}$ si y solo si $N=Kn_{\min}$.
+:::
+
+::: {#prp-fisher-monotonia name="Monotonía del costo óptimo"}
+Sea $Q_K=Q^\ast_K(N)$. (a) Si $(K+1)n_{\min}\le N$ y alguna partición óptima en $K$ segmentos tiene un segmento de longitud al menos $2n_{\min}$, entonces $Q_{K+1}\le Q_K$. La condición se cumple siempre que $N>K(2n_{\min}-1)$. (b) En particular, con $n_{\min}=1$, $Q_{K+1}\le Q_K$ para todo $1\le K<N$. (c) Sin la condición de (a), la desigualdad puede fallar.
+:::
+
+La tesis demuestra (c) con un contraejemplo de tres tramos constantes en el que la única partición admisible en cuatro segmentos mezcla dos de ellos. Cuando falla la monotonía, la reducción relativa del costo de la @def-criterios-k puede ser negativa, y las reglas que la usan deben leerse con esa salvedad cerca de $K_{\mathrm{ef}}$.
+
+### Datación de regímenes con los *scores* del PCA
+
+::: {#def-datacion name="Trayectoria PCA-MM12 y datación"}
+Sean $c_{t\ell}$, $\ell\le d$, las $d$ primeras componentes principales del PCA global (@def-pca) y $w_{\mathrm m}$ la longitud de una media móvil causal. Para $t=w_{\mathrm m},\dots,n$ se definen $\bar c_{t\ell}=\frac{1}{w_{\mathrm m}}\sum_{s=t-w_{\mathrm m}+1}^{t}c_{s\ell}$ y $\mathbf{y}_t\in\mathbb{R}^d$, el vector $(\bar c_{t1},\dots,\bar c_{td})$ con cada coordenada estandarizada con divisor $N=n-w_{\mathrm m}+1$. La *datación* es la partición óptima de la trayectoria $\mathbf{y}_{w_{\mathrm m}},\dots,\mathbf{y}_n$ (@def-fisher) con longitud mínima $n_{\min}$, para $K=1,\dots,K_{\mathrm{ef}}$. Cada corte se fecha en el primer mes del segmento siguiente.
+:::
+
+La media móvil es causal: $\bar c_{t\ell}$ solo usa meses hasta $t$. El cambio de signo de una componente no altera la partición, de modo que la regla de signo del PCA es irrelevante aquí. La etiqueta de fase de cada régimen (@def-fase) se asigna después de la partición.
+
+::: {#def-criterios-k name="Criterios para el número de segmentos"}
+Sean $Q_K=Q^\ast_K(N)$, $K=1,\dots,K_{\mathrm{ef}}$, y, si $Q_K>0$, $\operatorname{red}_K=(Q_K-Q_{K+1})/Q_K$, la reducción relativa del costo al pasar de $K$ a $K+1$ segmentos, $K=1,\dots,K_{\mathrm{ef}}-1$.
+
+(a) *Codo por caída máxima*: $K^\ast_{\mathrm{codo}}$ es el menor $K\in\{2,\dots,K_{\mathrm{ef}}-1\}$ que maximiza $\operatorname{red}_{K-1}-\operatorname{red}_K$.
+
+(b) *Regla K* (decisión D12), con un umbral $\upsilon$, en dos pasos aplicados en este orden: (1) $K^\ast_{\mathrm K}=\min\{K\in\{1,\dots,K_{\mathrm{ef}}-1\}:\operatorname{red}_K<\upsilon\}$; (2) si ese conjunto es vacío, $K^\ast_{\mathrm K}=K^\ast_{\mathrm{codo}}$. D12 fija $\upsilon=10\,\%$.
+
+(c) Un número elegido $K^\ast$ está *en el tope* si $K^\ast=K_{\mathrm{ef}}$.
+
+(d) Una solución es un *artefacto de la longitud mínima* (decisión D17.1) si todos sus segmentos miden exactamente $n_{\min}$.
+:::
+
+**Observación (lectura de las reglas).** (a) D12 describe el primer paso como «el menor $k$ a partir del cual la reducción relativa del costo es menor que 10 %». La @def-criterios-k (b) toma el primer $K$ con $\operatorname{red}_K<\upsilon$, sin exigir que la reducción siga bajo el umbral para todo $K$ posterior. Las dos lecturas coinciden si $\operatorname{red}_K$ es decreciente; es la lectura del código (`datar`), que aquí se declara. (b) Por la @prp-fisher-monotonia, $\operatorname{red}_K\ge0$ está garantizado solo mientras $N>K(2n_{\min}-1)$; más allá, una reducción negativa satisface el primer paso por razones ajenas a la estructura. (c) Por el @cor-fisher-factible (b), la marca de (d) solo puede activarse si $N$ es múltiplo de $n_{\min}$. (d) El codo de `aede` es el criterio (a) aplicado a la trayectoria $y_i=\lambda_1(t_i)$, con $n_{\min}=1$.
+
 ### Índice de Caliński y Harabasz
 
 ::: {#def-ch name="Índice de Caliński y Harabasz en dos variantes"}
@@ -328,12 +457,12 @@ $\operatorname{CH}^{\mathrm{h}}_K$ es la forma habitual del índice de @calinski
 Para $2\le K<N$, $\operatorname{CH}^{\mathrm{a}}_K=\frac{K-1}{K}\,\operatorname{CH}^{\mathrm{h}}_K$. Si $0<Q_K<T$ para todo $K$ de la grilla, el número de segmentos que elige $\operatorname{CH}^{\mathrm{a}}$ es mayor o igual que el que elige $\operatorname{CH}^{\mathrm{h}}$.
 :::
 
-**Observación (supuestos del índice).** El índice de Caliński y Harabasz compara la dispersión entre e intra segmentos con los grados de libertad de observaciones independientes. Los puntos de la trayectoria de `aede` provienen de ventanas consecutivas que comparten $n_w-1$ meses, de modo que valores consecutivos de $\lambda_1$ se calculan con casi los mismos datos y no son independientes. En esas condiciones, ninguna de las dos formas tiene la distribución de referencia de observaciones independientes, y la @prp-ch muestra que la variante desplaza la elección hacia más segmentos. La elección entre las dos variantes y su uso como selector están pendientes de decisión.
+**Observación (supuestos del índice).** El índice de Caliński y Harabasz compara la dispersión entre e intra segmentos con los grados de libertad de observaciones independientes. Los puntos de la trayectoria de `aede` provienen de ventanas consecutivas que comparten $n_w-1$ meses, de modo que valores consecutivos de $\lambda_1$ se calculan con casi los mismos datos y no son independientes. En esas condiciones, ninguna de las dos formas tiene la distribución de referencia de observaciones independientes, y la @prp-ch muestra que la variante desplaza la elección hacia más segmentos. Por la decisión D11, las dos variantes se informan, pero no se usan como selector del número de segmentos, salvo que el índice muestre un óptimo interior con $K_{\max}=20$ y fuera del rango del nulo de estructura constante (sección «Nulos de referencia y criterio del ancho de ventana»).
 
 ## Comparación de configuraciones
 
 ::: {#def-rv name="Coeficiente RV"}
-Para dos configuraciones centradas $\mathbf{F}_1\in\mathbb{R}^{m\times q}$ y $\mathbf{F}_2\in\mathbb{R}^{m\times q'}$ de las mismas $m$ filas, no nulas, @robert_escoufier_1976[^v2-re] definen
+Para dos configuraciones no nulas $\mathbf{F}_1\in\mathbb{R}^{m\times q}$ y $\mathbf{F}_2\in\mathbb{R}^{m\times q'}$ de las mismas $m$ filas, @robert_escoufier_1976[^v2-re] definen
 
 $$
 \operatorname{RV}(\mathbf{F}_1,\mathbf{F}_2)=\frac{\operatorname{tr}\bigl(\mathbf{F}_1\mathbf{F}_1^{\top}\mathbf{F}_2\mathbf{F}_2^{\top}\bigr)}{\sqrt{\operatorname{tr}\bigl[(\mathbf{F}_1\mathbf{F}_1^{\top})^2\bigr]\,\operatorname{tr}\bigl[(\mathbf{F}_2\mathbf{F}_2^{\top})^2\bigr]}} .
@@ -344,7 +473,29 @@ $$ {#eq-rv}
 (a) $0\le\operatorname{RV}(\mathbf{F}_1,\mathbf{F}_2)\le1$, y $\operatorname{RV}=1$ si y solo si $\mathbf{F}_1\mathbf{F}_1^{\top}=c\,\mathbf{F}_2\mathbf{F}_2^{\top}$ para algún $c>0$. (b) El coeficiente no cambia si cada configuración se multiplica por un escalar no nulo y por una matriz ortogonal a la derecha.
 :::
 
-La invariancia de la @prp-rv (b) es la adecuada cuando las coordenadas solo están identificadas salvo una transformación ortogonal, como ocurre con los signos de los ejes en el EPCA o con los códigos de un autoencoder **lineal** (@prp-ae-lineal). En un autoencoder no lineal, los códigos están identificados, a lo sumo, salvo transformaciones no lineales invertibles, frente a las que el RV no es invariante. En ese caso, el RV mide solo la concordancia lineal entre configuraciones y debe interpretarse como una cota de su similitud, no como una medida invariante. Es también la medida que subyace a STATIS [CITA PENDIENTE: Lavit (1988), fuente primaria de STATIS; sin ficha]. En esta tesis, el RV permite usar una misma métrica para comparar ventanas sucesivas del EPCA, réplicas de un autoencoder y configuraciones de métodos distintos, con la salvedad anterior. Queda por verificar en la fuente cómo se comporta cuando $m$ es pequeño respecto del número de columnas.
+La invariancia de la @prp-rv (b) es la adecuada cuando las coordenadas solo están identificadas salvo una transformación ortogonal, como ocurre con los signos de los ejes en el EPCA o con los códigos de un autoencoder **lineal** (@prp-ae-lineal). En un autoencoder no lineal, los códigos están identificados, a lo sumo, salvo transformaciones no lineales invertibles, frente a las que el RV no es invariante. En ese caso, el RV mide solo la concordancia lineal entre configuraciones y debe interpretarse como una cota de su similitud, no como una medida invariante. Es también la medida que subyace a STATIS [@lavit_1988][^v2-lav]. En esta tesis, el RV permite usar una misma métrica para comparar ventanas sucesivas del EPCA, réplicas de un autoencoder y configuraciones de métodos distintos, con la salvedad anterior. Queda por verificar en la fuente cómo se comporta cuando $m$ es pequeño respecto del número de columnas.
+
+La @def-rv no exige centrar las columnas, y la @prp-rv no lo usa. Centrar es un paso previo que depende de qué representan las filas. Si las filas son meses y las columnas, coordenadas de esos meses (*scores* o códigos), las columnas se centran, como en el uso habitual. Si las filas son series y las columnas, cargas de los ejes de una ventana, el centrado resta la carga media de cada eje. La decisión D17.2 adopta para ese caso el RV sin centrar.
+
+::: {#def-rv-cargas name="RV de cargas entre ventanas"}
+Para la ventana de centro $t$ y $d$ ejes, sea $\mathbf{F}_t=\bigl[\sqrt{\lambda_1(t)}\,\mathbf{v}_1(t)\ \cdots\ \sqrt{\lambda_d(t)}\,\mathbf{v}_d(t)\bigr]\in\mathbb{R}^{p\times d}$ la matriz de cargas (salida `correlationlsq` de `aede`). El *RV de cargas* entre las ventanas de centros $t$ y $t'$ es $\operatorname{RV}^{(d)}(t,t')=\operatorname{RV}(\mathbf{F}_t,\mathbf{F}_{t'})$, sin centrar las columnas. Como sensibilidad (decisión D17.2) se usa el coeficiente entre las matrices de correlación completas,
+
+$$
+\rho_{\mathbf{R}}(t,t')=\frac{\langle\mathbf{R}_t,\mathbf{R}_{t'}\rangle_F}{\lVert\mathbf{R}_t\rVert_F\,\lVert\mathbf{R}_{t'}\rVert_F}.
+$$
+:::
+
+::: {#prp-rv-cargas name="El RV de cargas compara aproximaciones de rango d"}
+Sea $\mathbf{R}^{[d]}_t=\mathbf{F}_t\mathbf{F}_t^{\top}=\sum_{\ell\le d}\lambda_\ell(t)\mathbf{v}_\ell(t)\mathbf{v}_\ell(t)^{\top}$. (a) $\operatorname{RV}^{(d)}(t,t')=\langle\mathbf{R}^{[d]}_t,\mathbf{R}^{[d]}_{t'}\rangle_F\big/\bigl(\lVert\mathbf{R}^{[d]}_t\rVert_F\,\lVert\mathbf{R}^{[d]}_{t'}\rVert_F\bigr)$. (b) $\operatorname{RV}^{(d)}(t,t')$ no cambia si las columnas de $\mathbf{F}_t$ o de $\mathbf{F}_{t'}$ se permutan, cambian de signo o se rotan con cualquier matriz ortogonal $d\times d$; en particular, no depende de las reglas de signo de `aede` ni del orden de los $d$ primeros ejes. (c) Con $d=p$, $\mathbf{R}^{[p]}_t=\mathbf{R}_t$ y $\operatorname{RV}^{(p)}(t,t')=\rho_{\mathbf{R}}(t,t')$. (d) Si un eje tiene cargas iguales en todas las series, $\mathbf{v}_\ell(t)=\mathbf{1}/\sqrt p$, centrar la columna $\ell$ de $\mathbf{F}_t$ la anula.
+:::
+
+Por la @prp-rv-cargas (b), un cruce entre $\lambda_2$ y $\lambda_3$ no altera el RV de cargas con $d=3$, porque el subespacio de los tres primeros ejes es el mismo. Sí lo altera un cruce entre $\lambda_d$ y $\lambda_{d+1}$, que cambia ese subespacio. La @prp-rv-cargas (d) es el caso extremo de lo que motiva D17.2: si un eje tiene cargas casi iguales y del mismo signo, como un eje de tendencia común, el centrado borra justo lo que las series comparten.
+
+::: {#def-pares name="Pares de ventanas adyacentes no solapadas"}
+Para el ancho $n_w$ y las ventanas $i=1,\dots,N$ de la @def-ventana, el par $i$ está formado por las ventanas $i$ e $i+n_w$, $i=1,\dots,N-n_w$. La primera contiene los meses $i,\dots,i+n_w-1$ y la segunda, los meses $i+n_w,\dots,i+2n_w-1$: son disjuntas y contiguas. La *frontera* del par es $\operatorname{fr}(i)=i+n_w$, el primer mes de la segunda ventana, que con $n_w$ par es el punto medio entre los centros $t_i$ y $t_{i+n_w}$. El *RV adyacente* del par es $\operatorname{RV}^{\mathrm{ad}}_{i}=\operatorname{RV}^{(d)}(t_i,t_{i+n_w})$. Hay $N-n_w=n-2n_w+1$ pares.
+:::
+
+Dos ventanas consecutivas con paso uno comparten $n_w-1$ meses, y su RV es cercano a uno por construcción. Los pares adyacentes no comparten ningún mes, que es la razón de la decisión D10.
 
 ::: {#def-procrustes name="Rotación y distancia de Procrustes"}
 Para $\mathbf{F}_1,\mathbf{F}_2\in\mathbb{R}^{m\times q}$ centradas, la rotación de Procrustes de $\mathbf{F}_1$ hacia $\mathbf{F}_2$ es una matriz ortogonal $\mathbf{O}^\ast$ que minimiza $\lVert\mathbf{F}_1\mathbf{O}-\mathbf{F}_2\rVert_F$, y $\lVert\mathbf{F}_1\mathbf{O}^\ast-\mathbf{F}_2\rVert_F$ es la distancia de Procrustes.
@@ -361,6 +512,86 @@ Para dos vectores de cargas no nulos $\mathbf{a},\mathbf{b}\in\mathbb{R}^{p}$, $
 :::
 
 A diferencia de la correlación, la congruencia no centra los vectores, y su valor absoluto no depende del signo con que se oriente cada eje.
+
+## Nulos de referencia y criterio del ancho de ventana
+
+Los métodos de las secciones anteriores describen la muestra y no tienen una distribución de referencia. Las hipótesis de trabajo, sin embargo, se formulan contra lo que cabría esperar sin estructura común (el PCA estático) o con una estructura constante (la parte dinámica; HT1). Esta sección define los dos nulos que dan esa referencia y el criterio de OE4 que se apoya en el segundo. Los dos se construyen con remuestreo por bloques, cuyo fundamento general para datos dependientes se remite a @kunsch_1989[^v2-kun] y a @lahiri_2003[^v2-lah].
+
+::: {#def-bloques name="Índices por bloques"}
+Para una longitud $n'$ y una longitud de bloque $L_{\mathrm b}\le n'$, sean $m_{\mathrm b}=\lceil n'/L_{\mathrm b}\rceil$ y $\iota_1,\dots,\iota_{m_{\mathrm b}}$ inicios independientes y uniformes en $\{1,\dots,n'-L_{\mathrm b}+1\}$. La sucesión de índices $\pi^{\mathrm b}(1),\dots,\pi^{\mathrm b}(n')$ son los $n'$ primeros términos de $(\iota_1,\iota_1+1,\dots,\iota_1+L_{\mathrm b}-1,\;\iota_2,\dots,\iota_2+L_{\mathrm b}-1,\;\dots)$.
+:::
+
+### Nulo de tendencias mixto
+
+El nulo de tendencias (decisión D2) compara el PCA de las series con el de series independientes que conservan cada una su propia dinámica. La decisión D5 distingue si la tendencia de una serie es determinística (TS) o estocástica (DS), pero no si una serie DS tiene deriva; la decisión D8 lo resuelve con el estadístico siguiente, cuyo fundamento se remite a @newey_west_1987[^v2-nw].
+
+::: {#def-hac name="Estadístico HAC de la deriva"}
+Para la serie $j$, sean $\dot x_t=\Delta x_{t+1,j}-\overline{\Delta x}_j$, $t=1,\dots,n'$, sus incrementos centrados, con $n'=n-1$ y $\overline{\Delta x}_j$ la media de los incrementos, y sea $m_{\mathrm{HAC}}\ge0$ un número de rezagos. Con $\hat\Gamma_k=\frac1{n'}\sum_{t=k+1}^{n'}\dot x_t\dot x_{t-k}$,
+
+$$
+\hat\sigma^2_{\mathrm{HAC},j}=\hat\Gamma_0+2\sum_{k=1}^{m_{\mathrm{HAC}}}\Bigl(1-\frac{k}{m_{\mathrm{HAC}}+1}\Bigr)\hat\Gamma_k ,
+\qquad
+t^{\mathrm{HAC}}_j=\frac{\overline{\Delta x}_j}{\sqrt{\hat\sigma^2_{\mathrm{HAC},j}/n'}} .
+$$
+
+La decisión D8 fija $m_{\mathrm{HAC}}=12$, sin corrección por grados de libertad.
+:::
+
+::: {#lem-hac name="El estimador es no negativo"}
+Con $\dot x_t=0$ para $t\notin\{1,\dots,n'\}$ y $\bar m=m_{\mathrm{HAC}}+1$, $\hat\sigma^2_{\mathrm{HAC},j}=\frac{1}{n'\bar m}\sum_{t=1}^{n'+\bar m-1}\bigl(\sum_{k=0}^{\bar m-1}\dot x_{t-k}\bigr)^2\ge0$, con igualdad si y solo si todos los $\dot x_t$ son nulos, es decir, si los incrementos de la serie son constantes. En otro caso, $t^{\mathrm{HAC}}_j$ está bien definido.
+:::
+
+La propiedad del @lem-hac es la que da nombre al estimador de @newey_west_1987; la demostración de la tesis es propia y solo usa la forma del núcleo.
+
+::: {#def-nulo-mixto name="Nulo de tendencias mixto"}
+Cada serie $j$ recibe un tratamiento según su clase de la decisión D5 y el estadístico de la @def-hac: (a) serie TS: $x^\ast_{tj}=\hat x_{tj}+\hat\epsilon_{\pi^{\mathrm b}(t)j}$, donde $\hat x_{tj}$ es la recta de mínimos cuadrados de la serie sobre el tiempo y $\hat\epsilon_{tj}=x_{tj}-\hat x_{tj}$ son sus residuos, remuestreados en bloques; (b) serie DS con $|t^{\mathrm{HAC}}_j|>2$ (con deriva): $x^\ast_{1j}=0$ y $x^\ast_{t+1,j}=x^\ast_{tj}+\Delta x_{\pi^{\mathrm b}(t)+1,j}$; (c) serie DS con $|t^{\mathrm{HAC}}_j|\le2$ (sin deriva): como (b), con los incrementos menos su media; (d) serie indeterminada: el nulo se calcula dos veces, una tratándola como TS y otra como DS. Cada serie usa sus propios inicios de bloque (@def-bloques), independientes de los de las demás, de modo que toda relación entre series se rompe por construcción. En cada réplica se calculan las inercias de las primeras componentes, y se informa la proporción de réplicas que igualan o superan la inercia observada.
+:::
+
+**Observación (supuestos del nulo mixto).** (a) El nulo supone que el remuestreo por bloques reproduce la dinámica de corto plazo de cada serie, es decir, que sus incrementos (o sus residuos, si es TS) son débilmente dependientes. El umbral $|t^{\mathrm{HAC}}_j|>2$ hereda ese supuesto. (b) D8 pide declarar las series con $|t^{\mathrm{HAC}}_j|$ cercano a 2, sin fijar qué distancia cuenta como cercana; el texto no la fija. (c) La rama TS usa, para $n$ residuos, los inicios sorteados para $n-1$ incrementos: la sucesión de índices tiene $m_{\mathrm b}L_{\mathrm b}$ términos y cubre los $n$ meses solo si $m_{\mathrm b}L_{\mathrm b}\ge n$, lo que depende de que $L_{\mathrm b}$ no divida a $n-1$.
+
+### Nulo de estructura constante
+
+El nulo de la decisión D7 responde a HT1: qué perfil de similitud entre ventanas cabría esperar si la estructura de correlación fuera la misma en toda la muestra. En el análisis oficial, con las series sin transformar, se remuestrean los incrementos y se acumulan.
+
+::: {#def-nulo-estructura name="Nulo de estructura constante"}
+Sean $\Delta\mathbf{x}_{t}=\mathbf{x}_{t}-\mathbf{x}_{t-1}$, $t=2,\dots,n$, los incrementos mensuales de las $p$ series y $\pi^{\mathrm b}$ una sucesión de índices por bloques (@def-bloques) con $n'=n-1$, *la misma para todas las series*. La réplica es la matriz $\mathbf{X}^{(\zeta)}$ con filas $\mathbf{x}^{(\zeta)}_1=\mathbf{0}$ y $\mathbf{x}^{(\zeta)}_{t+1}=\mathbf{x}^{(\zeta)}_t+\Delta\mathbf{x}_{\pi^{\mathrm b}(t)+1}$, $t=1,\dots,n-1$. Con $B$ réplicas independientes, $\zeta=1,\dots,B$, se calculan para cada ancho y esquema de pesos el número $K^\ast$ que elige cada criterio de `aede` con $K_{\max}=20$ y el perfil $(\operatorname{RV}^{\mathrm{ad}}_{i})_i$ de la @def-pares.
+:::
+
+::: {#prp-nulo-estructura name="Propiedades del nulo de estructura"}
+(a) Cada incremento de la réplica es un vector de incrementos observado completo, $\mathbf{x}^{(\zeta)}_{t+1}-\mathbf{x}^{(\zeta)}_t=\Delta\mathbf{x}_{\pi^{\mathrm b}(t)+1}$, y dentro de cada bloque se conservan $L_{\mathrm b}$ incrementos consecutivos en su orden. (b) Si cada serie se transforma como $x_{tj}\mapsto a_j+b_jx_{tj}$, con $b_j>0$, y se usan los mismos índices, cada réplica pasa a ser $\mathbf{X}^{(\zeta)}\mathbf{G}_b$, con $\mathbf{G}_b=\operatorname{diag}(b_1,\dots,b_p)$. Por tanto, las matrices $\mathbf{R}_t$ de todas sus ventanas, los valores propios de `aede`, los $K^\ast$ y los perfiles $\operatorname{RV}^{\mathrm{ad}}_{i}$ no cambian: el nulo no depende de las unidades ni del nivel de las series. (c) Acumular desde cero en lugar de desde $\mathbf{x}_1$ no cambia ninguna de esas medidas.
+:::
+
+**Observación (supuestos y límites del nulo de estructura).** (a) Bajo la hipótesis de estructura constante, los incrementos se tratan como una sucesión débilmente dependiente cuya distribución conjunta no cambia en el tiempo. El remuestreo conserva la correlación contemporánea y la dinámica corta, pero dispersa en el tiempo cualquier cambio de estructura más largo que un bloque. (b) Si la muestra tiene tramos de varianza muy distinta, las réplicas los mezclan, y el nulo puede ser más fácil de superar que una estructura constante genuina. (c) La acumulación conserva la deriva de cada serie, como la versión con deriva del nulo de tendencias; D7 no pide el tratamiento mixto de D8 para este nulo. (d) El esquema con los mismos inicios para todas las series es una elección de la tesis [CITA PENDIENTE: fuente del bootstrap por bloques conjunto, con los mismos inicios de bloque para todas las series; sin ficha que lo trate].
+
+### Criterio de OE4
+
+La decisión D10 formula el criterio de OE4 con el RV entre ventanas adyacentes no solapadas, comparado con el nulo de estructura constante del mismo ancho, y la decisión D17.2 fija el objeto del RV y la forma de la comparación.
+
+::: {#def-oe4 name="Criterio de OE4"}
+Para un ancho $n_w$ y un esquema de pesos, sean $\operatorname{RV}^{\mathrm{ad}}_{i}$, $i=1,\dots,m$, el perfil observado (@def-pares, con $d=3$ por la decisión D9) y $\operatorname{RV}^{\mathrm{ad},(\zeta)}_{i}$ el de la réplica $\zeta$ del nulo de estructura (@def-nulo-estructura). (a) El umbral *por posición* es $\underline{\operatorname{RV}}^{\,\mathrm{ad}}_{i}$, el cuantil empírico de nivel 5 % de $\{\operatorname{RV}^{\mathrm{ad},(\zeta)}_{i}\}_{\zeta=1}^{B}$, con interpolación lineal. (b) La proporción observada es $\varpi_0=\frac1m\sum_i\mathbb{I}\{\operatorname{RV}^{\mathrm{ad}}_{i}<\underline{\operatorname{RV}}^{\,\mathrm{ad}}_{i}\}$. (c) La proporción de la réplica $\zeta$ es $\varpi_\zeta=\frac1m\sum_i\mathbb{I}\{\operatorname{RV}^{\mathrm{ad},(\zeta)}_{i}<\underline{\operatorname{RV}}^{\,\mathrm{ad},(-\zeta)}_{i}\}$, donde $\underline{\operatorname{RV}}^{\,\mathrm{ad},(-\zeta)}_{i}$ es el mismo cuantil calculado con las otras $B-1$ réplicas. (d) El p-valor es $\mathrm{pv}=\frac1B\#\{\zeta:\varpi_\zeta\ge\varpi_0\}$. El criterio principal usa $\operatorname{RV}^{(3)}$; la sensibilidad, $\rho_{\mathbf{R}}$ (@def-rv-cargas).
+:::
+
+El umbral se toma por posición porque, sin transformar, el nulo acumula incrementos desde cero y no es estacionario en el tiempo: un umbral único mezclaría posiciones distintas. La proporción se compara con su propia distribución nula, y no par por par, porque los pares contiguos son dependientes y porque comparar $m$ pares con un mismo nivel multiplica las falsas alarmas. Así, el criterio responde a OE4 por ancho de ventana, sin elegir uno.
+
+**Supuesto (intercambiabilidad bajo el nulo).** Bajo la hipótesis de estructura constante, el perfil observado $\mathcal{P}_0$ y los perfiles de las réplicas $\mathcal{P}_1,\dots,\mathcal{P}_B$ son intercambiables: su distribución conjunta no cambia al permutarlos.
+
+::: {#prp-oe4 name="Validez de la versión simétrica"}
+Para $j=0,\dots,B$, sea $\tilde\varpi_j$ la proporción de posiciones $i$ en que $\mathcal{P}_{j,i}$ queda bajo el cuantil de nivel 5 % de $\{\mathcal{P}_{c,i}\}_{c\ne j}$, calculado con los otros $B$ perfiles, y sea $\widetilde{\mathrm{pv}}=\bigl(1+\#\{\zeta\ge1:\tilde\varpi_\zeta\ge\tilde\varpi_0\}\bigr)/(B+1)$. Bajo el supuesto de intercambiabilidad, $\Pr(\widetilde{\mathrm{pv}}\le\alpha_0)\le\alpha_0$ para todo $\alpha_0\in[0,1]$.
+:::
+
+**Observación (la versión implementada).** La @def-oe4 difiere de la versión simétrica en dos puntos: el umbral de cada réplica se calcula sin el perfil observado ($B-1$ perfiles en lugar de $B$), y el p-valor no suma uno ni divide entre $B+1$. Las dos diferencias son de orden $1/B$, pero la @prp-oe4 no cubre exactamente la @def-oe4. Además, el supuesto de intercambiabilidad es una idealización: las réplicas se remuestrean a partir de los propios incrementos observados.
+
+::: {#def-fuera-nulo name="Transición fuera del nulo"}
+Una transición candidata fechada en $\tau$, con un ancho y un esquema de pesos, está *fuera del nulo* si algún par $i$ del mismo ancho y pesos, con $|\operatorname{fr}(i)-\tau|\le h$, cumple $\operatorname{RV}^{\mathrm{ad}}_{i}<\underline{\operatorname{RV}}^{\,\mathrm{ad}}_{i}$. Para la regla del 06, que no tiene pesos, se usan los pares con pesos uniformes (@cor-regla06; decisión D17.3). La tolerancia es la principal de D7, $h=3$.
+:::
+
+La @def-fuera-nulo es la definición operativa del código; no figura en el registro de decisiones, y queda como pregunta para el asesor.
+
+::: {#def-confirmada name="Transición confirmada"}
+Sea $\tau^\circ$ un mes. Una transición candidata a lo sumo a $h=3$ meses de $\tau^\circ$ *cuenta* si no es un borde de ventana (@def-borde, $h=3$) y está fuera del nulo (@def-fuera-nulo). La transición de $\tau^\circ$ está *confirmada* si se cumplen las dos condiciones siguientes; en otro caso es una *transición no confirmada* (decisiones D13 y D17.3): (a) hay candidatas que cuentan con al menos dos anchos distintos, entre la regla del 06 y `aede` con pesos uniformes; (b) hay al menos una candidata que cuenta en `aede` con pesos gaussianos, con cualquier ancho.
+:::
+
+Las candidatas de `aede` son los cortes de su codo por caída máxima (@def-criterios-k (a)) con $K_{\max}=10$. D17.1 fija ese máximo para la regla K de la datación, no el criterio de `aede`; tomar el codo es la lectura del código, que se declara como ambigüedad.
 
 ## Aprendizaje profundo: autoencoders, LSTM y LSTM-autoencoder
 
@@ -434,7 +665,7 @@ La comparación entre métodos no busca determinar cuál «funciona mejor», sin
 - **Interpretabilidad.** Indica si el resultado puede asociarse a dimensiones económicas comprensibles. Se evalúa con la concentración de cargas o correlaciones con las variables originales, la coherencia económica de los grupos y la posibilidad de explicar episodios sin forzar la interpretación. En los modelos no lineales, que carecen de cargas constantes, se usan las correlaciones entre cada variable y cada eje latente tras una rotación de Procrustes (@def-procrustes) hacia los *scores* del PCA.
 - **Estabilidad temporal.** Indica si la estructura se mantiene dentro de un régimen y cambia en las transiciones. Se evalúa con el coeficiente RV y la distancia entre subespacios de ventanas sucesivas, y con la persistencia de los grupos.
 - **Capacidad descriptiva.** Indica cuánto de la información original conserva la representación. Se evalúa con la inercia retenida en el PCA y el error de reconstrucción, medido fuera de muestra con validación por bloques temporales contiguos.
-- **Robustez.** Indica si los resultados resisten variaciones razonables del diseño: ancho de ventana, conjunto de variables, transformación (las dos vías de D2), semilla aleatoria y regla de selección del número de regímenes.
+- **Robustez.** Indica si los resultados resisten variaciones razonables del diseño: ancho de ventana (leído como multiescala), conjunto de variables, transformación (el anexo de robustez de la decisión D15), semilla aleatoria y regla de selección del número de regímenes.
 
 Además de estos criterios, la ficha de inscripción compromete una comparación **sobre un contexto simulado**, con regímenes conocidos por construcción, que permita medir la capacidad de recuperación de cada método y calibrar sus parámetros: número de factores, número de clases, ancho de ventana y pesos de los análisis evolutivos. Es el único escenario en el que la «verdad» del régimen está disponible sin circularidad. Por ello, complementa y no sustituye la validación con episodios externos.
 
@@ -448,7 +679,7 @@ La revisión permite identificar cinco vacíos:
 4. **Muestra anterior a la pospandemia.** La muestra de @camiz_cerda_atoche_2026 termina en 2020.
 5. **Ausencia de un criterio objetivo para el ancho de ventana del EPCA.** Las tres aplicaciones de la escuela fijan el ancho de manera informal.
 
-El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la @prp-ae-lineal; (2) la clasificación explícita de fases, validada contra episodios fechados con fuentes externas; (3) la actualización de la muestra hasta {{< meta cifras.fechaFinDatos >}}, que cubre la dinámica pospandemia; y (4) un criterio objetivo para el ancho de ventana del EPCA, basado en la similitud entre ventanas consecutivas, medida con el coeficiente RV (@def-rv) o con la distancia de Procrustes (@def-procrustes). La formalización de una EHFC queda como objetivo exploratorio condicional, porque no existe una especificación previa contra la cual validarla.
+El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la @prp-ae-lineal; (2) la clasificación explícita de fases, validada contra episodios fechados con fuentes externas; (3) la actualización de la muestra hasta {{< meta cifras.fechaFinDatos >}}, que cubre la dinámica pospandemia; y (4) un criterio para el ancho de ventana del EPCA, basado en la similitud entre ventanas adyacentes no solapadas, medida con el coeficiente RV de cargas (@def-rv-cargas, @def-pares) y contrastada con un nulo de estructura constante del mismo ancho (@def-oe4); por la decisión D10, la grilla de anchos se lee como multiescala y no como la búsqueda de un ancho único. La formalización de una EHFC queda como objetivo exploratorio condicional, porque no existe una especificación previa contra la cual validarla.
 
 [^v2-cca]: VERIFICAR: manuscrito fechado el 25 de abril de 2026 sin datos de revista, volumen ni DOI. Debe confirmarse con el Dr. Camiz su estado de publicación.
 [^v2-res]: VERIFICAR: la ficha distingue «reservas» (grupo de riesgo) de «reservas internacionales netas» (grupo de salud). Confirmar en la Tabla 1 del manuscrito a qué series del BCRP corresponden.
@@ -461,7 +692,20 @@ El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenc
 [^v2-kai]: VERIFICAR: ficha preliminar, texto no consultado; la atribución del criterio a esta obra está por confirmar, y el volumen, el número y las páginas solo constan en fuentes secundarias.
 [^v2-bk-kmo]: VERIFICAR: las cuatro fichas son preliminares y los textos no se han consultado: solo se cita el aporte general. Las fórmulas de las definiciones de KMO y de la prueba de esfericidad son las del código y no se atribuyen a una de estas obras en particular; según una fuente secundaria, la forma de (@eq-kmo) es la revisada de 1974.
 [^v2-pp]: VERIFICAR: ficha preliminar, texto no consultado; no se ha comprobado que la fórmula de $n$ efectivo del código sea la de este artículo, que además tiene una fe de erratas. Solo se cita el aporte general.
-[^v2-c20]: La fuente primaria de la HFC no tiene ficha en el proyecto: Camiz et al. (2020) citan a Denimal (2007), y Camiz y Roig (2011), a Denimal (2001). Se cita de forma secundaria [CITA PENDIENTE: Denimal (2001, 2007); sin ficha].
+[^v2-c20]: De esta obra se leyó el resumen; los metadatos se verificaron en Numdam y corrigen los que daba la ficha de Camiz et al. (2020). Camiz y Roig (2011) citan además una presentación de Denimal (2001) en un congreso, sin actas localizadas [CITA PENDIENTE: Denimal (2001); sin ficha].
+[^v2-atm]: VERIFICAR: la portada y el registro del repositorio difieren en el período del título; se usa el de la portada.
+[^v2-atm2]: VERIFICAR: la portada y el registro del repositorio difieren en el período del título; se leyó el texto hasta el capítulo 5.2, donde no se cita una fuente del esquema gaussiano.
+[^v2-bern]: VERIFICAR: la ficha registra la fecha y la descripción del testimonio, pero no se leyó el pasaje sobre la reducción del ritmo de compras de activos.
+[^v2-cong]: VERIFICAR: la ficha se elaboró con la nota oficial del Congreso; no se leyó el texto de la resolución ni su publicación en *El Peruano*.
+[^v2-jol]: VERIFICAR: metadatos verificados; texto no consultado. Se cita solo como obra general, sin atribuirle ningún resultado concreto.
+[^v2-ren]: VERIFICAR: ficha preliminar: no se comprobó que la sección 12.6 contenga la prueba que Camiz y Pillar (2018) atribuyen a Rencher, ni qué edición citan.
+[^v2-bru]: VERIFICAR: metadatos verificados en Numdam; texto no consultado. No se le atribuye la propiedad de reducibilidad que exigiría el índice de la HFC.
+[^v2-tuk]: VERIFICAR: metadatos verificados en dos catálogos; texto no consultado. Se cita solo como encuadre general.
+[^v2-kish]: VERIFICAR: texto no consultado: no se verificaron el capítulo ni la página de la fórmula; se cita solo como su atribución habitual.
+[^v2-lav]: VERIFICAR: la autoría consta en la *Three-Mode Bibliography* de Leiden y no en un catálogo; falta el ISBN. Texto no consultado: solo se cita como fuente del método.
+[^v2-kun]: VERIFICAR: ficha preliminar: texto no consultado; no se verificó que el artículo defina el esquema de bloques móviles solapados del código.
+[^v2-lah]: VERIFICAR: metadatos verificados; texto no consultado. Solo se cita como manual del bootstrap por bloques.
+[^v2-nw]: VERIFICAR: orden de los autores (la Econometric Society lista primero a West) y DOI sin comprobar; texto no consultado. El núcleo, los 12 rezagos y el umbral de $|t|>2$ son elecciones de la tesis (D8) y no se atribuyen a la fuente.
 [^v2-cmr]: VERIFICAR: datos de edición de las actas (ISBN o DOI).
 [^v2-cr]: VERIFICAR: el nombre del editor de las actas (O. Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.
 [^v2-ch2]: VERIFICAR: texto no consultado: contrastar en la fuente los grados de libertad ($K-1$ y $N-K$) de la forma original antes de atribuírsela.
