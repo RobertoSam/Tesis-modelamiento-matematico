@@ -63,3 +63,10 @@ replicasNuloEstructura,data/results/final/07b_nulo_estructura_oe4.csv,principal=
 largoBloqueNuloCorto,data/results/final/07b_nulo_estructura_oe4.csv,L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,L,entero,Longitud de bloque corta del nulo de estructura (sensibilidad)
 largoBloqueNuloLargo,data/results/final/07b_nulo_estructura_oe4.csv,L=36;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,L,entero,Longitud de bloque larga del nulo de estructura (sensibilidad)
 replicasNuloSensibilidad,data/results/final/07b_nulo_estructura_oe4.csv,L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes,replicas,entero,Réplicas del nulo de estructura en las sensibilidades de longitud de bloque
+nuGauss,data/results/final/parametros_diseno.csv,parametro=nu_pesos_gaussianos,valor,entero,ν (nsd) de los pesos gaussianos de aede (parámetro de diseño provisional; N-03)
+pasoReglaSeis,data/results/final/parametros_diseno.csv,parametro=paso_regla06,valor,entero,Paso en meses de la regla del notebook 06 (parámetro de diseño provisional; N-03)
+ejeReglaSeis,data/results/final/parametros_diseno.csv,parametro=eje_regla06_niveles,valor,entero,Eje que sigue la regla del 06 sin transformar (parámetro de diseño provisional; N-03)
+ventanaMediaMovil,data/results/final/parametros_diseno.csv,parametro=ventana_media_movil,valor,entero,Meses de la media móvil causal de la datación PCA-MM12 (parámetro de diseño provisional; N-03)
+clasesHfcMenor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_menor,valor,entero,Partición menor de la HFC en clases (parámetro de diseño provisional; N-03)
+clasesHfcMayor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_mayor,valor,entero,Partición mayor de la HFC en clases (parámetro de diseño provisional; N-03)
+percentilWalkforward,data/results/final/parametros_diseno.csv,parametro=percentil_walkforward,valor,entero,Percentil del error de entrenamiento en la razón walk-forward (parámetro de diseño provisional; N-03)

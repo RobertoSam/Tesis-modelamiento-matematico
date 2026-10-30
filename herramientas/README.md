@@ -84,3 +84,20 @@ La integración en `tesis/` la hace el editor del informe.
   D5 de las series, proporciones del nulo de tendencias, contraste sin tendencia y congruencias
   bootstrap. **Regla 7:** estas macros existen para que las cifras tengan origen trazable; el
   capítulo de resultados no se publica sin la aprobación de Roberto.
+
+## `exportar_parametros_diseno.py` · parámetros de diseño provisionales (auditoría 3b, N-03)
+
+Escribe `data/results/final/parametros_diseno.csv` con los seis parámetros de diseño que
+`decisiones.qmd` no recoge (ν = `nsd` de los pesos gaussianos, paso y eje de la regla del 06,
+ventana de la media móvil de PCA-MM12, particiones de la HFC y percentil de la razón
+*walk-forward*). No fija valores: cada uno se lee del código vigente en Python (notebooks o `src/`)
+y se contrasta con `R/ciclo_financiero_final.Rmd`; si el patrón no aparece una sola vez o Python y R
+difieren, se detiene sin escribir. Las macros correspondientes están en `cifras_mapa.csv`.
+
+```
+python3 herramientas/exportar_parametros_diseno.py
+python3 herramientas/exportar_parametros_diseno.py --comprobar
+```
+
+Si se cambia uno de esos parámetros en el código, hay que volver a exportar y luego ejecutar
+`generar_cifras.py`.

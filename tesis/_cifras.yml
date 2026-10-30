@@ -65,3 +65,10 @@ cifras:
   largoBloqueNuloCorto: "12"  # data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
   largoBloqueNuloLargo: "36"  # data/results/final/07b_nulo_estructura_oe4.csv | L=36;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | L
   replicasNuloSensibilidad: "20"  # data/results/final/07b_nulo_estructura_oe4.csv | L=12;objeto=cargas_sin_centrar;nw=24;pesos=uniformes | replicas
+  nuGauss: "3"  # data/results/final/parametros_diseno.csv | parametro=nu_pesos_gaussianos | valor
+  pasoReglaSeis: "3"  # data/results/final/parametros_diseno.csv | parametro=paso_regla06 | valor
+  ejeReglaSeis: "2"  # data/results/final/parametros_diseno.csv | parametro=eje_regla06_niveles | valor
+  ventanaMediaMovil: "12"  # data/results/final/parametros_diseno.csv | parametro=ventana_media_movil | valor
+  clasesHfcMenor: "3"  # data/results/final/parametros_diseno.csv | parametro=clases_hfc_menor | valor
+  clasesHfcMayor: "4"  # data/results/final/parametros_diseno.csv | parametro=clases_hfc_mayor | valor
+  percentilWalkforward: "95"  # data/results/final/parametros_diseno.csv | parametro=percentil_walkforward | valor
