@@ -2,7 +2,7 @@
 
 Los notebooks 06, 06c, 07b, 07c, 09a y 09b corren por defecto la versión vigente (D15, D16):
 **niveles, 16 series**, con salidas en `data/results/final/`. El código de dos vías y 17 series del
-antecedente (tag `v0.4-17series-dos-vias`) sigue disponible detrás de los parámetros, para la prueba
+antecedente (commit `2be3665`; el tag `v0.4-17series-dos-vias` está pendiente) sigue disponible detrás de los parámetros, para la prueba
 de no regresión (`herramientas/no_regresion_dinamica.py`).
 
 Parámetros (variables de entorno, como en el notebook 05):

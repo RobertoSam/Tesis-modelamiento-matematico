@@ -530,7 +530,8 @@ def particion_fisher(Y, k_max=8, tam_min=6):
 # entrenamiento). Desde la tarea D9 de la iteración 3b (decisión D7) se leen del archivo único
 # data/referencia/episodios_referencia.csv, con fechas de eventos o anuncios externos y fuente
 # fichada; un episodio puntual (sin fin con fuente) se representa con fin = inicio. Las fechas
-# anteriores (escritas a mano, sin fuente) se conservan en el tag v0.4-17series-dos-vias.
+# anteriores (escritas a mano, sin fuente) se conservan en el commit 2be3665 (el tag
+# v0.4-17series-dos-vias queda pendiente de crear por Roberto; auditoría 3b, N-01).
 # Este módulo no se ejecutó tras el cambio (torch no está disponible en el entorno de 3b).
 import sys as _sys
 _RAIZ_REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

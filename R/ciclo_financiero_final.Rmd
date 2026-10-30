@@ -106,7 +106,8 @@ table td, table th { padding: 4px 6px !important; vertical-align: top; }
 Es el **documento final** de la tesis en R (decisión D15, 26-oct-2026): ejecuta la cadena solo con
 las series **sin transformar** (estandarizadas), con **16 series** (D16: se excluye la Liquidez M2).
 El documento anterior, `R/tesis_ciclo_financiero.Rmd` (dos vías y 17 series), queda como
-exploración y no se modifica; sus resultados son antecedente (tag `v0.4-17series-dos-vias`).
+exploración y no se modifica; sus resultados son antecedente (commit `2be3665`; el tag `v0.4-17series-dos-vias` queda pendiente
+de crear por Roberto).
 
 | Sección | Contenido | Estado |
 |---|---|---|
@@ -1060,7 +1061,7 @@ La correlación entre M2 y M3 es `r num(cor_agr$niveles["M2", "M3"], 3)` en nive
 En la tradición de Benzécri no se depuran variables a priori, y la HFC trata la redundancia por
 construcción (M2 y M3 se agregarían primero). D16 se tomó con las correlaciones de los datos, no con
 resultados del análisis, y el antecedente con 17 series queda conservado
-(tag `v0.4-17series-dos-vias`). ¿Cómo lo presentas al Dr. Camiz?
+(commit `2be3665`). ¿Cómo lo presentas al Dr. Camiz?
 :::
 
 ::: {.hallazgo}

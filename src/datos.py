@@ -14,7 +14,7 @@ Series excluidas (D16, 26-oct-2026). `EXCLUIDAS_D16` es el **parámetro único**
 series que se retiran al leer: hoy, la Liquidez M2 (16 series vigentes). Los archivos de D4 no se
 modifican; la exclusión se aplica al leer, como la del crédito total del SF y la del IPC
 subyacente. `cargar_vias(excluidas=())` (valor por defecto) conserva las 17 series del antecedente
-(tag `v0.4-17series-dos-vias`), de modo que los notebooks antecedentes no cambian si se vuelven a
+(commit `2be3665`; el tag `v0.4-17series-dos-vias` está pendiente), de modo que los notebooks antecedentes no cambian si se vuelven a
 ejecutar; los vigentes pasan `excluidas=EXCLUIDAS_D16` desde su bloque de parámetros.
 
 Las filas se etiquetan con «AAAA-MM», como las fechas de corte de los CSV `R_*`.
