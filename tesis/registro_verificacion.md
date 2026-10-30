@@ -1,6 +1,7 @@
 Estado al commit `e97530c` de la rama `iteracion-3b` (29-10-2026), después de L1–L4 y E1–E3;
-puesto al día en la vuelta 1 de la auditoría de la iteración 3b (hallazgo M-01). Las marcas se
-contaron con `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
+puesto al día en la vuelta 1 de la auditoría de la iteración 3b (hallazgo M-01) y, el 30-10-2026,
+al commit `09b9c26` (hallazgo M-03: marca de `fmi_2015b`). Las marcas se contaron con `git grep`,
+no a mano (sección «Conteo de marcas abiertas», al final).
 
 Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada
 edición. Abreviaturas de la columna «Marcas en los documentos»:
@@ -78,7 +79,7 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `congreso_2018` | Congreso de la República (2018), aceptación de la renuncia de P. P. Kuczynski, 23-03-2018 | Ficha elaborada con la nota oficial del Congreso; **no se leyó el texto de la resolución ni su publicación en *El Peruano***. La ficha califica el hecho como «evento interno»: ver N-02 en la tabla de episodios | Tesis: cap. 2, «Validación externa», `\verificar`. Informe: `v2-cong`. Fuente del episodio puntual de Kuczynski | Fichada; pendiente (resolución); N-02 abierto |
 | `congreso_2016` | Congreso de la República (2016), temas tratados del 28 de julio de 2016 | Denominación oficial exacta del documento (el título se compuso con su encabezado) | Ninguna: no se cita y no fecha ningún episodio (la juramentación no es un evento del episodio; ver la tabla) | Pendiente (sin uso) |
 | `doj_2016`, `oms_2020a`, `fmi_2015` | Fuentes de episodios | `oms_2020a`: ubicar la versión en who.int (se leyó una copia en extranet.who.int). `fmi_2015`: páginas del recuadro en el WEO completo. `doj_2016`: sin pendientes de metadatos | Ninguna: no se citan en la tesis ni en el informe ni fechan un extremo del archivo de episodios (alternativas de la tabla) | Pendiente (`oms_2020a`, `fmi_2015`) |
-| `oms_2023`, `pcm_2020`, `fmi_2015b`, `baffes_streifel_2016`, `nber_2021`, `ustr_2020`, `fmi_2016` | Fuentes de episodios de la tarea B1 (tabla siguiente) | `oms_2023`: leída en la página de la Oficina Regional para Europa; falta la de la sede. `pcm_2020`: texto leído en una reproducción no oficial; falta la URL oficial (gob.pe o *El Peruano*). `fmi_2015b`: DOI del informe completo sin comprobar en doi.org (campo `verificar` en el `.bib`). `baffes_streifel_2016`: es un blog; conviene sustituirlo por el *Commodity Markets Outlook* de julio de 2016 (no leído). `nber_2021`, `ustr_2020` y `fmi_2016`: sin pendientes | `nber_2021`, `ustr_2020` y `fmi_2016`: Tesis e Informe, «Validación externa», sin marca (sin pendientes). **`fmi_2015b`: Tesis e Informe, «Validación externa», citada sin `\verificar` ni nota aunque su DOI está pendiente** (aviso al redactor LaTeX y al editor del informe; no es un error del `.bib`). `oms_2023`, `pcm_2020` y `baffes_streifel_2016`: no se citan | Pendiente (metadatos menores); falta la marca de `fmi_2015b` |
+| `oms_2023`, `pcm_2020`, `fmi_2015b`, `baffes_streifel_2016`, `nber_2021`, `ustr_2020`, `fmi_2016` | Fuentes de episodios de la tarea B1 (tabla siguiente) | `oms_2023`: leída en la página de la Oficina Regional para Europa; falta la de la sede. `pcm_2020`: texto leído en una reproducción no oficial; falta la URL oficial (gob.pe o *El Peruano*). `fmi_2015b`: DOI del informe completo sin comprobar en doi.org (campo `verificar` en el `.bib`). `baffes_streifel_2016`: es un blog; conviene sustituirlo por el *Commodity Markets Outlook* de julio de 2016 (no leído). `nber_2021`, `ustr_2020` y `fmi_2016`: sin pendientes | `nber_2021`, `ustr_2020` y `fmi_2016`: Tesis e Informe, «Validación externa», sin marca (sin pendientes). `fmi_2015b`: Tesis, cap. 2, «Validación externa» (`sec:validacion`), `\verificar` sobre el DOI (commit `d7302e0`, hallazgo M-03); Informe, la misma sección, nota `v2-fmi` (commit `09b9c26`). Intento del 30-10-2026 de comprobar el DOI 10.5089/9781513520735.081 en doi.org: el proxy de la sesión rechazó la conexión (403); el DOI sigue sin comprobar y la marca sigue abierta. `oms_2023`, `pcm_2020` y `baffes_streifel_2016`: no se citan | Pendiente (metadatos menores); marca de `fmi_2015b` puesta (M-03) |
 | — | Descarga de control de la API del BCRP (consulta del 08/10/2026) | Ninguno. El Rmd citaba dos valores de diciembre de 2025 tomados de una consulta a la API del BCRP no versionada, contra la regla 3 de `CLAUDE.md`. Se retiraron las cifras | Rmd: chunk `funciones` y sección 1, «Fuente, periodo y cobertura»; auditoría 2026-10-19, M-06 y N-03 | Cerrado: cifras retiradas del Rmd por decisión de Roberto (20-10-2026) |
 
 ### Episodios de referencia
@@ -96,9 +97,10 @@ poder consultarse (lista de descarga manual en `auditorias/notas/2026-10-24_bibl
 Marcas de episodios que siguen abiertas:
 
 - **Tesis**, cap. 2, «Validación externa» (`sec:validacion`): dos `\verificar` de contenido
-  (`bernanke_2013` y `congreso_2018`; filas de la tabla anterior). No queda ningún `\pendiente`.
-- **Informe**, cap. 2, «Validación externa»: las notas `v2-bern` y `v2-cong`. No queda ningún
-  `[CITA PENDIENTE]` de episodios.
+  (`bernanke_2013` y `congreso_2018`) y uno de metadatos (DOI de `fmi_2015b`, M-03); filas de la
+  tabla anterior. No queda ningún `\pendiente`.
+- **Informe**, cap. 2, «Validación externa»: las notas `v2-bern`, `v2-cong` y `v2-fmi`. No queda
+  ningún `[CITA PENDIENTE]` de episodios.
 - **RmdF**, **NB05** y `modelos_dl.py`: ninguna (leen el archivo único). Las marcas de las celdas 1
   y 16 de NB05 se retiraron con D9.
 - **Antecedentes congelados**, cuyas marcas se conservan y no se cierran porque esos archivos ya
@@ -111,7 +113,7 @@ Marcas de episodios que siguen abiertas:
 |---|---|---|---|---|
 | Crisis financiera global | 2008-09 a 2009-06 | `lehman_brothers_2008` (15-09-2008); `nber_2010` (valle de la recesión de EE. UU.) | Pico del NBER en 12-2007 (no se usa: el anuncio externo del episodio financiero es Lehman). El inicio 2008-07 de `06a`/`06b` no tiene fuente (antecedente) | Cerrado (D9, L1) |
 | *Taper tantrum* | 2013-05 a 2013-12 | `bernanke_2013` (22-05-2013); `reserva_federal_2013` (18-12-2013) | El inicio 2013-04 de `06a`/`06b` no tiene fuente (antecedente). Falta leer el pasaje del testimonio (`\verificar`) | Fechas cerradas; contenido de `bernanke_2013` pendiente |
-| Colapso de los precios de las materias primas | 2014-06 a 2016-01 | `stocker_et_al_2015` (caída del petróleo); `fmi_2016` (febrero de 2016: primer aumento en cinco meses de los metales y en nueve del índice general) | Metales: caída «since 2011» (`fmi_2015b`), sin mes; `fmi_2015b` se cita sin marca (ver su fila). Comparación desde 09-2014 (`fmi_2015`), no es un inicio. Fin concordante: `baffes_streifel_2016`. **Advertencia:** el inicio es del petróleo; para los metales solo hay año | Cerrado (D9, L1); falta la marca de `fmi_2015b` |
+| Colapso de los precios de las materias primas | 2014-06 a 2016-01 | `stocker_et_al_2015` (caída del petróleo); `fmi_2016` (febrero de 2016: primer aumento en cinco meses de los metales y en nueve del índice general) | Metales: caída «since 2011» (`fmi_2015b`), sin mes; `fmi_2015b` lleva `\verificar` y nota `v2-fmi` por el DOI (M-03; ver su fila). Comparación desde 09-2014 (`fmi_2015`), no es un inicio. Fin concordante: `baffes_streifel_2016`. **Advertencia:** el inicio es del petróleo; para los metales solo hay año | Cerrado (D9, L1); DOI de `fmi_2015b` pendiente (marca puesta) |
 | Kuczynski / Odebrecht | Puntual, 2018-03 | `congreso_2018` (aceptación de la renuncia, 23-03-2018) | Período alternativo para sensibilidad: 2016-12 (`doj_2016`, declaración de culpabilidad de Odebrecht en EE. UU.) a 2018-03. El inicio 2016-07 (`congreso_2016`, juramentación) no es un evento del episodio. Falta el texto de la resolución en *El Peruano* (`\verificar`). **N-02 (auditoría del 29-10-2026), abierto:** la ficha califica el hecho como «evento interno» y D7 habla de evento «externo»; qué significa «externo» lo decide Roberto (definición del redactor LaTeX) y después se ajustan la ficha y esta fila | Fechado como puntual (D9); N-02 pendiente de decisión |
 | Guerra comercial entre Estados Unidos y China | 2018-06 a 2020-01 | `ustr_2018` (anuncio del 15-06-2018); `ustr_2020` (firma de la «fase uno», 15-01-2020) | Inicio alternativo 2018-07 (cobro de aranceles, 06-07-2018; misma fuente). **Advertencia:** el fin (2020-01) y el inicio del COVID-19 (2020-03) distan dos meses: con ±3 meses, una transición en ese tramo no se atribuye a uno solo | Cerrado (D9, L1) |
 | COVID-19 | 2020-03 a 2020-04 | `oms_2020b` (pandemia, 11-03-2020); `nber_2021` (valle de la recesión de EE. UU., mismo criterio que `nber_2010`) | Inicio alternativo 2020-01 (`oms_2020a`, ESPII), dentro de ±3 meses. Fin alternativo 2023-05 (`oms_2023`, fin de la ESPII), poco discriminante. `pcm_2020` (15-03-2020) se trató como contexto y no como fecha por ser un evento interno; esa lectura depende también de N-02. Las fechas 2020-09 y 2020-12 de los antecedentes no tienen fuente | Cerrado (D9, L1); N-02 pendiente de decisión |
@@ -136,21 +138,23 @@ bibliotecario.
 Conteo de ocurrencias con `git grep -o` sobre cada commit (guion del bibliotecario en el
 *scratchpad* de la sesión del 29-10-2026; patrones en `auditorias/notas/2026-10-29_bibliotecario.md`).
 «Antes» es `origin/main` (`4624802`, inicio de la iteración 3b); «registro anterior», el commit de
-B1–B4 (`d1bf179`), y «después», `e97530c`.
+B1–B4 (`d1bf179`); «después», `e97530c`, y «M-03», `09b9c26` (marca de `fmi_2015b`, vuelta 1).
+El 30-10-2026 se volvió a correr el mismo guion con los mismos patrones: reproduce las cifras de
+`e97530c` y da las de `09b9c26`; entre ambos, el commit de la auditoría (`bc17259`) no cambia nada.
 
-| Documento y marca | Antes (`4624802`) | Registro anterior (`d1bf179`) | Después (`e97530c`) |
-|---|---|---|---|
-| Tesis, `\verificar` | 34 | 34 | 51 |
-| Tesis, `\pendiente` | 22 | 22 | 14 |
-| Informe, notas con `VERIFICAR` | 34 | 34 | 51 |
-| Informe, `[CITA PENDIENTE]` | 18 | 18 | 9 |
-| Informe, recuadros «Pendiente» | 5 | 5 | 5 |
-| RmdF, `VERIFICAR` | — (no existía) | — (no existía) | 25 |
-| Rmd de exploración, `VERIFICAR` (congelado) | 37 | 38 | 38 |
-| src, `VERIFICAR` | 5 | 5 | 6 |
-| NB05, `VERIFICAR` | 5 | 5 | 3 |
-| `06a` y `06b`, `VERIFICAR` (antecedentes) | 10 | 10 | 10 |
-| `notebooks/modelos_dl.py`, `VERIFICAR` | 4 | 4 | 0 |
+| Documento y marca | Antes (`4624802`) | Registro anterior (`d1bf179`) | Después (`e97530c`) | M-03 (`09b9c26`) |
+|---|---|---|---|---|
+| Tesis, `\verificar` | 34 | 34 | 51 | 52 |
+| Tesis, `\pendiente` | 22 | 22 | 14 | 14 |
+| Informe, notas con `VERIFICAR` | 34 | 34 | 51 | 52 |
+| Informe, `[CITA PENDIENTE]` | 18 | 18 | 9 | 9 |
+| Informe, recuadros «Pendiente» | 5 | 5 | 5 | 5 |
+| RmdF, `VERIFICAR` | — (no existía) | — (no existía) | 25 | 25 |
+| Rmd de exploración, `VERIFICAR` (congelado) | 37 | 38 | 38 | 38 |
+| src, `VERIFICAR` | 5 | 5 | 6 | 6 |
+| NB05, `VERIFICAR` | 5 | 5 | 3 | 3 |
+| `06a` y `06b`, `VERIFICAR` (antecedentes) | 10 | 10 | 10 | 10 |
+| `notebooks/modelos_dl.py`, `VERIFICAR` | 4 | 4 | 0 | 0 |
 
 Lectura del cambio en la tesis:
 
@@ -165,7 +169,10 @@ Lectura del cambio en la tesis:
 - **`\verificar`, de 34 a 51.** Las 17 nuevas corresponden a Atoche Murrieta (tres), Bernanke,
   Congreso 2018, Jolliffe, Rencher, Bruynooghe, Tukey, Kish, Lavit, Künsch, Lahiri, Newey y West
   (L1–L2), Dickey y Fuller, Hubert y Arabie y Hennig (L3). Ninguna se cerró.
-- **Correspondencia con el informe:** 51 notas `VERIFICAR` frente a 51 `\verificar`. Los 14
+- **`\verificar`, de 51 a 52 (M-03).** La nueva es la del DOI de `fmi_2015b` en `sec:validacion`
+  (`d7302e0`); en el informe, la nota `v2-fmi` (`09b9c26`) lleva las notas `VERIFICAR` de 51 a 52.
+  Las demás marcas no cambian.
+- **Correspondencia con el informe:** 52 notas `VERIFICAR` frente a 52 `\verificar` (`09b9c26`). Los 14
   `\pendiente` de la tesis frente a 9 `[CITA PENDIENTE]` más 5 recuadros «Pendiente» del informe:
   la portada de la tesis no tiene equivalente en el informe, y el recuadro del resumen del informe
   no lo tiene en la tesis.
