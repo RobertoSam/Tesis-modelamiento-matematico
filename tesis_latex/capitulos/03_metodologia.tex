@@ -118,8 +118,8 @@ Diagnóstico & Regla de tendencia, $n$ efectivo, KMO y Bartlett, nulo de tendenc
 PCA estático & PCA de correlaciones, retención, bootstrap por bloques & D9 \\
 Parte dinámica & \texttt{aede} en grilla, umbrales por ventana, regla del 06, nulo de estructura,
   criterio de OE4, bordes de ventana & D7, D10, D11, D13, D14, D17 \\
-HFC & Particiones en 3 y 4 clases, factores, representantes, bootstrap & --- \\
-Datación & Trayectoria PCA-MM12, partición de Fisher, regla K & D9, D12, D17 \\
+HFC & Particiones en \clasesHfcMenor{} y \clasesHfcMayor{} clases, factores, representantes, bootstrap & --- \\
+Datación & Trayectoria PCA-MM\ventanaMediaMovil{}, partición de Fisher, regla K & D9, D12, D17 \\
 Validación externa & Episodios de referencia, bordes, detección fuera de muestra (anexo) & D7,
   D15 \\
 \bottomrule
@@ -179,8 +179,8 @@ muestral.
 
 \paragraph{EPCA en grilla.} El algoritmo \texttt{aede} (\cref{alg:aede}) se ejecuta con $d=3$ ejes
 sobre la grilla de anchos $\nw\in\{24, 36, 48, 60\}$ (decisión D10), con dos esquemas de pesos
-(\cref{def:pesos}), uniformes ($\nu=0$) y gaussianos con $\nu=3$, y con $K_{\max}\in\{10, 15, 20\}$
-para la partición de $\lambda_1$. El valor $\nu=3$ es el parámetro de la grilla del plan de la
+(\cref{def:pesos}), uniformes ($\nu=0$) y gaussianos con $\nu=\nuGauss$, y con $K_{\max}\in\{10, 15, 20\}$
+para la partición de $\lambda_1$. El valor $\nu=\nuGauss$ es el parámetro de la grilla del plan de la
 iteración 3b. Para cada combinación se informan el codo por caída máxima y las dos variantes del
 índice de Caliński y Harabasz, con la marca de los números que quedan en el tope
 (\cref{def:criterios-k}); el índice no se usa como selector (decisión D11).
@@ -194,7 +194,7 @@ $\lambda_2$ y $\lambda_3$, con la definición operativa del código.
 \begin{table}[htbp]
 \centering
 \small
-\caption{Tamaño efectivo de los pesos gaussianos ($\nu=3$) y filas del análisis paralelo por
+\caption{Tamaño efectivo de los pesos gaussianos ($\nu=\nuGauss$) y filas del análisis paralelo por
 ventana}
 \label{tab:kish}
 \begin{tabular}{@{}lcccc@{}}
@@ -213,7 +213,7 @@ Por la \cref{prop:kish}(c), los valores de la \cref{tab:kish} dependen solo de l
 los datos.
 
 \paragraph{Regla del 06.} La regla de la \cref{def:regla06} se aplica con cada ancho de la grilla,
-paso $\paso=3$ y el eje $\ell_0=2$, el que sigue el notebook 06 para las series sin transformar desde
+paso $\paso=\pasoReglaSeis$ y el eje $\ell_0=\ejeReglaSeis$, el que sigue el notebook 06 para las series sin transformar desde
 la iteración 2. Por el \cref{cor:regla06}, sus transiciones cuentan como evidencia de pesos
 uniformes (decisión D17.3).
 
@@ -239,7 +239,7 @@ nombre, se clasifica con la regla de la \cref{def:confirmada}.
 \subsection{Clasificación Factorial Jerárquica}
 \label{sec:met-hfc}
 
-La HFC (\cref{def:hfc}) se corta en 3 y en 4 clases. Las clases se comparan por su composición,
+La HFC (\cref{def:hfc}) se corta en \clasesHfcMenor{} y en \clasesHfcMayor{} clases. Las clases se comparan por su composición,
 nunca por el número del nodo, que depende del orden de las fusiones. De cada clase se informan su
 factor y su serie representante, que el código define como la serie de la clase más
 correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. Las
@@ -257,8 +257,8 @@ grupos de observaciones; la HFC agrupa variables, y la analogía se declara como
 \label{sec:met-datacion}
 
 La datación de la \cref{def:datacion} usa los $d=3$ primeros \emph{scores} del PCA estático
-(decisión D9), suavizados con la media móvil causal de 12 meses del notebook 09 (de ahí el nombre
-PCA-MM12), con longitud mínima $n_{\min}=12$ meses. El número de regímenes lo fija la regla K de la
+(decisión D9), suavizados con la media móvil causal de \ventanaMediaMovil{} meses del notebook 09 (de ahí el nombre
+PCA-MM\ventanaMediaMovil), con longitud mínima $n_{\min}=12$ meses. El número de regímenes lo fija la regla K de la
 \cref{def:criterios-k}(b) (decisión D12), con $K_{\max}=10$ como especificación principal y
 $K_{\max}\in\{15, 20\}$ como sensibilidad (decisión D17.1). Las soluciones en que todos los
 segmentos miden $n_{\min}$ se marcarían como artefacto; como esa marca solo puede activarse si el
@@ -288,8 +288,8 @@ Para cada año de evaluación $a$, sean $\mathcal{T}_a$ los meses anteriores a e
 se estandarizan con la media y la desviación típica (divisor igual al número de meses) de
 $\mathcal{T}_a$, y se ajusta un PCA de $d$ componentes con esos meses. El error de reconstrucción
 del mes $t$, $E_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes
-(\cref{eq:pca}). La \emph{razón de error} de cada mes del año $a$ es $E_t/E^{(95)}_a$, donde
-$E^{(95)}_a$ es el percentil 95 de los errores de los meses de $\mathcal{T}_a$. Un mes con razón
+(\cref{eq:pca}). La \emph{razón de error} de cada mes del año $a$ es $E_t/E^{(\percentilWalkforward)}_a$, donde
+$E^{(\percentilWalkforward)}_a$ es el percentil \percentilWalkforward{} de los errores de los meses de $\mathcal{T}_a$. Un mes con razón
 mayor que uno es una \emph{alarma}.
 \end{definicion}
 

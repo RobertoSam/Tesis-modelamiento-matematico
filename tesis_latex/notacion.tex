@@ -204,7 +204,7 @@ $K_{\max}$, $Q_K$ & Número máximo de segmentos; $Q^\ast_K(N)$. \\
 $\Kef$ & Mayor número de segmentos factible, $\min(K_{\max},\lfloor N/n_{\min}\rfloor)$ (\cref{cor:fisher-factible}). \\
 $\Kest$, $\Kest_{\mathrm{codo}}$, $\Kest_{\mathrm K}$ & Número de segmentos que elige un criterio (el $k^\ast$ del código); el del codo por caída máxima y el de la regla K (\cref{def:criterios-k}). \\
 $\red_K$, $\upsilon$ & Reducción relativa del costo al pasar de $K$ a $K+1$ segmentos; umbral de la regla K. \\
-$w_{\mathrm m}$, $\bar c_{t\ell}$ & Longitud de la media móvil causal y \emph{score} suavizado de la datación PCA-MM12 (\cref{def:datacion}). \\
+$w_{\mathrm m}$, $\bar c_{t\ell}$ & Longitud de la media móvil causal y \emph{score} suavizado de la datación PCA-MM\ventanaMediaMovil{} (\cref{def:datacion}). \\
 $\CH^{\mathrm{h}}_K$, $\CH^{\mathrm{a}}_K$ & Índice de Caliński y Harabasz en su forma habitual y en la variante de \texttt{aede}. \\
 $K^{\mathrm h}$, $K^{\mathrm a}$ & Número de segmentos elegido por cada variante. \\[4pt]
 \gruposimbolos{Régimen, transición y comparación de estructuras}
@@ -239,7 +239,7 @@ $B$, $\zeta$, $\mX^{(\zeta)}$ & Número de réplicas; índice de réplica; répl
 $\RVadr{i}{\zeta}$, $\umbralRV{i}$, $\umbralRVr{i}{-\zeta}$ & RV adyacente de la réplica $\zeta$; cuantil de 5\,\% por posición; el mismo sin la réplica $\zeta$ (\cref{def:oe4}). \\
 $\varpi_0$, $\varpi_\zeta$, $\pval$ & Proporción de pares bajo el umbral, observada y de la réplica $\zeta$; p-valor del criterio de OE4. \\
 $\mathcal{P}_j$, $\tilde\varpi_j$, $\widetilde{\pval}$, $\mathcal{J}$, $\alpha_0$ & Perfiles, proporciones y p-valor de la versión simétrica; conjunto y nivel auxiliares (\cref{prop:oe4}). \\
-$\mathcal{T}_a$, $E_t$, $E^{(95)}_a$ & Meses de entrenamiento del año $a$; error de reconstrucción del mes $t$; su percentil 95 en $\mathcal{T}_a$ (\cref{def:walkforward}). \\[4pt]
+$\mathcal{T}_a$, $E_t$, $E^{(\percentilWalkforward)}_a$ & Meses de entrenamiento del año $a$; error de reconstrucción del mes $t$; su percentil \percentilWalkforward{} en $\mathcal{T}_a$ (\cref{def:walkforward}). \\[4pt]
 \gruposimbolos{Aprendizaje profundo}
 $f_\theta$, $g_\phi$ & Codificador y decodificador, con parámetros $\theta$ y $\phi$. \\
 $\veta_t\in\RR^{d}$ & Código latente del mes $t$. \\
