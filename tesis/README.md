@@ -16,6 +16,14 @@
   `data/results/`. No se edita a mano. `_metadata.yml` lo declara en `metadata-files`, y en el
   texto se cita con `{{< meta cifras.nMesesNiveles >}}` (lista de claves en
   `herramientas/README.md`).
+  Los siete parámetros de diseño de la iteración 3b (`nuGauss`, `pasoReglaSeis`, `ejeReglaSeis`,
+  `ventanaMediaMovil`, `clasesHfcMenor`, `clasesHfcMayor` y `percentilWalkforward`, desde
+  `data/results/final/parametros_diseno.csv`) se citan igual en los capítulos 2 y 3, también dentro
+  del nombre «PCA-MM…». Siguen siendo **provisionales**: no están en `decisiones.qmd`, y cada uso
+  lleva un comentario HTML que lo indica. Se escriben a mano, porque no denotan esos parámetros,
+  $d=3$ (D9), las tolerancias de 3 y 6 meses ($h$, D7), $n_{\min}=12$ (D17.1), la numeración de los pasos de `aede`
+  y las cifras de las fuentes fichadas (p. ej., el parámetro gaussiano de Atoche y Murrieta). Los
+  capítulos 4 y 5 no se tocan (regla 7).
 - `herramientas/generar_plantilla_docx.py`: regenera la plantilla Word (Arial 12, interlineado
   1,5, márgenes de 3 cm a la izquierda y 2,5 cm en el resto, número de página centrado).
 
@@ -193,7 +201,7 @@ las secciones 3.3 a 3.5, en el mismo orden.
 |---|---|---|
 | `tbl-etapas` | `tab:etapas` (Tabla 3.1) | |
 | `def-regla-d5` | `def:regla-d5` (Def. 3.1) | |
-| `tbl-kish` | `tab:kish` (Tabla 3.2) | Valores por `{{< meta cifras.nOmegaGauss* >}}` y `nHornGauss*` |
+| `tbl-kish` | `tab:kish` (Tabla 3.2) | Valores por `{{< meta cifras.nOmegaGauss* >}}` y `nHornGauss*`; $\nu$ del título por `nuGauss` |
 | `def-walkforward` | `def:walkforward` (Def. 3.2) | |
 | `tbl-decisiones` | `tab:decisiones` (Tabla 3.3) | |
 

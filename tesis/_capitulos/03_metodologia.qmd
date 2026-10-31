@@ -52,13 +52,14 @@ Los modelos que se aplican están formalizados en el capítulo 2. Esta sección 
 
 La @tbl-etapas resume la cadena. Cada etapa usa los métodos del capítulo 2 con los parámetros que fijan las decisiones citadas.
 
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
 | Etapa | Métodos (capítulo 2) | Decisiones |
 |---|---|---|
 | Diagnóstico | Regla de tendencia, $n$ efectivo, KMO y Bartlett, nulo de tendencias mixto | D5, D8 |
 | PCA estático | PCA de correlaciones, retención, bootstrap por bloques | D9 |
 | Parte dinámica | `aede` en grilla, umbrales por ventana, regla del 06, nulo de estructura, criterio de OE4, bordes de ventana | D7, D10, D11, D13, D14, D17 |
-| HFC | Particiones en 3 y 4 clases, factores, representantes, bootstrap | — |
-| Datación | Trayectoria PCA-MM12, partición de Fisher, regla K | D9, D12, D17 |
+| HFC | Particiones en {{< meta cifras.clasesHfcMenor >}} y {{< meta cifras.clasesHfcMayor >}} clases, factores, representantes, bootstrap | — |
+| Datación | Trayectoria PCA-MM{{< meta cifras.ventanaMediaMovil >}}, partición de Fisher, regla K | D9, D12, D17 |
 | Validación externa | Episodios de referencia, bordes, detección fuera de muestra (anexo) | D7, D15 |
 
 : *Etapas del análisis principal y del anexo de robustez* {#tbl-etapas}
@@ -88,7 +89,8 @@ El PCA de correlaciones se interpreta con $d=3$ ejes, la especificación princip
 
 #### Parte dinámica
 
-**EPCA en grilla.** El algoritmo `aede` se ejecuta con $d=3$ ejes sobre la grilla de anchos $n_w\in\{24, 36, 48, 60\}$ (decisión D10), con dos esquemas de pesos, uniformes ($\nu=0$) y gaussianos con $\nu=3$, y con $K_{\max}\in\{10, 15, 20\}$ para la partición de $\lambda_1$. El valor $\nu=3$ es el parámetro de la grilla del plan de la iteración 3b. Para cada combinación se informan el codo por caída máxima y las dos variantes del índice de Caliński y Harabasz, con la marca de los números que quedan en el tope (capítulo 2, criterios para el número de segmentos); el índice no se usa como selector (decisión D11).
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
+**EPCA en grilla.** El algoritmo `aede` se ejecuta con $d=3$ ejes sobre la grilla de anchos $n_w\in\{24, 36, 48, 60\}$ (decisión D10), con dos esquemas de pesos, uniformes ($\nu=0$) y gaussianos con $\nu={{< meta cifras.nuGauss >}}$, y con $K_{\max}\in\{10, 15, 20\}$ para la partición de $\lambda_1$. El valor $\nu={{< meta cifras.nuGauss >}}$ es el parámetro de la grilla del plan de la iteración 3b. Para cada combinación se informan el codo por caída máxima y las dos variantes del índice de Caliński y Harabasz, con la marca de los números que quedan en el tope (capítulo 2, criterios para el número de segmentos); el índice no se usa como selector (decisión D11).
 
 **Umbrales por ventana.** Los tres primeros valores propios de cada ventana se comparan con los umbrales de Kaiser y de Horn por ventana del capítulo 2 (decisión D14). Con pesos uniformes, $n_\omega=n_w$; con pesos gaussianos, el tamaño efectivo y el número de filas del análisis paralelo son los de la @tbl-kish. Se registran también los cruces entre $\lambda_2$ y $\lambda_3$, con la definición operativa del código.
 
@@ -99,11 +101,12 @@ El PCA de correlaciones se interpreta con $d=3$ ejes, la especificación princip
 | Tamaño efectivo $n_\omega$ | {{< meta cifras.nOmegaGaussVeinticuatro >}} | {{< meta cifras.nOmegaGaussTreintayseis >}} | {{< meta cifras.nOmegaGaussCuarentayocho >}} | {{< meta cifras.nOmegaGaussSesenta >}} |
 | Filas de Horn $n_{\mathrm H}=\lceil n_\omega\rceil$ | {{< meta cifras.nHornGaussVeinticuatro >}} | {{< meta cifras.nHornGaussTreintayseis >}} | {{< meta cifras.nHornGaussCuarentayocho >}} | {{< meta cifras.nHornGaussSesenta >}} |
 
-: *Tamaño efectivo de los pesos gaussianos ($\nu=3$) y filas del análisis paralelo por ventana* {#tbl-kish}
+: *Tamaño efectivo de los pesos gaussianos ($\nu={{< meta cifras.nuGauss >}}$) y filas del análisis paralelo por ventana* {#tbl-kish}
 
 *Nota.* Elaboración propia con `data/results/final/06c_aede_valores_propios_resumen.csv`. Los valores dependen solo de los pesos y no de los datos (capítulo 2, proposición sobre el tamaño efectivo de los pesos de la ventana).
 
-**Regla del 06.** La regla del notebook 06 (capítulo 2) se aplica con cada ancho de la grilla, paso $\mathsf{s}=3$ y el eje $\ell_0=2$, el que sigue el notebook 06 para las series sin transformar desde la iteración 2. Por el corolario del capítulo 2 según el cual la regla usa pesos uniformes, sus transiciones cuentan como evidencia de pesos uniformes (decisión D17.3).
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
+**Regla del 06.** La regla del notebook 06 (capítulo 2) se aplica con cada ancho de la grilla, paso $\mathsf{s}={{< meta cifras.pasoReglaSeis >}}$ y el eje $\ell_0={{< meta cifras.ejeReglaSeis >}}$, el que sigue el notebook 06 para las series sin transformar desde la iteración 2. Por el corolario del capítulo 2 según el cual la regla usa pesos uniformes, sus transiciones cuentan como evidencia de pesos uniformes (decisión D17.3).
 
 <!-- fuente de las cifras: tesis/_cifras.yml (herramientas/generar_cifras.py, a partir de data/results/final/07b_nulo_estructura_oe4.csv) -->
 **Nulo de estructura constante.** El nulo del capítulo 2 se calcula con longitud de bloque $L_{\mathrm b}$ = {{< meta cifras.largoBloqueNulo >}} y $B$ = {{< meta cifras.replicasNuloEstructura >}} réplicas, y, como sensibilidad, con $L_{\mathrm b}$ = {{< meta cifras.largoBloqueNuloCorto >}} y $L_{\mathrm b}$ = {{< meta cifras.largoBloqueNuloLargo >}} y {{< meta cifras.replicasNuloSensibilidad >}} réplicas cada una. Los inicios de bloque se sortean una sola vez, con semilla fija, y los leen las dos implementaciones. En cada réplica se calculan, para cada ancho y esquema de pesos, el número que elige cada criterio de `aede` con $K_{\max}=20$ y el perfil del RV entre ventanas adyacentes con los dos objetos de la decisión D17.2. Cada número observado se acompaña de su posición en la distribución nula.
@@ -114,11 +117,13 @@ El PCA de correlaciones se interpreta con $d=3$ ejes, la especificación princip
 
 #### Clasificación Factorial Jerárquica
 
-La HFC se corta en 3 y en 4 clases. Las clases se comparan por su composición, nunca por el número del nodo, que depende del orden de las fusiones. De cada clase se informan su factor y su serie representante, que el código define como la serie de la clase más correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. Las correlaciones entre los factores y entre los representantes se acompañan de intervalos bootstrap, también sin la tendencia lineal de cada serie. La estabilidad de la jerarquía se mide con las réplicas del bootstrap por bloques: el índice de Rand ajustado de cada partición frente a la original [@hubert_arabie_1985][^v3-ha], la frecuencia con que cada par de series queda en la misma clase y la correlación cofenética. La evaluación de la estabilidad de clasificaciones bajo remuestreo tiene un antecedente en @hennig_2007[^v3-hen], que trata grupos de observaciones; la HFC agrupa variables, y la analogía se declara como tal.
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
+La HFC se corta en {{< meta cifras.clasesHfcMenor >}} y en {{< meta cifras.clasesHfcMayor >}} clases. Las clases se comparan por su composición, nunca por el número del nodo, que depende del orden de las fusiones. De cada clase se informan su factor y su serie representante, que el código define como la serie de la clase más correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. Las correlaciones entre los factores y entre los representantes se acompañan de intervalos bootstrap, también sin la tendencia lineal de cada serie. La estabilidad de la jerarquía se mide con las réplicas del bootstrap por bloques: el índice de Rand ajustado de cada partición frente a la original [@hubert_arabie_1985][^v3-ha], la frecuencia con que cada par de series queda en la misma clase y la correlación cofenética. La evaluación de la estabilidad de clasificaciones bajo remuestreo tiene un antecedente en @hennig_2007[^v3-hen], que trata grupos de observaciones; la HFC agrupa variables, y la analogía se declara como tal.
 
 #### Datación de regímenes y fases
 
-La datación (capítulo 2, trayectoria PCA-MM12 y datación) usa los $d=3$ primeros *scores* del PCA estático (decisión D9), suavizados con la media móvil causal de 12 meses del notebook 09 (de ahí el nombre PCA-MM12), con longitud mínima $n_{\min}=12$ meses. El número de regímenes lo fija la regla K (decisión D12), con $K_{\max}=10$ como especificación principal y $K_{\max}\in\{15, 20\}$ como sensibilidad (decisión D17.1). Las soluciones en que todos los segmentos miden $n_{\min}$ se marcarían como artefacto; como esa marca solo puede activarse si el número de meses suavizados es múltiplo de $n_{\min}$ (capítulo 2, corolario de factibilidad), el código informa además cuántos segmentos miden exactamente $n_{\min}$. El codo y las dos variantes del índice de Caliński y Harabasz se informan junto a la regla K. La datación se repite con $d=2$ y $d=4$.
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
+La datación (capítulo 2, trayectoria PCA-MM{{< meta cifras.ventanaMediaMovil >}} y datación) usa los $d=3$ primeros *scores* del PCA estático (decisión D9), suavizados con la media móvil causal de {{< meta cifras.ventanaMediaMovil >}} meses del notebook 09 (de ahí el nombre PCA-MM{{< meta cifras.ventanaMediaMovil >}}), con longitud mínima $n_{\min}=12$ meses. El número de regímenes lo fija la regla K (decisión D12), con $K_{\max}=10$ como especificación principal y $K_{\max}\in\{15, 20\}$ como sensibilidad (decisión D17.1). Las soluciones en que todos los segmentos miden $n_{\min}$ se marcarían como artefacto; como esa marca solo puede activarse si el número de meses suavizados es múltiplo de $n_{\min}$ (capítulo 2, corolario de factibilidad), el código informa además cuántos segmentos miden exactamente $n_{\min}$. El codo y las dos variantes del índice de Caliński y Harabasz se informan junto a la regla K. La datación se repite con $d=2$ y $d=4$.
 
 La estabilidad de cada corte se mide con las réplicas del bootstrap por bloques: en cada réplica se recalculan los *scores* con las cargas de la réplica, se suavizan y se particionan con el mismo número de regímenes, y se cuenta la proporción de réplicas que reproducen el corte con la tolerancia principal de D7. Cada régimen recibe después la etiqueta de fase de la regla del notebook 09 (capítulo 2, definición de fase), que es una propuesta preliminar pendiente de discusión con el asesor.
 
@@ -128,8 +133,9 @@ Los cortes se contrastan con los episodios de referencia del capítulo 2, con la
 
 El anexo de robustez incluye la detección de episodios fuera de muestra. Se formaliza con la regla del notebook 09, aplicada al PCA.
 
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
 ::: {#def-walkforward name="Razón de error walk-forward del PCA"}
-Para cada año de evaluación $a$, sean $\mathcal{T}_a$ los meses anteriores a enero de $a$. Los datos se estandarizan con la media y la desviación típica (divisor igual al número de meses) de $\mathcal{T}_a$, y se ajusta un PCA de $d$ componentes con esos meses. El error de reconstrucción del mes $t$, $E_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes. La *razón de error* de cada mes del año $a$ es $E_t/E^{(95)}_a$, donde $E^{(95)}_a$ es el percentil 95 de los errores de los meses de $\mathcal{T}_a$. Un mes con razón mayor que uno es una *alarma*.
+Para cada año de evaluación $a$, sean $\mathcal{T}_a$ los meses anteriores a enero de $a$. Los datos se estandarizan con la media y la desviación típica (divisor igual al número de meses) de $\mathcal{T}_a$, y se ajusta un PCA de $d$ componentes con esos meses. El error de reconstrucción del mes $t$, $E_t$, es el error cuadrático medio por serie de su reconstrucción con $d$ componentes. La *razón de error* de cada mes del año $a$ es $E_t/E^{({{< meta cifras.percentilWalkforward >}})}_a$, donde $E^{({{< meta cifras.percentilWalkforward >}})}_a$ es el percentil {{< meta cifras.percentilWalkforward >}} de los errores de los meses de $\mathcal{T}_a$. Un mes con razón mayor que uno es una *alarma*.
 :::
 
 Con la razón de error se calculan la proporción de falsas alarmas, fuera de los episodios, y la sensibilidad, la proporción de alarmas dentro de cada episodio, sin tolerancia y con los episodios ampliados en 3 y en 6 meses. El cálculo se hace con $d=3$ y con las series transformadas, que es la vía en la que D15 conserva la detección, y con las series sin transformar como contraste.

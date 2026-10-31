@@ -419,7 +419,8 @@ La tesis demuestra (c) con un contraejemplo de tres tramos constantes en el que 
 
 ### Datación de regímenes con los *scores* del PCA
 
-::: {#def-datacion name="Trayectoria PCA-MM12 y datación"}
+<!-- parámetros de diseño provisionales (no están en decisiones.qmd): tesis/_cifras.yml, generado a partir de data/results/final/parametros_diseno.csv -->
+::: {#def-datacion name="Trayectoria PCA-MM{{< meta cifras.ventanaMediaMovil >}} y datación"}
 Sean $c_{t\ell}$, $\ell\le d$, las $d$ primeras componentes principales del PCA global (@def-pca) y $w_{\mathrm m}$ la longitud de una media móvil causal. Para $t=w_{\mathrm m},\dots,n$ se definen $\bar c_{t\ell}=\frac{1}{w_{\mathrm m}}\sum_{s=t-w_{\mathrm m}+1}^{t}c_{s\ell}$ y $\mathbf{y}_t\in\mathbb{R}^d$, el vector $(\bar c_{t1},\dots,\bar c_{td})$ con cada coordenada estandarizada con divisor $N=n-w_{\mathrm m}+1$. La *datación* es la partición óptima de la trayectoria $\mathbf{y}_{w_{\mathrm m}},\dots,\mathbf{y}_n$ (@def-fisher) con longitud mínima $n_{\min}$, para $K=1,\dots,K_{\mathrm{ef}}$. Cada corte se fecha en el primer mes del segmento siguiente.
 :::
 
