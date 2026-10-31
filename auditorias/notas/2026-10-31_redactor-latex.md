@@ -44,8 +44,8 @@ Otros cambios:
 - `02_marco_teorico.tex:901-905`: los «pasos 3 y 4» y el «paso 3» de `alg:aede`. Es la numeración
   del algoritmo.
 - `03_metodologia.tex:261`: $n_{\min}=12$ meses. Es D17.1, no la ventana de la media móvil.
-- `03_metodologia.tex:167, 180, 230, 259, 298`: $d=3$ y «tres ejes», y los ±3 y ±6 meses de D7 (línea 298). Son de D9, no forman parte de
-  N-03.
+- `03_metodologia.tex:167, 180, 230, 259, 298`: $d=3$ y «tres ejes» (D9) y los ±3 y ±6 meses
+  (D7, línea 298). Son parámetros de decisiones registradas y no forman parte de N-03.
 - `02_marco_teorico.tex:532-534, 999`: «percentil» sin número. Es el percentil de Horn, que es
   otro parámetro.
 - Los capítulos 4 y 5: regla 7.
