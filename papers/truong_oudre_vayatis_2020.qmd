@@ -1,0 +1,63 @@
+---
+title: "Truong, Oudre y Vayatis (2020) — Selective review of offline change point detection methods"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-089 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído en la versión *preprint* (arXiv:1801.00718v3, primeras ~100 000 de 106 952 caracteres); versión publicada no consultada |
+| **Tipo de fuente** | Artículo de revista con revisión por pares (revisión de literatura) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Truong, C., Oudre, L., & Vayatis, N. (2020). Selective review of offline change point detection methods. *Signal Processing*, *167*, Artículo 107299. https://doi.org/10.1016/j.sigpro.2019.107299
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 167, número de artículo 107299, febrero de 2020, Elsevier, DOI. La versión arXiv v3 (26-03-2020) dice «Accepted to Signal Processing March 27, 2020», fecha que no cuadra con el volumen de febrero de 2020 de Crossref; se cita la versión publicada según Crossref.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de puntos de cambio fuera de línea |
+| **Área secundaria** | Series multivariadas |
+| **Relevancia para la tesis** | **ALTA.** Marco general para situar la datación de transiciones de la tesis. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; datación (D12) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo organizar los métodos de detección de múltiples puntos de cambio en series multivariadas, fuera de línea.
+
+**Marco.** Tres elementos: (i) una **función de costo**, que mide la homogeneidad de un subsegmento y determina qué tipo de cambio se detecta; (ii) un **método de búsqueda**, que resuelve el problema de optimización discreta con un compromiso entre costo computacional y exactitud, y (iii) una **restricción** sobre el número de cambios (fijo, o una penalización cuando es desconocido).
+
+**Métodos de búsqueda revisados.** Opt (programación dinámica exacta con número conocido de cambios), Pelt (exacto con penalización lineal), segmentación binaria, segmentación ascendente (*bottom-up*) y ventana deslizante. Los algoritmos están implementados en el paquete de Python *ruptures*.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Función de costo | Criterio de homogeneidad intra-tramo de la partición de Fisher (suma de cuadrados) |
+| Restricción sobre el número de cambios | Regla K de D12/D17 |
+| *ruptures* | Posible verificación cruzada en Python de la segmentación (no decidida) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite describir la datación de la tesis como costo cuadrático + búsqueda exacta + regla de número de tramos.
+- La ventana deslizante es la intuición del EPCA, aplicada aquí a la detección.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Lectura de la versión *preprint*; las citas de páginas deben tomarse de la versión publicada.
+- Usar *ruptures* sería una decisión metodológica nueva: no se propone sin pasar por `decisiones.qmd`.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `aminikhanghahi_cook_2017` | Alta | Fichada (3c) |
+| `bai_perron_2003` | Alta | Fichada (3c) |

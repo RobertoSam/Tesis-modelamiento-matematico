@@ -1,0 +1,58 @@
+---
+title: "Rünstler y Vlekke (2018) — Business, housing, and credit cycles"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-078 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (depositado por la editorial en Crossref); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Rünstler, G., & Vlekke, M. (2018). Business, housing, and credit cycles. *Journal of Applied Econometrics*, *33*(2), 212–226. https://doi.org/10.1002/jae.2604
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores (Gerhard Rünstler, BCE; Marente Vlekke, CPB), título, revista, volumen 33, número 2, páginas 212–226, marzo de 2018 (en línea el 6 de octubre de 2017), Wiley, DOI y resumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclos del crédito, la vivienda y el PBI |
+| **Área secundaria** | Modelos de componentes no observables |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Evidencia de ciclos financieros largos ligados a un componente de mediano plazo del PBI. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Datos.** PBI, volúmenes de crédito y precios de la vivienda de Estados Unidos y de las cinco mayores economías europeas.
+
+**Método.** Modelos multivariados de componentes no observables para estimar tendencias y ciclos.
+
+**Hallazgos (según el resumen).** Salvo en Alemania, hay ciclos grandes y largos en el crédito y en los precios de la vivienda, muy correlacionados con un componente de mediano plazo del ciclo del PBI; las diferencias de duración y tamaño entre países se vinculan con las características de los mercados de vivienda; las estimaciones en pseudo tiempo real de los ciclos del crédito y de la vivienda son tan precisas como las del PBI.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo de mediano plazo | Escala temporal frente a las ventanas del EPCA (D10) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Confirma la heterogeneidad entre países: argumento para estudiar el caso peruano por separado.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Sin Perú; datos trimestrales; enfoque paramétrico.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `galati_et_al_2016` | Alta | Fichada (3c) |

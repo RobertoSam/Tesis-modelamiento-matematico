@@ -1,0 +1,58 @@
+---
+title: "Harding y Pagan (2002) — Dissecting the cycle: A methodological investigation"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-082 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (portal de investigación de la Australian National University); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Harding, D., & Pagan, A. (2002). Dissecting the cycle: A methodological investigation. *Journal of Monetary Economics*, *49*(2), 365–381. https://doi.org/10.1016/S0304-3932(01)00108-8
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 49, número 2, páginas 365–381, marzo de 2002, DOI. Coincide con el portal de investigación de la ANU (researchportalplus.anu.edu.au), donde se leyó el resumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Datación de ciclos por puntos de giro |
+| **Área secundaria** | Ciclo económico |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Algoritmo de puntos de giro que usan Drehmann et al. (2012) y la literatura del ciclo financiero. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; contraste con la datación de la tesis (Fisher sobre el primer componente) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo dar base estadística a la noción de ciclo de Burns y Mitchell.
+
+**Método (según el resumen).** Adoptan la visión del ciclo como patrón en el **nivel** de la actividad agregada; desarrollan un algoritmo para localizar puntos de giro y una nueva medida de prociclicidad, y vinculan los puntos de giro con los momentos de la serie. Con ello descomponen los ciclos en las contribuciones de la tendencia, la volatilidad, la correlación serial y los efectos no lineales.
+
+**Hallazgo.** Aplicado a varios modelos, encuentran poca evidencia de que ciertos efectos no lineales sean importantes para el ciclo económico.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Puntos de giro en el nivel | Coherente con D1 (análisis oficial en niveles) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia del método de datación alternativo (univariado) frente a la datación multivariada de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen; el índice de concordancia es de Harding y Pagan (2006), obra no fichada.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Harding y Pagan (2006), *Journal of Econometrics* | Media | No fichada |

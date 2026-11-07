@@ -1,0 +1,62 @@
+---
+title: "Holló, Kremer y Lo Duca (2012) — CISS: A composite indicator of systemic stress in the financial system"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-080 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto leído parcialmente (PDF oficial del BCE, primeras ~100 000 de 148 386 caracteres) |
+| **Tipo de fuente** | Documento de trabajo institucional (BCE) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Holló, D., Kremer, M., & Lo Duca, M. (2012). *CISS – A composite indicator of systemic stress in the financial system* (ECB Working Paper No. 1426). European Central Bank. https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp1426.pdf
+
+> **Verificación:** PDF oficial del BCE leído el 2026-11-07: título, autores (Dániel Holló, Magyar Nemzeti Bank; Manfred Kremer y Marco Lo Duca, BCE), Working Paper Series No 1426, marzo de 2012, códigos JEL G01, G10, G20 y E44.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Índices de estrés financiero |
+| **Área secundaria** | Agregación con correlaciones variables |
+| **Relevancia para la tesis** | **ALTA.** Referencia metodológica de la agregación de indicadores financieros con correlaciones cambiantes. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; validación (episodios de estrés) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo medir el estrés sistémico corriente del sistema financiero.
+
+**Datos.** Zona del euro; 15 medidas individuales de estrés agrupadas en cinco subíndices de segmentos de mercado.
+
+**Método.** Aplica la teoría de carteras para agregar los cinco subíndices: la agregación usa las correlaciones cruzadas variables en el tiempo entre subíndices, de modo que el CISS pesa más los episodios en que el estrés aparece a la vez en varios segmentos. Un VAR con umbral identifica el nivel de estrés por encima del cual la actividad real se deprime significativamente.
+
+**Hallazgo.** Existe un umbral de estrés sistémico a partir del cual el estrés financiero deprime la actividad económica.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Correlaciones variables en el tiempo | Lo que la tesis describe con el PCA evolutivo por ventanas y el RV entre ventanas |
+| Estrés simultáneo en varios segmentos | Episodios en que el primer componente concentra más inercia |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Muestra que la estructura de correlaciones entre segmentos cambia en los episodios de estrés: misma intuición que el EPCA de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Lectura parcial; índice de estrés (frecuencia alta) y no de ciclo financiero (mediano plazo).
+- Zona del euro; sin Perú.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `illing_liu_2006` | Alta | Fichada (3c) |

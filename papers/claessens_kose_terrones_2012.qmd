@@ -1,0 +1,62 @@
+---
+title: "Claessens, Kose y Terrones (2012) — How do business and financial cycles interact?"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-073 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (EconPapers, para localizar); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Claessens, S., Kose, M. A., & Terrones, M. E. (2012). How do business and financial cycles interact? *Journal of International Economics*, *87*(1), 178–190. https://doi.org/10.1016/j.jinteco.2011.11.008
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 87, número 1, páginas 178–190, mayo de 2012, Elsevier, DOI. El resumen se leyó en EconPapers (secundaria): el contenido que se le atribuye debe contrastarse con la editorial.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Interacción entre ciclo económico y ciclo financiero |
+| **Área secundaria** | Recesiones y recuperaciones |
+| **Relevancia para la tesis** | **ALTA.** Evidencia de que las fases financieras condicionan las recesiones; incluye economías emergentes. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo interactúan las fases del ciclo económico y del ciclo financiero.
+
+**Datos.** Base de 44 países, 1960T1–2010T4 (según el resumen).
+
+**Hallazgos (según el resumen).** Vínculos fuertes entre las fases de ambos ciclos. Las recesiones asociadas con perturbaciones financieras, en especial caídas de los precios de la vivienda y de las acciones, son más largas y profundas; las recuperaciones tras caídas de precios de activos tienden a ser más débiles, y las asociadas con un crecimiento rápido del crédito y de la vivienda, más fuertes.
+
+**Método.** No detallado en el resumen.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fases del ciclo financiero | Regímenes de expansión y contracción detectados por las vías de la tesis |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Justifica la relevancia macroeconómica de describir el régimen financiero.
+- La muestra incluye economías emergentes (la lista de países no se verificó).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Resumen leído en fuente secundaria; contrastar con ScienceDirect (no accesible).
+- No consta en lo leído si el Perú está en la muestra: no afirmarlo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `claessens_kose_terrones_2011` | Alta | Fichada (3c) |

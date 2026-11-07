@@ -1,0 +1,55 @@
+---
+title: "Goodfellow, Bengio y Courville (2016) — Deep learning"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-094 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (catálogo); texto no consultado |
+| **Tipo de fuente** | Libro (editorial universitaria) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep learning*. MIT Press.
+
+> **Verificación:** Catálogo de la biblioteca de la Tokyo University of Agriculture and Technology (bibid 1000234711) leído el 2026-11-07: autores, título, MIT Press, Cambridge (Mass.), ©2016, xxii + 775 p., ISBN 978-0-262-03561-3 (tapa dura), serie Adaptive computation and machine learning.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Aprendizaje profundo |
+| **Área secundaria** | Autoencoders y redes recurrentes |
+| **Relevancia para la tesis** | **MEDIA.** Manual de referencia para la vía de autoencoders y LSTM (complemento, regla 5). |
+| **Frente de la tesis al que aporta** | Marco teórico (AE/LSTM) |
+
+## 4. Resumen analítico
+
+**Contenido no verificado.** Texto no consultado; se cita como manual general de aprendizaje profundo.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Autoencoder; red recurrente | Vía complementaria (D17: AE/LSTM pendientes) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia general para definir autoencoders y LSTM sin depender solo de artículos.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Sin capítulos ni páginas verificados.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hinton_salakhutdinov_2006` | Alta | Fichada |
+| `hochreiter_schmidhuber_1997` | Alta | Fichada |

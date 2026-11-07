@@ -1,0 +1,59 @@
+---
+title: "Bai y Perron (1998) — Estimating and testing linear models with multiple structural changes"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-087 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página oficial de la Econometric Society); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bai, J., & Perron, P. (1998). Estimating and testing linear models with multiple structural changes. *Econometrica*, *66*(1), 47–78. https://doi.org/10.2307/2998540
+
+> **Verificación:** Página de la Econometric Society leída el 2026-11-07: autores, título, volumen 66, número 1, páginas 47–78, enero de 1998, JSTOR 2998540, y resumen. Registro de Crossref: DOI 10.2307/2998540.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Cambios estructurales múltiples |
+| **Área secundaria** | Fechas de quiebre desconocidas |
+| **Relevancia para la tesis** | **ALTA.** Referencia del fechado de quiebres con fechas desconocidas, análogo univariado de la segmentación de la tesis. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; datación (Fisher, D12) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo estimar y contrastar múltiples cambios estructurales con fechas desconocidas en una regresión lineal estimada por mínimos cuadrados.
+
+**Contenido (según el resumen).** Propiedades de los estimadores, incluidas las fechas de quiebre; pruebas de existencia de cambio estructural y del número de quiebres; modelos de cambio parcial; tasas de convergencia de las fracciones de quiebre; una prueba de *l* contra *l + 1* quiebres que permite una estrategia secuencial de lo específico a lo general, y un método que estima los quiebres uno a uno.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Fechas de quiebre desconocidas | Cortes estimados de la partición de Fisher sobre la serie de la primera componente (D12) |
+| Prueba de *l* contra *l + 1* quiebres | Análogo de la regla K de D12/D17 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia econométrica de la segmentación óptima por mínimos cuadrados, de la misma familia que la partición de Fisher (1958) que usa la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Regresión lineal univariada con supuestos sobre los errores; la tesis no hace inferencia sobre las fechas.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `bai_perron_2003` | Alta | Fichada (3c) |
+| `perron_1989` | Media | Fichada |
+| `fisher_1958` | Alta | Ficha preliminar |

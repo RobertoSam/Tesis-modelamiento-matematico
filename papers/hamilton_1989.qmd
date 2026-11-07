@@ -1,0 +1,59 @@
+---
+title: "Hamilton (1989) — A new approach to the economic analysis of nonstationary time series and the business cycle"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-084 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página oficial de la Econometric Society); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hamilton, J. D. (1989). A new approach to the economic analysis of nonstationary time series and the business cycle. *Econometrica*, *57*(2), 357–384. https://doi.org/10.2307/1912559
+
+> **Verificación:** Página de la Econometric Society leída el 2026-11-07: autor, título, volumen 57, número 2, páginas 357–384, marzo de 1989, enlace estable de JSTOR 1912559, y resumen. Registro de Crossref: DOI 10.2307/1912559 (página inicial 357).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Modelos de cambio de régimen de Markov |
+| **Área secundaria** | Datación de recesiones |
+| **Relevancia para la tesis** | **ALTA.** Referencia clásica de los regímenes como estados no observados (marco conceptual, sección 7.2). |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; alternativas consideradas (Rmd A.5) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo modelar cambios de régimen discretos en series no estacionarias.
+
+**Método (según el resumen).** Los parámetros de una autorregresión son el resultado de un proceso de Markov de estados discretos, de modo que la tasa media de crecimiento puede cambiar abruptamente en momentos impredecibles. Los cambios no se observan y deben inferirse probabilísticamente; se da un algoritmo de máxima verosimilitud y una base para el pronóstico.
+
+**Datos y hallazgo.** PNB real de EE. UU. de posguerra: los cambios de crecimiento positivo a negativo son recurrentes y pueden servir como datación objetiva de las recesiones; una recesión típica se asocia con una caída permanente de alrededor de 3 % en el nivel del PNB.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Régimen como estado no observado | Contraste con el régimen de la tesis: estructura de correlaciones descrita, no estado latente modelado |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia de la alternativa confirmatoria (modelo paramétrico de regímenes) que la tesis discute y no adopta.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Univariado y paramétrico; supone el número de regímenes.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `kim_nelson_1999` | Alta | Fichada (3c) |
+| `krolzig_1997` | Media | Fichada (3c) |

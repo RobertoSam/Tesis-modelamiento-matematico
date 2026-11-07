@@ -1,0 +1,59 @@
+---
+title: "Alvarado Vargas (2021) — Estimación del ciclo financiero y su impacto en el ciclo económico del Perú, 1999–2021"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-099 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (registro del repositorio institucional de la Universidad de Lima); texto no consultado |
+| **Tipo de fuente** | Trabajo de suficiencia profesional (pregrado, título profesional de Economista) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Alvarado Vargas, R. M. (2021). *Caso de estudio: Estimación del ciclo financiero y su impacto en el ciclo económico del Perú durante 1999 al 2021* [Trabajo de suficiencia profesional, Universidad de Lima]. Repositorio Institucional de la Universidad de Lima. https://hdl.handle.net/20.500.12724/15029
+
+> **Verificación:** Registro completo del Repositorio Institucional de la Universidad de Lima (repositorio.ulima.edu.pe, hdl 20.500.12724/15029) leído el 2026-11-07: autora (Rocío Marleny Alvarado Vargas), asesor (Roby Arbe Saldaña), tipo (trabajo de suficiencia profesional; título profesional de Economista), Facultad de Ciencias Empresariales y Económicas, fecha de emisión 2021, licencia CC BY-NC-SA 4.0.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo financiero del **Perú** |
+| **Área secundaria** | Regresión por cuantiles |
+| **Relevancia para la tesis** | **BAJA-MEDIA.** Antecedente peruano directo, pero de pregrado y sin revisión por pares. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes (Perú), con cautela |
+
+## 4. Resumen analítico
+
+**Pregunta.** Medir el ciclo financiero del Perú (1999–2021) y su efecto sobre el ciclo económico.
+
+**Método (según el resumen).** Propone medir la contribución de cada serie a un indicador compuesto del ciclo financiero y estima su efecto con regresión por cuantiles.
+
+**Hallazgos (según el resumen).** El ciclo financiero ayuda a anticipar el ciclo económico en expansiones y recesiones, con más fuerza en las expansiones (un aumento de 1 % del ciclo financiero se asocia con un aumento de 7,0 % del ciclo económico); recomienda vigilar el ciclo financiero en los auges.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Indicador compuesto del ciclo financiero | Análogo del primer componente del PCA |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Muestra que existe literatura local reciente sobre el ciclo financiero peruano.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Trabajo de pregrado sin revisión por pares: usar solo como mención del estado de la literatura local, no como sustento de hallazgos.
+- La cifra de 7,0 % es del resumen; no se verificó su especificación.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `atoche_murrieta_2022` | Alta | Fichada |

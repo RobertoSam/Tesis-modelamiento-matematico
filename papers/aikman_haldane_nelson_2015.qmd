@@ -1,0 +1,52 @@
+---
+title: "Aikman, Haldane y Nelson (2015) — Curbing the credit cycle"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-074 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos); resumen y texto no consultados |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Aikman, D., Haldane, A. G., & Nelson, B. D. (2015). Curbing the credit cycle. *The Economic Journal*, *125*(585), 1072–1109. https://doi.org/10.1111/ecoj.12113
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores (David Aikman, Andrew G. Haldane y Benjamin D. Nelson, Bank of England), título, revista, volumen 125, número 585, páginas 1072–1109, número impreso de junio de 2015 (publicado en línea el 26 de marzo de 2014), DOI. IDEAS/RePEc indica que no hay resumen disponible; la página de la editorial y EconBiz no fueron accesibles.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo crediticio |
+| **Área secundaria** | Política macroprudencial |
+| **Relevancia para la tesis** | **MEDIA** como cita; **no utilizable para contenido** hasta leer el resumen o el texto. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Contenido no verificado.** No se leyó el resumen ni el texto. El título solo permite ubicarlo en la literatura sobre el ciclo crediticio y su contención por la política.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo crediticio | Bloque de crédito de las series del BCRP |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Puede citarse como parte de la literatura sobre el ciclo crediticio **sin atribuirle hallazgos**.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Ningún hallazgo, dato o método puede atribuírsele hasta leer al menos el resumen oficial (Oxford Academic).
+
+## 7. Referencias internas relevantes
+
+Ninguna identificada en lo leído.

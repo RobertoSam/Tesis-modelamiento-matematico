@@ -1,0 +1,61 @@
+---
+title: "Illing y Liu (2006) — Measuring financial stress in a developed country: An application to Canada"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-081 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Versión de documento de trabajo leída parcialmente (Bank of Canada WP 2003-14); artículo publicado no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Illing, M., & Liu, Y. (2006). Measuring financial stress in a developed country: An application to Canada. *Journal of Financial Stability*, *2*(3), 243–265. https://doi.org/10.1016/j.jfs.2006.06.002
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores (Mark Illing y Ying Liu), título, revista, volumen 2, número 3, páginas 243–265, octubre de 2006, DOI. Contenido: PDF del Bank of Canada Working Paper 2003-14, «An index of financial stress for Canada» (junio de 2003), en el repositorio institucional del Banco de Canadá (oar-rao.bank-banque-canada.ca).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Índices de estrés financiero |
+| **Área secundaria** | Validación con episodios |
+| **Relevancia para la tesis** | **ALTA** para la validación: contrasta el índice con episodios de estrés identificados por una fuente ajena a las series. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; validación externa |
+
+## 4. Resumen analítico
+
+**Pregunta (versión WP 2003-14).** Cómo construir un índice de estrés financiero (FSI) para Canadá.
+
+**Datos.** Amplio conjunto de variables de los mercados bancario, cambiario, de deuda y de acciones.
+
+**Método.** Combina las variables con análisis factorial, ponderación por referencias económicas y modelos GARCH. Una encuesta interna del Banco de Canadá guía la elección de variables y sirve para evaluar si el índice coincide con los episodios que el personal considera de mayor estrés.
+
+**Hallazgos.** Las medidas de crisis de la literatura previa no reproducen bien la encuesta; varias medidas propias sí. En el cuerpo del documento, la versión preferida es el índice de variables estandarizadas con pesos según el crédito (menores errores de tipo I y II).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Validación contra episodios definidos fuera del índice | Validación externa de la tesis (regla 6, D7, D18) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Antecedente directo del diseño de validación de la tesis: los regímenes se contrastan con episodios fechados por una fuente ajena a las series.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El contenido leído es el del documento de trabajo; el artículo de 2006 puede diferir.
+- Lectura parcial.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hollo_kremer_lo_duca_2012` | Alta | Fichada (3c) |

@@ -1,0 +1,64 @@
+---
+title: "Claessens, Kose y Terrones (2011) — Financial cycles: What? How? When?"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-072 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (NBER y FMI); texto completo no consultado |
+| **Tipo de fuente** | Capítulo en serie anual con revisión editorial (NBER International Seminar on Macroeconomics) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Claessens, S., Kose, M. A., & Terrones, M. E. (2011). Financial cycles: What? How? When? *NBER International Seminar on Macroeconomics*, *7*(1), 303–344. https://doi.org/10.1086/658308
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, volumen 7, número 1, páginas 303–344, 1 de marzo de 2011, University of Chicago Press. Página del NBER: capítulo 7 de *NBER International Seminar on Macroeconomics 2010*, editores Richard Clarida y Francesco Giavazzi, publicado en septiembre de 2011, DOI 10.1086/658308, y resumen. Versión previa: IMF Working Paper 11/76 (1 de abril de 2011; página del FMI leída).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo financiero: datación y características |
+| **Área secundaria** | Sincronización internacional |
+| **Relevancia para la tesis** | **ALTA.** Caracterización de referencia de los ciclos del crédito, la vivienda y las acciones. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; validación externa (episodios globales) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Qué son los ciclos financieros, cómo se comportan y cuándo coinciden entre mercados y países.
+
+**Datos.** Ciclos del crédito, de los precios de la vivienda y de los precios de las acciones en 21 economías avanzadas, 1960T1–2007T4.
+
+**Método.** El resumen no lo detalla (no se leyó el texto; no se le atribuye el algoritmo de datación).
+
+**Hallazgos (según el resumen).** (i) Los ciclos financieros tienden a ser largos y severos, sobre todo en vivienda y acciones; (ii) están muy sincronizados dentro de cada país, en particular crédito y vivienda; (iii) la sincronización entre países es alta y creciente, sobre todo en crédito y acciones; (iv) los ciclos se amplifican entre sí cuando coinciden las contracciones del crédito y de la vivienda, y (v) las contracciones sincronizadas a escala global son más prolongadas y costosas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Sincronización de ciclos | Coincidencia temporal de regímenes entre bloques de series (crédito, precios de activos) |
+| Contracción sincronizada global | Episodios de referencia globales (crisis de 2008-2009, COVID-19) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Respalda tratar los bloques de crédito y precios de activos como portadores de un ciclo común.
+- Motiva que los episodios externos globales se usen como referencia de validación (D7, D18).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen; no atribuirle el método de datación.
+- Economías avanzadas; sin Perú.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `claessens_kose_terrones_2012` | Alta | Fichada (3c) |
+| `harding_pagan_2002` | Media | Fichada (3c) |

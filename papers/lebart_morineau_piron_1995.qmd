@@ -1,0 +1,55 @@
+---
+title: "Lebart, Morineau y Piron (1995) — Statistique exploratoire multidimensionnelle"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-093 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (registro institucional y registro de autoridad); texto no consultado |
+| **Tipo de fuente** | Libro (editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lebart, L., Morineau, A., & Piron, M. (1995). *Statistique exploratoire multidimensionnelle*. Dunod.
+
+> **Verificación:** Base Horizon del IRD (documentation.ird.fr, fdi:010007837), registro institucional de la producción de M. Piron, leído el 2026-11-07: autores en el orden L. Lebart, A. Morineau y Marie Piron; Dunod, París, 1995, 439 p., ISBN 2-10-002886-3. Registro de autoridad de la BnF (ark:/12148/cb12373017v): confirma la obra de 1995 con los tres autores. Edición no indicada.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis exploratorio multidimensional (escuela francesa) |
+| **Área secundaria** | PCA, análisis de correspondencias y clasificación |
+| **Relevancia para la tesis** | **ALTA** como marco de la escuela francesa en que se inscriben la HFC y el EPCA. |
+| **Frente de la tesis al que aporta** | Marco teórico; posición epistemológica |
+
+## 4. Resumen analítico
+
+**Contenido no verificado.** Texto no consultado. Es el manual de la tradición francesa del análisis de datos que el marco conceptual (sección 7.4) usa como base del análisis exploratorio multidimensional.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estadística exploratoria multidimensional | Vía exploratoria de la tesis (posición del asesor) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Candidata a fuente de la terminología de calidad de representación (cos²) y contribuciones: **sin verificar la sección**; la fila del registro sigue abierta.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La ficha de Camiz et al. (2020) menciona una edición de 2006 con otro orden de autores (Lebart, Piron y Morineau): no se verificó; esta ficha es la de 1995.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `benzecri_1973` | Alta | Ficha preliminar |
+| `camiz_et_al_2020` | Alta | Fichada |

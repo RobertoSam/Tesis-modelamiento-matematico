@@ -1,0 +1,58 @@
+---
+title: "Borio y Lowe (2002) — Asset prices, financial and monetary stability: Exploring the nexus"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-071 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página oficial del BIS); texto completo no consultado |
+| **Tipo de fuente** | Documento de trabajo institucional (BIS) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Borio, C., & Lowe, P. (2002). *Asset prices, financial and monetary stability: Exploring the nexus* (BIS Working Paper No. 114). Bank for International Settlements. https://www.bis.org/publ/work114.htm
+
+> **Verificación:** Página del BIS (bis.org/publ/work114.htm) leída el 2026-11-07: título, autores (Claudio Borio y Philip Lowe), serie y número (BIS Working Paper 114), fecha de publicación (2 de julio de 2002) y resumen. El enlace al PDF devolvió la misma página de resumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo financiero: desequilibrios financieros y alerta temprana |
+| **Área secundaria** | Política monetaria y estabilidad financiera |
+| **Relevancia para la tesis** | **MEDIA.** Antecedente del uso conjunto de crédito y precios de activos para anticipar episodios de inestabilidad. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Pregunta.** Si los desequilibrios financieros pueden acumularse con inflación baja y si la política debe responder a ellos.
+
+**Hallazgo principal (según el resumen).** Identificar los desequilibrios *ex ante* es difícil pero no imposible: el crecimiento rápido y sostenido del crédito, combinado con alzas grandes de los precios de los activos, aumenta la probabilidad de un episodio de inestabilidad financiera. Con inflación baja y estable, el exceso de demanda puede manifestarse primero en el crédito y en los precios de los activos, y no en los precios de bienes y servicios; por ello, una respuesta monetaria a esos mercados puede ser apropiada en ciertos casos.
+
+**Datos y método.** El resumen no los detalla (no se leyó el texto).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Desequilibrio financiero | Combinación de crédito y precios de activos en expansión; motiva incluir ambos bloques de series |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Justifica que crédito y precios de activos se analicen conjuntamente, como hace la tesis con sus 16 series.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **No se verificó** la construcción de las brechas ni el horizonte de predicción: no atribuirle «brecha de crédito» ni «1 a 3 años» hasta leer el texto.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `borio_2014` | Alta | Fichada (3c) |

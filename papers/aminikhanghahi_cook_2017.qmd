@@ -1,0 +1,54 @@
+---
+title: "Aminikhanghahi y Cook (2017) — A survey of methods for time series change point detection"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-090 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (repositorio institucional de Washington State University, manuscrito aceptado); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares (revisión de literatura) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Aminikhanghahi, S., & Cook, D. J. (2017). A survey of methods for time series change point detection. *Knowledge and Information Systems*, *51*(2), 339–367. https://doi.org/10.1007/s10115-016-0987-z
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 51, número 2, páginas 339–367, mayo de 2017 (en línea el 8 de septiembre de 2016), Springer, DOI. Coincide con el registro del repositorio de WSU (rex.libraries.wsu.edu; PMCID PMC5464762, PMID 28603327). PubMed Central no fue accesible (verificación reCAPTCHA).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de puntos de cambio |
+| **Área secundaria** | Aprendizaje automático |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Revisión de métodos supervisados y no supervisados. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Contenido (según el resumen).** Los puntos de cambio son variaciones abruptas de una serie de tiempo que pueden marcar transiciones entre estados. La revisión cataloga y compara métodos de detección supervisados y no supervisados, propone criterios para compararlos y cierra con retos abiertos. Aplicaciones citadas: monitoreo médico, cambio climático, análisis de voz e imagen, actividad humana.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Transición entre estados | Transición de régimen (marco conceptual, 2.2) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita general para la familia de métodos de detección y su vínculo con el aprendizaje automático.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen: no atribuirle una taxonomía concreta de métodos.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `truong_oudre_vayatis_2020` | Alta | Fichada (3c) |

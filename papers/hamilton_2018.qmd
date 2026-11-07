@@ -1,0 +1,59 @@
+---
+title: "Hamilton (2018) — Why you should never use the Hodrick-Prescott filter"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-083 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (NBER Working Paper 23429, versión previa); artículo publicado no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hamilton, J. D. (2018). Why you should never use the Hodrick-Prescott filter. *The Review of Economics and Statistics*, *100*(5), 831–843. https://doi.org/10.1162/rest_a_00706
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autor (James D. Hamilton, UC San Diego), título, revista, volumen 100, número 5, páginas 831–843, diciembre de 2018, MIT Press, DOI. Resumen leído en la página del NBER (Working Paper 23429, mayo de 2017, DOI 10.3386/w23429).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Extracción de tendencia y ciclo |
+| **Área secundaria** | Crítica del filtro HP |
+| **Relevancia para la tesis** | **ALTA** para justificar por qué la tesis no extrae la tendencia con el filtro HP (D1, D5). |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; metodología (tendencias) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Si el filtro de Hodrick-Prescott es adecuado para separar tendencia y ciclo.
+
+**Argumentos (según el resumen).** (i) El filtro HP produce relaciones dinámicas espurias que no existen en los datos; (ii) los valores filtrados al final de la muestra difieren mucho de los del medio y también muestran dinámica espuria; (iii) una derivación estadística formal del parámetro de suavizamiento da valores muy distintos de los habituales (para datos trimestrales, muy por debajo de 1600).
+
+**Alternativa.** Regresar la variable en *t + h* sobre sus cuatro valores más recientes en *t*.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Problema del final de la muestra | Relevante para cualquier filtro bilateral aplicado hasta 2025-12 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Sostiene la decisión de no filtrar con HP y de tratar la tendencia con una regla fijada de antemano (D5).
+- También sirve de cautela para la brecha crédito/PBI de Basilea, que usa un HP unilateral (no verificado aquí).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Resumen de la versión NBER; la regresión alternativa no se usa en la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Hodrick y Prescott (1997) | Media | No fichada |

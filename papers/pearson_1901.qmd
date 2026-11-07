@@ -1,0 +1,55 @@
+---
+title: "Pearson (1901) — On lines and planes of closest fit to systems of points in space"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-091 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos de Crossref); texto no consultado |
+| **Tipo de fuente** | Artículo de revista (histórico) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Pearson, K. (1901). On lines and planes of closest fit to systems of points in space. *The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science*, *2*(11), 559–572. https://doi.org/10.1080/14786440109462720
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autor (Karl Pearson, University College, London), título (ítem LIII), revista, volumen 2, número 11, páginas 559–572, noviembre de 1901, Informa UK (Taylor & Francis), DOI.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Origen del PCA |
+| **Área secundaria** | Ajuste geométrico |
+| **Relevancia para la tesis** | **MEDIA.** Cita histórica del origen geométrico del PCA. |
+| **Frente de la tesis al que aporta** | Marco teórico (PCA) |
+
+## 4. Resumen analítico
+
+**Contenido no verificado.** Solo se verificaron los metadatos. La atribución habitual —origen geométrico del PCA como ajuste de rectas y planos de mínima distancia— no se comprobó en el texto.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Plano de mejor ajuste | Subespacio de las primeras componentes (Eckart y Young, 1936) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita histórica, junto con Hotelling (1933).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: usar como atribución histórica, sin detalles.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hotelling_1933` | Alta | Fichada (3c) |
+| `jolliffe_2002` | Alta | Fichada |

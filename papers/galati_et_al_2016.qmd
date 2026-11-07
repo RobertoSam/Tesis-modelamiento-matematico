@@ -1,0 +1,61 @@
+---
+title: "Galati, Hindrayanto, Koopman y Vlekke (2016) — Measuring financial cycles in a model-based analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-077 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído de la versión de documento de trabajo (DNB Working Paper 495); artículo publicado no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Galati, G., Hindrayanto, I., Koopman, S. J., & Vlekke, M. (2016). Measuring financial cycles in a model-based analysis: Empirical evidence for the United States and the euro area. *Economics Letters*, *145*, 83–87. https://doi.org/10.1016/j.econlet.2016.05.034
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores (Gabriele Galati, Irma Hindrayanto, Siem Jan Koopman y Marente Vlekke), título, revista, volumen 145, páginas 83–87, agosto de 2016, DOI. Resumen leído en el PDF oficial del De Nederlandsche Bank, Working Paper 495 (enero de 2016), cuyo título difiere: «Measuring financial cycles **with a model-based filter**: Empirical evidence for the United States and the euro area».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Medición del ciclo financiero con modelos de componentes no observables |
+| **Área secundaria** | Duración y amplitud |
+| **Relevancia para la tesis** | **ALTA.** Alternativa paramétrica (modelo de estado) a la vía exploratoria de la tesis. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo medir ciclos financieros con un filtro basado en un modelo multivariado.
+
+**Datos (versión DNB WP 495).** Estados Unidos, Alemania, Francia, Italia, España y Países Bajos, 1970–2014; crédito total, razón crédito/PBI y precios de la vivienda.
+
+**Método.** Modelo multivariado de componentes no observables estimado por métodos de espacio de estados.
+
+**Hallazgos.** Las variables financieras tienen ciclos de mediano plazo con propiedades estadísticas lo bastante parecidas para llamarlos «similares»; los ciclos financieros son más largos y amplios que los económicos, y su duración y amplitud varían en el tiempo y entre países.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Modelo de componentes no observables | Contraste: la tesis no impone un modelo de tendencia-ciclo («datos primero») |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Representa la vía confirmatoria (modelo paramétrico) frente a la vía exploratoria de Benzécri que sigue la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El resumen leído es el del documento de trabajo; la nota de *Economics Letters* puede ser más acotada.
+- Sin Perú; datos trimestrales.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `runstler_vlekke_2018` | Alta | Fichada (3c) |

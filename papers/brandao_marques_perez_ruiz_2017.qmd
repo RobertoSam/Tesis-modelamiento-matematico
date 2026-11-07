@@ -1,0 +1,60 @@
+---
+title: "Brandao Marques y Pérez Ruiz (2017) — How financial conditions matter differently across Latin America"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-097 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (PDF oficial del FMI); texto completo no consultado |
+| **Tipo de fuente** | Documento de trabajo institucional (FMI) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Brandao Marques, L., & Pérez Ruiz, E. (2017). *How financial conditions matter differently across Latin America* (IMF Working Paper No. 17/218). International Monetary Fund. https://www.imf.org/~/media/Files/Publications/WP/2017/wp17218.ashx
+
+> **Verificación:** PDF oficial del FMI (imf.org, wp17218) leído el 2026-11-07: título, autores, IMF Working Paper WP/17/218, Western Hemisphere Department, octubre de 2017. **Grafía del primer autor:** la extracción del PDF dio «Luis Brandao Marques»; se usa esa forma; si la grafía oficial lleva tilde o guion («Brandão-Marques») no se confirmó: queda marcada en el `.bib`. DOI del FMI no comprobado.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Índices de condiciones financieras |
+| **Área secundaria** | **Perú** y otras cinco economías latinoamericanas |
+| **Relevancia para la tesis** | **ALTA.** Índice de condiciones financieras comparable que incluye al Perú, con fuente institucional verificada. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes (Perú y región); validación externa (ciclo global de materias primas y financiero) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo construir índices de condiciones financieras (FCI) comparables para seis economías latinoamericanas grandes y muy integradas financieramente (Argentina, Brasil, Chile, Colombia, México y el **Perú**) y cómo afectan a la actividad.
+
+**Método.** VAR aumentado con factores y parámetros variables en el tiempo (TVP-FAVAR), según Korobilis (2013) y Koop y Korobilis (2014).
+
+**Hallazgos (según el resumen).** Los FCI responden a un ciclo de materias primas, a un ciclo financiero global y a episodios nacionales de estrés; a inicios de 2017 las condiciones eran favorables en la mayoría de los países respecto de su historia; el efecto de los choques financieros sobre la actividad varía mucho entre países y es mayor en períodos de estrés, y la exposición a contagios regionales también difiere.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo de materias primas y ciclo financiero global | Episodios externos de referencia (colapso de materias primas 2014–2016; crisis global) |
+| Factores con parámetros variables | Alternativa paramétrica al EPCA |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Respalda que los episodios externos (materias primas, ciclo financiero global) son relevantes para las condiciones financieras del Perú: sustento de los episodios de referencia (D7, D18).
+- Antecedente de reducción dimensional (factores) con estructura cambiante aplicada al Perú.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen; FCI (condiciones financieras de corto plazo), no ciclo financiero de mediano plazo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `minaya_lupu_cabello_2017` | Media | Fichada (3c) |

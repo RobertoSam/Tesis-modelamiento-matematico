@@ -1,0 +1,54 @@
+---
+title: "Kim y Nelson (1999) — State-space models with regime switching"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-085 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (catálogo y descripción institucional); texto no consultado |
+| **Tipo de fuente** | Libro (editorial universitaria) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kim, C.-J., & Nelson, C. R. (1999). *State-space models with regime switching: Classical and Gibbs-sampling approaches with applications*. MIT Press. https://doi.org/10.7551/mitpress/6444.001.0001
+
+> **Verificación:** Catálogo de la biblioteca de Texas A&M University (libcat.library.tamu.edu, registro in00004601197) leído el 2026-11-07: título y subtítulo, MIT Press, Cambridge (Mass.), ©1999, xii + 297 p., DOI 10.7551/mitpress/6444.001.0001 (el registro no muestra los autores). Autores (Chang-Jin Kim y Charles R. Nelson) en la página institucional del Departamento de Economía de la Universidad de Washington. Crossref no devolvió el registro del DOI y doi.org no fue accesible para este DOI.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Modelos de espacio de estados con cambio de régimen |
+| **Área secundaria** | Métodos clásicos y bayesianos |
+| **Relevancia para la tesis** | **MEDIA.** Manual de referencia de los regímenes como estados no observados. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Contenido según la página institucional.** Métodos econométricos para modelos que combinan estructura de espacio de estados y cambio de régimen de Markov, con dos enfoques de estimación: uno clásico que aproxima la función de verosimilitud y uno bayesiano con muestreo de Gibbs. Aplicaciones: descomposición tendencia-ciclo, índice de indicadores coincidentes, incertidumbre de la política monetaria, modelo «plucking» de Friedman, puntos de giro del ciclo y dependencia de la duración, fads y crisis en mercados financieros, entre otras.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estado no observado | Contraste con la vía exploratoria |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita de manual para la familia de modelos de cambio de régimen.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado; DOI visto solo en el catálogo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hamilton_1989` | Alta | Fichada (3c) |

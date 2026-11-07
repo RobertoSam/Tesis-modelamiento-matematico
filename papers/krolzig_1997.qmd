@@ -1,0 +1,54 @@
+---
+title: "Krolzig (1997) — Markov-switching vector autoregressions"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-086 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos de Crossref); texto no consultado |
+| **Tipo de fuente** | Libro (serie monográfica de editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Krolzig, H.-M. (1997). *Markov-switching vector autoregressions*. Springer. https://doi.org/10.1007/978-3-642-51684-9
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autor (Hans-Martin Krolzig), título «Markov-Switching Vector Autoregressions», serie Lecture Notes in Economics and Mathematical Systems, Springer Berlin Heidelberg, 1997, ISBN 978-3-540-63073-9 (impreso) y 978-3-642-51684-9 (electrónico), DOI. Crossref no da subtítulo ni número de volumen de la serie: la referencia solo lleva el título verificado.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Cambio de régimen multivariado (MS-VAR) |
+| **Área secundaria** | Ciclo económico |
+| **Relevancia para la tesis** | **MEDIA.** Referencia del enfoque multivariado de cambio de régimen (marco conceptual, sección 7.2). |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Contenido no verificado más allá del título.** Monografía sobre autorregresiones vectoriales con cambio de régimen de Markov.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| MS-VAR | Alternativa paramétrica multivariada a la vía exploratoria |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita de referencia para la versión multivariada de los modelos de Hamilton.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado; no atribuirle resultados.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hamilton_1989` | Alta | Fichada (3c) |

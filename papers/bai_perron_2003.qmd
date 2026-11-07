@@ -1,0 +1,54 @@
+---
+title: "Bai y Perron (2003) — Computation and analysis of multiple structural change models"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-088 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (depositado por la editorial en Crossref); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bai, J., & Perron, P. (2003). Computation and analysis of multiple structural change models. *Journal of Applied Econometrics*, *18*(1), 1–22. https://doi.org/10.1002/jae.659
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 18, número 1, páginas 1–22, enero de 2003 (en línea el 8 de octubre de 2002), Wiley, DOI y resumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Cambios estructurales múltiples: cómputo |
+| **Área secundaria** | Programación dinámica |
+| **Relevancia para la tesis** | **ALTA.** Algoritmo de programación dinámica para el óptimo global de la segmentación, comparable con la partición de Fisher. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; datación (D12) |
+
+## 4. Resumen analítico
+
+**Contenido (según el resumen).** Complemento práctico de Bai y Perron (1998). Presenta un algoritmo de programación dinámica que halla los minimizadores globales de la suma de cuadrados de los residuos para estimar las fechas de quiebre, con un costo del orden de *T*² operaciones de mínimos cuadrados, cualquiera sea el número de quiebres; vale para cambio puro y parcial. Trata intervalos de confianza para las fechas, pruebas de cambio estructural bajo condiciones generales y la estimación del número de quiebres, con ejemplos empíricos (programa en GAUSS).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Óptimo global por programación dinámica | Misma lógica de la partición óptima de Fisher (1958) para datos ordenados |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite situar la datación de la tesis en la literatura econométrica de segmentación óptima.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `bai_perron_1998` | Alta | Fichada (3c) |

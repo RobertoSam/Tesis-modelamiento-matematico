@@ -1,7 +1,9 @@
 Estado al commit `e97530c` de la rama `iteracion-3b` (29-10-2026), después de L1–L4 y E1–E3;
 puesto al día en la vuelta 1 de la auditoría de la iteración 3b (hallazgo M-01) y, el 30-10-2026,
-al commit `09b9c26` (hallazgo M-03: marca de `fmi_2015b`). Las marcas se contaron con `git grep`,
-no a mano (sección «Conteo de marcas abiertas», al final).
+al commit `09b9c26` (hallazgo M-03: marca de `fmi_2015b`). El 07-11-2026 (iteración 3c, rama
+`iteracion-3c`) se cerró N-02 con D18, se agregaron 30 obras del estado del arte (sección «Estado
+del arte (iteración 3c)») y se recontaron las marcas sobre `605803a`. Las marcas se contaron con
+`git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
 Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada
 edición. Abreviaturas de la columna «Marcas en los documentos»:
@@ -51,8 +53,8 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `granger_newbold_1974` | Granger y Newbold (1974), *Journal of Econometrics*, 2, 111–120 | Número del fascículo y DOI (no figuran en la copia leída; Elsevier no accesible). Texto completo leído | RmdF: 2.1, «Tendencia de cada serie (regla D5) y deriva (D8)»; 2.4, «Nulo de tendencias independientes», y 3.3, «Regresión sobre el tiempo y análisis de los residuos (regla D5)». Rmd: sección 2, «El argumento a favor de transformar», y A.2, «Regresión sobre el tiempo… (regla D5)». NB05, celda 15 | Pendiente (número y DOI) |
 | `phillips_1986` | Phillips (1986), *Journal of Econometrics*, 33(3), 311–340 | Metadatos tomados de RePEc/IDEAS (secundaria): contrastar con Elsevier y añadir el DOI. Resumen leído; texto no consultado | RmdF: 2.1, 2.4 y 3.3 (mismos pasajes que Granger y Newbold). Rmd: sección 2, «El argumento a favor de transformar», y A.2. NB05, celda 15 | Pendiente |
 | — | Engle y Granger (1987) | Sin ficha en `papers/` | Rmd: sección 2, «Balance de los argumentos» (tabla de argumentos, cointegración). No figura en RmdF | Pendiente |
-| — | Fuentes de los filtros pasa-banda y de Hodrick-Prescott para la brecha del ciclo financiero | Sin ficha en `papers/`; citadas por el nombre del método, sin autor ni año | Rmd: sección 2, «Balance de los argumentos». No figuran en RmdF | Pendiente |
-| — | Fuente de los modelos de cambio de régimen de Markov | Sin ficha en `papers/`; citada por el nombre del método, sin autor ni año | Rmd: A.5, «Alternativas consideradas». No figura en RmdF | Pendiente |
+| — | Fuentes de los filtros pasa-banda y de Hodrick-Prescott para la brecha del ciclo financiero | Sin ficha de las fuentes primarias (Hodrick y Prescott; Christiano y Fitzgerald). Desde 3c hay fichas que **discuten** esos filtros: `hamilton_2018` (crítica del HP) y `strohsal_proano_wolters_2019` (los filtros fijan la frecuencia de antemano); no sustituyen a las fuentes primarias | Rmd: sección 2, «Balance de los argumentos». No figuran en RmdF | Pendiente |
+| — | Fuente de los modelos de cambio de régimen de Markov | Desde 3c, fichada: `hamilton_1989` (resumen leído; metadatos verificados), con `kim_nelson_1999` y `krolzig_1997` como manuales. El Rmd está congelado (D15): la marca no se corrige en el archivo | Rmd: A.5, «Alternativas consideradas». No figura en RmdF | Pendiente |
 | `dickey_fuller_1979` | Dickey y Fuller (1979), *JASA*, 74(366a) | Páginas 427–431 (solo en fuentes secundarias). La versión **aumentada** que usa el código no se le atribuye (ver la fila de Said y Dickey) | Tesis: cap. 3, «Diagnóstico de las series sin transformar» (`sec:met-diagnostico`), `\verificar`. Informe: `v3-df`. RmdF: 2.1 y 3.3. Rmd: sección 2, «Estacionariedad en las dos versiones», y A.2, «Regresión sobre el tiempo… (regla D5)» | Fichada (preliminar); pendiente |
 | — | Said y Dickey (1984), versión aumentada de la prueba ADF | Sin ficha ni búsqueda en fuente oficial | Tesis: `\pendiente` en `sec:met-diagnostico`. Informe: `[CITA PENDIENTE]` en cap. 3, «Diagnóstico de las series sin transformar». Rmd: sección 2, «Estacionariedad en las dos versiones» (marca «sin ficha») | Pendiente de fichar |
 | `kwiatkowski_et_al_1992` | Kwiatkowski et al. (1992), *Journal of Econometrics*, 54(1–3), 159–178 | **Lista de autores de la versión publicada** (el documento de trabajo de Cowles lista tres; se cita habitualmente con cuatro) y DOI. Sin entrada en el `.bib` hasta verificarla | Tesis: `\pendiente` en `sec:met-diagnostico` (se nombra sin `\cite`). Informe: `[CITA PENDIENTE]` en cap. 3, «Diagnóstico de las series sin transformar». RmdF: 2.1 y 3.3. Rmd: sección 2, «Estacionariedad en las dos versiones», y A.2 | Fichada (preliminar, sin `.bib`); pendiente |
@@ -60,7 +62,7 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `kaiser_1970`, `kaiser_rice_1974` | Kaiser (1970), *Psychometrika*, 35(4); Kaiser y Rice (1974), *EPM*, 34(1) | Metadatos verificados (Cambridge Core; SAGE). Texto no consultado: la forma de la MSA que usa el código solo consta en la documentación de `psych` | Tesis e Informe: la misma marca conjunta de «Adecuación muestral». RmdF: 2.3. Rmd: A.2, «¿Tiene sentido un PCA con estos datos?» (KMO). src: `multivariado.kmo` | Cerrado (metadatos); atribución de la fórmula pendiente |
 | `kaiser_1960` | Kaiser (1960), *EPM*, 20(1), 141–151 | Volumen, número y páginas (solo en fuentes secundarias; SAGE no accesible). La atribución del criterio $\lambda > 1$ es la habitual y no se verificó en el texto | Tesis e Informe: cap. 2, «Número de componentes» (`v2-kai`). RmdF: 3.1, «¿Cuántas componentes retener?». Rmd: A.2, «¿Cuántas componentes retener?» (marca conjunta con la vara quebrada) | Fichada (preliminar); pendiente |
 | — | Fuente de la relación entre la inversa de la matriz de correlaciones y las correlaciones parciales (matriz anti-imagen) | Sin ficha; no se buscó | Tesis: `\pendiente` en cap. 2, «Adecuación muestral». Informe: `[CITA PENDIENTE]` en la misma sección | Pendiente de fichar |
-| — | Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa | Sin ficha; no se buscó (candidata: Lebart, Piron y Morineau, 2006, citada en la ficha de Camiz et al., 2020) | Tesis: `\pendiente` en cap. 2, «Calidad de representación y contribuciones» (`sec:cos2`). Informe: `[CITA PENDIENTE]` en la misma sección | Pendiente de fichar |
+| — | Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa | Sin ficha que lo sostenga. Candidata desde 3c: `lebart_morineau_piron_1995` (metadatos verificados en la base Horizon del IRD; texto no consultado: no se sabe en qué sección trata cos² y contribuciones). La edición de 2006 que cita la ficha de Camiz et al. (2020) no se verificó | Tesis: `\pendiente` en cap. 2, «Calidad de representación y contribuciones» (`sec:cos2`). Informe: `[CITA PENDIENTE]` en la misma sección | Pendiente de fichar |
 | `bruynooghe_1978` | Bruynooghe (1978), *Les Cahiers de l'Analyse des Données*, 3(1), 7–33 | Metadatos verificados en Numdam. Texto no consultado: la propiedad de reducibilidad que exige el índice de la HFC no se le atribuye | Tesis: cap. 2, «Clasificación Factorial Jerárquica» (`sec:hfc`), `\verificar` (sustituye al `\pendiente` de 3a). Informe: `v2-bru` | Cerrado (metadatos, 24-10-2026); contenido no consultado |
 | `hubert_arabie_1985` | Hubert y Arabie (1985), *Journal of Classification*, 2(1), 193–218 | Metadatos tomados de RePEc/IDEAS: contrastar con SpringerLink. La atribución del índice de Rand ajustado no se verificó en el texto | Tesis: cap. 3, «Clasificación Factorial Jerárquica» (`sec:met-hfc`), `\verificar`. Informe: `v3-ha`. Rmd: A.4, «HFC evolutiva» | Fichada (preliminar); pendiente |
 | — | Fuente del optimizador Adam | Sin ficha en `papers/`; citado por el nombre, sin autor ni año | Rmd: A.5, «Diseño del autoencoder» (tabla de parámetros). No figura en RmdF (la sección 7 no desarrolla las redes) | Pendiente |
@@ -76,17 +78,19 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `lahiri_2003` | Lahiri (2003), *Resampling methods for dependent data*, Springer | Metadatos e índice verificados en SpringerLink (DOI). **No se verificó que trate el bootstrap por bloques conjunto multivariado** (mismos inicios de bloque para todas las series): no se le atribuye (ver la fila siguiente) | Tesis: cap. 2, `sec:nulos`, `\verificar` conjunto con Künsch («manual del bootstrap por bloques»). Informe: `v2-lah` | Cerrado (metadatos, 24-10-2026); contenido pendiente |
 | — | Fuente del bootstrap por bloques conjunto (mismos inicios de bloque para todas las series) | Sin ficha que lo trate. Candidata a revisar: `lahiri_2003` (índice no consultado en esa sección) | Tesis: `\pendiente` en cap. 2, «Nulo de estructura constante» (`sec:nulo-estructura`). Informe: `[CITA PENDIENTE]` en la misma sección (observación sobre los supuestos del nulo) | Pendiente de identificar |
 | `bernanke_2013` | Bernanke (2013), *The economic outlook*, testimonio ante el Joint Economic Committee, 22-05-2013 (página del BIS) | La ficha registra la fecha y la descripción del testimonio; **no se leyó el pasaje** sobre la reducción del ritmo de compras de activos | Tesis: cap. 2, «Validación externa» (`sec:validacion`), `\verificar`. Informe: `v2-bern`. Fuente del inicio del *taper tantrum* (tabla de episodios) | Fichada; pendiente (pasaje) |
-| `congreso_2018` | Congreso de la República (2018), aceptación de la renuncia de P. P. Kuczynski, 23-03-2018 | Ficha elaborada con la nota oficial del Congreso; **no se leyó el texto de la resolución ni su publicación en *El Peruano***. La ficha califica el hecho como «evento interno»: ver N-02 en la tabla de episodios | Tesis: cap. 2, «Validación externa», `\verificar`. Informe: `v2-cong`. Fuente del episodio puntual de Kuczynski | Fichada; pendiente (resolución); N-02 abierto |
+| `congreso_2018` | Congreso de la República (2018), aceptación de la renuncia de P. P. Kuczynski, 23-03-2018 | Ficha elaborada con la nota oficial del Congreso; **no se leyó el texto de la resolución ni su publicación en *El Peruano***. N-02 cerrado por D18 (07-11-2026): la ficha ya no califica el hecho como «interno», sino como evento peruano externo al análisis | Tesis: cap. 2, «Validación externa», `\verificar`. Informe: `v2-cong`. Fuente del episodio puntual de Kuczynski | Fichada; pendiente (resolución); N-02 cerrado (D18) |
 | `congreso_2016` | Congreso de la República (2016), temas tratados del 28 de julio de 2016 | Denominación oficial exacta del documento (el título se compuso con su encabezado) | Ninguna: no se cita y no fecha ningún episodio (la juramentación no es un evento del episodio; ver la tabla) | Pendiente (sin uso) |
 | `doj_2016`, `oms_2020a`, `fmi_2015` | Fuentes de episodios | `oms_2020a`: ubicar la versión en who.int (se leyó una copia en extranet.who.int). `fmi_2015`: páginas del recuadro en el WEO completo. `doj_2016`: sin pendientes de metadatos | Ninguna: no se citan en la tesis ni en el informe ni fechan un extremo del archivo de episodios (alternativas de la tabla) | Pendiente (`oms_2020a`, `fmi_2015`) |
-| `oms_2023`, `pcm_2020`, `fmi_2015b`, `baffes_streifel_2016`, `nber_2021`, `ustr_2020`, `fmi_2016` | Fuentes de episodios de la tarea B1 (tabla siguiente) | `oms_2023`: leída en la página de la Oficina Regional para Europa; falta la de la sede. `pcm_2020`: texto leído en una reproducción no oficial; falta la URL oficial (gob.pe o *El Peruano*). `fmi_2015b`: DOI del informe completo sin comprobar en doi.org (campo `verificar` en el `.bib`). `baffes_streifel_2016`: es un blog; conviene sustituirlo por el *Commodity Markets Outlook* de julio de 2016 (no leído). `nber_2021`, `ustr_2020` y `fmi_2016`: sin pendientes | `nber_2021`, `ustr_2020` y `fmi_2016`: Tesis e Informe, «Validación externa», sin marca (sin pendientes). `fmi_2015b`: Tesis, cap. 2, «Validación externa» (`sec:validacion`), `\verificar` sobre el DOI (commit `d7302e0`, hallazgo M-03); Informe, la misma sección, nota `v2-fmi` (commit `09b9c26`). Intento del 30-10-2026 de comprobar el DOI 10.5089/9781513520735.081 en doi.org: el proxy de la sesión rechazó la conexión (403); el DOI sigue sin comprobar y la marca sigue abierta. `oms_2023`, `pcm_2020` y `baffes_streifel_2016`: no se citan | Pendiente (metadatos menores); marca de `fmi_2015b` puesta (M-03) |
+| `oms_2023`, `pcm_2020`, `fmi_2015b`, `baffes_streifel_2016`, `nber_2021`, `ustr_2020`, `fmi_2016` | Fuentes de episodios de la tarea B1 (tabla siguiente) | `oms_2023`: leída en la página de la Oficina Regional para Europa; falta la de la sede. `pcm_2020`: texto leído en una reproducción no oficial; falta la URL oficial (gob.pe o *El Peruano*); con D18 la ficha dejó de tratarlo como «interno» (ver el episodio COVID-19). `fmi_2015b`: DOI del informe completo sin comprobar en doi.org (campo `verificar` en el `.bib`). `baffes_streifel_2016`: es un blog; conviene sustituirlo por el *Commodity Markets Outlook* de julio de 2016 (no leído). `nber_2021`, `ustr_2020` y `fmi_2016`: sin pendientes | `nber_2021`, `ustr_2020` y `fmi_2016`: Tesis e Informe, «Validación externa», sin marca (sin pendientes). `fmi_2015b`: Tesis, cap. 2, «Validación externa» (`sec:validacion`), `\verificar` sobre el DOI (commit `d7302e0`, hallazgo M-03); Informe, la misma sección, nota `v2-fmi` (commit `09b9c26`). Intento del 30-10-2026 de comprobar el DOI 10.5089/9781513520735.081 en doi.org: el proxy de la sesión rechazó la conexión (403); el DOI sigue sin comprobar y la marca sigue abierta. `oms_2023`, `pcm_2020` y `baffes_streifel_2016`: no se citan | Pendiente (metadatos menores); marca de `fmi_2015b` puesta (M-03) |
 | — | Descarga de control de la API del BCRP (consulta del 08/10/2026) | Ninguno. El Rmd citaba dos valores de diciembre de 2025 tomados de una consulta a la API del BCRP no versionada, contra la regla 3 de `CLAUDE.md`. Se retiraron las cifras | Rmd: chunk `funciones` y sección 1, «Fuente, periodo y cobertura»; auditoría 2026-10-19, M-06 y N-03 | Cerrado: cifras retiradas del Rmd por decisión de Roberto (20-10-2026) |
 
 ### Episodios de referencia
 
 Los episodios se fechan con fuentes externas, nunca a partir de las propias series (regla 6 de
 `CLAUDE.md`). La convención está decidida desde el 24-10-2026 (**D7**: evento o anuncio externo;
-tolerancia de ±3 meses y ±6 como sensibilidad; un episodio sin fin con fuente es puntual). La
+tolerancia de ±3 meses y ±6 como sensibilidad; un episodio sin fin con fuente es puntual). Desde el
+07-11-2026, **D18** precisa que «externo» significa *externo al análisis* (fuente fichada ajena a las
+series, a los indicadores y a los cortes estimados), sea el evento peruano o extranjero. La
 **tarea D9** del plan 3b (commit `3c416c2`) unificó las fechas en el archivo único
 `data/referencia/episodios_referencia.csv`, que leen el Rmd final, los notebooks 05, 09a, 09b y
 07b, y `notebooks/modelos_dl.py`. La **tarea L1** (commit `f904b5c`) sustituyó los cinco
@@ -114,9 +118,64 @@ Marcas de episodios que siguen abiertas:
 | Crisis financiera global | 2008-09 a 2009-06 | `lehman_brothers_2008` (15-09-2008); `nber_2010` (valle de la recesión de EE. UU.) | Pico del NBER en 12-2007 (no se usa: el anuncio externo del episodio financiero es Lehman). El inicio 2008-07 de `06a`/`06b` no tiene fuente (antecedente) | Cerrado (D9, L1) |
 | *Taper tantrum* | 2013-05 a 2013-12 | `bernanke_2013` (22-05-2013); `reserva_federal_2013` (18-12-2013) | El inicio 2013-04 de `06a`/`06b` no tiene fuente (antecedente). Falta leer el pasaje del testimonio (`\verificar`) | Fechas cerradas; contenido de `bernanke_2013` pendiente |
 | Colapso de los precios de las materias primas | 2014-06 a 2016-01 | `stocker_et_al_2015` (caída del petróleo); `fmi_2016` (febrero de 2016: primer aumento en cinco meses de los metales y en nueve del índice general) | Metales: caída «since 2011» (`fmi_2015b`), sin mes; `fmi_2015b` lleva `\verificar` y nota `v2-fmi` por el DOI (M-03; ver su fila). Comparación desde 09-2014 (`fmi_2015`), no es un inicio. Fin concordante: `baffes_streifel_2016`. **Advertencia:** el inicio es del petróleo; para los metales solo hay año | Cerrado (D9, L1); DOI de `fmi_2015b` pendiente (marca puesta) |
-| Kuczynski / Odebrecht | Puntual, 2018-03 | `congreso_2018` (aceptación de la renuncia, 23-03-2018) | Período alternativo para sensibilidad: 2016-12 (`doj_2016`, declaración de culpabilidad de Odebrecht en EE. UU.) a 2018-03. El inicio 2016-07 (`congreso_2016`, juramentación) no es un evento del episodio. Falta el texto de la resolución en *El Peruano* (`\verificar`). **N-02 (auditoría del 29-10-2026), abierto:** la ficha califica el hecho como «evento interno» y D7 habla de evento «externo»; qué significa «externo» lo decide Roberto (definición del redactor LaTeX) y después se ajustan la ficha y esta fila | Fechado como puntual (D9); N-02 pendiente de decisión |
+| Kuczynski / Odebrecht | Puntual, 2018-03 | `congreso_2018` (aceptación de la renuncia, 23-03-2018) | Período alternativo para sensibilidad: 2016-12 (`doj_2016`, declaración de culpabilidad de Odebrecht en EE. UU.) a 2018-03. El inicio 2016-07 (`congreso_2016`, juramentación) no es un evento del episodio. Falta el texto de la resolución en *El Peruano* (`\verificar`). **N-02 (auditoría del 29-10-2026), cerrado por D18 (07-11-2026):** «externo» es externo al análisis; la renuncia aceptada por el Congreso es un evento peruano con fuente ajena a las series y cumple D7. Ficha `congreso_2018` alineada | Fechado como puntual (D9); N-02 cerrado (D18) |
 | Guerra comercial entre Estados Unidos y China | 2018-06 a 2020-01 | `ustr_2018` (anuncio del 15-06-2018); `ustr_2020` (firma de la «fase uno», 15-01-2020) | Inicio alternativo 2018-07 (cobro de aranceles, 06-07-2018; misma fuente). **Advertencia:** el fin (2020-01) y el inicio del COVID-19 (2020-03) distan dos meses: con ±3 meses, una transición en ese tramo no se atribuye a uno solo | Cerrado (D9, L1) |
-| COVID-19 | 2020-03 a 2020-04 | `oms_2020b` (pandemia, 11-03-2020); `nber_2021` (valle de la recesión de EE. UU., mismo criterio que `nber_2010`) | Inicio alternativo 2020-01 (`oms_2020a`, ESPII), dentro de ±3 meses. Fin alternativo 2023-05 (`oms_2023`, fin de la ESPII), poco discriminante. `pcm_2020` (15-03-2020) se trató como contexto y no como fecha por ser un evento interno; esa lectura depende también de N-02. Las fechas 2020-09 y 2020-12 de los antecedentes no tienen fuente | Cerrado (D9, L1); N-02 pendiente de decisión |
+| COVID-19 | 2020-03 a 2020-04 | `oms_2020b` (pandemia, 11-03-2020); `nber_2021` (valle de la recesión de EE. UU., mismo criterio que `nber_2010`) | Inicio alternativo 2020-01 (`oms_2020a`, ESPII), dentro de ±3 meses. Fin alternativo 2023-05 (`oms_2023`, fin de la ESPII), poco discriminante. `pcm_2020` (15-03-2020) se trató hasta 3b como contexto por ser «interno». **Con D18 es una fuente admisible.** Tema pendiente (no lo decide el bibliotecario): si `pcm_2020` debe fechar un extremo, por ejemplo el inicio del episodio en el Perú. Caería en el mismo mes que el inicio vigente (2020-03, `oms_2020b`), de modo que la fecha mensual no cambiaría, pero sí la fuente citada. **No se modificó `episodios_referencia.csv`.** Falta además su URL oficial. Las fechas 2020-09 y 2020-12 de los antecedentes no tienen fuente | Cerrado (D9, L1); N-02 cerrado (D18); tema pendiente: uso de `pcm_2020` como fuente de un extremo (Roberto) |
+
+### Estado del arte (iteración 3c)
+
+Obras fichadas el 07-11-2026 para el capítulo de antecedentes y estado del arte (tarea 1 del
+bibliotecario en 3c). Ninguna se cita todavía en la tesis ni en el informe: no tienen marcas. La
+fuente de cada dato está en la ficha y en `auditorias/notas/2026-11-07_bibliotecario.md`.
+«Crossref» es el registro del DOI en api.crossref.org (doi.org no se pudo consultar directamente,
+salvo para `borio_2014`, cuyo DOI resolvió hacia Elsevier).
+
+| Clave | Metadatos verificados en | Lectura | Qué falta | Estado |
+|---|---|---|---|---|
+| `borio_2014` | Crossref; BIS (WP 395) | Resumen | Texto (hechos estilizados) | Cerrado (metadatos); contenido: solo resumen |
+| `borio_lowe_2002` | BIS | Resumen | Texto (construcción de las brechas) | Cerrado (metadatos); contenido: solo resumen |
+| `claessens_kose_terrones_2011` | Crossref; NBER; FMI (WP 11/76) | Resumen | Método de datación | Cerrado (metadatos); contenido: solo resumen |
+| `claessens_kose_terrones_2012` | Crossref | Resumen (EconPapers, secundaria) | Resumen en la editorial; lista de países | Cerrado (metadatos); contenido pendiente |
+| `aikman_haldane_nelson_2015` | Crossref | Ninguna | **Resumen y texto**: no atribuirle hallazgos (campo `verificar`) | Fichada (solo localizada); pendiente |
+| `schuler_hiebert_peltonen_2015` | BCE (PDF) | Texto parcial (~72 %) | Resto del texto | Cerrado (metadatos) |
+| `schuler_hiebert_peltonen_2020` | Crossref | Resumen (IDEAS, secundaria) | Resumen en la editorial | Cerrado (metadatos); contenido pendiente |
+| `galati_et_al_2016` | Crossref; DNB (WP 495) | Resumen del WP (otro título) | Texto del artículo | Cerrado (metadatos) |
+| `runstler_vlekke_2018` | Crossref (con resumen) | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `strohsal_proano_wolters_2019` | Crossref; Universidad de Bamberg | DP 22/2015 del Bundesbank | Artículo publicado (parte internacional) | Cerrado (metadatos) |
+| `hollo_kremer_lo_duca_2012` | BCE (PDF) | Texto parcial (~67 %) | Resto del texto | Cerrado (metadatos) |
+| `illing_liu_2006` | Crossref; Banco de Canadá (WP 2003-14) | WP 2003-14, parcial | Artículo publicado | Cerrado (metadatos) |
+| `harding_pagan_2002` | Crossref; ANU | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `hamilton_2018` | Crossref; NBER (WP 23429) | Resumen del WP | — | Cerrado (metadatos); contenido: solo resumen |
+| `hamilton_1989` | Econometric Society; Crossref | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `kim_nelson_1999` | Catálogo de Texas A&M; Universidad de Washington | Descripción institucional | **DOI** solo en el catálogo (campo `verificar`) | Fichada (preliminar); pendiente (DOI) |
+| `krolzig_1997` | Crossref | Ninguna | Texto; número de volumen de la serie | Cerrado (metadatos); contenido no consultado |
+| `bai_perron_1998` | Econometric Society; Crossref | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `bai_perron_2003` | Crossref (con resumen) | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `truong_oudre_vayatis_2020` | Crossref | Texto del *preprint* (arXiv v3) | Fecha de aceptación del arXiv no cuadra con Crossref (anotado) | Cerrado (metadatos) |
+| `aminikhanghahi_cook_2017` | Crossref; repositorio de WSU | Resumen | Texto (PMC no accesible) | Cerrado (metadatos); contenido: solo resumen |
+| `pearson_1901` | Crossref | Ninguna | Texto | Cerrado (metadatos); contenido no consultado |
+| `hotelling_1933` | Crossref | Ninguna | Texto; continuación en el n.º 7 (no se cita) | Cerrado (metadatos); contenido no consultado |
+| `lebart_morineau_piron_1995` | Base Horizon del IRD; autoridad de la BnF | Ninguna | Texto (sección de cos²) | Cerrado (metadatos); contenido no consultado |
+| `goodfellow_bengio_courville_2016` | Catálogo de la TUAT | Ninguna | Texto | Cerrado (metadatos); contenido no consultado |
+| `chalapathy_chawla_2019` | arXiv | Resumen | *Preprint*: solo exploración (campo `verificar`) | Fichada; *preprint* |
+| `gomez_gonzalez_et_al_2013` | Repositorio del Banco de la República | Texto parcial | **Orden de autores** (campo `verificar`) | Fichada; pendiente (orden de autores) |
+| `brandao_marques_perez_ruiz_2017` | FMI (PDF) | Resumen | **Grafía del primer autor** y DOI (campo `verificar`) | Fichada; pendiente (grafía) |
+| `minaya_lupu_cabello_2017` | BIS | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
+| `alvarado_vargas_2021` | Repositorio de la Universidad de Lima | Resumen | Trabajo de pregrado: usar con cautela | Cerrado (metadatos); contenido: solo resumen |
+
+**Obras candidatas no agregadas al `.bib`** (sin ficha; quedan pendientes):
+
+| Obra | Motivo | Estado |
+|---|---|---|
+| Nivin y Pérez (2019), «Estimación de un índice de condiciones financieras para el Perú» (BCRP, Documento de Trabajo 2019-006; *Revista Estudios Económicos*, 37) | Localizada en búsquedas y en RePEc (secundaria). Los sitios del BCRP (bcrp.gob.pe e investigacion.bcrp.gob.pe) bloquean el acceso automatizado (Incapsula): no se verificó. No se buscaron rutas alternativas | Pendiente (descarga manual de Roberto) |
+| BCRP, Documento de Trabajo 2022-002, «Financial stress and macroeconomic fluctuations in Peru» | Igual que la anterior: solo título en resultados de búsqueda; autores no vistos | Pendiente (descarga manual) |
+| BCRP, *Revista Moneda* 188, «Financial stress index for Peru» | Igual: solo título en resultados de búsqueda; autores no vistos | Pendiente (descarga manual) |
+| BCRP, Documento de Trabajo 2024-012, «Estimating new financial conditions indexes for the Peruvian economy» | Igual: solo título en resultados de búsqueda; autores no vistos | Pendiente (descarga manual) |
+| Pérez Forero (2016), BCRP, Documento de Trabajo 2016-013 | Localizado solo en IDEAS (secundaria); además trata el ciclo económico, no el financiero | Sin prioridad |
+| Repositorio PUCP, «El ciclo financiero global y las condiciones crediticias en el Perú» | El repositorio bloqueó el acceso automatizado (Anubis): ni autor, ni tipo, ni año vistos | Pendiente (descarga manual) |
+| Rabanal (2022), *Ola Financiera*, 15(43), 30–52 (DOI 10.22201/fe.18701442e.2022.43.83496) | Verificada en la página de la revista (UNAM), pero **no incluye al Perú** y la página no da el nombre completo del autor | No agregada (relevancia baja); puede ficharse si el redactor la necesita |
+| Amaral, Guerra, Shim y Tombini (2025), BIS Bulletin 113, «Financial conditions indices in Latin America» | Verificada en la página del BIS (29-09-2025), pero la página no menciona al Perú ni el método | No agregada hasta leer el PDF |
+| Harding y Pagan (2006), *Journal of Econometrics* (índice de concordancia); Hodrick y Prescott (1997); Christiano y Fitzgerald (2003); Hamilton (1994), *Time series analysis* | No buscadas en esta iteración (no estaban en la lista de la tarea o son fuentes primarias de filtros que la tesis no usa) | Sin ficha |
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe
 
@@ -141,20 +200,27 @@ Conteo de ocurrencias con `git grep -o` sobre cada commit (guion del bibliotecar
 B1–B4 (`d1bf179`); «después», `e97530c`, y «M-03», `09b9c26` (marca de `fmi_2015b`, vuelta 1).
 El 30-10-2026 se volvió a correr el mismo guion con los mismos patrones: reproduce las cifras de
 `e97530c` y da las de `09b9c26`; entre ambos, el commit de la auditoría (`bc17259`) no cambia nada.
+El 07-11-2026 (iteración 3c) se contó sobre `605803a`, último commit de la rama `iteracion-3c` al
+empezar la tarea, con los mismos patrones (en la tesis, `git grep -o -F '\verificar{'` y
+`'\pendiente{'`): no hay cambios respecto de `09b9c26`. El trabajo en curso del redactor (sin
+commit al momento del conteo) no se contó. Las 30 obras de 3c no agregan marcas porque aún no se
+citan; las que llevan campo `verificar` en el `.bib` son `aikman_haldane_nelson_2015`,
+`kim_nelson_1999`, `chalapathy_chawla_2019`, `gomez_gonzalez_et_al_2013` y
+`brandao_marques_perez_ruiz_2017`: si se citan, el texto debe llevar la marca.
 
-| Documento y marca | Antes (`4624802`) | Registro anterior (`d1bf179`) | Después (`e97530c`) | M-03 (`09b9c26`) |
-|---|---|---|---|---|
-| Tesis, `\verificar` | 34 | 34 | 51 | 52 |
-| Tesis, `\pendiente` | 22 | 22 | 14 | 14 |
-| Informe, notas con `VERIFICAR` | 34 | 34 | 51 | 52 |
-| Informe, `[CITA PENDIENTE]` | 18 | 18 | 9 | 9 |
-| Informe, recuadros «Pendiente» | 5 | 5 | 5 | 5 |
-| RmdF, `VERIFICAR` | — (no existía) | — (no existía) | 25 | 25 |
-| Rmd de exploración, `VERIFICAR` (congelado) | 37 | 38 | 38 | 38 |
-| src, `VERIFICAR` | 5 | 5 | 6 | 6 |
-| NB05, `VERIFICAR` | 5 | 5 | 3 | 3 |
-| `06a` y `06b`, `VERIFICAR` (antecedentes) | 10 | 10 | 10 | 10 |
-| `notebooks/modelos_dl.py`, `VERIFICAR` | 4 | 4 | 0 | 0 |
+| Documento y marca | Antes (`4624802`) | Registro anterior (`d1bf179`) | Después (`e97530c`) | M-03 (`09b9c26`) | 3c (`605803a`) |
+|---|---|---|---|---|---|
+| Tesis, `\verificar` | 34 | 34 | 51 | 52 | 52 |
+| Tesis, `\pendiente` | 22 | 22 | 14 | 14 | 14 |
+| Informe, notas con `VERIFICAR` | 34 | 34 | 51 | 52 | 52 |
+| Informe, `[CITA PENDIENTE]` | 18 | 18 | 9 | 9 | 9 |
+| Informe, recuadros «Pendiente» | 5 | 5 | 5 | 5 | 5 |
+| RmdF, `VERIFICAR` | — (no existía) | — (no existía) | 25 | 25 | 25 |
+| Rmd de exploración, `VERIFICAR` (congelado) | 37 | 38 | 38 | 38 | 38 |
+| src, `VERIFICAR` | 5 | 5 | 6 | 6 | 6 |
+| NB05, `VERIFICAR` | 5 | 5 | 3 | 3 | 3 |
+| `06a` y `06b`, `VERIFICAR` (antecedentes) | 10 | 10 | 10 | 10 | 10 |
+| `notebooks/modelos_dl.py`, `VERIFICAR` | 4 | 4 | 0 | 0 | 0 |
 
 Lectura del cambio en la tesis:
 
@@ -176,6 +242,7 @@ Lectura del cambio en la tesis:
   `\pendiente` de la tesis frente a 9 `[CITA PENDIENTE]` más 5 recuadros «Pendiente» del informe:
   la portada de la tesis no tiene equivalente en el informe, y el recuadro del resumen del informe
   no lo tiene en la tesis.
+- **Entradas del `.bib`:** 97 (67 antes de 3c y 30 nuevas), todas con ficha en `papers/`.
 - **RmdF, 25 marcas:** Horn (2), Caliński y Harabasz (1), Künsch (1), Pyper y Peterman (2), Newey
   y West (2), Granger y Newbold (3), Phillips (3), Dickey y Fuller (2), Kwiatkowski et al. (2),
   quiebres estructurales (2), Bartlett (1), Kaiser y Rice (1), Tucker (1), Kaiser 1960 (1) y

@@ -1,0 +1,64 @@
+---
+title: "Borio (2014) — The financial cycle and macroeconomics: What have we learnt?"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-070 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (versión publicada en RePEc/EconPapers y versión de documento de trabajo en el BIS); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares (ensayo) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Borio, C. (2014). The financial cycle and macroeconomics: What have we learnt? *Journal of Banking & Finance*, *45*, 182–198. https://doi.org/10.1016/j.jbankfin.2013.07.031
+
+> **Verificación:** Registro de Crossref (api.crossref.org, consultado el 2026-11-07): autor (Claudio Borio), título, revista, volumen 45, páginas 182–198, agosto de 2014, editorial Elsevier, DOI. El DOI resuelve en doi.org hacia el identificador de Elsevier S0378426613003063 (ScienceDirect no fue accesible). Versión previa: BIS Working Paper 395, 10 de diciembre de 2012 (página del BIS leída). El resumen se leyó en la página del BIS y en EconPapers (secundaria, solo para localizar).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo financiero: concepto y hechos estilizados |
+| **Área secundaria** | Macroeconomía y política |
+| **Relevancia para la tesis** | **ALTA.** Texto base de la distinción entre ciclo financiero y ciclo económico (marco conceptual, sección 7.1). |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes y estado del arte; marco conceptual |
+
+## 4. Resumen analítico
+
+**Pregunta.** Qué se ha aprendido sobre el ciclo financiero y por qué la macroeconomía debe volver a ponerlo en el centro.
+
+**Contenido según el resumen oficial.** El ensayo sostiene que, al menos en las tres últimas décadas, las fluctuaciones económicas y los retos de política asociados no pueden entenderse sin el ciclo financiero. Se organiza en tres partes: (i) los rasgos empíricos estilizados del ciclo financiero; (ii) posibles estrategias de modelación, y (iii) implicaciones de política, con atención especial a la fase de contracción (*bust*), la menos estudiada y la más controvertida.
+
+**Datos y método.** Es un ensayo de síntesis, no un estudio empírico original; el resumen no detalla datos.
+
+**Hallazgo principal (según el resumen).** El ciclo financiero es un fenómeno propio, distinto del ciclo económico, y debe incorporarse a la modelación y a la política macroeconómica.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo financiero | Fenómeno que la tesis busca describir con las 16 series del BCRP |
+| Fase de contracción (*bust*) | Régimen de contracción detectado por PCA/HFC evolutivos |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita de referencia para definir el ciclo financiero como objeto distinto del ciclo económico.
+- Encuadra la motivación de política de la tesis (la utilidad de describir el régimen financiero vigente).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo se leyó el resumen: **no se le atribuyen** cifras de duración ni la lista concreta de hechos estilizados hasta leer el texto (la página del BIS que devolvió la sesión era la ficha del documento, no el PDF).
+- Evidencia centrada en economías avanzadas.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `drehmann_borio_tsatsaronis_2012` | Alta | Fichada |
+| `borio_lowe_2002` | Media | Fichada (3c) |

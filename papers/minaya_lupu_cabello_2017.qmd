@@ -1,0 +1,57 @@
+---
+title: "Minaya, Lupú y Cabello (2017) — Macroprudential policies in Peru"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-098 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página oficial del BIS); texto completo no consultado |
+| **Tipo de fuente** | Documento de trabajo institucional (BIS) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Minaya, E., Lupú, J., & Cabello, M. (2017). *Macroprudential policies in Peru: The effects of dynamic provisioning and conditional reserve requirements* (BIS Working Paper No. 675). Bank for International Settlements. https://www.bis.org/publ/work675.htm
+
+> **Verificación:** Página del BIS (bis.org/publ/work675.htm) leída el 2026-11-07: título, autores (Elias Minaya, José Lupú y Miguel Cabello), BIS Working Paper No. 675, 17 de noviembre de 2017 (oficina de las Américas), y resumen.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Política macroprudencial y ciclo del crédito en el **Perú** |
+| **Área secundaria** | Dolarización |
+| **Relevancia para la tesis** | **MEDIA.** Contexto institucional del ciclo crediticio peruano y de su dolarización. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes (Perú); interpretación de las series de crédito por moneda |
+
+## 4. Resumen analítico
+
+**Pregunta.** Qué efectos tuvieron dos instrumentos macroprudenciales peruanos: las provisiones dinámicas (contra la prociclicidad del crédito) y los encajes condicionales (contra la dolarización).
+
+**Datos.** Registro de créditos 2004–2014, a nivel de par banco-prestatario y por moneda.
+
+**Hallazgos (según el resumen).** Las provisiones dinámicas frenaron el crecimiento rápido del crédito comercial durante el auge; la dolarización hipotecaria cayó significativamente tras los encajes condicionales; los bancos con mayor capital pudieron seguir expandiendo el crédito.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Prociclicidad del crédito | Fase expansiva del régimen financiero |
+| Dolarización | Series de crédito en moneda extranjera del conjunto de 16 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Contexto de política para interpretar los regímenes del crédito peruano entre 2007 y 2014.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen; no es una medición del ciclo financiero.
+
+## 7. Referencias internas relevantes
+
+Ninguna identificada en lo leído.

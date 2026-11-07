@@ -1,0 +1,54 @@
+---
+title: "Hotelling (1933) — Analysis of a complex of statistical variables into principal components"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-092 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos de Crossref); texto no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares (histórico) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Hotelling, H. (1933). Analysis of a complex of statistical variables into principal components. *Journal of Educational Psychology*, *24*(6), 417–441. https://doi.org/10.1037/h0071325
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autor (H. Hotelling), título, revista, volumen 24, número 6, páginas 417–441, 1933, American Psychological Association, DOI. **Nota:** la paginación de Crossref (417–441) corresponde a la primera entrega; el artículo continúa en el número 7 de la misma revista, que no se verificó y no se cita.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Origen del PCA |
+| **Área secundaria** | Formalización estadística |
+| **Relevancia para la tesis** | **MEDIA.** Cita histórica de la formalización del PCA. |
+| **Frente de la tesis al que aporta** | Marco teórico (PCA) |
+
+## 4. Resumen analítico
+
+**Contenido no verificado.** Solo se verificaron los metadatos. La atribución habitual —formalización del análisis de componentes principales— no se comprobó en el texto.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Componentes principales | Primer método de la tesis |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cita histórica, junto con Pearson (1901).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado. La continuación en el número 7 queda sin verificar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `pearson_1901` | Alta | Fichada (3c) |

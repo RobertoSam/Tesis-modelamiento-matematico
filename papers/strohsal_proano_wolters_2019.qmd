@@ -1,0 +1,62 @@
+---
+title: "Strohsal, Proaño y Wolters (2019) — Characterizing the financial cycle: Evidence from a frequency domain analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-079 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Versión de documento de trabajo leída (Deutsche Bundesbank, Discussion Paper 22/2015: portada y resumen no técnico); artículo publicado no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Strohsal, T., Proaño, C. R., & Wolters, J. (2019). Characterizing the financial cycle: Evidence from a frequency domain analysis. *Journal of Banking & Finance*, *106*, 568–591. https://doi.org/10.1016/j.jbankfin.2019.06.010
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores (Till Strohsal, Christian R. Proaño y Jürgen Wolters), título, revista, volumen 106, páginas 568–591, septiembre de 2019, DOI; coincide con el repositorio institucional de la Universidad de Bamberg (fis.uni-bamberg.de, uniba/48524). Contenido: PDF oficial del Bundesbank, Discussion Paper No 22/2015.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo financiero en el dominio de la frecuencia |
+| **Área secundaria** | Pruebas formales de duración y amplitud |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Crítica a los métodos descriptivos (puntos de giro, filtros pasa-banda) y propuesta de pruebas formales. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; discusión de los filtros |
+
+## 4. Resumen analítico
+
+**Pregunta (versión DP 22/2015).** Si el ciclo financiero es estadísticamente más largo y amplio que el económico. Los autores observan que el análisis de puntos de giro y los filtros pasa-banda son descriptivos: exigen fijar de antemano una regla o un rango de frecuencias y no permiten pruebas formales.
+
+**Datos.** Estados Unidos, Reino Unido y Alemania; crédito, razón crédito/PBI, precios de la vivienda y de las acciones (ciclo financiero) y PBI real (ciclo económico); tasas de crecimiento anuales, salvo crédito/PBI (desviaciones de una tendencia lineal).
+
+**Método.** Estimación espectral paramétrica: modelos ARMA por serie y espectro derivado analíticamente; errores estándar por *bootstrap* (5 000 réplicas).
+
+**Hallazgos.** En Estados Unidos y el Reino Unido, el ciclo financiero dura en la muestra reciente unos 15 años (frente a 2–8 del económico), con evidencia estadísticamente fuerte de mayor duración y amplitud; en Alemania la evidencia es mucho más débil.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Regla o frecuencia fijada de antemano | Supuesto que la vía exploratoria de la tesis evita |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Argumento a favor de la posición «datos primero»: los filtros imponen la frecuencia del ciclo.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El artículo publicado amplía el análisis a la interacción internacional (según IDEAS, secundaria); eso **no** se le atribuye hasta leerlo.
+- Sin Perú.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `hamilton_2018` | Media | Fichada (3c) |
+| `harding_pagan_2002` | Media | Fichada (3c) |

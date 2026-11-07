@@ -1,0 +1,57 @@
+---
+title: "Schüler, Hiebert y Peltonen (2020) — Financial cycles: Characterisation and real-time measurement"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-076 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (IDEAS/RePEc, para localizar); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Schüler, Y. S., Hiebert, P. P., & Peltonen, T. A. (2020). Financial cycles: Characterisation and real-time measurement. *Journal of International Money and Finance*, *100*, Artículo 102082. https://doi.org/10.1016/j.jimonfin.2019.102082
+
+> **Verificación:** Registro de Crossref (consultado el 2026-11-07): autores, título, revista, volumen 100, número de artículo 102082, febrero de 2020, Elsevier, DOI. Resumen leído en IDEAS (secundaria).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Medición del ciclo financiero en tiempo real |
+| **Área secundaria** | Comparación con la brecha de crédito de Basilea III |
+| **Relevancia para la tesis** | **ALTA.** Versión publicada de la línea de `schuler_hiebert_peltonen_2015`. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes |
+
+## 4. Resumen analítico
+
+**Pregunta.** Si los ciclos financieros tienen la misma duración entre países y cómo medirlos en tiempo real.
+
+**Hallazgos (según el resumen).** Los ciclos financieros, medidos como el comovimiento del crédito y de los precios de los activos (aproximación al apalancamiento de los balances), difieren en duración entre los países del G-7, lo que contradice el supuesto de duración similar implícito en la brecha crédito/PBI de Basilea III. Los autores proponen un método para construir ciclos financieros específicos de cada país a partir de la fluctuación común de varias variables, y muestran que predicen las crisis financieras significativamente mejor que la brecha de Basilea III.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Comovimiento de crédito y precios de activos | Lo que resume el primer componente en el PCA de la tesis |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Respalda medir el ciclo como fluctuación común de varias series y no con una sola brecha.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Resumen leído en fuente secundaria; contrastar con la editorial.
+- Muestra G-7; sin Perú.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `schuler_hiebert_peltonen_2015` | Alta | Fichada (3c) |

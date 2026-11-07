@@ -1,0 +1,54 @@
+---
+title: "Chalapathy y Chawla (2019) — Deep learning for anomaly detection: A survey"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-095 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (arXiv); texto no consultado. *Preprint* sin revisión por pares |
+| **Tipo de fuente** | *Preprint* (arXiv): solo exploración, como `plaut_2018` |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Chalapathy, R., & Chawla, S. (2019). *Deep learning for anomaly detection: A survey* (arXiv:1901.03407). arXiv. https://doi.org/10.48550/arXiv.1901.03407
+
+> **Verificación:** Página de arXiv (arxiv.org/abs/1901.03407v2) leída el 2026-11-07: autores (Raghavendra Chalapathy y Sanjay Chawla), título, envío el 10 de enero de 2019, versión 2 del 23 de enero de 2019, categorías cs.LG y stat.ML. La página no mostró una referencia de revista. El DOI de arXiv sigue el patrón 10.48550/arXiv.<id> que ya usa `plaut_2018`; no se comprobó en doi.org.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de anomalías con aprendizaje profundo |
+| **Área secundaria** | Error de reconstrucción |
+| **Relevancia para la tesis** | **BAJA** para la tesis (solo exploración): no es fuente revisada por pares. |
+| **Frente de la tesis al que aporta** | Exploración de la vía AE/LSTM |
+
+## 4. Resumen analítico
+
+**Contenido (según el resumen).** Visión estructurada de los métodos de aprendizaje profundo para la detección de anomalías, agrupados por sus supuestos; para cada categoría, la técnica básica, sus variantes, los supuestos para separar lo normal de lo anómalo, ventajas, limitaciones y complejidad; cierra con problemas abiertos. **El resumen no menciona autoencoders ni series de tiempo**: no se le atribuye nada sobre el error de reconstrucción hasta leer el texto.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Anomalía | Posible lectura del error de reconstrucción del autoencoder como señal de cambio (no decidida) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Solo exploración: orienta la búsqueda de fuentes revisadas por pares sobre el error de reconstrucción.
+
+### Limitaciones (relevantes para la adaptación)
+
+- *Preprint*: no sirve como sustento en la tesis (regla del bibliotecario sobre fuentes no revisadas).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `plaut_2018` | Baja | *Preprint*, fichado |

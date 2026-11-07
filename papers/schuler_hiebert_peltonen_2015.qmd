@@ -1,0 +1,66 @@
+---
+title: "Schüler, Hiebert y Peltonen (2015) — Characterising the financial cycle: A multivariate and time-varying approach"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-075 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto leído parcialmente (PDF oficial del BCE, primeras ~100 000 de 138 593 caracteres) |
+| **Tipo de fuente** | Documento de trabajo institucional (BCE) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Schüler, Y. S., Hiebert, P. P., & Peltonen, T. A. (2015). *Characterising the financial cycle: A multivariate and time-varying approach* (ECB Working Paper No. 1846). European Central Bank. https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp1846.en.pdf
+
+> **Verificación:** PDF oficial del BCE leído el 2026-11-07: título, autores (Yves S. Schüler, Paul P. Hiebert y Tuomas A. Peltonen), serie y número (Working Paper Series No 1846) y fecha (septiembre de 2015).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Medición multivariada del ciclo financiero |
+| **Área secundaria** | Agregación con pesos variables en el tiempo |
+| **Relevancia para la tesis** | **ALTA.** Antecedente directo de un índice multivariado del ciclo financiero, con discusión explícita de por qué no usa PCA. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes; discusión PCA frente a otras agregaciones |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo construir un ciclo financiero compuesto a partir de varios indicadores y con estructura cambiante en el tiempo.
+
+**Datos.** 13 países de la UE y el agregado de la zona del euro; datos trimestrales 1970–2013; crédito, precios de la vivienda residencial, precios de las acciones y rendimientos de bonos.
+
+**Método.** Una medida espectral multivariada (*power cohesion*) para identificar las frecuencias cíclicas comunes a los indicadores, y una agregación con pesos variables en el tiempo basada en las correlaciones entre pares de indicadores (las correlaciones negativas se llevan a cero). Los autores **descartan el PCA** como método de agregación por problemas de comparabilidad entre países y de actualización en tiempo real.
+
+**Hallazgos.** El crédito y los precios de activos comparten similitudes cíclicas; el ciclo sintético predice crisis bancarias sistémicas a 1–3 años mejor que la brecha crédito/PBI; los ciclos financieros son largos, sobre todo en las fases de alza (en promedio unos 7,2 años, con mucha heterogeneidad); concuerdan con el ciclo económico cerca de dos tercios del tiempo (67 %), y su sincronización entre países es heterogénea.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| *Power cohesion* | Medida de frecuencias comunes; contraste con la estructura de correlaciones que resume el PCA |
+| Pesos variables en el tiempo | Análogo conceptual del PCA evolutivo (EPCA) por ventanas |
+| Rechazo del PCA | Objeción que la tesis debe discutir: comparabilidad y estabilidad de los pesos |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Es el antecedente más cercano a la idea de la tesis de una estructura multivariada **cambiante**: los pesos evolucionan con las correlaciones, como las cargas del EPCA por ventana.
+- Su crítica al PCA es un contrapunto que la tesis puede responder: el EPCA hace explícita la variación de los pesos en lugar de suponerla fija.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Lectura parcial del PDF: las cifras citadas provienen del resumen y de la parte leída.
+- Datos trimestrales de economías europeas; sin Perú.
+- Es un documento de trabajo; su versión publicada es `schuler_hiebert_peltonen_2020` (con otro título).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `schuler_hiebert_peltonen_2020` | Alta | Fichada (3c) |
+| `hollo_kremer_lo_duca_2012` | Media | Fichada (3c) |

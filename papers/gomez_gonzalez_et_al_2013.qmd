@@ -1,0 +1,64 @@
+---
+title: "Gómez-González et al. (2013) — The interdependence between credit and real business cycles in Latin American economies"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-096 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 7 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto leído parcialmente (PDF oficial del Banco de la República de Colombia) |
+| **Tipo de fuente** | Documento de trabajo institucional (banco central) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Gómez-González, J. E., Ojeda-Joya, J. N., Tenjo-Galarza, F., & Zárate-Solano, H. M. (2013). *The interdependence between credit and real business cycles in Latin American economies* (Borradores de Economía No. 768). Banco de la República. https://doi.org/10.32468/be.768
+
+> **Verificación:** Repositorio institucional del Banco de la República (repositorio.banrep.gov.co, hdl 20.500.12134/5908) leído el 2026-11-07: título, cuatro autores (José Eduardo Gómez-González, Jair N. Ojeda-Joya, Fernando Tenjo-Galarza y Héctor Manuel Zárate-Solano), serie Borradores de Economía No. 768, fecha 2013-06-04, DOI 10.32468/be.768. El PDF (banrep.gov.co, be_768.pdf) está fechado en mayo de 2013 y da la afiliación de Tenjo-Galarza al CEMLA. Orden de autores: el del repositorio (en el PDF leído aparecían en otro orden; conviene confirmarlo en la portada).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Ciclo crediticio y ciclo económico en América Latina |
+| **Área secundaria** | **Perú** (con Chile y Colombia) |
+| **Relevancia para la tesis** | **ALTA.** Uno de los pocos antecedentes verificados que estudian el ciclo del crédito en el Perú. |
+| **Frente de la tesis al que aporta** | Capítulo de antecedentes (Perú y región) |
+
+## 4. Resumen analítico
+
+**Pregunta.** Cómo se relacionan los ciclos del crédito y del PBI en Chile, Colombia y el Perú, en los dominios del tiempo y de la frecuencia.
+
+**Datos.** Series trimestrales; para el Perú, 1994T1–2012T2.
+
+**Método.** Filtro pasa-banda de Christiano y Fitzgerald para separar ciclos de corto plazo (5–32 trimestres) y de mediano plazo (32–80 trimestres), siguiendo a Drehmann, Borio y Tsatsaronis; correlaciones cruzadas; densidades espectrales y coherencia; causalidad de Granger en el dominio de la frecuencia (Breitung y Candelon, 2006).
+
+**Hallazgos.** Los ciclos de corto plazo son más volátiles que los de mediano plazo (salvo el crédito en Colombia); los picos del ciclo crediticio a mediados de los noventa y de los 2000 preceden en 2–3 años a recesiones notorias. **Para el Perú:** el ciclo del PBI es más volátil que el del crédito; la amplitud de la mayoría de sus ciclos supera la de Chile y Colombia, y la causalidad va solo del crédito al PBI en todas las frecuencias.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo de mediano plazo del crédito | Bloque de crédito de las 16 series |
+| Causalidad crédito → PBI en el Perú | Motivación de la relevancia del régimen financiero peruano |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Antecedente peruano con fuente institucional verificada, complementario de Atoche Murrieta (2022) y Camiz et al. (2026).
+- Contraste metodológico: filtro pasa-banda que fija las frecuencias de antemano, frente a la vía exploratoria de la tesis.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Lectura parcial; muestra hasta 2012; enfoque univariado por serie (crédito y PBI), sin precios de activos.
+- El idioma del registro figura como «spa», pero el texto leído está en inglés.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `drehmann_borio_tsatsaronis_2012` | Alta | Fichada |
+| `atoche_murrieta_2022` | Alta | Fichada |
