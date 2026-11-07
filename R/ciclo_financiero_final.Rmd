@@ -1269,8 +1269,9 @@ pendientes]). La prueba directa con estos datos es preguntarse qué PCA darían 
   rompe toda relación entre series.
 - **Sin deriva**: se resta antes el incremento medio de cada serie.
 - **Mixto (D8)**: cada serie según su clase D5 y su deriva (sección 2.1). TS → su recta MCO más sus
-  residuos remuestreados en bloques de 12 meses (los mismos inicios de bloque); DS → con o sin
-  deriva según $|t|$ HAC; indeterminada → dos variantes, como TS y como DS.
+  `r n` residuos remuestreados en bloques de 12 meses, con inicios sorteados en
+  $\{1,\dots,`r n - 12 + 1`\}$ (D19: el residuo del último mes también puede iniciar un bloque); DS →
+  con o sin deriva según $|t|$ HAC; indeterminada → dos variantes, como TS y como DS.
 
 Se repite `r params$reps_nulo` veces y se compara lo observado con la distribución que generan
 series independientes. Es el equivalente del análisis paralelo de Horn (1965) [VERIFICAR: solo se
@@ -1279,20 +1280,33 @@ leyó el resumen] para series con tendencia.
 ```{r b2-nulo}
 D_niv <- apply(X, 2, diff)
 # Inicios de bloque de cada réplica y serie, sorteados una sola vez con la semilla del documento
-# (réplica a réplica, serie a serie). Todas las versiones usan los mismos inicios. Se escriben en
-# R_nulo_indices.csv para que el notebook 05 los reproduzca.
+# (réplica a réplica, serie a serie), para los n - 1 incrementos: inicios en {1, ..., n - 12}.
+# Todas las versiones los usan para los incrementos. Se escriben en R_nulo_indices.csv para que el
+# notebook 05 los reproduzca.
 set.seed(params$semilla)
 m_bloques_nulo <- ceiling(nrow(D_niv) / 12)
 inicios_nulo <- array(NA_integer_, c(params$reps_nulo, p, m_bloques_nulo))
 for (r in seq_len(params$reps_nulo)) for (j in seq_len(p)) inicios_nulo[r, j, ] <- inicios_bloques(nrow(D_niv), 12)
+# Rama TS del nulo mixto (D19, 7-nov-2026): remuestrea los n residuos de la recta, así que sus
+# inicios se sortean aparte en {1, ..., n - 12 + 1}, a continuación de los anteriores (mismo
+# generador, sin volver a fijar la semilla). Antes de D19 la rama TS usaba inicios_nulo, sorteados
+# para n - 1 filas, y el residuo del último mes nunca iniciaba un bloque. Los inicios de los
+# incrementos no cambian, de modo que las versiones con deriva, sin deriva y sin tendencia, y las
+# series DS del mixto, son las mismas que antes de D19. Se escriben en R_nulo_indices_ts.csv.
+m_bloques_ts <- ceiling(n / 12)
+inicios_nulo_ts <- array(NA_integer_, c(params$reps_nulo, p, m_bloques_ts))
+for (r in seq_len(params$reps_nulo)) for (j in seq_len(p)) inicios_nulo_ts[r, j, ] <- inicios_bloques(n, 12)
+# Rango de cada sorteo: los incrementos nunca empiezan en n - 12 + 1; los residuos sí pueden
+stopifnot(min(inicios_nulo) == 1, max(inicios_nulo) == nrow(D_niv) - 12 + 1,
+          min(inicios_nulo_ts) == 1, max(inicios_nulo_ts) == n - 12 + 1)
 medidas_nulo <- function(M) {
   Rm <- cor(M); e <- eigen(Rm, symmetric = TRUE, only.values = TRUE)$values
   c(100 * e[1:3] / ncol(M), mean(abs(Rm[upper.tri(Rm)])))
 }
 # version: "con_deriva", "sin_deriva", "sin_tendencia" (con deriva y luego sin la recta de cada
 # serie simulada, para el diagnóstico de la sección 2.5) o "mixto" (D8, con `tratamiento` por serie).
-# En el mixto, una serie TS es su recta MCO más sus residuos remuestreados con los mismos inicios
-# (sorteados para n − 1 incrementos, caben en las n filas). Igual que src/remuestreo.nulo_tendencias.
+# En el mixto, una serie TS es su recta MCO más sus n residuos remuestreados con los inicios
+# inicios_nulo_ts (D19). Igual que src/remuestreo.nulo_tendencias.
 simular_nulo <- function(version, tratamiento = NULL) {
   if (version == "mixto") {
     stopifnot(length(tratamiento) == p, all(tratamiento %in% c("TS", "con_deriva", "sin_deriva")))
@@ -1304,7 +1318,7 @@ simular_nulo <- function(version, tratamiento = NULL) {
   }
   t(vapply(seq_len(params$reps_nulo), function(r) {
     M <- sapply(seq_len(p), function(j) {
-      if (tratamiento[j] == "TS") return(rectas[, j] + resid_ts[indices_desde_inicios(inicios_nulo[r, j, ], 12, n), j])
+      if (tratamiento[j] == "TS") return(rectas[, j] + resid_ts[indices_desde_inicios(inicios_nulo_ts[r, j, ], 12, n), j])
       d <- D_niv[indices_desde_inicios(inicios_nulo[r, j, ], 12, nrow(D_niv)), j]
       if (tratamiento[j] == "sin_deriva") d <- d - mean(D_niv[, j])
       cumsum(c(0, d))
@@ -3101,6 +3115,10 @@ ini_nulo <- data.frame(replica = rep(seq_len(params$reps_nulo), each = p), serie
                        matrix(aperm(inicios_nulo, c(3, 2, 1)), ncol = m_bloques_nulo, byrow = TRUE))
 names(ini_nulo)[-(1:2)] <- paste0("inicio_", seq_len(m_bloques_nulo))
 write.csv(ini_nulo, file.path(dir_final, "R_nulo_indices.csv"), row.names = FALSE)
+ini_nulo_ts <- data.frame(replica = rep(seq_len(params$reps_nulo), each = p), serie = rep(seq_len(p), params$reps_nulo),
+                          matrix(aperm(inicios_nulo_ts, c(3, 2, 1)), ncol = m_bloques_ts, byrow = TRUE))
+names(ini_nulo_ts)[-(1:2)] <- paste0("inicio_", seq_len(m_bloques_ts))
+write.csv(ini_nulo_ts, file.path(dir_final, "R_nulo_indices_ts.csv"), row.names = FALSE)
 write.csv(nulo_tab, file.path(dir_final, "R_nulo_tendencias.csv"), row.names = FALSE)
 write.csv(nulo_sims, file.path(dir_final, "R_nulo_simulaciones.csv"), row.names = FALSE)
 write.csv(contraste_tend, file.path(dir_final, "R_pca_contraste_tendencia.csv"), row.names = FALSE)

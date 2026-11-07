@@ -9,9 +9,10 @@ aquí se leen y se reconstruyen los mismos índices de filas. Así los resultado
 Funciones:
 - indices_desde_inicios: reconstruye las filas remuestreadas (como `indices_bloques` del Rmd);
 - leer_inicios_bootstrap, leer_inicios_nulo: lectura de los CSV de índices del Rmd;
+- comprobar_inicios: verifica que los inicios estén en {1, ..., n − L + 1} y sean ⌈n / L⌉ por réplica;
 - bootstrap_pca: bootstrap por bloques de las cargas y los valores propios del PCA;
-- nulo_tendencias: PCA de 17 series independientes con la dinámica de cada serie
-  (sección 2 del Rmd, chunk `b2s-nulo`).
+- nulo_tendencias: PCA de p series independientes con la dinámica de cada serie
+  (sección 2 del Rmd final, chunk `b2-nulo`).
 
 Supuesto declarado: el bootstrap por bloques supone dependencia débil (series estacionarias y
 mezcladoras). En la vía en niveles, con tendencias, ese supuesto no se cumple: ahí el bootstrap
@@ -32,6 +33,21 @@ def indices_desde_inicios(inicios, largo, n):
     inicios = np.asarray(inicios, dtype=int)
     filas = np.concatenate([np.arange(i - 1, i - 1 + largo) for i in inicios])
     return filas[:n]
+
+
+def comprobar_inicios(inicios, n, largo):
+    """
+    Comprueba que los inicios (1-based) de bloque sirvan para remuestrear n filas con bloques de
+    `largo`: todos en {1, ..., n − largo + 1} y ⌈n / largo⌉ por réplica (última dimensión).
+    Con inicios sorteados para n − 1 filas (los incrementos), el inicio n − largo + 1 de n filas
+    nunca aparece; por eso la rama TS del nulo mixto tiene sus propios inicios (D19).
+    """
+    inicios = np.asarray(inicios)
+    assert np.issubdtype(inicios.dtype, np.integer), 'los inicios deben ser enteros'
+    assert inicios.shape[-1] == int(np.ceil(n / largo)), \
+        f'se esperaban {int(np.ceil(n / largo))} bloques por réplica para n = {n}, L = {largo}'
+    assert inicios.min() >= 1 and inicios.max() <= n - largo + 1, \
+        f'inicios fuera de {{1, ..., {n - largo + 1}}} (n = {n}, L = {largo})'
 
 
 def leer_inicios_bootstrap(archivo):
@@ -91,7 +107,7 @@ def _medidas_nulo(M, p):
     return np.concatenate([100 * e[:3] / p, [np.mean(np.abs(R[iu]))]])
 
 
-def nulo_tendencias(X, inicios, largo=12, version='con_deriva', tratamiento=None):
+def nulo_tendencias(X, inicios, largo=12, version='con_deriva', tratamiento=None, inicios_ts=None):
     """
     Nulo de tendencias independientes (chunk `b2s-nulo` del Rmd).
 
@@ -104,18 +120,28 @@ def nulo_tendencias(X, inicios, largo=12, version='con_deriva', tratamiento=None
         lineal, igual que a las series observadas en el diagnóstico sin tendencia (D5);
       - 'mixto' (D8): cada serie según `tratamiento[j]` ∈ {'TS', 'con_deriva', 'sin_deriva'}
         (ver `series_tiempo.tratamiento_mixto`). Una serie 'TS' se simula como su recta MCO más
-        sus residuos remuestreados en bloques con los **mismos inicios** (los inicios caben en
-        las n filas porque se sortearon para n − 1 incrementos); las otras, como arriba.
+        sus n residuos remuestreados en bloques con los inicios `inicios_ts`, sorteados en
+        {1, ..., n − L + 1} (D19, 7-nov-2026: el residuo del último mes también puede iniciar un
+        bloque); las otras, como arriba, con `inicios` (sorteados en {1, ..., n − L} para los
+        n − 1 incrementos).
+    `inicios`: réplicas × series × ⌈(n − 1) / L⌉; `inicios_ts`: réplicas × series × ⌈n / L⌉ (solo se
+    exige en el mixto con alguna serie TS). Ambos 1-based, como los escribe el Rmd.
     Devuelve una matriz réplicas × 4 (inercia PC1, PC2, PC3 y |r| medio).
     """
     X = np.asarray(X, dtype=float)
     D = np.diff(X, axis=0)
     nd, p = D.shape
+    n = nd + 1
     medias = D.mean(axis=0)
+    comprobar_inicios(inicios, nd, largo)
     if version == 'mixto':
         assert tratamiento is not None and len(tratamiento) == p
         assert set(tratamiento) <= {'TS', 'con_deriva', 'sin_deriva'}
-        n = nd + 1
+        if 'TS' in tratamiento:
+            # D19: la rama TS remuestrea n residuos, con inicios propios en {1, ..., n − L + 1}
+            assert inicios_ts is not None, 'el nulo mixto con series TS requiere inicios_ts (D19)'
+            comprobar_inicios(inicios_ts, n, largo)
+            assert inicios_ts.shape[:2] == inicios.shape[:2], 'inicios_ts: mismas réplicas y series que inicios'
         t = np.arange(1, n + 1, dtype=float)
         A = np.column_stack([np.ones(n), t])
         coef, *_ = np.linalg.lstsq(A, X, rcond=None)
@@ -126,10 +152,10 @@ def nulo_tendencias(X, inicios, largo=12, version='con_deriva', tratamiento=None
     reps = inicios.shape[0]
     sims = np.empty((reps, 4))
     for r in range(reps):
-        M = np.empty((nd + 1, p))
+        M = np.empty((n, p))
         for j in range(p):
             if tratamiento[j] == 'TS':
-                M[:, j] = rectas[:, j] + residuos[indices_desde_inicios(inicios[r, j], largo, nd + 1), j]
+                M[:, j] = rectas[:, j] + residuos[indices_desde_inicios(inicios_ts[r, j], largo, n), j]
                 continue
             d = D[indices_desde_inicios(inicios[r, j], largo, nd), j]
             if tratamiento[j] == 'sin_deriva':
