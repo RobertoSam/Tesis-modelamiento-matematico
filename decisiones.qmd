@@ -21,6 +21,38 @@ cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). E
 recuperable en el commit `57104ff` de `main`.
 :::
 
+## D19 · 7 de noviembre de 2026 · Sorteo de los inicios de bloque en la rama TS del nulo mixto (N-04)
+
+**Contexto.** La auditoría de la iteración 3b (hallazgo N-04, `auditorias/2026-10-29_iteracion-3b.md`)
+observó que la rama TS del nulo mixto (D8) sortea, para $n$ residuos, inicios de bloque en
+$\{1,\dots,n'-L+1\}$ con $n' = n-1$, de modo que el residuo del último mes nunca se sortea como
+inicio de bloque. La tesis lo declaraba en `obs:nulo-mixto` (c), sin decidir.
+
+**Decisión.** Roberto decidió **corregir el código**: los inicios de bloque se sortean en
+$\{1,\dots,n-L+1\}$, en Python (`src/remuestreo.py`) y en R, con paridad, y se re-ejecutan los
+nulos que dependen de la rama TS y se regeneran las cifras.
+
+**Alternativa descartada.** Mantener el sorteo y registrarlo como convención.
+
+**Rastro.** Estado anterior en `b893b23` (rama `iteracion-3b`, auditada y APROBADA).
+
+## D18 · 7 de noviembre de 2026 · Significado de «externo» en D7 (N-02)
+
+**Contexto.** La auditoría de la iteración 3b (hallazgo N-02) observó que D7 y `def:episodio` fechan
+por el «evento o anuncio externo» sin aclarar si «externo» significa *externo al análisis* o
+*extranjero*; la ficha de `congreso_2018` fecha un episodio peruano y el registro descartaba
+`pcm_2020` por ser «un evento interno».
+
+**Decisión.** Roberto decidió que **«externo» significa externo al análisis**: el episodio se fecha
+con una fuente fichada ajena a las series, a los indicadores y a los cortes estimados (regla 6),
+sea el evento peruano o extranjero. Las fichas, el registro de verificación y la definición de
+episodio se alinean con este criterio.
+
+**Alternativa descartada.** Leer «externo» como «extranjero», que dejaría como mero contexto los
+eventos peruanos con fecha documentada.
+
+**Rastro.** Estado anterior en `b893b23` (rama `iteracion-3b`).
+
 ## D17 · 26 de octubre de 2026 · Criterios de la parte dinámica con 16 series
 
 **Contexto.** La adenda al plan de la iteración 3b (`asesoria/2026-10-26_adenda-plan-iteracion-3b.md`)
