@@ -62,11 +62,11 @@ cap. 2 (cada primera cita de una obra con ficha preliminar lleva su nota, como y
 cinco entradas con campo `verificar` del bibliotecario; el de PENDIENTE, sobre todo a las cifras
 pedidas (cada uso de una macro faltante cuenta una vez).
 
-## Dependencia del commit del bibliotecario
+## Citas nuevas del bibliotecario
 
-El cap. 2 (`35ddd49`) cita 30 claves nuevas que están en `tesis/referencias.bib` y en `papers/`
-**en el árbol de trabajo, sin commit todavía** (nota del bibliotecario de hoy). Si ese commit no se
-hace, la tesis compila con citas indefinidas. Claves: borio_2014, borio_lowe_2002,
+El cap. 2 (`35ddd49`) cita 30 claves nuevas que el bibliotecario agregó a `tesis/referencias.bib` y
+a `papers/` en el commit `08c4015` (anterior a `35ddd49` en la rama), de modo que la rama compila
+sin citas indefinidas. Claves: borio_2014, borio_lowe_2002,
 claessens_kose_terrones_2011/2012, aikman_haldane_nelson_2015, schuler_hiebert_peltonen_2015/2020,
 galati_et_al_2016, runstler_vlekke_2018, strohsal_proano_wolters_2019, hamilton_2018,
 harding_pagan_2002, hollo_kremer_lo_duca_2012, illing_liu_2006, hamilton_1989, kim_nelson_1999,
