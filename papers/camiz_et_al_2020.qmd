@@ -82,7 +82,7 @@ Las siguientes limitaciones del paper son relevantes para la transferencia metod
 
 Las siguientes referencias citadas en el paper son pertinentes para el marco teórico de la tesis:
 
-- **Denimal, J.-J. (2007)**. Classification hiérarchique optimisée d'un tableau de mesures. *Revue de Statistique Appliquée*, *148*(2), 29–61. *(Fuente primaria del algoritmo HFC. Pendiente de obtener y fichar.)*
+- **Denimal, J.-J. (2007)**. Classification factorielle hiérarchique optimisée d'un tableau de mesures. *Journal de la Société française de statistique & Revue de statistique appliquée*, *148*(2), 29–63. *(Fuente primaria del algoritmo HFC. Fichada en `denimal_2007.qmd` el 24-10-2026; título, revista y páginas corregidos según Numdam.)*
 
 - **Camiz, S., Denimal, J.-J., & Pillar, V. D. (2006)**. Hierarchical Factor Classification of Variables in Ecology. *Community Ecology*, *7*(2), 165–179. *(Primera aplicación ecológica de HFC; puede proporcionar variantes del algoritmo.)*
 

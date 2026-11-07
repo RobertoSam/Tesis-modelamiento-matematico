@@ -1,0 +1,61 @@
+---
+title: "Josse, Pagès y Husson (2008) — Testing the significance of the RV coefficient"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-067 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (RePEc); texto no consultado |
+| **Tipo de fuente** | Artículo en revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Josse, J., Pagès, J., & Husson, F. (2008). Testing the significance of the RV coefficient. *Computational Statistics & Data Analysis, 53*(1), 82–91.
+
+> **Verificación:** Registro de RePEc/IDEAS (secundario) leído el 2026-10-24: autores J. Josse, J. Pagès y F. Husson; *Computational Statistics & Data Analysis*, 53(1), septiembre de 2008, pp. 82–91; PII S0167-9473(08)00318-6. La documentación de `coeffRV` (FactoMineR, CRAN) cita la misma revista, volumen y páginas, pero con otro orden de autores (Josse, Husson y Pagès) y el año 2007. ScienceDirect, HAL y doi.org no fueron accesibles. **Pendientes: orden de autores, año y DOI.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Coeficiente RV |
+| **Área secundaria** | Contraste de significación del RV |
+| **Relevancia para la tesis** | **ALTA.** Propuesta del asesor (B3): fuente del contraste del RV bajo independencia o por permutación. |
+| **Frente de la tesis al que aporta** | Frente 3; D7 y D10 (RV entre ventanas adyacentes) |
+
+## 4. Resumen analítico
+
+### Problema (según el resumen)
+
+El valor del RV por sí solo no permite saber si dos conjuntos de variables están correlacionados de forma significativa. Las pruebas asintóticas suelen fallar y las de permutación son costosas.
+
+### Propuesta
+
+Compara aproximaciones sin permutación (normal, transformación logarítmica, Pearson tipo III y una expansión de Edgeworth nueva), mediante simulación y un ejemplo sensorial. `coeffRV` usa los momentos del RV bajo permutación con la aproximación de Pearson tipo III.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| RV bajo la hipótesis de independencia (permutación) | Referencia del RV entre ventanas, distinta del nulo de estructura constante de D7 |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente candidata para el contraste del RV citado en el plan (B3).
+
+### Limitaciones (relevantes para la adaptación)
+
+- Supone filas intercambiables: con series autocorrelacionadas, la permutación de filas destruye la dependencia, y por eso D7 usa remuestreo por bloques. El artículo sirve como antecedente, no como el nulo de la tesis.
+- Metadatos de fuente secundaria; queda `VERIFICAR`.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `robert_escoufier_1976` | Alta | Ficha preliminar |

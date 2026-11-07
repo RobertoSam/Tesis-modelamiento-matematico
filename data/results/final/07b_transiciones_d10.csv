@@ -1,0 +1,73 @@
+objeto,metodo,nw,pesos,fecha,borde_3,es_borde_3,borde_6,es_borde_6,pares_cercanos,pares_cercanos_bajo_p5,fuera_del_nulo
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2008-07,—,False,—,False,0,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2009-10,—,False,—,False,7,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2012-07,Entra Taper tantrum,True,Entra Taper tantrum,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2013-07,Entra Colapso de las materias primas,True,Entra Colapso de las materias primas,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2015-01,Sale Taper tantrum,True,Sale Taper tantrum,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2017-01,Entra Kuczynski / Odebrecht; Sale Colapso de las materias primas,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China; Sale Colapso de las materias primas,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),24,uniformes,2024-07,—,False,—,False,0,0,False
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,2009-10,—,False,—,False,1,0,False
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,2011-04,—,False,Sale Crisis financiera global,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,2012-07,—,False,Entra Colapso de las materias primas,True,7,4,True
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,2014-07,—,False,—,False,7,0,False
+cargas_sin_centrar,regla 06 (PC2),36,uniformes,2018-10,Entra COVID-19,True,Entra COVID-19,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2011-07,Entra Taper tantrum; Sale Crisis financiera global,True,Entra Taper tantrum; Sale Crisis financiera global,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2012-01,—,False,Entra Colapso de las materias primas,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2013-04,—,False,—,False,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2014-04,—,False,—,False,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2016-01,Entra Kuczynski / Odebrecht; Sale Taper tantrum,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China; Sale Taper tantrum,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2018-04,Entra COVID-19; Sale Colapso de las materias primas,True,Entra COVID-19; Sale Colapso de las materias primas,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),48,uniformes,2022-07,Sale COVID-19,True,Sale Guerra comercial EE. UU.–China; Sale COVID-19,True,0,0,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2012-01,Entra Colapso de las materias primas; Sale Crisis financiera global,True,Entra Colapso de las materias primas; Sale Crisis financiera global,True,4,0,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2013-10,—,False,—,False,7,0,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2015-10,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2017-10,Entra COVID-19,True,Entra COVID-19,True,7,0,False
+cargas_sin_centrar,regla 06 (PC2),60,uniformes,2018-01,Entra COVID-19,True,Entra COVID-19; Sale Colapso de las materias primas,True,7,0,False
+cargas_sin_centrar,aede codo,24,uniformes,2008-07,—,False,—,False,0,0,False
+cargas_sin_centrar,aede codo,24,uniformes,2009-06,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,24,uniformes,2011-11,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,24,uniformes,2020-10,Sale Guerra comercial EE. UU.–China,True,Sale Guerra comercial EE. UU.–China; Sale COVID-19,True,7,0,False
+cargas_sin_centrar,aede codo,24,uniformes,2024-03,—,False,—,False,2,0,False
+cargas_sin_centrar,aede codo,24,gaussianos_nsd3,2018-06,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,36,uniformes,2020-05,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,36,gaussianos_nsd3,2020-09,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,48,uniformes,2020-04,Sale Kuczynski / Odebrecht,True,Sale Kuczynski / Odebrecht,True,7,0,False
+cargas_sin_centrar,aede codo,48,gaussianos_nsd3,2020-05,Sale Kuczynski / Odebrecht,True,Sale Kuczynski / Odebrecht,True,7,2,True
+cargas_sin_centrar,aede codo,60,uniformes,2020-02,—,False,—,False,7,0,False
+cargas_sin_centrar,aede codo,60,gaussianos_nsd3,2020-04,—,False,Sale Kuczynski / Odebrecht,True,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2008-07,—,False,—,False,0,0,False
+correlacion,regla 06 (PC2),24,uniformes,2009-10,—,False,—,False,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2012-07,Entra Taper tantrum,True,Entra Taper tantrum,True,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2013-07,Entra Colapso de las materias primas,True,Entra Colapso de las materias primas,True,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2015-01,Sale Taper tantrum,True,Sale Taper tantrum,True,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2017-01,Entra Kuczynski / Odebrecht; Sale Colapso de las materias primas,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China; Sale Colapso de las materias primas,True,7,0,False
+correlacion,regla 06 (PC2),24,uniformes,2024-07,—,False,—,False,0,0,False
+correlacion,regla 06 (PC2),36,uniformes,2009-10,—,False,—,False,1,0,False
+correlacion,regla 06 (PC2),36,uniformes,2011-04,—,False,Sale Crisis financiera global,True,7,0,False
+correlacion,regla 06 (PC2),36,uniformes,2012-07,—,False,Entra Colapso de las materias primas,True,7,4,True
+correlacion,regla 06 (PC2),36,uniformes,2014-07,—,False,—,False,7,0,False
+correlacion,regla 06 (PC2),36,uniformes,2018-10,Entra COVID-19,True,Entra COVID-19,True,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2011-07,Entra Taper tantrum; Sale Crisis financiera global,True,Entra Taper tantrum; Sale Crisis financiera global,True,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2012-01,—,False,Entra Colapso de las materias primas,True,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2013-04,—,False,—,False,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2014-04,—,False,—,False,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2016-01,Entra Kuczynski / Odebrecht; Sale Taper tantrum,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China; Sale Taper tantrum,True,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2018-04,Entra COVID-19; Sale Colapso de las materias primas,True,Entra COVID-19; Sale Colapso de las materias primas,True,7,0,False
+correlacion,regla 06 (PC2),48,uniformes,2022-07,Sale COVID-19,True,Sale Guerra comercial EE. UU.–China; Sale COVID-19,True,0,0,False
+correlacion,regla 06 (PC2),60,uniformes,2012-01,Entra Colapso de las materias primas; Sale Crisis financiera global,True,Entra Colapso de las materias primas; Sale Crisis financiera global,True,4,0,False
+correlacion,regla 06 (PC2),60,uniformes,2013-10,—,False,—,False,7,0,False
+correlacion,regla 06 (PC2),60,uniformes,2015-10,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China,True,Entra Kuczynski / Odebrecht; Entra Guerra comercial EE. UU.–China,True,7,0,False
+correlacion,regla 06 (PC2),60,uniformes,2017-10,Entra COVID-19,True,Entra COVID-19,True,7,0,False
+correlacion,regla 06 (PC2),60,uniformes,2018-01,Entra COVID-19,True,Entra COVID-19; Sale Colapso de las materias primas,True,7,0,False
+correlacion,aede codo,24,uniformes,2008-07,—,False,—,False,0,0,False
+correlacion,aede codo,24,uniformes,2009-06,—,False,—,False,7,0,False
+correlacion,aede codo,24,uniformes,2011-11,—,False,—,False,7,0,False
+correlacion,aede codo,24,uniformes,2020-10,Sale Guerra comercial EE. UU.–China,True,Sale Guerra comercial EE. UU.–China; Sale COVID-19,True,7,0,False
+correlacion,aede codo,24,uniformes,2024-03,—,False,—,False,2,0,False
+correlacion,aede codo,24,gaussianos_nsd3,2018-06,—,False,—,False,7,0,False
+correlacion,aede codo,36,uniformes,2020-05,—,False,—,False,7,0,False
+correlacion,aede codo,36,gaussianos_nsd3,2020-09,—,False,—,False,7,0,False
+correlacion,aede codo,48,uniformes,2020-04,Sale Kuczynski / Odebrecht,True,Sale Kuczynski / Odebrecht,True,7,0,False
+correlacion,aede codo,48,gaussianos_nsd3,2020-05,Sale Kuczynski / Odebrecht,True,Sale Kuczynski / Odebrecht,True,7,0,False
+correlacion,aede codo,60,uniformes,2020-02,—,False,—,False,7,0,False
+correlacion,aede codo,60,gaussianos_nsd3,2020-04,—,False,Sale Kuczynski / Odebrecht,True,7,0,False

@@ -13,6 +13,39 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 26 de octubre de 2026
+
+**Iteración 3b: fase 0 terminada, Rmd final en niveles con 16 series y decisiones D15 a D17**
+
+- **Fase 0 del desarrollador (D3 a D8), todavía con 17 series y dos vías.** Datación PCA sin
+  `torch` (09a), `aede` en la grilla de anchos {24, 36, 48, 60} × pesos × maxcl, valores propios
+  por ventana frente a Kaiser y Horn, regla del 06 por ancho de ventana, HFC en 3 y 4 clases con
+  bootstrap y nulo de estructura constante. La paridad Python–R coincide en todas las filas, y
+  nada de lo producido en la iteración 3a cambia.
+- **Revisión del Rmd por Roberto y decisiones nuevas** ([D15 a D17](decisiones.qmd)):
+  - D15: un **Rmd final** solo con las series sin transformar. El Rmd anterior queda como
+    exploración y las transformadas pasan a un anexo de robustez.
+  - D16: se excluye la **Liquidez M2**, casi idéntica a M3 en los datos. El análisis pasa a
+    16 series.
+  - D17: criterios de la parte dinámica con 16 series (regla de respaldo, coeficiente RV entre
+    ventanas, lectura de 2017-10 en la regla del 06, y AE/LSTM pendientes hasta contar con `torch`).
+- **Adenda al plan 3b** del asesor de tesis, con el conforme de Roberto.
+- **Primer tramo de la adenda:**
+  - antecedente con 17 series congelado;
+  - `R/ciclo_financiero_final.Rmd`, secciones 0 a 3 (series, diagnóstico y PCA con el nulo
+    mixto), con salidas en `data/results/final/`;
+  - primera parte del anexo (sustento de no diferenciar);
+  - episodios unificados en un único archivo con fuentes externas (D7);
+  - variante del coeficiente RV sin centrar.
+
+**Pendientes**
+
+- Parte dinámica del Rmd final con 16 series (EPCA, HFC, datación) según D17, y luego los
+  capítulos 2 y 3 y la auditoría.
+- Subir el tag `v0.4-17series-dos-vias` desde un equipo con permiso: el entorno de la sesión no
+  puede subir tags.
+- Reunión con el Dr. Camiz: presentarle D15 y D16 como propuesta.
+
 ## 24 de octubre de 2026
 
 **Arranque de la iteración 3b y protocolo para no detener el avance**

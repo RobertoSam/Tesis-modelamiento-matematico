@@ -20,7 +20,11 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
    mensual en la iteración 3a), D4 (datos congelados), D5 (regla de tendencia fijada de antemano), D6
    (`aede` y HFC también en Python) y D7–D14 (decisiones de la iteración 3b: fechado de episodios,
    nulo mixto, d = 3, grilla de ventanas, uso del CH, regla de respaldo, lectura de 2017-10 y
-   alcance de los apuntes 2 y 7). Si algo contradice una decisión, se avisa; no se corrige en
+   alcance de los apuntes 2 y 7), D15 (Rmd final solo en niveles; el Rmd actual queda como
+   exploración y las transformadas pasan a un anexo de robustez), D16 (se excluye M2: 16 series) y D17
+   (criterios de la parte dinámica con 16 series: regla K, RV, D13 en el 06, AE/LSTM pendientes), D18 («evento externo» = externo al análisis; puede ser nacional) y D19
+   (sorteo de bloques de la rama TS como convención; se corrige en la iteración 4).
+   Si algo contradice una decisión, se avisa; no se corrige en
    silencio.
 5. **Epistemología:** posición del asesor «datos primero» (Benzécri, *laisser parler les
    données*). Los Autoencoders/LSTM se presentan como complemento, con discusión explícita de
@@ -35,9 +39,10 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
 ```
 notebooks/        Pipeline numerada 01–09 (prefijo 999 = desarrollo)
 src/              Funciones reutilizables
-data/processed/   Datasets mensuales vigentes: niveles 228 meses × 17 series (2007-01 a 2025-12,
+data/processed/   Datasets mensuales vigentes: niveles 228 meses × 16 series (2007-01 a 2025-12,
                   análisis oficial D1; el archivo trae 19 columnas y se excluyen el crédito
-                  total del SF y el IPC subyacente); transformadas 227 × 17 (2007-02 a 2025-12)
+                  total del SF, el IPC subyacente y, desde D16, la Liquidez M2); transformadas
+                  227 × 16 (2007-02 a 2025-12), solo para el anexo de robustez (D15)
 data/results/     Salidas con prefijo del notebook que las genera
 papers/           Fichas bibliográficas apellido_año.qmd (Ficha Estándar)
 R/                Versión en R (fuera del sitio; R puro + R/camiz_port.R; Rcamiz es opcional)

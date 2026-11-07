@@ -1,0 +1,73 @@
+L,nw,pesos,criterio,k_obs,k_obs_en_tope,replicas,nulo_p05,nulo_p50,nulo_p95,prop_nulo_ge_obs,prop_nulo_le_obs,prop_nulo_en_tope
+12,24,uniformes,codo (caída máxima),6,False,20,2.0,4.5,9.05,0.4,0.8,0.0
+12,24,uniformes,Calinski-Harabász k gl (aede),20,True,20,19.0,20.0,20.0,0.9,1.0,0.9
+12,24,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,4.8500000000000005,20.0,20.0,0.75,1.0,0.75
+12,24,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,4.0,12.200000000000003,1.0,0.2,0.0
+12,24,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,18.9,20.0,20.0,0.9,1.0,0.9
+12,24,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,9.85,20.0,20.0,0.75,1.0,0.75
+12,36,uniformes,codo (caída máxima),2,False,20,2.0,3.0,6.150000000000002,1.0,0.3,0.0
+12,36,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+12,36,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,18.150000000000002,20.0,20.0,0.9,1.0,0.9
+12,36,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,3.5,8.05,1.0,0.15,0.0
+12,36,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,18.75,20.0,20.0,0.9,1.0,0.9
+12,36,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,13.4,20.0,20.0,0.8,1.0,0.8
+12,48,uniformes,codo (caída máxima),2,False,20,2.0,3.5,7.100000000000001,1.0,0.35,0.0
+12,48,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+12,48,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,19.1,20.0,20.0,0.95,1.0,0.95
+12,48,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,3.0,6.150000000000002,1.0,0.4,0.0
+12,48,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+12,48,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),2,False,20,19.1,20.0,20.0,1.0,0.05,0.95
+12,60,uniformes,codo (caída máxima),2,False,20,2.0,3.0,7.0,1.0,0.35,0.0
+12,60,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+12,60,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,19.1,20.0,20.0,0.95,1.0,0.95
+12,60,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,2.0,6.100000000000001,1.0,0.55,0.0
+12,60,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,19.95,20.0,20.0,0.95,1.0,0.95
+12,60,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,19.95,20.0,20.0,0.95,1.0,0.95
+24,24,uniformes,codo (caída máxima),6,False,200,2.0,4.0,9.0,0.245,0.86,0.0
+24,24,uniformes,Calinski-Harabász k gl (aede),20,True,200,19.0,20.0,20.0,0.93,1.0,0.93
+24,24,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,200,2.0,20.0,20.0,0.735,1.0,0.735
+24,24,gaussianos_nsd3,codo (caída máxima),2,False,200,2.0,3.0,10.0,1.0,0.225,0.0
+24,24,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,200,12.750000000000005,20.0,20.0,0.895,1.0,0.895
+24,24,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,200,2.0,20.0,20.0,0.73,1.0,0.73
+24,36,uniformes,codo (caída máxima),2,False,200,2.0,3.0,8.0,1.0,0.275,0.0
+24,36,uniformes,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,0.97,1.0,0.97
+24,36,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,200,8.850000000000003,20.0,20.0,0.91,1.0,0.91
+24,36,gaussianos_nsd3,codo (caída máxima),2,False,200,2.0,4.0,9.0,1.0,0.25,0.0
+24,36,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,0.995,1.0,0.995
+24,36,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,200,6.950000000000001,20.0,20.0,0.925,1.0,0.925
+24,48,uniformes,codo (caída máxima),2,False,200,2.0,3.0,8.0,1.0,0.315,0.0
+24,48,uniformes,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,0.995,1.0,0.995
+24,48,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,200,19.950000000000003,20.0,20.0,0.95,1.0,0.95
+24,48,gaussianos_nsd3,codo (caída máxima),2,False,200,2.0,3.0,8.0,1.0,0.295,0.0
+24,48,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,1.0,1.0,1.0
+24,48,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),2,False,200,20.0,20.0,20.0,1.0,0.03,0.97
+24,60,uniformes,codo (caída máxima),2,False,200,2.0,3.0,6.049999999999983,1.0,0.33,0.0
+24,60,uniformes,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,0.995,1.0,0.995
+24,60,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,200,20.0,20.0,20.0,0.985,1.0,0.985
+24,60,gaussianos_nsd3,codo (caída máxima),2,False,200,2.0,3.0,6.0,1.0,0.33,0.0
+24,60,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,200,20.0,20.0,20.0,1.0,1.0,1.0
+24,60,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,200,20.0,20.0,20.0,0.99,1.0,0.99
+36,24,uniformes,codo (caída máxima),6,False,20,2.0,4.0,7.050000000000001,0.3,0.8,0.0
+36,24,uniformes,Calinski-Harabász k gl (aede),20,True,20,18.95,20.0,20.0,0.85,1.0,0.85
+36,24,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,2.95,19.5,20.0,0.5,1.0,0.5
+36,24,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,4.5,10.100000000000001,1.0,0.1,0.0
+36,24,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,13.95,20.0,20.0,0.8,1.0,0.8
+36,24,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,3.0,20.0,20.0,0.6,1.0,0.6
+36,36,uniformes,codo (caída máxima),2,False,20,2.0,3.0,7.100000000000001,1.0,0.4,0.0
+36,36,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,36,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,2.0,20.0,20.0,0.9,1.0,0.9
+36,36,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,4.0,8.100000000000001,1.0,0.3,0.0
+36,36,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,36,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,9.700000000000001,20.0,20.0,0.85,1.0,0.85
+36,48,uniformes,codo (caída máxima),2,False,20,2.0,3.0,7.100000000000001,1.0,0.4,0.0
+36,48,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,48,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,2.0,20.0,20.0,0.9,1.0,0.9
+36,48,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,3.0,8.100000000000001,1.0,0.45,0.0
+36,48,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,48,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),2,False,20,2.0,20.0,20.0,1.0,0.1,0.9
+36,60,uniformes,codo (caída máxima),2,False,20,2.0,3.0,5.050000000000001,1.0,0.35,0.0
+36,60,uniformes,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,60,uniformes,Calinski-Harabász k-1 gl (habitual),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,60,gaussianos_nsd3,codo (caída máxima),2,False,20,2.0,3.0,4.100000000000001,1.0,0.45,0.0
+36,60,gaussianos_nsd3,Calinski-Harabász k gl (aede),20,True,20,20.0,20.0,20.0,1.0,1.0,1.0
+36,60,gaussianos_nsd3,Calinski-Harabász k-1 gl (habitual),20,True,20,2.0,20.0,20.0,0.9,1.0,0.9

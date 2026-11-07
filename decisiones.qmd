@@ -21,6 +21,124 @@ cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). E
 recuperable en el commit `57104ff` de `main`.
 :::
 
+## D19 · 7 de noviembre de 2026 · Sorteo de bloques de la rama TS del nulo mixto (N-04)
+
+**Contexto.** La auditoría de la iteración 3b (hallazgo N-04, menor) observó que la rama TS del nulo
+de tendencias mixto (D8) usa, para $n$ residuos, los inicios de bloque sorteados para $n-1$
+incrementos. El residuo del último mes nunca se sortea como inicio de bloque, aunque con
+$n' = 227$ y $L_{\mathrm b}\in\{12, 24, 36\}$ los 228 meses siempre quedan cubiertos. La tesis lo
+declara en `obs:nulo-mixto` (c).
+
+**Decisión.** Se mantiene como **convención declarada** en la iteración 3b, que queda cerrada sin
+reabrir resultados. La corrección del sorteo (inicios en $\{1,\dots,n-L_{\mathrm b}+1\}$, en Python y
+en R, con paridad) entra como tarea de fase 0 de la iteración 4, con re-ejecución del nulo mixto y
+comparación con los resultados actuales.
+
+**Alternativa descartada.** Corregir el código dentro de 3b: obligaba a reabrir una iteración ya
+auditada (APROBADO, vuelta 2) por un efecto de 1 mes en 228.
+
+**Rastro.** `auditorias/2026-10-31_iteracion-3b_vuelta2.md` (N-04); estado del código en la rama
+`iteracion-3b`, commit `b893b23`.
+
+## D18 · 7 de noviembre de 2026 · Significado de «evento externo» en D7 (N-02)
+
+**Contexto.** D7 y `def:episodio` fechan cada episodio por el «evento o anuncio externo». La
+auditoría de la iteración 3b (hallazgo N-02, menor) observó que el texto no aclaraba si «externo»
+significa extranjero o externo al análisis: la ficha `congreso_2018` llamaba «evento interno» a la
+renuncia de Kuczynski y aun así fechaba un episodio, mientras que el registro descartaba
+`pcm_2020` como fecha por ser un evento interno.
+
+**Decisión.** «Externo» significa **externo al análisis**: un evento fechado por una fuente con
+ficha, independiente de las series y de cualquier indicador derivado de ellas (regla 6). El evento
+puede ser nacional o extranjero. En consecuencia, la renuncia de Kuczynski (`congreso_2018`) es una
+fecha admisible, y la declaración del estado de emergencia (`pcm_2020`, 15-03-2020) pasa a ser una
+fecha alternativa admisible del inicio del episodio COVID-19. Como cae en el mismo mes que
+`oms_2020b`, no cambia ninguna fecha de `data/referencia/episodios_referencia.csv`.
+
+**Alternativa descartada.** «Externo» como «extranjero»: excluía los episodios políticos domésticos,
+relevantes para el caso peruano, sin ganancia en la independencia de la validación.
+
+**Rastro.** `auditorias/2026-10-31_iteracion-3b_vuelta2.md` (N-02); textos ajustados en
+`def:episodio` (tesis e informe), `papers/congreso_2018.qmd` y `tesis/registro_verificacion.md`.
+
+## D17 · 26 de octubre de 2026 · Criterios de la parte dinámica con 16 series
+
+**Contexto.** La adenda al plan de la iteración 3b (`asesoria/2026-10-26_adenda-plan-iteracion-3b.md`)
+dejó cuatro criterios por fijar antes de rehacer la parte dinámica con 16 series (D15, D16).
+Todavía no existe ningún resultado de esa parte con 16 series. Roberto aprobó las cuatro
+recomendaciones del asesor sin ajustes.
+
+**Decisión.**
+
+1. **Regla K (D12):** maxcl = 10 como especificación principal, que es la anterior a la iteración 3b.
+   Con maxcl = 15 y maxcl = 20 se informa como sensibilidad, y se marcan como artefacto las
+   soluciones en que todos los tramos tienen la longitud mínima de 12 meses.
+2. **RV entre ventanas (D10):** el criterio principal es el RV de las cargas 16 × 3 sin centrar las
+   columnas; el RV de la matriz de correlación completa se informa como sensibilidad. El p5 del
+   nulo de estructura constante se toma por posición, y el criterio de OE4 compara la proporción
+   de pares bajo el p5 con su propia distribución nula.
+3. **D13 y la regla del 06:** la regla del 06, que no tiene pesos, cuenta como evidencia de pesos
+   uniformes. La condición con pesos gaussianos solo puede cumplirla `aede` con pesos gaussianos.
+4. **AE y LSTM:** con 16 series quedan en `\pendiente` hasta la iteración 4, cuando haya `torch`.
+   Sus resultados con 17 series se conservan como antecedente.
+
+Roberto ratificó además que el análisis se queda con 16 series: no se hace la comparación de 16
+frente a 17 ni se incluye M2 como variable suplementaria.
+
+**Alternativas descartadas.** Las de la sección 4 de la adenda.
+
+**Rastro.** Registrada antes de cualquier resultado dinámico con 16 series; HEAD previo `2d6be97`
+de la rama `iteracion-3b`.
+
+## D16 · 26 de octubre de 2026 · Se excluye la Liquidez M2 (16 series)
+
+**Contexto.** Al revisar el Rmd, Roberto observó que M1, M2 y M3 son muy parecidas. En los datos
+congelados de D4, la correlación entre M2 y M3 es 0,998 en niveles, 0,986 en logaritmos sin
+tendencia lineal y 0,907 en tasas de crecimiento. M1 se separa de ambas cuando se quita la
+tendencia (0,78 en logaritmos sin tendencia; 0,53–0,56 en tasas de crecimiento). Un par casi
+duplicado pesa dos veces en un PCA sin ponderar y desplaza el primer eje hacia el bloque monetario.
+
+**Decisión.** Se excluye la **Liquidez M2**. El análisis pasa de 17 a 16 series: se conservan M1
+(componente transaccional) y M3 (liquidez amplia). Los archivos de D4 no se modifican (sus md5
+siguen vigentes); la exclusión se aplica al leerlos, igual que la del crédito total del SF y la del
+IPC subyacente. Todos los resultados de las iteraciones 3a y 3b que usan 17 series quedan como
+antecedente y se vuelven a calcular con 16.
+
+**Alternativas descartadas.** Excluir M3 (M2 no recoge los depósitos en moneda extranjera de una
+economía dolarizada); dejar un solo agregado (se pierde la información propia de M1); mantener las
+tres y justificar la redundancia.
+
+**Pendiente.** Comunicarlo al Dr. Camiz junto con D15.
+
+**Rastro.** Estado anterior, con 17 series: commit `81d8a94` de la rama `iteracion-3b`.
+
+## D15 · 26 de octubre de 2026 · Rmd final solo en niveles; las transformadas pasan a anexo
+
+**Contexto.** D1 fija las series sin transformar como análisis oficial y D2 ejecuta todo en dos
+vías, a la espera de discutir la Parte C con el asesor. Roberto revisó el Rmd y decidió no
+sostener las dos vías en el documento principal.
+
+**Decisión.**
+
+- Se crea un **Rmd final** que ejecuta la cadena completa solo con las series sin transformar
+  (estandarizadas).
+- El Rmd actual (`R/tesis_ciclo_financiero.Rmd`) queda como **documento de exploración**, sin más
+  cambios metodológicos.
+- Las series transformadas no desaparecen: pasan a un **anexo de robustez** del Rmd final con
+  (a) el sustento de no diferenciar (ganancia del filtro de diferencias y contraste de la
+  estructura) y (b) la detección de episodios fuera de muestra, donde solo la vía transformada
+  es informativa.
+- Las tareas pendientes de la iteración 3b se ejecutan solo en niveles, salvo lo que el anexo
+  necesite.
+
+Esta decisión resuelve en la práctica la propuesta de la Parte C de D2, que se presentará al
+Dr. Camiz como propuesta, no como hecho consumado.
+
+**Alternativas descartadas.** Quitar las transformadas por completo (se pierde el contraste de
+episodios); esperar a la reunión con el Dr. Camiz.
+
+**Rastro.** Estado anterior, en dos vías: commit `81d8a94` de la rama `iteracion-3b`.
+
 ## D14 · 24 de octubre de 2026 · Alcance de los apuntes 2 y 7 (decisión G)
 
 **Decisión.** El apunte 7 se ejecuta en su versión útil: valores propios por ventana frente al

@@ -87,7 +87,7 @@ def vara_quebrada(p):
 
 def horn(X, n_sim=1000, percentil=0.95, semilla=42):
     """
-    Análisis paralelo de Horn [VERIFICAR: sin ficha]: percentil 95 de los valores propios de
+    Análisis paralelo de Horn (1965) [VERIFICAR: ficha horn_1965; solo se leyó el resumen]: percentil 95 de los valores propios de
     matrices de correlación de datos gaussianos independientes del mismo tamaño.
 
     El generador (numpy PCG64 con la semilla dada) es distinto del de R: los umbrales difieren
@@ -109,6 +109,28 @@ def horn(X, n_sim=1000, percentil=0.95, semilla=42):
         else:
             break
     return {'observados': obs, 'umbral': umbral, 'retener': retener}
+
+
+def umbral_horn(n, p, n_sim=1000, percentil=0.95, semilla=2026):
+    """Percentil de Horn de los valores propios con n observaciones gaussianas de p series.
+
+    Es el umbral de `horn` sin los valores observados (iteración 3b, D5: umbral por ventana con
+    n = ceil(n_omega) de Kish). Generador PCG64 de numpy: distinto del de R (excepción de
+    generadores de la iteración 3a).
+    """
+    rng = np.random.default_rng(semilla)
+    sims = np.empty((n_sim, p))
+    for b in range(n_sim):
+        G = rng.standard_normal((n, p))
+        sims[b] = np.sort(np.linalg.eigvalsh(np.corrcoef(G, rowvar=False)))[::-1]
+    return np.quantile(sims, percentil, axis=0)
+
+
+def n_kish(w):
+    """n efectivo de Kish de unos pesos: 1 / sum(w^2), con los pesos normalizados a suma 1."""
+    w = np.asarray(w, dtype=float)
+    w = w / w.sum()
+    return float(1 / np.sum(w ** 2))
 
 
 # ---- Comparación de configuraciones -----------------------------------------------------
@@ -138,12 +160,23 @@ def emparejar_componentes(C_ref, C, K=4, candidatos=6):
     return np.array(idx), np.array(cong), np.array(signo)
 
 
-def coef_rv(X, Y):
-    """Coeficiente RV de Robert y Escoufier entre dos configuraciones de las mismas filas."""
+def coef_rv(X, Y, centrar=True):
+    """Coeficiente RV de Robert y Escoufier entre dos configuraciones de las mismas filas.
+
+    RV = tr(Sx Sy) / sqrt(tr(Sx²) tr(Sy²)), con Sx = X Xᵀ y Sy = Y Yᵀ.
+
+    `centrar=True` (por defecto, el comportamiento de siempre) resta antes la media de cada
+    columna. `centrar=False` usa X e Y tal cual: es la variante para comparar **cargas**
+    (series × ejes), donde el centrado restaría la carga media de cada eje (adenda del
+    26-oct-2026, §1.2). Su uso en el análisis queda pendiente de D17; aquí solo se ofrece la
+    opción. Con columnas ya centradas, ambas variantes coinciden. Si una configuración es nula
+    (p. ej., una columna constante centrada), el cociente no está definido y se devuelve nan.
+    """
     X = np.asarray(X, dtype=float)
     Y = np.asarray(Y, dtype=float)
-    X = X - X.mean(axis=0)
-    Y = Y - Y.mean(axis=0)
+    if centrar:
+        X = X - X.mean(axis=0)
+        Y = Y - Y.mean(axis=0)
     Sx = X @ X.T
     Sy = Y @ Y.T
     return float(np.sum(Sx * Sy) / np.sqrt(np.sum(Sx * Sx) * np.sum(Sy * Sy)))
@@ -161,7 +194,8 @@ def procrustes(Z, referencia):
 
 def bartlett_esfericidad(R, n):
     """
-    Prueba de esfericidad de Bartlett [VERIFICAR: sin ficha de la fuente de la prueba]:
+    Prueba de esfericidad de Bartlett (1950, 1951) [VERIFICAR: texto no consultado; no se
+    verificó en cuál de las dos obras se formula la prueba]:
     chi² = -(n - 1 - (2p + 5)/6) · ln|R|, con p(p - 1)/2 grados de libertad.
     Si el factor (n - 1 - (2p + 5)/6) no es positivo (n pequeño), el estadístico no está
     definido y se devuelve NaN.
@@ -179,7 +213,8 @@ def bartlett_esfericidad(R, n):
 
 def kmo(R):
     """
-    Medida KMO de adecuación muestral [VERIFICAR: sin ficha de la fuente de la medida], global
+    Medida KMO de adecuación muestral (Kaiser, 1970; Kaiser y Rice, 1974) [VERIFICAR: texto no
+    consultado; la forma de la medida solo consta en la documentación de psych], global
     y por serie, a partir de la matriz anti-imagen: correlaciones parciales
     q_ij = -(R⁻¹)_ij / sqrt((R⁻¹)_ii (R⁻¹)_jj).
     """

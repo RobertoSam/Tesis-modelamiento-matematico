@@ -1,0 +1,71 @@
+---
+title: "Camiz y Pillar (2018) — Identifying the informational/signal dimension in principal component analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-064 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto leído hasta la sección de resultados (página de la editorial, acceso abierto); referencias no visibles |
+| **Tipo de fuente** | Artículo en revista con revisión por pares (acceso abierto) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Pillar, V. D. (2018). Identifying the informational/signal dimension in principal component analysis. *Mathematics, 6*(11), Artículo 269. https://doi.org/10.3390/math6110269
+
+> **Verificación:** Página de la editorial MDPI (mdpi.com/2227-7390/6/11/269) leída el 2026-10-24: autores S. Camiz (Sapienza Università di Roma) y V. D. Pillar (Universidade Federal do Rio Grande do Sul), *Mathematics*, vol. 6, n.º 11, artículo 269, publicado el 20-11-2018, DOI 10.3390/math6110269. Concordante: CRIS de la PUCP. La lista de referencias no se pudo leer: los números de referencia que siguen ([3] Rencher, [10] Frontier) se citan **sin** sus datos completos.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Número de componentes (OE6) |
+| **Área secundaria** | Comparación de reglas de parada |
+| **Relevancia para la tesis** | **ALTA.** Trabajo del asesor que compara diez reglas de parada, entre ellas la vara quebrada y la generalización de Rencher de la prueba de Bartlett: es la fuente natural para definir el «criterio de Rencher» de OE6. |
+| **Frente de la tesis al que aporta** | Frente 3; cap. 1, OE6, y cap. 2, «Número de componentes» |
+
+## 4. Resumen analítico
+
+### Diseño
+
+Simulación con estructuras de valores propios prefijadas; mide la potencia y el error de tipo I de diez reglas: Kaiser-Guttman con umbral 1 y 0,7, vara quebrada, dimensión informacional (entropía), prueba tipo Bartlett de Rencher, *p* de los valores propios, razón pseudo-F, coeficiente RV, promedio bajo permutación y bootstrap con permutación paralela (Pillar).
+
+### Definiciones útiles para la tesis
+
+- **Vara quebrada:** el artículo atribuye su aplicación al PCA a Frontier (ref. [10]).
+- **Criterio de Rencher:** la prueba de Bartlett de esfericidad contrasta solo el primer valor propio; Rencher la generaliza para contrastar si cada valor propio sucesivo difiere significativamente de los restantes, con un estadístico χ², y la dimensión *k* cuenta como señal si la prueba es significativa al nivel α elegido.
+
+### Resultado (según el resumen)
+
+La generalización de Rencher y el bootstrap de Pillar dan resultados «much better than all others».
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Prueba tipo Bartlett de Rencher | «Criterio de Rencher» de OE6 |
+| Vara quebrada | Regla ya implementada (`src/multivariado.py`, Rmd A.2) |
+| Kaiser-Guttman 0,7 | Umbral de Jolliffe usado por la HFC |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Precisa qué es el criterio de Rencher, condición que el registro pedía antes de poder verificarlo.
+- Fuente revisada por pares para la vara quebrada mientras no se lea a Frontier (1976).
+
+### Limitaciones (relevantes para la adaptación)
+
+- La simulación supone observaciones independientes; con series autocorrelacionadas las tasas de error no se trasladan.
+- No se leyeron las referencias [3] y [10]: la obra y la edición de Rencher, y los datos de Frontier, siguen sin verificar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| [3] Rencher, *Methods of multivariate analysis* (edición por confirmar) | Alta | Ficha preliminar de la 3.ª ed. (`rencher_christensen_2012`) |
+| [10] Frontier (1976), vara quebrada en PCA | Alta | No localizada en fuente oficial; sin ficha |
+| [19] Pillar, bootstrap | Media | Sin ficha |

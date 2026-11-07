@@ -1,0 +1,56 @@
+---
+title: "Tukey (1977) — Exploratory data analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-063 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (catálogos de bibliotecas); texto no consultado |
+| **Tipo de fuente** | Libro (editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Tukey, J. W. (1977). *Exploratory data analysis*. Addison-Wesley.
+
+> **Verificación:** Catálogo de la biblioteca de la Universidad de Patras (registro 3629) leído el 2026-10-24: Tukey, John Wilder, 1915–; *Exploratory data analysis*; Addison-Wesley Publishing Company, Reading (MA), 1977; colección «Addison-Wesley series in behavioral science: quantitative methods». Concordante: catálogo de la biblioteca de Matemática de la Universidad de Carleton (Addison-Wesley, 1977). **Falta ISBN y extensión.**
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Epistemología del análisis exploratorio |
+| **Área secundaria** | Análisis exploratorio frente a confirmatorio |
+| **Relevancia para la tesis** | **MEDIA.** Respaldo del encuadre exploratorio del EPCA (Camiz et al., 2010) y de la posición «datos primero». |
+| **Frente de la tesis al que aporta** | Capítulo 2, «El algoritmo `aede`» y `sec:epistemologia` |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo los metadatos. Se cita habitualmente como la obra que funda el análisis exploratorio de datos.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Análisis exploratorio | Lectura descriptiva de los resultados del EPCA y la HFC |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite sustituir el «[CITA PENDIENTE: Tukey (1977); sin ficha]» del cap. 2.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: solo puede citarse para el encuadre general, sin atribuirle una frase o un pasaje.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `benzecri_1973` | Alta | Ficha preliminar |

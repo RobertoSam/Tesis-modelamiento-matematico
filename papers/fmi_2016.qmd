@@ -1,0 +1,63 @@
+---
+title: "FMI (2016) — Commodity Market Monthly, 15 de marzo de 2016"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-056 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+International Monetary Fund, Research Department, Commodities Unit. (2016, 15 de marzo). *Commodity market monthly*. International Monetary Fund. https://www.imf.org/external/np/res/commod/pdf/monthly/031516.pdf
+
+> **Verificación:** Leído en imf.org el 2026-10-24. Encabezado: «March 15, 2016», «Commodity Market Monthly», «Research Department, Commodities Unit». Textos: «Commodity prices rebound 2.0 percent in February, the first increase in nine months, with gains in all main groups»; «Metals prices rose by 5.0 percent in February, first increase in five months». En el cuadro 2 del documento, el índice de metales vale 103,7 en enero de 2016 y 108,9 en febrero.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Colapso de los precios de las materias primas |
+| **Relevancia para la tesis** | **ALTA.** Fuente del **fin del episodio**, que en la iteración 3a no tenía fuente. |
+| **Frente de la tesis al que aporta** | Validación externa; archivo único de episodios (D9) |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Informe mensual del FMI sobre los precios de las materias primas en febrero de 2016.
+
+### Fecha que respalda
+
+**Enero de 2016** como último mes de caída: febrero de 2016 es el primer aumento del índice general en nueve meses y de los metales en cinco. Candidata para el **fin del episodio (2016-01)**.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Primer aumento tras meses de caída | El mes anterior (2016-01) cierra el episodio (evento externo) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Da un fin mensual explícito, en palabras de la institución, para los metales y para el índice general.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+- La fecha se toma del **texto** del FMI («first increase in five months»), no de calcular el mínimo del índice: la regla 6 prohíbe fechar con un indicador. El cuadro 2 solo se cita como concordante.
+- Un repunte de un mes no prueba un cambio de tendencia; el Banco Mundial describe lo mismo (`baffes_streifel_2016`).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `baffes_streifel_2016` (mínimos de enero de 2016) | Media | Fichada (FB-057) |
+| `fmi_2015b` | Alta | Fichada (FB-055) |

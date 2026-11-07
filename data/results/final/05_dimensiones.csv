@@ -1,0 +1,3 @@
+via,n,p,fecha_inicio,fecha_fin,archivo
+niveles,228,16,2007-01,2025-12,data/processed/dataset_niveles_mensual.csv
+transformadas,227,16,2007-02,2025-12,data/processed/dataset_transformado_mensual.csv

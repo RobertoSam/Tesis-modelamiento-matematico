@@ -1,0 +1,7 @@
+nombre,inicio,fin,clave_inicio,clave_fin,tipo,convencion
+Crisis financiera global,2008-09,2009-06,lehman_brothers_2008,nber_2010,periodo,evento o anuncio externo (D7)
+Taper tantrum,2013-05,2013-12,bernanke_2013,reserva_federal_2013,periodo,evento o anuncio externo (D7)
+Colapso de las materias primas,2014-06,2016-01,stocker_et_al_2015,fmi_2016,periodo,evento o anuncio externo (D7)
+Kuczynski / Odebrecht,2018-03,,congreso_2018,,puntual,evento o anuncio externo (D7)
+Guerra comercial EE. UU.–China,2018-06,2020-01,ustr_2018,ustr_2020,periodo,evento o anuncio externo (D7)
+COVID-19,2020-03,2020-04,oms_2020b,nber_2021,periodo,evento o anuncio externo (D7)

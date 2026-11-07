@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """
-Genera las cifras de la tesis a partir de `data/results/` (regla 3 de CLAUDE.md).
+Genera las cifras de la tesis a partir de `data/results/` y `data/referencia/` (regla 3 de CLAUDE.md).
 
 Lee el mapa versionado `herramientas/cifras_mapa.csv`, con una fila por cifra:
 
     macro, archivo, filtro, columna, formato, descripcion
 
 - `macro`: nombre de la macro LaTeX, solo letras (p. ej. `nMesesNiveles` → `\\nMesesNiveles`).
-- `archivo`: CSV de `data/results/` relativo a la raíz del repositorio.
+- `archivo`: CSV de `data/results/final/` (resultados vigentes con 16 series, D15 y D16; incluye
+  `final/anexo/`) o de `data/referencia/` (datos de referencia externos, como las fechas de los
+  episodios de D7), relativo a la raíz del repositorio. Las carpetas del antecedente de 17 series
+  (`data/results/*.csv` y `data/results/niveles/`) no se consumen (`data/results/LEEME.md`): el
+  script rechaza cualquier ruta fuera de las dos carpetas admitidas (hallazgo M-02 de la auditoría
+  de la iteración 3b).
 - `filtro`: condiciones `columna=valor` separadas por `;` que deben identificar **una sola fila**
   (comparación de texto exacta, tal como está escrito en el CSV). Vacío solo si el CSV tiene una fila.
 - `columna`: columna del CSV con el valor.
@@ -38,6 +43,10 @@ import re
 import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Carpetas de las que se admiten cifras. Iteración 3b: se añade data/referencia/ (fechas de los
+# episodios, D7) y, tras M-02, se restringe data/results/ a final/ para que ninguna macro lea el
+# antecedente de 17 series (D15, D16; data/results/LEEME.md)
+CARPETAS_ADMITIDAS = ('data/results/final/', 'data/referencia/')
 MAPA = os.path.join(RAIZ, 'herramientas', 'cifras_mapa.csv')
 SALIDA_TEX = os.path.join(RAIZ, 'tesis_latex', 'cifras.tex')
 SALIDA_YML = os.path.join(RAIZ, 'tesis', '_cifras.yml')
@@ -143,8 +152,9 @@ def construir():
             raise ErrorCifra(f'{macro}: macro duplicada en el mapa')
         vistas.add(macro)
         archivo = fm['archivo'].strip()
-        if not archivo.startswith('data/results/'):
-            raise ErrorCifra(f'{macro}: las cifras solo se leen de data/results/ (archivo {archivo!r})')
+        if not archivo.startswith(CARPETAS_ADMITIDAS):
+            raise ErrorCifra(f'{macro}: las cifras solo se leen de {" o ".join(CARPETAS_ADMITIDAS)} '
+                             f'(archivo {archivo!r})')
         ruta = os.path.join(RAIZ, archivo)
         if not os.path.exists(ruta):
             raise ErrorCifra(f'{macro}: no existe el archivo {archivo}')
@@ -161,7 +171,7 @@ def construir():
 
 def texto_tex(cifras):
     lineas = ['% Archivo generado por herramientas/generar_cifras.py a partir de herramientas/cifras_mapa.csv.',
-              '% No editar a mano: cada cifra se lee de data/results/ (regla 3 de CLAUDE.md).',
+              '% No editar a mano: cada cifra se lee de data/results/final/ o data/referencia/ (regla 3 de CLAUDE.md).',
               '% Para regenerarlo: python3 herramientas/generar_cifras.py', '']
     for macro, tex, _, archivo, filtro, col, desc in cifras:
         lineas.append(f'% {desc} | {archivo} | {filtro or "(única fila)"} | {col}')

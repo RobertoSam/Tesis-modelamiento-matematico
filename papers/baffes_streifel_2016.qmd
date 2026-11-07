@@ -1,0 +1,62 @@
+---
+title: "Baffes y Streifel (2016) — Revisión del pronóstico del petróleo, blog del Banco Mundial"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-057 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído |
+| **Tipo de fuente** | Entrada de blog institucional (Banco Mundial; sin revisión por pares). Apoyo concordante, no fuente principal |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Baffes, J., & Streifel, S. (2016, 26 de julio). *2016 oil price forecast revised higher after supply disruptions boost prices in second quarter*. Let's Talk Development, World Bank Blogs. https://blogs.worldbank.org/en/developmenttalk/2016-oil-price-forecast-revised-higher-after-supply-disruptions-boost-prices-second-quarter
+
+> **Verificación:** Leído en blogs.worldbank.org el 2026-10-24: según el *Commodity Markets Outlook* de julio de 2016, «most commodity price indexes rose in the second quarter of 2016 from multi-year lows plumbed in January». El comunicado de prensa del Banco Mundial del mismo día («World Bank raises 2016 oil price forecast», Washington, 26-07-2016) no da el mes del mínimo. **El informe *Commodity Markets Outlook* de julio de 2016 no se pudo leer** (solo una copia en un sitio de terceros, que no cargó).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Colapso de los precios de las materias primas |
+| **Relevancia para la tesis** | **MEDIA.** Concordancia institucional con `fmi_2016` para el fin en 2016-01. |
+| **Frente de la tesis al que aporta** | Validación externa |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Resumen de autores del Banco Mundial sobre el *Commodity Markets Outlook* de julio de 2016.
+
+### Fecha que respalda
+
+**Enero de 2016**: mínimos de varios años de la mayoría de los índices de materias primas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Mínimos de enero de 2016 | Fin del episodio (concordante con `fmi_2016`) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Segunda institución que ubica en enero de 2016 el final de la caída.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Es un blog: para la tesis conviene citar `fmi_2016` y usar este como concordancia, o sustituirlo por el *Commodity Markets Outlook* de julio de 2016 si Roberto lo descarga.
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| World Bank, *Commodity Markets Outlook*, julio de 2016 | Alta | Localizado, no leído |
+| `fmi_2016` | Alta | Fichada (FB-056) |

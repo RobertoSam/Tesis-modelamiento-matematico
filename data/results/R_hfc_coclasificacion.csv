@@ -1,0 +1,137 @@
+"serie_a","serie_b","codigo_a","codigo_b","frec_3","frec_4"
+"Crédito empresarial","Crédito consumo","PN00532MM","PN00533MM",0.356,0.264
+"Crédito empresarial","Crédito hipotecario","PN00532MM","PN00534MM",0.552,0.442
+"Crédito empresarial","M1 (dinero)","PN00532MM","PN00199MM",0.37,0.288
+"Crédito empresarial","M2 (liquidez en soles)","PN00532MM","PN00208MM",0.194,0.13
+"Crédito empresarial","M3 (liquidez total)","PN00532MM","PN00214MM",0.194,0.13
+"Crédito empresarial","Tasa de referencia","PN00532MM","PD04722MM",0.296,0.202
+"Crédito empresarial","Tasa interbancaria","PN00532MM","PN07819NM",0.296,0.202
+"Crédito empresarial","TAMN","PN00532MM","PN07807NM",0.606,0.574
+"Crédito empresarial","TIPMN","PN00532MM","PN07816NM",0.314,0.218
+"Crédito empresarial","IPC Lima","PN00532MM","PN38705PM",0.376,0.286
+"Crédito empresarial","Tipo de cambio","PN00532MM","PN01246PM",0.132,0.06
+"Crédito empresarial","Índice BVL","PN00532MM","PN01142MM",0.132,0.06
+"Crédito empresarial","EMBIG Perú","PN00532MM","PD04709XD",0.138,0.064
+"Crédito empresarial","PBI desestacionalizado","PN00532MM","PN01773AM",0.512,0.304
+"Crédito empresarial","Demanda interna","PN00532MM","PN01774AM",0.528,0.322
+"Crédito empresarial","Reservas internacionales netas","PN00532MM","PN00027MM",0.152,0.09
+"Crédito consumo","Crédito hipotecario","PN00533MM","PN00534MM",0.57,0.55
+"Crédito consumo","M1 (dinero)","PN00533MM","PN00199MM",0.026,0.002
+"Crédito consumo","M2 (liquidez en soles)","PN00533MM","PN00208MM",0.008,0.002
+"Crédito consumo","M3 (liquidez total)","PN00533MM","PN00214MM",0.008,0.002
+"Crédito consumo","Tasa de referencia","PN00533MM","PD04722MM",0.882,0.754
+"Crédito consumo","Tasa interbancaria","PN00533MM","PN07819NM",0.882,0.754
+"Crédito consumo","TAMN","PN00533MM","PN07807NM",0.664,0.548
+"Crédito consumo","TIPMN","PN00533MM","PN07816NM",0.896,0.77
+"Crédito consumo","IPC Lima","PN00533MM","PN38705PM",0.782,0.65
+"Crédito consumo","Tipo de cambio","PN00533MM","PN01246PM",0.034,0.014
+"Crédito consumo","Índice BVL","PN00533MM","PN01142MM",0.03,0.016
+"Crédito consumo","EMBIG Perú","PN00533MM","PD04709XD",0.036,0.016
+"Crédito consumo","PBI desestacionalizado","PN00533MM","PN01773AM",0.09,0.048
+"Crédito consumo","Demanda interna","PN00533MM","PN01774AM",0.094,0.052
+"Crédito consumo","Reservas internacionales netas","PN00533MM","PN00027MM",0.05,0.03
+"Crédito hipotecario","M1 (dinero)","PN00534MM","PN00199MM",0.242,0.182
+"Crédito hipotecario","M2 (liquidez en soles)","PN00534MM","PN00208MM",0.132,0.09
+"Crédito hipotecario","M3 (liquidez total)","PN00534MM","PN00214MM",0.132,0.09
+"Crédito hipotecario","Tasa de referencia","PN00534MM","PD04722MM",0.476,0.36
+"Crédito hipotecario","Tasa interbancaria","PN00534MM","PN07819NM",0.476,0.36
+"Crédito hipotecario","TAMN","PN00534MM","PN07807NM",0.416,0.302
+"Crédito hipotecario","TIPMN","PN00534MM","PN07816NM",0.49,0.376
+"Crédito hipotecario","IPC Lima","PN00534MM","PN38705PM",0.484,0.364
+"Crédito hipotecario","Tipo de cambio","PN00534MM","PN01246PM",0.14,0.078
+"Crédito hipotecario","Índice BVL","PN00534MM","PN01142MM",0.138,0.078
+"Crédito hipotecario","EMBIG Perú","PN00534MM","PD04709XD",0.144,0.078
+"Crédito hipotecario","PBI desestacionalizado","PN00534MM","PN01773AM",0.334,0.162
+"Crédito hipotecario","Demanda interna","PN00534MM","PN01774AM",0.352,0.196
+"Crédito hipotecario","Reservas internacionales netas","PN00534MM","PN00027MM",0.17,0.12
+"M1 (dinero)","M2 (liquidez en soles)","PN00199MM","PN00208MM",0.818,0.816
+"M1 (dinero)","M3 (liquidez total)","PN00199MM","PN00214MM",0.818,0.816
+"M1 (dinero)","Tasa de referencia","PN00199MM","PD04722MM",0.012,0
+"M1 (dinero)","Tasa interbancaria","PN00199MM","PN07819NM",0.012,0
+"M1 (dinero)","TAMN","PN00199MM","PN07807NM",0.164,0.106
+"M1 (dinero)","TIPMN","PN00199MM","PN07816NM",0.02,0.008
+"M1 (dinero)","IPC Lima","PN00199MM","PN38705PM",0.074,0.03
+"M1 (dinero)","Tipo de cambio","PN00199MM","PN01246PM",0.522,0.164
+"M1 (dinero)","Índice BVL","PN00199MM","PN01142MM",0.526,0.2
+"M1 (dinero)","EMBIG Perú","PN00199MM","PD04709XD",0.508,0.172
+"M1 (dinero)","PBI desestacionalizado","PN00199MM","PN01773AM",0.364,0.078
+"M1 (dinero)","Demanda interna","PN00199MM","PN01774AM",0.366,0.098
+"M1 (dinero)","Reservas internacionales netas","PN00199MM","PN00027MM",0.58,0.446
+"M2 (liquidez en soles)","M3 (liquidez total)","PN00208MM","PN00214MM",1,1
+"M2 (liquidez en soles)","Tasa de referencia","PN00208MM","PD04722MM",0,0
+"M2 (liquidez en soles)","Tasa interbancaria","PN00208MM","PN07819NM",0,0
+"M2 (liquidez en soles)","TAMN","PN00208MM","PN07807NM",0.142,0.096
+"M2 (liquidez en soles)","TIPMN","PN00208MM","PN07816NM",0.006,0.006
+"M2 (liquidez en soles)","IPC Lima","PN00208MM","PN38705PM",0.056,0.03
+"M2 (liquidez en soles)","Tipo de cambio","PN00208MM","PN01246PM",0.702,0.334
+"M2 (liquidez en soles)","Índice BVL","PN00208MM","PN01142MM",0.708,0.384
+"M2 (liquidez en soles)","EMBIG Perú","PN00208MM","PD04709XD",0.688,0.352
+"M2 (liquidez en soles)","PBI desestacionalizado","PN00208MM","PN01773AM",0.212,0.042
+"M2 (liquidez en soles)","Demanda interna","PN00208MM","PN01774AM",0.2,0.042
+"M2 (liquidez en soles)","Reservas internacionales netas","PN00208MM","PN00027MM",0.744,0.602
+"M3 (liquidez total)","Tasa de referencia","PN00214MM","PD04722MM",0,0
+"M3 (liquidez total)","Tasa interbancaria","PN00214MM","PN07819NM",0,0
+"M3 (liquidez total)","TAMN","PN00214MM","PN07807NM",0.142,0.096
+"M3 (liquidez total)","TIPMN","PN00214MM","PN07816NM",0.006,0.006
+"M3 (liquidez total)","IPC Lima","PN00214MM","PN38705PM",0.056,0.03
+"M3 (liquidez total)","Tipo de cambio","PN00214MM","PN01246PM",0.702,0.334
+"M3 (liquidez total)","Índice BVL","PN00214MM","PN01142MM",0.708,0.384
+"M3 (liquidez total)","EMBIG Perú","PN00214MM","PD04709XD",0.688,0.352
+"M3 (liquidez total)","PBI desestacionalizado","PN00214MM","PN01773AM",0.212,0.042
+"M3 (liquidez total)","Demanda interna","PN00214MM","PN01774AM",0.2,0.042
+"M3 (liquidez total)","Reservas internacionales netas","PN00214MM","PN00027MM",0.744,0.602
+"Tasa de referencia","Tasa interbancaria","PD04722MM","PN07819NM",1,1
+"Tasa de referencia","TAMN","PD04722MM","PN07807NM",0.676,0.614
+"Tasa de referencia","TIPMN","PD04722MM","PN07816NM",0.978,0.976
+"Tasa de referencia","IPC Lima","PD04722MM","PN38705PM",0.854,0.836
+"Tasa de referencia","Tipo de cambio","PD04722MM","PN01246PM",0,0
+"Tasa de referencia","Índice BVL","PD04722MM","PN01142MM",0,0
+"Tasa de referencia","EMBIG Perú","PD04722MM","PD04709XD",0.002,0.002
+"Tasa de referencia","PBI desestacionalizado","PD04722MM","PN01773AM",0.074,0.038
+"Tasa de referencia","Demanda interna","PD04722MM","PN01774AM",0.072,0.032
+"Tasa de referencia","Reservas internacionales netas","PD04722MM","PN00027MM",0.036,0.026
+"Tasa interbancaria","TAMN","PN07819NM","PN07807NM",0.676,0.614
+"Tasa interbancaria","TIPMN","PN07819NM","PN07816NM",0.978,0.976
+"Tasa interbancaria","IPC Lima","PN07819NM","PN38705PM",0.854,0.836
+"Tasa interbancaria","Tipo de cambio","PN07819NM","PN01246PM",0,0
+"Tasa interbancaria","Índice BVL","PN07819NM","PN01142MM",0,0
+"Tasa interbancaria","EMBIG Perú","PN07819NM","PD04709XD",0.002,0.002
+"Tasa interbancaria","PBI desestacionalizado","PN07819NM","PN01773AM",0.074,0.038
+"Tasa interbancaria","Demanda interna","PN07819NM","PN01774AM",0.072,0.032
+"Tasa interbancaria","Reservas internacionales netas","PN07819NM","PN00027MM",0.036,0.026
+"TAMN","TIPMN","PN07807NM","PN07816NM",0.696,0.632
+"TAMN","IPC Lima","PN07807NM","PN38705PM",0.65,0.572
+"TAMN","Tipo de cambio","PN07807NM","PN01246PM",0.044,0.006
+"TAMN","Índice BVL","PN07807NM","PN01142MM",0.04,0.002
+"TAMN","EMBIG Perú","PN07807NM","PD04709XD",0.042,0.002
+"TAMN","PBI desestacionalizado","PN07807NM","PN01773AM",0.238,0.172
+"TAMN","Demanda interna","PN07807NM","PN01774AM",0.26,0.19
+"TAMN","Reservas internacionales netas","PN07807NM","PN00027MM",0.094,0.06
+"TIPMN","IPC Lima","PN07816NM","PN38705PM",0.858,0.838
+"TIPMN","Tipo de cambio","PN07816NM","PN01246PM",0.004,0
+"TIPMN","Índice BVL","PN07816NM","PN01142MM",0.004,0
+"TIPMN","EMBIG Perú","PN07816NM","PD04709XD",0.004,0
+"TIPMN","PBI desestacionalizado","PN07816NM","PN01773AM",0.054,0.018
+"TIPMN","Demanda interna","PN07816NM","PN01774AM",0.056,0.016
+"TIPMN","Reservas internacionales netas","PN07816NM","PN00027MM",0.028,0.016
+"IPC Lima","Tipo de cambio","PN38705PM","PN01246PM",0.038,0.022
+"IPC Lima","Índice BVL","PN38705PM","PN01142MM",0.038,0.022
+"IPC Lima","EMBIG Perú","PN38705PM","PD04709XD",0.038,0.022
+"IPC Lima","PBI desestacionalizado","PN38705PM","PN01773AM",0.148,0.094
+"IPC Lima","Demanda interna","PN38705PM","PN01774AM",0.168,0.118
+"IPC Lima","Reservas internacionales netas","PN38705PM","PN00027MM",0.06,0.032
+"Tipo de cambio","Índice BVL","PN01246PM","PN01142MM",0.986,0.944
+"Tipo de cambio","EMBIG Perú","PN01246PM","PD04709XD",0.978,0.944
+"Tipo de cambio","PBI desestacionalizado","PN01246PM","PN01773AM",0.13,0.064
+"Tipo de cambio","Demanda interna","PN01246PM","PN01774AM",0.106,0.036
+"Tipo de cambio","Reservas internacionales netas","PN01246PM","PN00027MM",0.706,0.514
+"Índice BVL","EMBIG Perú","PN01142MM","PD04709XD",0.98,0.962
+"Índice BVL","PBI desestacionalizado","PN01142MM","PN01773AM",0.118,0.046
+"Índice BVL","Demanda interna","PN01142MM","PN01774AM",0.096,0.028
+"Índice BVL","Reservas internacionales netas","PN01142MM","PN00027MM",0.696,0.472
+"EMBIG Perú","PBI desestacionalizado","PD04709XD","PN01773AM",0.136,0.07
+"EMBIG Perú","Demanda interna","PD04709XD","PN01774AM",0.114,0.05
+"EMBIG Perú","Reservas internacionales netas","PD04709XD","PN00027MM",0.696,0.476
+"PBI desestacionalizado","Demanda interna","PN01773AM","PN01774AM",0.96,0.934
+"PBI desestacionalizado","Reservas internacionales netas","PN01773AM","PN00027MM",0.322,0.228
+"Demanda interna","Reservas internacionales netas","PN01774AM","PN00027MM",0.298,0.194

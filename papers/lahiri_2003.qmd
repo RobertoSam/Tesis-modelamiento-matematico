@@ -1,0 +1,57 @@
+---
+title: "Lahiri (2003) — Resampling methods for dependent data"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-069 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Solo localizada (metadatos e índice de capítulos de la editorial); texto no consultado |
+| **Tipo de fuente** | Libro (monografía; editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lahiri, S. N. (2003). *Resampling methods for dependent data*. Springer. https://doi.org/10.1007/978-1-4757-3803-2
+
+> **Verificación:** Página de la editorial (link.springer.com, DOI 10.1007/978-1-4757-3803-2) leída el 2026-10-24: S. N. Lahiri (Iowa State University), Springer Series in Statistics, Springer New York, 2003, xiv + 374 p., ISBN 978-0-387-00928-5 (tapa dura). Capítulos 2 («Bootstrap Methods», pp. 17–43), 3 («Properties of Block Bootstrap Methods for the Sample Mean», pp. 45–71), 4 («Extensions and Examples», pp. 73–113), 5 («Comparison of Block Bootstrap Methods», pp. 115–144) y 7 («Empirical Choice of the Block Size», pp. 175–197).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Remuestreo de datos dependientes |
+| **Área secundaria** | Bootstrap por bloques |
+| **Relevancia para la tesis** | **MEDIA** hasta leer el texto. Candidata de B3 para el bootstrap por bloques **conjunto** de series multivariadas (D7). |
+| **Frente de la tesis al que aporta** | D7 (nulo de estructura constante); `src/remuestreo.py` |
+
+## 4. Resumen analítico
+
+### Contenido verificado
+
+Solo el índice: métodos de bootstrap por bloques, sus propiedades, comparación y elección del tamaño de bloque.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Bootstrap por bloques | Remuestreo con L = 24 (y L = 12 y 36 como sensibilidad) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia de manual para el bootstrap por bloques, revisada por la editorial.
+
+### Limitaciones (relevantes para la adaptación)
+
+- **No se verificó que trate el caso multivariado con los mismos inicios de bloque para todas las series** (bloque conjunto). Hasta leerlo, el texto no debe atribuírselo: queda `\pendiente` para esa afirmación.
+- La elección L = 24 es de la tesis; el cap. 7 trata la elección empírica del tamaño de bloque y podría servir para justificarla (por verificar).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `kunsch_1989` | Alta | Ficha preliminar |

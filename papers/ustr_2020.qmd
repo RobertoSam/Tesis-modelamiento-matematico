@@ -1,0 +1,62 @@
+---
+title: "USTR (2020) — Hoja informativa del acuerdo económico y comercial EE. UU.–China («fase uno»)"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-054 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 24 de octubre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto completo leído (hoja informativa de dos páginas) |
+| **Tipo de fuente** | Documento institucional (fuente externa para fechar episodios; regla 6 de `CLAUDE.md`) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Office of the United States Trade Representative. (2020, 15 de enero). *Economic and trade agreement between the United States of America and the People's Republic of China: Fact sheet*. https://ustr.gov/sites/default/files/files/agreements/phase%20one%20agreement/US_China_Agreement_Fact_Sheet.pdf
+
+> **Verificación:** Leído en ustr.gov el 2026-10-24. Encabezado: «ECONOMIC AND TRADE AGREEMENT BETWEEN THE UNITED STATES OF AMERICA AND THE PEOPLE'S REPUBLIC OF CHINA / JANUARY 15, 2020 / FACT SHEET»; texto: «On January 15, 2020, the United States and China signed an historic and enforceable agreement». La hoja «Expanding trade» del mismo sitio repite la fecha de firma. El documento no nombra la oficina emisora; se atribuye a la USTR porque lo publica en su sección de acuerdos (página «Phase One Trade Agreement»). Concordante: el American Presidency Project (UCSB) registra el 15-01-2020 las palabras del presidente con el viceprimer ministro Liu He en la firma (archivo académico, no fuente primaria). **No se leyó el texto del acuerdo** (PDF no accesible).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Fechado de episodios de referencia |
+| **Episodio** | Guerra comercial entre los EE. UU. y China |
+| **Relevancia para la tesis** | **ALTA.** Fuente primaria del fin del episodio, que en la iteración 3a solo tenía fuentes secundarias. |
+| **Frente de la tesis al que aporta** | Validación externa; archivo único de episodios (D9) |
+
+## 4. Resumen analítico
+
+### Qué documenta
+
+Resumen oficial del acuerdo de «fase uno» y de su firma.
+
+### Fecha que respalda
+
+**15 de enero de 2020** (firma). Candidata para el **fin del episodio (2020-01)**, que se abre con `ustr_2018` (anuncio del 15-06-2018).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Firma del acuerdo de «fase uno» | Fin del episodio (evento externo) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Cierra el pendiente de la iteración 3a: la fecha de fin ya no depende de fuentes secundarias.
+
+### Limitaciones (relevantes para la adaptación)
+
+- La convención de fechado ya está decidida (D7: evento o anuncio externo; tolerancia ±3 meses y ±6 como sensibilidad). Esta ficha solo registra qué fecha respalda el documento; la elección entre fuentes alternativas para un mismo extremo del episodio se propone en la nota del bibliotecario.
+- La firma no eliminó los aranceles vigentes; «fin» significa tregua formal, no retorno a la situación previa.
+- El fin (2020-01) queda a dos meses del inicio del episodio COVID-19 (2020-03): con tolerancia de ±3 meses, ambas ventanas se solapan y una transición en ese tramo no puede atribuirse a uno solo.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `ustr_2018` (inicio del episodio) | Alta | Fichada (FB-047) |
