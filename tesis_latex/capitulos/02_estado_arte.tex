@@ -6,30 +6,340 @@
 \chapter{Antecedentes y estado del arte}
 \label{cap:estado-arte}
 
-ESQUELETO
+Este capítulo sitúa la tesis en la literatura (\cref{oe:estado-arte}). Se organiza por líneas
+temáticas, de lo general a lo particular: el concepto de ciclo financiero y su medición
+(\cref{sec:ea-ciclo}); los índices compuestos y de estrés que resumen muchas series en una
+(\cref{sec:ea-indices}); los regímenes y cambios estructurales desde la econometría de series de
+tiempo (\cref{sec:ea-regimenes}); la detección de puntos de cambio (\cref{sec:ea-cambio}); los
+métodos factoriales de la escuela francesa y su desarrollo evolutivo en los trabajos del
+Dr.~Camiz (\cref{sec:ea-factoriales}); el aprendizaje profundo aplicado a series de tiempo
+(\cref{sec:ea-dl}), y los antecedentes peruanos y latinoamericanos (\cref{sec:antecedentes}). La
+\cref{sec:vacios} sintetiza lo revisado y precisa el vacío que la tesis atiende.
 
+Dos advertencias sobre el alcance. Primero, solo se cita lo que tiene una ficha bibliográfica en
+el repositorio del proyecto y una entrada verificada en la bibliografía; cuando una obra tiene
+ficha pero algún dato está por comprobar, la cita lleva una nota de verificación. Segundo, la
+revisión está en curso: el bibliotecario del proyecto está fichando obras nuevas para varias de
+estas líneas. Donde la cobertura todavía es insuficiente, el texto lo declara con una marca de
+pendiente que indica qué falta, en lugar de suplirlo con referencias no verificadas. La
+formalización matemática de los métodos que aquí se revisan se presenta en el
+\cref{cap:marco}.
+
+% -----------------------------------------------------------------------------
 \section{El ciclo financiero y su medición}
 \label{sec:ea-ciclo}
 
+\subsection{El concepto}
+
+La noción de ciclo financiero nace de la observación de que el crédito y los precios de los
+activos tienen una dinámica propia, más larga que la del ciclo económico, y de que sus excesos
+preceden a las crisis. \textcite{borio_lowe_2002} sostienen que el crecimiento rápido y sostenido
+del crédito, acompañado de alzas grandes de los precios de los activos, eleva la probabilidad de
+inestabilidad financiera aun cuando la inflación es baja. \textcite{borio_2014} sintetiza la
+agenda que siguió: según su resumen, la macroeconomía de las últimas décadas no se entiende sin el
+ciclo financiero, cuyo estudio organiza en hechos estilizados, modelación y política, con énfasis
+en la fase de contracción. La literatura sobre el ciclo del crédito y su contención por la
+política macroprudencial es amplia \parencite[por ejemplo,][]{aikman_haldane_nelson_2015}\verificar{contenido
+no consultado: la ficha solo registra metadatos (Crossref), sin resumen ni texto; no se le
+atribuye ningún hallazgo.}.
+
+La referencia empírica de la tesis es \textcite{drehmann_borio_tsatsaronis_2012}. Los autores
+caracterizan el ciclo financiero como el componente de mediano plazo que comparten el crédito,
+la razón entre crédito y producto y los precios de los inmuebles, y lo distinguen del ciclo
+económico por su duración: de 8 a 30 años frente a 1 a 8 años. Tres hallazgos de esa obra orientan
+la tesis: los picos del ciclo financiero coinciden con las crisis bancarias sistémicas; las
+recesiones que coinciden con su fase de contracción son, en promedio, más profundas; y una
+política que ignora la expansión del crédito y de los precios de los activos puede contener la
+recesión de corto plazo a costa de una más severa después, la «recesión inconclusa». Con datos de
+muchos países, \textcite{claessens_kose_terrones_2011} encuentran, según su resumen, que los
+ciclos del crédito, de la vivienda y de las acciones son largos y severos, que están sincronizados
+dentro de cada país y entre países, y que se amplifican cuando sus contracciones coinciden; y
+\textcite{claessens_kose_terrones_2012} muestran que las recesiones acompañadas de caídas de los
+precios de la vivienda o de las acciones son más largas y profundas. La relevancia macroeconómica
+de describir el régimen financiero queda, así, bien establecida.
+
+\subsection{Los métodos de medición}
+
+La medición sigue tres vías. La primera es \emph{univariada y no paramétrica}: la datación de
+puntos de giro sobre el nivel de cada serie, en la tradición de Burns y Mitchell, que formalizan
+\textcite{harding_pagan_2002}, y los filtros de frecuencia, que aíslan el componente de cada serie
+en una banda fijada de antemano. \textcite{drehmann_borio_tsatsaronis_2012} combinan ambas y
+seleccionan las variables del ciclo por la concordancia de sus fases; con ese criterio, los
+precios bursátiles quedan fuera, por ser más volátiles y menos sincronizados con el crédito. Esta
+vía tiene dos debilidades que la tesis toma en cuenta. Las reglas de puntos de giro y los filtros
+pasa-banda son descriptivos y exigen fijar de antemano una regla o un rango de frecuencias
+\parencite{strohsal_proano_wolters_2019}; y el filtro de Hodrick y Prescott, el más usado para
+extraer tendencias, crea dinámica espuria y se comporta mal al final de la muestra, según el
+resumen de \textcite{hamilton_2018}. Esa es una de las razones por las que la tesis no filtra las
+series y fija de antemano su regla de tendencia (decisiones D1 y D5).
+
+La segunda vía es \emph{multivariada y descriptiva}: el ciclo es el comovimiento de varias series.
+\textcite{schuler_hiebert_peltonen_2015} lo miden en países europeos con una medida espectral de
+las frecuencias comunes y lo agregan con pesos que cambian según las correlaciones entre pares de
+indicadores; descartan el PCA por problemas de comparabilidad entre países y de actualización en
+tiempo real, y encuentran un ciclo de unos 7,2 años en promedio, que predice las crisis mejor que la
+brecha entre crédito y producto. \textcite{schuler_hiebert_peltonen_2020} encuentran, según un
+resumen de fuente secundaria, que la duración de los ciclos difiere entre los países del G-7 y
+que los ciclos construidos como comovimiento de varias variables predicen las crisis mejor que esa
+brecha. Esta vía es la más cercana a la tesis: los pesos que varían con la estructura de
+correlación son, en esencia, lo que el EPCA hace explícito ventana por ventana, y la crítica al
+PCA es un contrapunto que la tesis debe atender (\cref{sec:vacios}).
+
+La tercera vía es \emph{multivariada y paramétrica}. \textcite{galati_et_al_2016} estiman los
+ciclos financieros de Estados Unidos y de cinco países europeos con un modelo multivariado de
+componentes no observables y encuentran que son más largos y amplios que los económicos, con una
+duración y una amplitud que varían en el tiempo y entre países; \textcite{runstler_vlekke_2018}
+encuentran ciclos grandes y largos del crédito y de la vivienda, correlacionados con un componente
+de mediano plazo del producto, salvo en Alemania; y \textcite{strohsal_proano_wolters_2019}
+proponen un espectro paramétrico con remuestreo y encuentran, para Estados Unidos y el Reino
+Unido, ciclos de unos quince años. Es la vía confirmatoria: postula un modelo generador y estima
+sus parámetros, a diferencia de la posición «datos primero» de la tesis
+(\cref{sec:epistemologia}).
+
+\subsection{Implicaciones para el caso peruano}
+
+La heterogeneidad que documentan estos trabajos, entre países y en el tiempo, justifica estudiar
+el caso peruano por separado. Pero las definiciones se construyeron con series de varias décadas
+de economías avanzadas. La muestra mensual del Perú abarca menos de veinte años, insuficiente para
+identificar ciclos de 8 a 30 años, y el índice de precios de inmuebles del BCRP es trimestral. Por
+eso la tesis no estima ciclos completos sino \emph{regímenes}, configuraciones estructurales
+dentro de la muestra (\cref{sec:ciclo}), y reemplaza la selección de variables por concordancia
+con una selección guiada por la estructura de correlación, como hace la escuela de Camiz
+(\cref{sec:ea-factoriales}).
+
+\pendiente{Bry y Boschan (1971), Harding y Pagan (2006) y Christiano y Fitzgerald (2003), fuentes
+de la datación de puntos de giro, del índice de concordancia y del filtro de frecuencia: no
+fichadas (nota del bibliotecario, 7-nov-2026)}
+
+% -----------------------------------------------------------------------------
 \section{Índices compuestos y de estrés financiero}
 \label{sec:ea-indices}
 
+Una segunda línea resume muchos indicadores financieros en un índice compuesto o de estrés que
+puede seguirse en el tiempo. El primer componente principal es la forma más simple de ponderación:
+la combinación lineal de las series estandarizadas que conserva la mayor parte de la varianza
+conjunta \parencite{jolliffe_2002}\verificar{metadatos verificados; texto no consultado. Se cita
+solo como obra general, sin atribuirle ningún resultado concreto.}; la \cref{prop:pca} formaliza
+esa propiedad. Los índices de estrés van más allá y ponderan según la estructura de correlaciones.
+\textcite{illing_liu_2006} construyen un índice de estrés para Canadá con análisis factorial y
+otras ponderaciones, y lo validan contra una encuesta interna que identifica los episodios de mayor
+estrés: es el antecedente directo de la validación externa de esta tesis, en que los regímenes se
+contrastan con episodios fechados por una fuente ajena a las series (\cref{def:episodio}).
+\textcite{hollo_kremer_lo_duca_2012} agregan, para la zona del euro, cinco subíndices con pesos que
+dependen de correlaciones cambiantes, de modo que el índice pesa más cuando el estrés es simultáneo
+en varios segmentos del mercado. La intuición es la misma del EPCA y del RV entre ventanas: en los
+episodios de estrés cambia la estructura de correlaciones, no solo el nivel de las series.
+
+El antecedente peruano directo construye indicadores de este tipo por grupos y no para el
+conjunto: \textcite{camiz_cerda_atoche_2026} identifican grupos de series con la HFC y siguen la
+estabilidad de cada grupo con el EPCA (\cref{sec:antecedentes}). La tesis adopta esa lógica y
+advierte un riesgo propio de los datos sin transformar: si las series comparten una tendencia de
+largo plazo, el primer componente puede medir esa tendencia común y no el ciclo. Por eso lo
+contrasta con un nulo de series independientes con su propia tendencia (\cref{sec:nulo-mixto}).
+
+% -----------------------------------------------------------------------------
 \section{Regímenes y cambios estructurales}
 \label{sec:ea-regimenes}
 
+\subsection{Tres advertencias sobre las series en niveles}
+
+Desde la econometría de series de tiempo, la tesis hereda tres advertencias sobre el análisis de
+series en niveles. La primera es la regresión espuria. \textcite{granger_newbold_1974}\verificar{el
+número del fascículo y el DOI no figuran en la copia leída; la página de la editorial no fue
+accesible.} muestran por simulación que, entre dos paseos aleatorios independientes, la prueba
+$t$ rechaza la ausencia de relación en cerca de tres cuartas partes de los casos, y que un $R^2$
+alto acompañado de un estadístico de Durbin-Watson bajo no indica una relación verdadera.
+\textcite{phillips_1986}\verificar{contenido conocido solo por un resumen de fuente secundaria,
+advertido como alterado en partes; DOI por añadir.} da la teoría asintótica del fenómeno: en esas
+regresiones, los cocientes $t$ no tienen distribución límite y divergen al crecer la muestra.
+Aunque ambos trabajos tratan la regresión y no el PCA, la advertencia se traslada a las
+correlaciones que el PCA resume: entre series con tendencia estocástica, una correlación alta no
+basta para afirmar una relación común. Esa es la razón del nulo de tendencias de la
+\cref{sec:nulo-mixto}.
+
+La segunda advertencia es la distinción entre tendencia determinística y estocástica, que decide
+qué nulo es el pertinente. La prueba de raíz unitaria se remite a
+\textcite{dickey_fuller_1979}\verificar{ficha preliminar: páginas solo en fuentes secundarias. La
+versión aumentada que usa el código no se atribuye a esta obra.}; la prueba de estacionariedad
+KPSS se usa como contraste complementario \pendiente{Kwiatkowski et al. (1992): ficha preliminar
+sin entrada en el \texttt{.bib}}. La tercera advertencia es que un quiebre estructural confunde
+esas pruebas. \textcite{perron_1989}\verificar{contenido conocido solo por el resumen; falta
+comprobar si existe un DOI.} muestra que, cuando la tendencia tiene un quiebre en su nivel o en su
+pendiente, las pruebas convencionales pueden no rechazar la raíz unitaria aunque el proceso sea
+estacionario alrededor de esa tendencia quebrada. En una muestra que contiene la crisis global y la
+pandemia, la clasificación de tendencia de la decisión D5 debe leerse con esa salvedad
+(\cref{sec:res-tendencia}).
+
+\subsection{Regímenes como estados latentes y como quiebres}
+
+La econometría modela los regímenes de dos maneras. En la primera, el régimen es un \emph{estado
+latente}: \textcite{hamilton_1989} propone que los parámetros de una autorregresión sigan un
+proceso de Markov de estados discretos no observados y lo aplica a fechar las recesiones de
+Estados Unidos; \textcite{krolzig_1997} extiende el enfoque a vectores autorregresivos y
+\textcite{kim_nelson_1999}\verificar{DOI visto solo en el catálogo de una biblioteca universitaria
+(Crossref y doi.org no lo devolvieron); autores tomados de una página institucional.} lo
+desarrollan para modelos de espacio de estados. En la segunda, el régimen es un \emph{tramo entre
+quiebres}: \textcite{bai_perron_1998} estiman múltiples quiebres con fechas desconocidas por mínimos
+cuadrados, con pruebas secuenciales de $l$ contra $l+1$ quiebres, y \textcite{bai_perron_2003}
+calculan el óptimo global de las fechas por programación dinámica.
+
+La tesis no adopta ninguna de las dos formulaciones, porque ambas postulan un modelo generador y la
+posición del asesor es describir la estructura sin postularlo (\cref{sec:epistemologia}). En la
+tesis, un régimen es una estructura de correlaciones \emph{descrita}, no un estado latente
+\emph{modelado} (\cref{def:regimen}). Los dos enfoques sirven, sin embargo, como contraste: la
+partición de Fisher de la \cref{sec:fisher} es la segmentación óptima por mínimos cuadrados de
+\textcite{bai_perron_2003} aplicada a una trayectoria de representaciones, y la regla K de la
+decisión D12 cumple el papel de su estrategia secuencial para fijar el número de tramos. Las
+pruebas de raíz unitaria y de quiebres se usan solo como diagnóstico y como insumo de los nulos de
+referencia.
+
+% -----------------------------------------------------------------------------
 \section{Detección de puntos de cambio}
 \label{sec:ea-cambio}
 
+Detectar regímenes es, en la formulación de la tesis, particionar una trayectoria ordenada en
+tramos contiguos homogéneos (\cref{def:deteccion}). \textcite{truong_oudre_vayatis_2020} organizan
+los métodos de detección fuera de línea en tres componentes: una función de costo, un método de
+búsqueda (exacto, con poda, binario, ascendente o por ventana deslizante) y una restricción sobre
+el número de cambios; \textcite{aminikhanghahi_cook_2017} revisan los métodos supervisados y no
+supervisados de detección en series de tiempo. En esos términos, la datación de la tesis combina un costo cuadrático, una
+búsqueda exacta y una regla para el número de tramos.
+
+La búsqueda exacta es el resultado clásico de \textcite{fisher_1958}\verificar{páginas (789--798),
+solo en fuentes secundarias; número y DOI ya verificados. Ficha preliminar, texto no leído: solo
+se cita su aporte general.}: cuando los datos están ordenados, la partición que minimiza la suma de
+cuadrados intragrupo puede hallarse exactamente, sin inicialización, por programación dinámica
+(\cref{prop:fisher}). \textcite{camiz_roig_2011}\verificar{el nombre del editor de las actas
+(O.~Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.} aplican esa
+partición a la serie del primer valor propio del EPCA para fechar períodos de estructura estable
+en cronologías de anillos de árboles, y realizan después un PCA en cada período.
+
+La partición exacta deja abierto el número de segmentos. El criterio que usan los antecedentes es
+el índice de \textcite{calinski_harabasz_1974}\verificar{ficha preliminar: texto no consultado;
+páginas 1--27 solo en fuentes secundarias. Solo se cita su aporte general.}, que compara la
+dispersión entre e intra grupos con los grados de libertad de observaciones independientes. Con
+puntos de una trayectoria calculados con ventanas solapadas, ese supuesto no se cumple, y la
+tesis muestra que la variante que calcula \texttt{aede} tiende a elegir más segmentos
+(\cref{prop:ch}). Para comparar particiones entre sí, por ejemplo entre réplicas de un remuestreo,
+la medida habitual es el índice de Rand ajustado
+\parencite{hubert_arabie_1985}\verificar{ficha preliminar: metadatos de una fuente secundaria;
+no se verificó en el texto la atribución del índice de Rand ajustado.}. Lo que la literatura
+revisada no resuelve es cómo fijar el número de tramos cuando los puntos de la trayectoria son
+dependientes y no hay un modelo que dé una penalización; la tesis lo enfrenta con reglas fijadas
+de antemano y con un nulo de estructura constante (\cref{sec:nulos}).
+
+\pendiente{detección de cambios en la matriz de covarianzas de series multivariadas: sin ficha}
+
+% -----------------------------------------------------------------------------
 \section{Métodos factoriales franceses y la escuela de Camiz}
 \label{sec:ea-factoriales}
 
+El PCA se remonta a \textcite{pearson_1901} y a \textcite{hotelling_1933}, con la atribución
+habitual; \textcite{jolliffe_2002} es la obra general de referencia. La tesis se inscribe, sin
+embargo, en la tradición francesa del análisis de datos
+\parencite{benzecri_1973}\verificar{ficha preliminar: obra no leída. No se ha ubicado el pasaje que
+sostiene el principio de dejar hablar a los datos, de modo que la fórmula no se atribuye
+textualmente a la obra.}, que privilegia la descripción geométrica de tablas de datos sobre la
+inferencia a partir de un modelo, en la línea del análisis exploratorio de
+\textcite{tukey_1977}\verificar{metadatos verificados en dos catálogos; texto no consultado. Se cita
+solo como encuadre general.}; \textcite{lebart_morineau_piron_1995} es un manual de esa escuela.
+Tres desarrollos de la tradición son la base de la tesis.
+
+El primero es la comparación de tablas. \textcite{robert_escoufier_1976}\verificar{volumen,
+número, páginas y DOI en JSTOR. La ficha es preliminar: el texto no se ha leído y solo se cita su
+aporte general.} definen el coeficiente RV, una correlación entre las matrices de productos
+escalares de dos configuraciones de los mismos individuos, invariante ante rotaciones y
+homotecias. Sobre esa medida se construye el método STATIS, que compara muchas tablas en un
+espacio común \parencite{lavit_1988}\verificar{la autoría consta en la \emph{Three-Mode
+Bibliography} de Leiden y no en un catálogo; falta el ISBN. Texto no consultado: solo se cita como
+fuente del método.}. \textcite{josse_pages_husson_2008}\verificar{metadatos de fuente secundaria;
+pendientes el orden de los autores, el año y el DOI. Solo se leyó el resumen.} comparan
+aproximaciones para contrastar la significación del RV; sus contrastes suponen filas
+intercambiables, que las series autocorrelacionadas no cumplen, y por eso la tesis contrasta el RV
+con un remuestreo por bloques (\cref{sec:nulo-estructura}).
+
+El segundo desarrollo es la clasificación de variables. La Clasificación Factorial Jerárquica, de
+\textcite{denimal_2007}, agrupa las variables de forma ascendente y asigna a cada grupo un factor
+representativo. Su implementación eficiente usa la técnica de vecinos recíprocos de
+\textcite{bruynooghe_1978}\verificar{metadatos verificados en Numdam; texto no consultado.}.
+\textcite{camiz_et_al_2020} la comparan con el PCA en cronologías dendrocronológicas: la HFC
+aproxima de cerca la solución global del PCA y, a diferencia de este, entrega una partición
+explícita de las series con representantes propios.
+
+El tercer desarrollo es el análisis evolutivo, que relaja el supuesto de estructura constante en
+el tiempo. \textcite{camiz_maulucci_roig_2010}\verificar{datos de edición de las actas (ISBN o
+DOI).} proponen el EPCA, un PCA independiente en cada ventana móvil, y lo combinan con el STATIS
+dual, que compara las matrices de correlación de todas las ventanas e identifica años de quiebre
+coherentes con el EPCA. \textcite{camiz_roig_2011} completan la cadena con la HFC y con la
+partición de Fisher sobre el primer valor propio (\cref{sec:ea-cambio}). Para decidir cuántas
+dimensiones retener, \textcite{camiz_pillar_2018} comparan por simulación diez reglas, entre ellas
+la vara quebrada, el criterio de Kaiser y una generalización de la prueba de Bartlett que
+atribuyen a Rencher; según su resumen, esta última y un bootstrap con permutación dan los mejores
+resultados. La tesis triangula varias de esas reglas (\cref{oe:dimension}; \cref{sec:retencion}).
+En estos trabajos, el ancho de la ventana y su ponderación se fijan sin un criterio formal, y los
+resultados se declaran descriptivos de la muestra.
+
+La escuela trabajó, hasta el antecedente peruano, con series dendrocronológicas: pocas, largas y
+aproximadamente estacionarias. Las series macrofinancieras son más numerosas, más cortas y con
+tendencias fuertes, de modo que trasladar los métodos exige revisar los supuestos implícitos,
+tarea que asume el \cref{cap:marco}.
+
+\pendiente{fuentes de las ayudas a la interpretación ($\cos^2$ y contribuciones), del STATIS dual y
+de la ponderación gaussiana de las ventanas (Camiz y Diblasi, 2013): sin ficha; el manual de
+Lebart, Morineau y Piron (1995) es candidato para la primera, pero no se verificó la sección}
+
+% -----------------------------------------------------------------------------
 \section{Aprendizaje profundo para series de tiempo}
 \label{sec:ea-dl}
 
+El vínculo entre el aprendizaje profundo y el PCA es antiguo y formal.
+\textcite{bourlard_kamp_1988}\verificar{número del fascículo; ficha preliminar, texto no
+consultado.} muestran que la solución óptima de un perceptrón autoasociativo, en el sentido de
+mínimos cuadrados, se obtiene por descomposición en valores singulares, y
+\textcite{baldi_hornik_1989}\verificar{solo el DOI; el texto completo ya se leyó.} que, en el caso
+lineal, el mínimo global proyecta sobre el subespacio de los primeros componentes principales sin
+mínimos locales espurios. La \cref{prop:ae-lineal} demuestra la primera parte en la forma que usa
+la tesis. \textcite{hinton_salakhutdinov_2006}\verificar{la ficha se elaboró con el material
+suplementario y no con el artículo principal.} mostraron que los autoencoders profundos, con
+preentrenamiento por capas, pueden superar al PCA cuando la estructura no es lineal, aunque con
+conjuntos de datos grandes, y \textcite{vincent_et_al_2008}\verificar{DOI en ACM Digital
+Library.} propusieron el autoencoder con eliminación de ruido. \textcite{goodfellow_bengio_courville_2016}
+es el manual general de autoencoders y redes recurrentes.
+
+Para las series de tiempo, la arquitectura de referencia es la red LSTM de
+\textcite{hochreiter_schmidhuber_1997}\verificar{se procesó el informe técnico y no la versión
+publicada.}, con la compuerta de olvido de
+\textcite{gers_schmidhuber_cummins_2000}\verificar{DOI contra el registro de MIT Press; ficha
+preliminar.}. \textcite{srivastava_mansimov_salakhutdinov_2015}\verificar{páginas y editores del
+volumen en PMLR.} combinan ambas ideas en el LSTM-autoencoder, que resume una secuencia en un
+código, y \textcite{gal_ghahramani_2016}\verificar{editores del volumen; PDF no consultado.} dan
+una lectura del \emph{dropout} como inferencia aproximada, de la que se obtiene una medida de la
+incertidumbre del modelo. La detección de anomalías con aprendizaje profundo tiene revisiones
+propias, por ahora solo como fuente de exploración
+\parencite{chalapathy_chawla_2019}\verificar{\emph{preprint} sin revisión por pares (fuente de
+exploración); su resumen no menciona autoencoders ni series de tiempo, y el DOI de arXiv no se
+comprobó.}.
+
+El precedente más cercano en el dominio financiero es el de
+\textcite{tuhin_et_al_2025}\verificar{lista completa de autores contra la fuente original.}, que
+entrenan un LSTM-autoencoder sobre los retornos diarios de acciones estadounidenses, construyen
+redes entre series a partir de sus pesos y muestran que las propiedades de esas redes cambian en
+las crisis. Los propios autores advierten que el enfoque exige muchos datos y que su
+interpretación económica es difícil. Ese es el desafío que la tesis enfrenta con datos mensuales
+cortos: por eso trata los autoencoders y las redes LSTM como complemento anclado en el PCA y
+subordinado a la evidencia (\cref{sec:epistemologia}).
+
+\pendiente{fuentes revisadas por pares sobre el uso del error de reconstrucción de autoencoders
+como señal de anomalía en series multivariadas y sobre aprendizaje profundo con series
+macrofinancieras cortas: sin ficha}
+
+% -----------------------------------------------------------------------------
 \section{Perú y América Latina}
 \label{sec:antecedentes}
 
-El antecedente más directo es el de
+Para el Perú, la literatura fichada hasta ahora se concentra en un antecedente, dirigido por el
+mismo asesor, que aplica la cadena de la escuela de Camiz a indicadores del BCRP. El antecedente
+más directo es el de
 \textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026 sin datos
 de revista, volumen ni DOI. Debe confirmarse con el Dr.~Camiz su estado de publicación.}, que,
 según esa misma fuente, continúa la tesis de maestría de
@@ -66,9 +376,71 @@ selección. Segundo, la muestra no cubre el período posterior a la pandemia. Te
 resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases
 del ciclo.
 
+Fuera de la escuela de Camiz, la literatura fichada sobre el Perú y la región sigue otras vías.
+\textcite{gomez_gonzalez_et_al_2013}\verificar{orden de los autores tomado del repositorio del
+Banco de la República; confirmarlo en la portada del documento.} estudian los ciclos del crédito y
+del producto de Chile, Colombia y el Perú con un filtro de frecuencia de corto y mediano plazo,
+análisis espectral y causalidad en el dominio de la frecuencia; para el Perú, la causalidad va del
+crédito al producto en todas las frecuencias. Es el antecedente peruano verificado más cercano
+después de los dos ya citados, con la diferencia de que su filtro fija las frecuencias de
+antemano. \textcite{brandao_marques_perez_ruiz_2017}\verificar{grafía oficial del primer autor
+(Brandão-Marques) y DOI del FMI.} construyen, según su resumen, índices de condiciones
+financieras con un modelo factorial de parámetros cambiantes para seis países latinoamericanos,
+entre ellos el Perú, y encuentran que los mueven un ciclo de materias primas, un ciclo financiero
+global y episodios nacionales de estrés; es un antecedente de reducción dimensional con estructura
+cambiante aplicada al Perú, y respalda el uso de episodios externos como referencia
+(\cref{tab:episodios}). Para leer los regímenes del crédito importa también el contexto de
+política: según su resumen, \textcite{minaya_lupu_cabello_2017} muestran que las provisiones
+dinámicas y los encajes condicionales frenaron el crédito comercial en el auge y redujeron la
+dolarización hipotecaria. Existe, además, literatura local reciente que construye un indicador
+compuesto del ciclo financiero peruano \parencite{alvarado_vargas_2021}; se trata de un trabajo de
+pregrado sin revisión por pares, que se cita solo para registrar su existencia.
+
+La revisión peruana sigue siendo la más incompleta de este capítulo. Los documentos de trabajo y
+las revistas del BCRP sobre condiciones financieras y estrés financiero, y una tesis de la PUCP
+sobre el ciclo financiero global y el crédito en el Perú, no pudieron verificarse porque sus sitios
+bloquearon el acceso automatizado.
+\pendiente{documentos del BCRP sobre índices de condiciones financieras y de estrés financiero del
+Perú, informes de estabilidad financiera del BCRP y de la SBS, y la tesis de la PUCP citada en la
+nota del bibliotecario: el tesista debe descargarlos manualmente para que se fichen}
 
 \section{Síntesis y vacío}
 \label{sec:vacios}
+
+La \cref{tab:sintesis-ea} resume, para cada línea revisada, qué ofrece la literatura fichada, qué
+toma de ella la tesis y qué queda sin resolver.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Síntesis del estado del arte por línea temática}
+\label{tab:sintesis-ea}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Línea & Qué ofrece & Qué toma la tesis & Qué queda abierto \\
+\midrule
+Ciclo financiero (\cref{sec:ea-ciclo}) & Definición de mediano plazo; medición univariada,
+  multivariada y paramétrica &
+  El ciclo como propiedad conjunta de varias series & Muestras cortas; economías emergentes \\
+Índices (\cref{sec:ea-indices}) & Ponderación por el primer componente o por correlaciones
+  cambiantes; validación con episodios & Indicadores por grupo de la HFC; episodios externos &
+  Separar tendencia común y ciclo \\
+Regímenes (\cref{sec:ea-regimenes}) & Regresión espuria, raíz unitaria, quiebres; estados
+  latentes y quiebres múltiples & Diagnóstico de tendencia y nulos de referencia & Contraste
+  formal con los enfoques paramétricos \\
+Puntos de cambio (\cref{sec:ea-cambio}) & Costo, búsqueda y número de cambios; partición exacta
+  de Fisher; índice CH & Datación con costo cuadrático y longitud mínima & Número de segmentos con
+  datos dependientes \\
+Métodos factoriales (\cref{sec:ea-factoriales}) & RV, STATIS, HFC, EPCA & La cadena completa con
+  \texttt{aede} y \texttt{clahfac} & Ancho de ventana; series no estacionarias \\
+Aprendizaje profundo (\cref{sec:ea-dl}) & AE lineal igual a PCA; LSTM; LSTM-AE & Complemento
+  anclado en el PCA & Escala de datos pequeña; interpretación \\
+Perú y América Latina (\cref{sec:antecedentes}) & PCA, HFC y EPCA con datos del BCRP hasta
+  2020; filtros de frecuencia; índices de condiciones financieras & Grupos y ventana de 48 meses
+  como referencia & Fases, pospandemia, criterio de ventana; literatura del BCRP sin fichar \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 La revisión permite identificar cinco vacíos:
 
@@ -88,6 +460,15 @@ La revisión permite identificar cinco vacíos:
   \item \textbf{Ausencia de un criterio objetivo para el ancho de ventana del EPCA.} Las tres
     aplicaciones de la escuela fijan el ancho de manera informal.
 \end{enumerate}
+
+A estos cinco se suma una tensión con la literatura internacional. Las mediciones multivariadas
+más cercanas a la tesis ponderan las series con correlaciones que cambian en el tiempo
+\parencite{schuler_hiebert_peltonen_2015,hollo_kremer_lo_duca_2012,brandao_marques_perez_ruiz_2017},
+y la primera de ellas descarta expresamente el PCA. El EPCA responde a esa crítica en su propio
+terreno, porque recalcula la estructura en cada ventana y hace explícita la variación de los
+pesos; lo que ninguna de esas obras ofrece, y la tesis busca aportar, es un criterio para la
+escala temporal de esa variación y un contraste con lo que cabría esperar si la estructura fuera
+constante.
 
 El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la
 incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la
