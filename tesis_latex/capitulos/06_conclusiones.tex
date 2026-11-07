@@ -1,2 +1,143 @@
+% =============================================================================
+% Capítulo 6 · Conclusiones preliminares y recomendaciones (iteración 3c, 7-nov-2026)
+% Cada conclusión se ata a un objetivo o hipótesis (cap. 1) y a la evidencia del cap. 5 o a un
+% aporte formal del cap. 3. Sin cifras nuevas: las que se mencionan entran por macro.
+% =============================================================================
 \chapter{Conclusiones preliminares y recomendaciones}
 \label{cap:conclusiones}
+
+Este capítulo reúne lo que la tesis puede afirmar en su estado actual. Las conclusiones son
+\textbf{preliminares}: se apoyan en el avance de resultados del \cref{cap:resultados}, que aún no se
+ha discutido con el asesor, y en los aportes formales del \cref{cap:marco}, que sí están
+demostrados. Cada una indica el objetivo o la hipótesis a la que responde y la evidencia que la
+sostiene. La \cref{sec:conc-recomendaciones} formula las recomendaciones y los trabajos futuros, y
+la \cref{tab:estado-objetivos} resume el estado de cada objetivo.
+
+\section{Conclusiones preliminares}
+\label{sec:conc-conclusiones}
+
+\begin{enumerate}[label=\textbf{C\arabic*.}, ref=C\arabic*, leftmargin=*]
+  \item\label{conc:datos} \textbf{Datos trazables y reproducibles} (\cref{oe:datos}). La tesis
+    dispone de \nSeries{} series mensuales del BCRP, de \fechaInicioNiveles{} a \fechaFinDatos{},
+    congeladas e identificadas por su huella (decisión D4), con exclusiones justificadas por la
+    estructura de los datos y no por los resultados (decisiones D1 y D16). Todo el análisis se
+    calcula en Python y en R con paridad verificada (\cref{sec:met-implementacion,ap:reproducibilidad}).
+  \item\label{conc:formal} \textbf{La cadena de la escuela de Camiz queda formalizada}
+    (\cref{oe:clasicos,oe:ventana}). El \cref{cap:marco} da definiciones y supuestos explícitos a
+    la HFC, al EPCA con la función \texttt{aede}, a la partición de Fisher con longitud mínima y a
+    los dos nulos por remuestreo, y demuestra las propiedades que la tesis usa: que la correlación
+    ponderada de una ventana es una matriz de correlaciones solo si la estandarización también es
+    ponderada (\cref{prop:epca,obs:m1}); que el tamaño efectivo de los pesos gaussianos es una
+    fracción del ancho que no depende de los datos (\cref{prop:kish}); que el RV de cargas compara
+    aproximaciones de rango $d$ y no depende de los signos ni del orden de los ejes
+    (\cref{prop:rv-cargas}); que la longitud mínima puede romper la monotonía del costo de Fisher
+    (\cref{prop:fisher-monotonia}); que la variante del índice de Caliński y Harabasz de
+    \texttt{aede} no elige menos segmentos que la habitual (\cref{prop:ch}), y que el criterio
+    de ancho de ventana es válido bajo intercambiabilidad (\cref{prop:oe4}). Estos resultados son
+    el aporte formal de la tesis, con independencia de lo que muestren los datos.
+  \item\label{conc:niveles} \textbf{Hay razones formales para no diferenciar}
+    (\cref{sec:epistemologia}). La primera diferencia atenúa las oscilaciones lentas que definen el
+    ciclo financiero (\cref{prop:ganancia}), y en los datos la proporción de varianza en
+    oscilaciones de dos años o más cae fuertemente al transformar las series
+    (\cref{sec:ap-no-diferenciar}). Analizar las series sin transformar es coherente con el objeto
+    de estudio, pero obliga a separar la tendencia de la estructura (\ref{conc:tendencia}).
+  \item\label{conc:pca} \textbf{Tres ejes interpretables y estables} (\cref{oe:clasicos,oe:dimension}).
+    El PCA de las series sin transformar tiene tres ejes con lectura económica clara:
+    profundización, tasas de interés de corto plazo y riesgo de mercado; los tres son
+    descriptivamente estables bajo remuestreo y el cuarto no lo es (\cref{sec:res-pca}). Los
+    criterios de retención no coinciden en el tercer eje, de modo que $d=3$, fijado de antemano
+    (decisión D9), se sostiene con esa salvedad.
+  \item\label{conc:tendencia} \textbf{El primer eje es la tendencia común; las tasas, un
+    comovimiento genuino} (\cref{oe:clasicos}). El primer eje es casi exactamente una tendencia
+    temporal, y su inercia no supera la de series independientes con su propia tendencia (nulo
+    mixto, decisiones D8 y D19). El eje de tasas sí la supera (\cref{sec:res-tendencia}). En
+    niveles, por tanto, el primer componente no debe leerse como un índice del ciclo financiero,
+    sino como profundización y crecimiento nominal.
+  \item\label{conc:hfc} \textbf{Bloques estables que reproducen los del antecedente} (HT2;
+    \cref{oe:clasicos,oe:robustez-hfc}). La HFC separa \clasesHfcMenor{} bloques (profundización,
+    tasas y riesgo de mercado) que se reproducen casi siempre bajo remuestreo por bloques y se
+    corresponden, por bloque, con los de \textcite{camiz_cerda_atoche_2026}
+    (\cref{sec:res-hfc}). HT2 queda sostenida en lo esencial.
+  \item\label{conc:oe4} \textbf{El criterio de ventana está formalizado, pero en niveles no
+    discrimina} (HT1; \cref{oe:ventana}). El criterio de OE4 se definió, se demostró su validez en
+    una versión simétrica y se calculó para los cuatro anchos. Con las series sin transformar,
+    ningún ancho muestra más cambios de estructura de los que produce una estructura constante
+    (\cref{sec:res-oe4}), y la transición de octubre de 2017 no se confirma
+    (\cref{sec:res-transiciones}). HT1 no queda sostenida por el criterio formal en niveles; la
+    causa más probable es la escasa potencia del nulo con series integradas, que debe evaluarse.
+  \item\label{conc:datacion} \textbf{Regímenes alrededor de los grandes choques, con un número
+    que depende de la regla} (HT3; \cref{oe:datacion,oe:episodios}). La datación principal separa
+    un tramo alrededor de la crisis financiera global, un tramo intermedio largo y un tramo
+    posterior a la pandemia, y los dos choques más intensos se reflejan en ella y, la pandemia,
+    también en el EPCA. Pero el número de regímenes cambia con el máximo de la grilla, uno de los
+    cortes es poco estable y los episodios intermedios no se separan (\cref{sec:res-datacion,sec:res-validacion}).
+    HT3 queda parcialmente sostenida.
+  \item\label{conc:dl} \textbf{El complemento de aprendizaje profundo está formalizado, pero sin
+    evaluar} (HT4; \cref{oe:dl,oe:incertidumbre,oe:comparacion}). La \cref{prop:ae-lineal} ancla el
+    autoencoder en el PCA, y el diseño de anclaje lineal, validación por bloques y estabilidad entre
+    réplicas está definido (\cref{sec:dl}); pero los modelos aún no se han entrenado con las
+    \nSeries{} series vigentes (decisión D17.4). HT4 queda sin evaluar.
+\end{enumerate}
+
+En síntesis, con las series sin transformar la tesis puede afirmar qué estructura tienen los datos
+(una tendencia común, un comovimiento de tasas y bloques estables) y dar a la cadena de métodos un
+fundamento formal que no tenía; todavía no puede afirmar que los cambios de esa estructura en el
+tiempo sean distinguibles de los que produciría una estructura constante.
+
+\section{Recomendaciones y trabajos futuros}
+\label{sec:conc-recomendaciones}
+
+\paragraph{Recomendaciones metodológicas (a discutir con el asesor).}
+
+\begin{enumerate}[label=\textbf{R\arabic*.}, ref=R\arabic*, leftmargin=*]
+  \item Discutir la Parte~C de la decisión D2 con los resultados de este capítulo a la vista:
+    en particular, si la pregunta de HT1 y el criterio de OE4 deben evaluarse en una vía en que la
+    variabilidad de la correlación entre ventanas sea menor (\ref{conc:oe4}).
+  \item Separar la tendencia de la estructura en la datación: evaluar, como sensibilidad, la
+    partición de trayectorias que no incluyan el primer eje o que usen los \emph{scores} sin
+    tendencia (\ref{conc:tendencia}, \ref{conc:datacion}). Es una propuesta, no una decisión
+    tomada.
+  \item Medir la potencia del criterio de OE4 con un contexto simulado de estructura conocida
+    (\cref{oe:simulado}), con series integradas como las del BCRP: si el criterio no detecta
+    cambios simulados de magnitud comparable, su resultado en niveles no informa sobre HT1.
+  \item Completar el contraste externo con una tabla de compatibilidad entre cortes y episodios y
+    con episodios posteriores a la pandemia fechados con fuentes externas al análisis (decisión
+    D18).
+\end{enumerate}
+
+\paragraph{Trabajos futuros.} Volver a entrenar los autoencoders y las redes LSTM con las
+\nSeries{} series (iteración 4); explorar los objetivos condicionales (la HFC evolutiva, el STATIS
+dual como detector independiente y la extensión de la muestra a años anteriores a
+\anioInicioDatos{}), y completar la revisión de la literatura peruana. El \cref{cap:pendientes}
+detalla cada tema, su causa y de quién depende.
+
+\paragraph{Recomendación de uso.} Un indicador de régimen transparente y reproducible podría
+servir como insumo exploratorio de los análisis de estabilidad financiera (\cref{sec:justificacion}).
+En su estado actual, el resultado no debe usarse con ese fin: el primer eje en niveles mide
+profundización y no ciclo, y los cambios de estructura no se han distinguido todavía de la
+variabilidad muestral.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Estado de los objetivos específicos en esta versión}
+\label{tab:estado-objetivos}
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.5\textwidth}>{\raggedright\arraybackslash}p{0.3\textwidth}@{}}
+\toprule
+Objetivo & Estado & Dónde \\
+\midrule
+\ref{oe:estado-arte} & Avanzado; literatura peruana incompleta & \cref{cap:estado-arte} \\
+\ref{oe:datos} & Cumplido & \cref{sec:met-datos}, \cref{ap:reproducibilidad} \\
+\ref{oe:clasicos} & Avanzado en niveles; Parte~C pendiente & \cref{sec:res-pca,sec:res-hfc,sec:res-dinamica} \\
+\ref{oe:ventana} & Formalizado y calculado; no discrimina en niveles & \cref{sec:criterio-oe4}, \cref{sec:res-oe4} \\
+\ref{oe:robustez-hfc} & Cumplido & \cref{sec:res-hfc} \\
+\ref{oe:dimension} & Parcial: falta formalizar el criterio de Rencher & \cref{sec:retencion}, \cref{sec:res-pca} \\
+\ref{oe:dl} & Diseñado; sin entrenar con \nSeries{} series & \cref{sec:dl}, \cref{sec:res-dl} \\
+\ref{oe:incertidumbre} & Pendiente & \cref{sec:pend-dl} \\
+\ref{oe:datacion} & Avanzado con el PCA; fases preliminares & \cref{sec:res-datacion} \\
+\ref{oe:episodios} & Avanzado; falta la tabla de compatibilidad & \cref{sec:res-validacion} \\
+\ref{oe:simulado} & No iniciado & \cref{sec:pend-metodo} \\
+\ref{oe:comparacion} & Pendiente de \ref{oe:dl} & \cref{sec:pend-dl} \\
+\bottomrule
+\end{tabular}
+\end{table}
