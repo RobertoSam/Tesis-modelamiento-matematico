@@ -23,15 +23,15 @@ de cada uno.
 
 \paragraph{El logaritmo no cambia la estructura.} Tras aplicar solo el logaritmo, la congruencia
 de Tucker (\cref{def:tucker}) de los tres primeros ejes con los de las series sin transformar es
-\cifrafalta{congruenciaLogPCUno}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 1},
-\cifrafalta{congruenciaLogPCDos}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 2}
-y \cifrafalta{congruenciaLogPCTres}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 3},
+\congruenciaLogPCUno{},
+\congruenciaLogPCDos{}
+y \congruenciaLogPCTres{},
 y la inercia del primer eje casi no cambia. La discusión sobre la transformación es, por tanto,
 una discusión sobre diferenciar.
 
 \paragraph{La diferencia sí la cambia.} Con solo la primera diferencia, la inercia del primer
 eje cae de \inerciaPCUnoNiveles\,\% a
-\cifrafalta{inerciaPCUnoDiferencia}{05c_pasos.csv: version=solo_diferencia, inercia, componente 1}\,\%,
+\inerciaPCUnoDiferencia{}\,\%,
 y su correlación con el tiempo desaparece. La \cref{prop:ganancia} explica por qué: la primera
 diferencia multiplica la varianza de una oscilación de período $P$ meses por
 $\gamma(P)^2=4\sin^2(\pi/P)$, que es menor que uno para todo $P>6$ y tiende a cero como
@@ -39,9 +39,9 @@ $(2\pi/P)^2$. Una oscilación de ocho años ($P=96$) conserva solo la fracción 
 de su varianza; el archivo \texttt{05c\_ganancia.csv} tabula la ganancia para los períodos de
 interés. En los datos, la proporción de la varianza de cada serie en oscilaciones de dos años o
 más pasa, en mediana, de
-\cifrafalta{espectroLentoMedianaNivelesSinTendencia}{05c_espectro.csv: mediana de niv_det}
+\espectroLentoMedianaNivelesSinTendencia\,\%
 en las series sin transformar y sin tendencia lineal a
-\cifrafalta{espectroLentoMedianaTransformadas}{05c_espectro.csv: mediana de tr}
+\espectroLentoMedianaTransformadas\,\%
 en las transformadas.
 
 \paragraph{Lectura.} Diferenciar elimina justamente la escala de tiempo que define el ciclo
@@ -55,11 +55,11 @@ regla D5 y el nulo de tendencias mixto permiten leer (\cref{sec:res-tendencia}).
 La razón de error \emph{walk-forward} del PCA (\cref{def:walkforward}) se calcula con $d=3$ en
 las dos vías. Con las series transformadas, la proporción de falsas alarmas fuera de los
 episodios ampliados en 3 meses es
-\cifrafalta{falsasAlarmasTransformadasTres}{anexo/09b_discriminacion_episodios.csv: via=transformadas, series=16, metodo=pca, tolerancia 3, falsas_alarmas}\,\%,
+\falsasAlarmasTransformadasTres{}\,\%,
 y la sensibilidad en la pandemia de COVID-19 es
-\cifrafalta{sensibilidadCovidTransformadasTres}{anexo/09b_discriminacion_episodios.csv: via=transformadas, series=16, tolerancia 3, sensibilidad, COVID-19}\,\%.
+\sensibilidadCovidTransformadasTres{}\,\%.
 Con las series sin transformar, en cambio, las falsas alarmas suben a
-\cifrafalta{falsasAlarmasNivelesTres}{anexo/09b_discriminacion_episodios.csv: via=niveles, series=16, metodo=pca, tolerancia 3, falsas_alarmas}\,\%:
+\falsasAlarmasNivelesTres{}\,\%:
 el PCA ajustado con los meses anteriores no reconstruye bien los meses nuevos porque el nivel de
 las series sigue creciendo, de modo que casi todo mes parece atípico. Por eso la decisión D15
 conserva la detección de episodios en la vía transformada.

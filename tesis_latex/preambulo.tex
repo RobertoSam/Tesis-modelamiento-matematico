@@ -77,6 +77,7 @@
 
 % ---- Tablas, figuras y listas ------------------------------------------------
 \usepackage{booktabs, longtable, array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}} % columna centrada con ancho fijo
 \usepackage{graphicx}
 % Las figuras se citan con su subcarpeta (final/ para las vigentes, 16 series): la carpeta
 % niveles/ guarda figuras del antecedente con 17 series y no se usa en la tesis.
@@ -171,4 +172,4 @@
   \footnote{\textcolor{orange!70!black}{\textbf{VERIFICAR:}}~#1}}
 % Cifra que falta en cifras.tex: nombre de la macro solicitada y archivo de origen.
 % El texto va en tamaño menor y sin monoespaciado para que los nombres largos puedan cortarse.
-\newcommand{\cifrafalta}[2]{\pendiente{\small macro \textbackslash\seqsplit{#1} desde \detokenize{#2}}}
+\newcommand{\cifrafalta}[2]{\pendiente{\footnotesize macro \textbackslash\seqsplit{#1} desde \detokenize{#2}}}
