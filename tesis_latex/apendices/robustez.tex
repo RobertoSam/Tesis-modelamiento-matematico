@@ -1,0 +1,71 @@
+% =============================================================================
+% Anexo B · Robustez con las series transformadas (decisión D15)
+% Fuentes: data/results/final/anexo/ (05c_*.csv y 09b_discriminacion_episodios.csv),
+% notebooks 05c y 09b, R/ciclo_financiero_final.Rmd (anexo R). Cifras solo por macro.
+% =============================================================================
+\chapter{Robustez con las series transformadas}
+\label{ap:robustez}
+
+Por la decisión D15, el análisis principal usa las series sin transformar y las transformadas
+pasan a este anexo con dos fines: sustentar la decisión de no diferenciar
+(\cref{sec:ap-no-diferenciar}) y evaluar la detección de episodios fuera de muestra, donde solo la
+vía transformada es informativa (\cref{sec:ap-deteccion}). Las series transformadas cubren
+\nMesesTransformadas{} meses, de \fechaInicioTransformadas{} a \fechaFinDatos{}, con las mismas
+\nSeries{} series del análisis principal. Este anexo no reabre la Parte~C de la decisión D2, que
+sigue pendiente de discutir con el asesor (\cref{sec:pend-parte-c}).
+
+\section{Sustento de no diferenciar}
+\label{sec:ap-no-diferenciar}
+
+La transformación de las series combina dos pasos: el logaritmo, en las series de magnitudes
+positivas, y la primera diferencia. El notebook \texttt{05c} los separa y repite el PCA después
+de cada uno.
+
+\paragraph{El logaritmo no cambia la estructura.} Tras aplicar solo el logaritmo, la congruencia
+de Tucker (\cref{def:tucker}) de los tres primeros ejes con los de las series sin transformar es
+\cifrafalta{congruenciaLogPCUno}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 1},
+\cifrafalta{congruenciaLogPCDos}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 2}
+y \cifrafalta{congruenciaLogPCTres}{05c_pasos.csv: version=solo_logaritmo, congruencia, componente 3},
+y la inercia del primer eje casi no cambia. La discusión sobre la transformación es, por tanto,
+una discusión sobre diferenciar.
+
+\paragraph{La diferencia sí la cambia.} Con solo la primera diferencia, la inercia del primer
+eje cae de \inerciaPCUnoNiveles\,\% a
+\cifrafalta{inerciaPCUnoDiferencia}{05c_pasos.csv: version=solo_diferencia, inercia, componente 1}\,\%,
+y su correlación con el tiempo desaparece. La \cref{prop:ganancia} explica por qué: la primera
+diferencia multiplica la varianza de una oscilación de período $P$ meses por
+$\gamma(P)^2=4\sin^2(\pi/P)$, que es menor que uno para todo $P>6$ y tiende a cero como
+$(2\pi/P)^2$. Una oscilación de ocho años ($P=96$) conserva solo la fracción $4\sin^2(\pi/96)$
+de su varianza; el archivo \texttt{05c\_ganancia.csv} tabula la ganancia para los períodos de
+interés. En los datos, la proporción de la varianza de cada serie en oscilaciones de dos años o
+más pasa, en mediana, de
+\cifrafalta{espectroLentoMedianaNivelesSinTendencia}{05c_espectro.csv: mediana de niv_det}
+en las series sin transformar y sin tendencia lineal a
+\cifrafalta{espectroLentoMedianaTransformadas}{05c_espectro.csv: mediana de tr}
+en las transformadas.
+
+\paragraph{Lectura.} Diferenciar elimina justamente la escala de tiempo que define el ciclo
+financiero (\cref{sec:ea-ciclo}). Analizar las series sin transformar conserva esa escala, a
+cambio de mezclar la tendencia de profundización con la estructura de régimen, mezcla que la
+regla D5 y el nulo de tendencias mixto permiten leer (\cref{sec:res-tendencia}).
+
+\section{Detección de episodios fuera de muestra}
+\label{sec:ap-deteccion}
+
+La razón de error \emph{walk-forward} del PCA (\cref{def:walkforward}) se calcula con $d=3$ en
+las dos vías. Con las series transformadas, la proporción de falsas alarmas fuera de los
+episodios ampliados en 3 meses es
+\cifrafalta{falsasAlarmasTransformadasTres}{anexo/09b_discriminacion_episodios.csv: via=transformadas, series=16, metodo=pca, tolerancia 3, falsas_alarmas}\,\%,
+y la sensibilidad en la pandemia de COVID-19 es
+\cifrafalta{sensibilidadCovidTransformadasTres}{anexo/09b_discriminacion_episodios.csv: via=transformadas, series=16, tolerancia 3, sensibilidad, COVID-19}\,\%.
+Con las series sin transformar, en cambio, las falsas alarmas suben a
+\cifrafalta{falsasAlarmasNivelesTres}{anexo/09b_discriminacion_episodios.csv: via=niveles, series=16, metodo=pca, tolerancia 3, falsas_alarmas}\,\%:
+el PCA ajustado con los meses anteriores no reconstruye bien los meses nuevos porque el nivel de
+las series sigue creciendo, de modo que casi todo mes parece atípico. Por eso la decisión D15
+conserva la detección de episodios en la vía transformada.
+
+Dos limitaciones acotan esta lectura. Los episodios son pocos y algunos puntuales, de modo que la
+sensibilidad se calcula sobre muy pocos meses y no tiene poder estadístico. Y los episodios que
+la vía transformada detecta son choques abruptos, como la pandemia, no cambios lentos de
+estructura, que son los que interesan a las hipótesis HT1 y HT3. La complementariedad entre ambas
+vías es precisamente la propuesta de la Parte~C de D2, que se discutirá con el asesor.

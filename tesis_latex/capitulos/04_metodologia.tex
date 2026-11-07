@@ -1,19 +1,24 @@
 % =============================================================================
-% Capítulo 3 · Metodología y desarrollo del modelo
-% Iteración 3b (tarea L3). Fuentes: decisiones.qmd (D1 a D17), plan de la iteración 3b y su
+% Capítulo 4 · Metodología y desarrollo del modelo
+% Iteración 3b (tarea L3). Fuentes: decisiones.qmd (D1 a D19), plan de la iteración 3b y su
 % adenda (asesoria/), notas del desarrollador del 26-10-2026 y el código vigente
-% (R/ciclo_financiero_final.Rmd, src/, notebooks 05 a 09b). Sin resultados (regla 7): las únicas
-% cifras son de datos y de métodos, y salen de cifras.tex; los parámetros de diseño escritos a
-% mano son los declarados en decisiones.qmd (lista de excepciones de tesis_latex/README.md).
+% (R/ciclo_financiero_final.Rmd, src/, notebooks 05 a 09b). Sin resultados: las únicas cifras
+% son de datos y de métodos, y salen de cifras.tex; los parámetros de diseño escritos a mano
+% son los declarados en decisiones.qmd (lista de excepciones de tesis_latex/README.md).
+% Iteración 3c (7-nov-2026): pasa a ser el capítulo 4; se agrega la hoja de ruta.
 % =============================================================================
 \chapter{Metodología y desarrollo del modelo}
 \label{cap:metodologia}
 
-Este capítulo describe el diseño de la investigación, los datos, el procedimiento que encadena los
-métodos del \cref{cap:marco} y los criterios que se fijaron antes de calcular. No contiene
-resultados: estos se presentan en el \cref{cap:resultados}, sujetos a la regla de aprobación del
-proyecto. Cada parámetro remite a la decisión que lo fija, registrada en el archivo
-\texttt{decisiones.qmd} del repositorio.
+Este capítulo convierte los métodos del \cref{cap:marco} en un procedimiento computacional
+concreto: el modelo matemático y computacional de la tesis. La \cref{sec:met-diseno} fija el tipo
+y el diseño de la investigación; la \cref{sec:met-datos} describe los datos; la
+\cref{sec:met-procedimiento} encadena las etapas del análisis, con los parámetros de cada una; la
+\cref{sec:met-criterios} reúne los criterios fijados antes de calcular, y la
+\cref{sec:met-implementacion} describe la implementación en dos lenguajes y su reproducibilidad.
+El capítulo no contiene resultados, que se presentan en el \cref{cap:resultados}. Cada parámetro
+remite a la decisión que lo fija, registrada en el archivo \texttt{decisiones.qmd} del
+repositorio.
 
 % -----------------------------------------------------------------------------
 \section{Tipo y diseño de la investigación}
@@ -350,6 +355,11 @@ D16 & 26 de octubre de 2026 & Se excluye la liquidez M2. \\
 D17 & 26 de octubre de 2026 & $K_{\max}=10$ para la regla K; RV de cargas sin centrar y criterio
   de OE4 por posición; la regla del 06 como evidencia de pesos uniformes; autoencoders y LSTM
   hasta la iteración 4. Registrada antes de cualquier resultado dinámico con \nSeries{} series. \\
+D18 & 7 de noviembre de 2026 & «Externo» significa externo al análisis: el episodio se fecha con
+  una fuente ajena a las series y a los cortes, sea el evento peruano o extranjero
+  (\cref{def:episodio}). \\
+D19 & 7 de noviembre de 2026 & La rama TS del nulo mixto sortea sus propios inicios de bloque
+  para los $n$ residuos (\cref{obs:nulo-mixto}(c)). \\
 \end{longtable}
 \endgroup
 

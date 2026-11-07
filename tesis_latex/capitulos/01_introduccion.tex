@@ -6,6 +6,12 @@
 \chapter{Introducción}
 \label{cap:introduccion}
 
+Este capítulo plantea el problema de investigación (\cref{sec:planteamiento}), lo justifica
+(\cref{sec:justificacion}), fija los objetivos (\cref{sec:objetivos}) y las hipótesis de trabajo
+(\cref{sec:hipotesis}) y describe la organización del documento (\cref{sec:estructura}). Los
+objetivos y las hipótesis son las referencias contra las que se leen los resultados del
+\cref{cap:resultados} y las conclusiones del \cref{cap:conclusiones}.
+
 \section{Planteamiento y descripción del problema}
 \label{sec:planteamiento}
 
@@ -167,3 +173,36 @@ qué resultado contaría en su contra.
     construcción. \emph{En contra:} que no mejoren a su anclaje lineal en ningún criterio fuera
     de muestra, o que sus resultados cambien con la semilla aleatoria.
 \end{description}
+
+\section{Alcance de esta versión y estructura del documento}
+\label{sec:estructura}
+
+Este documento es el avance del borrador de tesis que se presenta en el curso MMC102 (Seminario de
+Tesis~II). Es la versión maestra del proyecto: el informe del curso se deriva de él y no afirma
+nada que este documento no sostenga. Tres rasgos lo distinguen de una versión final. Primero, el
+\cref{cap:resultados} es un \textbf{avance de resultados}: presenta lo calculado con las
+\nSeries{} series vigentes, con interpretación prudente, pero sin la discusión con el asesor que
+el proyecto exige antes de consolidarla. Segundo, las marcas \textcolor{red!75!black}{\textbf{[PENDIENTE:}~\textit{\dots}\textbf{]}} señalan lo que falta
+(una fuente sin ficha, una cifra aún no generada o una sección que espera una decisión), y las
+notas al pie con la etiqueta \textcolor{orange!70!black}{\textbf{VERIFICAR}} señalan datos por
+comprobar de obras que sí tienen ficha. Tercero, toda cifra de los datos se genera
+automáticamente a partir de los archivos de resultados del repositorio; ninguna se escribe a mano.
+
+El documento sigue la estructura de la guía del curso:
+
+\begin{itemize}[leftmargin=*]
+  \item El \cref{cap:estado-arte} revisa los antecedentes y el estado del arte por líneas
+    temáticas y cierra con los vacíos que justifican la tesis.
+  \item El \cref{cap:marco} es el marco teórico: define formalmente cada método, declara sus
+    supuestos y demuestra las propiedades que la tesis usa. Las demostraciones más largas se
+    trasladan al \cref{ap:demostraciones}.
+  \item El \cref{cap:metodologia} describe el diseño, los datos, el procedimiento y los criterios
+    fijados de antemano, es decir, el desarrollo del modelo matemático y computacional.
+  \item El \cref{cap:resultados} presenta el avance de resultados y su discusión frente a las
+    hipótesis de trabajo.
+  \item El \cref{cap:conclusiones} reúne las conclusiones preliminares y las recomendaciones.
+  \item El \cref{cap:pendientes} ordena los temas pendientes y la agenda de investigación.
+  \item Los anexos contienen las demostraciones técnicas, el análisis de robustez con las series
+    transformadas, la notación, la reproducibilidad y la documentación complementaria.
+\end{itemize}
+

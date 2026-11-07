@@ -3,6 +3,9 @@
 % «Detección evolutiva de regímenes del ciclo financiero peruano mediante
 %  Clasificación Factorial Jerárquica y aprendizaje automático»
 % Compilar desde la raíz del repositorio:  latexmk -lualatex -cd tesis_latex/tesis.tex
+% Estructura según la guía del curso MMC102 (Seminario de Tesis II, 2026-II):
+% preliminares, introducción, desarrollo (caps. 2 a 5), conclusiones preliminares, temas
+% pendientes, referencias y anexos.
 % =============================================================================
 \nonstopmode % no detenerse a pedir entrada (latexmk -cd no lee tesis_latex/latexmkrc)
 \documentclass[12pt, a4paper, oneside, openany]{book}
@@ -12,7 +15,7 @@
 
 % Cifras: cifras.tex lo genera herramientas/generar_cifras.py desde data/results/.
 % Mientras no exista, o si le falta alguna macro, cifras_stub.tex la define como
-% \pendiente{cifra} (\providecommand no sobrescribe las macros ya generadas).
+% \pendiente{...} (\providecommand no sobrescribe las macros ya generadas).
 \IfFileExists{cifras.tex}{\input{cifras}}{}
 \input{cifras_stub}
 
@@ -31,29 +34,37 @@
 \input{capitulos/00_portada}
 \pagenumbering{roman}
 
-\chapter*{Resumen}
-\addcontentsline{toc}{chapter}{Resumen}
-\markboth{Resumen}{Resumen}
-\pendiente{el resumen (un solo párrafo de 250 palabras como máximo, con 2 a 4 palabras
-clave) y el abstract se redactan cuando los capítulos 1 a 5 estén aprobados}
+\input{capitulos/00_resumen}
 
 \cleardoublepage
 \tableofcontents
-\listadesimbolos
+\cleardoublepage
+\phantomsection\addcontentsline{toc}{chapter}{Índice de tablas}
+\listoftables
+\cleardoublepage
+\phantomsection\addcontentsline{toc}{chapter}{Índice de figuras}
+\listoffigures
+\input{capitulos/00_abreviaturas}
 
 % ---- Cuerpo ------------------------------------------------------------------
 \mainmatter
 \include{capitulos/01_introduccion}
-\include{capitulos/02_marco_teorico}
-\include{capitulos/03_metodologia}
-\include{capitulos/04_resultados}
-\include{capitulos/05_conclusiones}
+\include{capitulos/02_estado_arte}
+\include{capitulos/03_marco_teorico}
+\include{capitulos/04_metodologia}
+\include{capitulos/05_resultados}
+\include{capitulos/06_conclusiones}
+\include{capitulos/07_pendientes}
 
-% ---- Referencias y apéndices -------------------------------------------------
+% ---- Fuentes: referencias y anexos -------------------------------------------
 \backmatter
 \printbibliography[heading=bibintoc, title={Referencias}]
 
+% Los anexos van después de las referencias (guía del curso). \backmatter desactiva la
+% numeración de los capítulos; se reactiva para que los anexos tengan letra (A, B, ...)
+% y puedan citarse con \cref.
 \appendix
+\makeatletter\@mainmattertrue\makeatother
 \input{apendices/apendices}
 
 \end{document}

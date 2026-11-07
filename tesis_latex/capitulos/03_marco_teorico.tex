@@ -1,77 +1,60 @@
 % =============================================================================
-% Capítulo 2 · Antecedentes y marco teórico
+% Capítulo 3 · Marco teórico
 % Fuente: tesis/_capitulos/02_marco_teorico.qmd (aprobado), llevado al rigor de la tesis:
 % definiciones, supuestos y proposiciones. Para la EPCA ponderada, la fuente de verdad es
 % R/camiz_port.R (aede_r, .bstatw_ac, .ustatw_ac). Las demostraciones marcadas como
 % propias no dependen de ninguna cita. Ninguna cifra de los datos figura en este capítulo.
+% Iteración 3c (7-nov-2026): los antecedentes y los vacíos pasan al capítulo 2; las
+% demostraciones de prop:ganancia, prop:kish, lem:hac y prop:oe4, al anexo A; D18 en
+% def:episodio y D19 en obs:nulo-mixto (c).
 % =============================================================================
-\chapter{Antecedentes y marco teórico}
+\chapter{Marco teórico}
 \label{cap:marco}
 
-Este capítulo reúne los antecedentes y formaliza los métodos que usa la tesis. La
-\cref{sec:antecedentes} resume el antecedente peruano. Las
-\cref{sec:ciclo,sec:epistemologia} fijan el objeto de estudio y la posición epistemológica. Las
-\cref{sec:datos,sec:pca,sec:hfc,sec:epca,sec:fisher,sec:comparacion,sec:nulos,sec:dl} formalizan
-los métodos: cada uno con su definición, sus supuestos y, cuando corresponde, una proposición. Las
-\cref{sec:criterios,sec:vacios} cierran con los criterios de comparación y los vacíos que
-justifican el aporte. Todas las demostraciones de este capítulo son propias, salvo que se indique
-la fuente; los resultados que se citan sin demostrar se señalan como tales.
+Este capítulo formaliza el objeto de estudio y los métodos que la tesis usa. La literatura que
+los origina se revisó en el \cref{cap:estado-arte}; aquí se fijan las definiciones, los supuestos
+y las propiedades sobre las que se apoyan la metodología del \cref{cap:metodologia} y la lectura
+de los resultados del \cref{cap:resultados}. El recorrido es el siguiente:
 
-% -----------------------------------------------------------------------------
-\section{Antecedentes peruanos}
-\label{sec:antecedentes}
+\begin{enumerate}[leftmargin=*]
+  \item El objeto: qué se entiende por ciclo financiero, régimen, transición, detección y fase, y
+    cómo se validan los regímenes con episodios fechados externamente
+    (\cref{sec:ciclo}); y la posición epistemológica «datos primero», que justifica analizar las
+    series sin transformar (\cref{sec:epistemologia}).
+  \item Los métodos estáticos: las convenciones de los datos (\cref{sec:datos}), el PCA con sus
+    ayudas a la interpretación, sus criterios de retención y sus medidas de adecuación
+    (\cref{sec:pca}), y la HFC (\cref{sec:hfc}).
+  \item Los métodos evolutivos: el EPCA con la función \texttt{aede} del asesor, el tamaño
+    efectivo de sus pesos, la regla de transiciones del notebook 06 y los bordes de ventana
+    (\cref{sec:epca}); la partición óptima de Fisher y los criterios para el número de clases
+    (\cref{sec:fisher}).
+  \item Las herramientas de comparación y de referencia: el coeficiente RV, Procrustes y la
+    congruencia de Tucker (\cref{sec:comparacion}), y los dos nulos por remuestreo en bloques con
+    el criterio del ancho de ventana (\cref{sec:nulos}).
+  \item El complemento de aprendizaje profundo, anclado en el PCA (\cref{sec:dl}), y los
+    criterios de comparación entre métodos (\cref{sec:criterios}).
+\end{enumerate}
 
-El antecedente más directo es el de
-\textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026 sin datos
-de revista, volumen ni DOI. Debe confirmarse con el Dr.~Camiz su estado de publicación.}, que,
-según esa misma fuente, continúa la tesis de maestría de
-\textcite{atoche_murrieta_2022}\verificar{la portada y el registro del repositorio difieren en el
-período del título; se usa el de la portada.}. Los autores aplican PCA, HFC y EPCA a 17
-series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020.
-El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario
-y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del
-análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las
-otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos,
-circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales
-netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y
-extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima,
-EMBIG y coeficiente de dolarización)\verificar{la ficha distingue «reservas» (grupo de riesgo) de
-«reservas internacionales netas» (grupo de salud). Confirmar en la Tabla~1 del manuscrito a qué
-series del BCRP corresponden.}. A continuación, el EPCA se aplica al conjunto completo y a cada
-grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio
-se particiona en subperíodos de estabilidad mediante el algoritmo de
-\textcite{fisher_1958}\verificar{páginas (789--798), que constan solo en fuentes secundarias;
-volumen, número y DOI ya verificados. La ficha es preliminar: el texto no se ha leído y solo se
-cita su aporte general.}, y el número de cortes se
-elige con el criterio de \textcite{calinski_harabasz_1974}\verificar{ficha preliminar: texto no
-consultado; páginas 1--27 solo en fuentes secundarias. Solo se cita su aporte general.}.
-
-Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más
-estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que
-podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el
-más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos
-pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a
-cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos
-para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su
-ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de
-selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los
-resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases
-del ciclo.
+Cada método se presenta con su definición, sus supuestos y, cuando corresponde, una proposición.
+Todas las demostraciones son propias, salvo que se indique la fuente; los resultados que se
+citan sin demostrar se señalan como tales. Las demostraciones más extensas, que cortarían la
+lectura, se trasladan al \cref{ap:demostraciones}.
 
 % -----------------------------------------------------------------------------
 \section{El ciclo financiero y los regímenes como objetos matemáticos}
 \label{sec:ciclo}
 
+Antes de formalizar los métodos conviene fijar qué se mide. Esta sección traduce la noción
+económica de ciclo financiero a objetos que pueden estimarse con los datos disponibles
+(régimen, transición, detección y fase) y precisa cómo se contrastan con episodios fechados
+fuera del análisis.
+
 \subsection{El ciclo financiero}
 
-Siguiendo a \textcite{drehmann_borio_tsatsaronis_2012}, el ciclo financiero se define como el
-componente de mediano plazo que comparten el crédito, la razón entre crédito y producto y los
-precios de los inmuebles, con oscilaciones de 8 a 30 años. Los autores lo caracterizan con dos
-métodos complementarios, los filtros de frecuencia y la datación de puntos de giro, y encuentran
-que los precios bursátiles siguen una dinámica distinta, más volátil y menos sincronizada con el
-crédito, por lo que los excluyen de la definición. La distinción respecto del ciclo económico, de
-1 a 8 años, es también de duración, y las recesiones que coinciden con la fase de contracción del
-ciclo financiero resultan, en promedio, más profundas.
+Siguiendo a \textcite{drehmann_borio_tsatsaronis_2012}, cuya caracterización se revisa en la
+\cref{sec:ea-ciclo}, el ciclo financiero se define como el componente de mediano plazo que
+comparten el crédito, la razón entre crédito y producto y los precios de los inmuebles, con
+oscilaciones de 8 a 30 años, más largas que las del ciclo económico, de 1 a 8 años.
 
 Esta definición plantea tres dificultades para el caso peruano. La primera es la longitud:
 identificar ciclos de 8 a 30 años exige series de varias décadas, y la muestra mensual disponible
@@ -152,7 +135,10 @@ análisis y con la convención de la decisión D7.
 \begin{definicion}[Episodio de referencia y convención de fechado]\label{def:episodio}
 Un \emph{episodio de referencia} $\epi\in\Epis$ es un par de meses $\tini{\epi}\le\tfin{\epi}$.
 El inicio $\tini{\epi}$ es el mes del \emph{evento o anuncio externo} que lo abre, no el de su
-impacto en el Perú, tomado del texto de una fuente con ficha. El fin $\tfin{\epi}$ es el mes del
+impacto en el Perú, tomado del texto de una fuente con ficha. Por la decisión D18,
+\emph{externo} significa externo al análisis: el evento consta en una fuente ajena a las series,
+a los indicadores derivados de ellas y a los cortes estimados (regla 6 del proyecto), con
+independencia de que el evento sea peruano o extranjero. El fin $\tfin{\epi}$ es el mes del
 evento externo que lo cierra, si existe una fuente para él. Si no la hay, el episodio es
 \emph{puntual} y se toma $\tfin{\epi}=\tini{\epi}$ como fin efectivo: el fin no se infiere ni de las
 series ni de un indicador. Todas las fechas se leen de un único archivo,
@@ -232,8 +218,9 @@ el NBER \parencite{nber_2021}, con el mismo criterio que el fin de la crisis glo
 Dos advertencias acompañan la tabla. Primero, el fin de la guerra comercial y el inicio de la
 pandemia distan menos que la tolerancia principal, de modo que una transición en ese tramo no
 puede atribuirse a uno solo de los dos episodios. Segundo, las fechas son las de eventos
-externos, casi todos estadounidenses o globales: miden cuándo ocurrió el choque, no cuándo se
-transmitió a las series del BCRP. Con pocos episodios, algunos puntuales, la correspondencia de la
+externos al análisis (D18), casi todos estadounidenses o globales, salvo la renuncia de
+Kuczynski, que es un evento peruano: miden cuándo ocurrió el choque, no cuándo se transmitió a
+las series del BCRP. Con pocos episodios, algunos puntuales, la correspondencia de la
 hipótesis HT3 es descriptiva y no un contraste con poder estadístico.
 
 % -----------------------------------------------------------------------------
@@ -280,47 +267,7 @@ $\gamma(P)\to 0$ cuando $P\to\infty$, con $\gamma(P)\sim 2\pi/P$; \textup{(c)} $
 si y solo si $P>6$.
 \end{proposicion}
 
-\begin{proof}
-Por la identidad $\cos\xi_1-\cos\xi_2=-2\sin\frac{\xi_1+\xi_2}{2}\sin\frac{\xi_1-\xi_2}{2}$,
-con $\xi_1=\vartheta t+\psi_0$ y $\xi_2=\vartheta(t-1)+\psi_0$,
-\[
-  \Delta x_t=-2\varrho\sin\frac{\vartheta}{2}\,\sin\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}\Bigr)
-  =2\varrho\sin\frac{\vartheta}{2}\,\cos\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}+\frac{\pi}{2}\Bigr),
-\]
-porque $-\sin\xi=\cos(\xi+\pi/2)$ para todo $\xi$. Como $P\ge2$, $\vartheta/2=\pi/P\in(0,\pi/2]$ y
-$\sin(\pi/P)>0$, de modo que la amplitud es $2\varrho\sin(\pi/P)=\gamma(P)\varrho$. Además,
-$\abs{1-e^{-\mathrm{i}\vartheta}}^2=(1-\cos\vartheta)^2+\sin^2\vartheta=2-2\cos\vartheta
-=4\sin^2(\vartheta/2)$, lo que prueba la segunda igualdad de \cref{eq:ganancia}.
-\textup{(a)} Por \cref{eq:ganancia}, $x$ y $\Delta x$ son de la forma
-$y_t=\varrho_y\cos(\vartheta t+\psi_y)$, con $(\varrho_y,\psi_y)=(\varrho,\psi_0)$ y
-$(\varrho_y,\psi_y)=\bigl(\gamma(P)\varrho,\,\psi_0+(\pi-\vartheta)/2\bigr)$, respectivamente.
-Para $k\in\{1, 2\}$ y $\xi\in\RR$, si $e^{\mathrm{i}k\vartheta}\ne1$, la suma geométrica da
-\[
-  \Bigl\lvert\sum_{t=t_0+1}^{t_0+T}e^{\mathrm{i}(k\vartheta t+\xi)}\Bigr\rvert
-  =\frac{\abs{e^{\mathrm{i}k\vartheta T}-1}}{\abs{e^{\mathrm{i}k\vartheta}-1}}
-  \le\frac{2}{\abs{e^{\mathrm{i}k\vartheta}-1}},
-\]
-y la suma es nula si además $k\vartheta T\in2\pi\mathbb{Z}$. Tomando la parte real y usando
-$y_t^2=\frac{\varrho_y^2}{2}+\frac{\varrho_y^2}{2}\cos(2\vartheta t+2\psi_y)$ se distinguen dos
-casos. \emph{Caso $P>2$.} Entonces $\vartheta\in(0,\pi)$ y $2\vartheta\in(0,2\pi)$, de modo que
-$e^{\mathrm{i}\vartheta}\ne1$ y $e^{2\mathrm{i}\vartheta}\ne1$. Si $P$ es entero, $\vartheta P=2\pi$ y
-$2\vartheta P=4\pi$, las dos sumas sobre $T=P$ meses son nulas y
-$\prom{y}_{t_0,P}=0$, $\prom{y^2}_{t_0,P}=\varrho_y^2/2$, luego
-$\vart_{t_0,P}(y)=\varrho_y^2/2$ exactamente. Para $P$ real cualquiera, las sumas están acotadas
-uniformemente en $t_0$ y $T$, de modo que $\prom{y}_{t_0,T}\to0$ y
-$\prom{y^2}_{t_0,T}\to\varrho_y^2/2$, luego $\vart_{t_0,T}(y)\to\varrho_y^2/2$ sin depender de
-$t_0$. En ambos sentidos la varianza pasa de $\varrho^2/2$ a $\gamma(P)^2\varrho^2/2$.
-\emph{Caso $P=2$.} Entonces $\vartheta=\pi$, $e^{2\mathrm{i}\vartheta}=1$ y el promedio de
-$\cos^2$ ya no es $1/2$: $x_t=\varrho(-1)^t\cos\psi_0$, de modo que $x_t^2=\varrho^2\cos^2\psi_0$
-para todo $t$ y $\prom{x}_{t_0,T}$ vale $0$ si $T$ es par y tiende a $0$ en general; luego
-$\vart_{t_0,2}(x)=\varrho^2\cos^2\psi_0$ y $\vart_{t_0,T}(x)\to\varrho^2\cos^2\psi_0$. Además
-$x_{t-1}=-x_t$, de donde $\Delta x_t=2x_t=\gamma(2)\,x_t$ y
-$\vart_{t_0,T}(\Delta x)=\gamma(2)^2\vart_{t_0,T}(x)$ para todo $t_0$ y todo $T$.
-\textup{(b)} $\pi/P$ decrece en $P$ dentro de
-$(0,\pi/2]$, donde el seno es creciente; y $\sin x\sim x$ cuando $x\to0$. \textup{(c)}
-$2\sin(\pi/P)<1$ equivale a $\sin(\pi/P)<1/2$, es decir, a $\pi/P<\pi/6$ dentro de
-$(0,\pi/2]$, o sea, $P>6$.
-\end{proof}
+La demostración, propia, se presenta en la \cref{ap:dem-ganancia}.
 
 La diferencia, por tanto, atenúa justamente las oscilaciones lentas que definen el ciclo
 financiero: todas las de período mayor de seis meses salen atenuadas, y tanto más cuanto más
@@ -363,6 +310,10 @@ Con estos principios, los autoencoders y las redes LSTM se presentan como un
 \section{Datos y convenciones generales}
 \label{sec:datos}
 
+Con el objeto y la posición epistemológica fijados, las secciones siguientes formalizan los
+métodos, empezando por los estáticos. Todos parten de la misma tabla de datos y de la misma
+estandarización.
+
 \begin{definicion}[Datos y estandarización]\label{def:datos}
 Los datos de una vía forman la matriz $\mX=(x_{tj})\in\RR^{n\times p}$, cuya fila
 $\vx_t^{\T}$ reúne las $p$ series en el mes $t$. Para cada serie se definen la media
@@ -386,6 +337,12 @@ datos. Los supuestos distribucionales aparecen solo en las pruebas de la
 % -----------------------------------------------------------------------------
 \section{Análisis de componentes principales}
 \label{sec:pca}
+
+El PCA es el primer eslabón de la cadena y el anclaje de todos los demás métodos: la HFC lo aplica
+a pares de factores, el EPCA lo repite en cada ventana, la datación particiona sus
+\emph{scores} y el autoencoder lineal lo reproduce (\cref{prop:ae-lineal}). Por eso se formaliza
+con más detalle: su propiedad de reconstrucción, las ayudas a la interpretación, el número de
+componentes y la adecuación de la matriz de correlaciones.
 
 \subsection{Definición y propiedad de reconstrucción}
 
@@ -962,31 +919,7 @@ Sean $\omega_u\ge0$, $u=1,\dots,\nw$, con $\sum_u\omega_u=1$.
 \end{enumerate}
 \end{proposicion}
 
-\begin{proof}
-(a) Por la desigualdad de Cauchy-Schwarz,
-$1=\bigl(\sum_u\omega_u\cdot1\bigr)^2\le\nw\sum_u\omega_u^2$, es decir, $\nomega\le\nw$, con
-igualdad si y solo si $(\omega_u)$ es proporcional a $(1,\dots,1)$, o sea, si $\omega_u=1/\nw$.
-Como $0\le\omega_u\le1$, se tiene $\omega_u^2\le\omega_u$, con igualdad si y solo si
-$\omega_u\in\{0, 1\}$; sumando, $\sum_u\omega_u^2\le1$, es decir, $\nomega\ge1$, con igualdad si y
-solo si todos los pesos valen cero o uno, lo que, con suma uno, deja un único peso igual a uno.
-(b) Con $\nu=0$ los pesos son uniformes y se aplica (a). Con $\nu>0$, $\tilde\omega_u$ es
-estrictamente decreciente en $\abs{u-(\nw+1)/2}$. Si $\nw\ge3$, esa distancia vale $(\nw-1)/2$ en
-$u=1$ y $(\nw-3)/2$ en $u=2$, de modo que $\tilde\omega_2>\tilde\omega_1$; los pesos no son todos
-iguales y (a) da la desigualdad estricta. (c) La \cref{eq:pesos} solo contiene $u$, $\nw$ y $\nu$.
-(d) Sea $\xi_u=a_\nu(2u-\nw-1)/(\nw-1)$, de modo que $\tilde\omega_u=e^{-\xi_u^2/2}$ y los $\xi_u$ son
-$\nw$ puntos equiespaciados de $-a_\nu$ a $a_\nu$, con separación $2a_\nu/(\nw-1)$. Para $k\in\{1, 2\}$ sea
-$S_k=\frac{2a_\nu}{\nw-1}\sum_u e^{-k\xi_u^2/2}$. Son sumas de Riemann de funciones continuas en
-$[-a_\nu,a_\nu]$, salvo un término de orden $1/\nw$, de modo que $S_1\to I_1=\int_{-a_\nu}^{a_\nu}e^{-x^2/2}dx$ y
-$S_2\to I_2=\int_{-a_\nu}^{a_\nu}e^{-x^2}dx$. Como $\nomega=(\sum_u\tilde\omega_u)^2/\sum_u\tilde\omega_u^2$,
-\[
-  \frac{\nomega}{\nw}=\frac{\nw-1}{\nw}\cdot\frac{S_1^2}{2a_\nu\,S_2}\;\longrightarrow\;
-  \frac{I_1^2}{2a_\nu\,I_2}=c(\nu).
-\]
-Por la desigualdad de Cauchy-Schwarz en $[-a_\nu,a_\nu]$,
-$I_1^2=\bigl(\int e^{-x^2/2}\cdot1\,dx\bigr)^2\le2a_\nu\int e^{-x^2}dx=2a_\nu\,I_2$, con igualdad solo si
-$e^{-x^2/2}$ fuera constante en $[-a_\nu,a_\nu]$, lo que no ocurre con $a_\nu>0$. Luego $c(\nu)<1$, y
-$c(\nu)>0$ porque $I_1>0$.
-\end{proof}
+La demostración, propia, se presenta en la \cref{ap:dem-kish}.
 
 Con $\nw=2$ los dos pesos gaussianos son iguales por simetría, y el caso queda fuera de (b). La
 \cref{prop:kish}(c) y (d) muestra que la reducción de $\nomega$ frente a $\nw$ con pesos
@@ -1362,6 +1295,11 @@ rango del nulo de estructura constante (\cref{sec:nulos}).
 \section{Comparación de configuraciones}
 \label{sec:comparacion}
 
+Los métodos evolutivos producen muchas configuraciones (una por ventana, por réplica o por
+método), y las hipótesis de trabajo exigen compararlas. Esta sección define las tres medidas que
+se usan: el coeficiente RV, que compara configuraciones completas; la rotación de Procrustes, que
+las alinea; y la congruencia de Tucker, que compara ejes uno a uno.
+
 \begin{definicion}[Coeficiente RV]\label{def:rv}
 Para dos configuraciones no nulas $\mF_1\in\RR^{m\times q}$ y $\mF_2\in\RR^{m\times q'}$ de las
 mismas $m$ filas,
@@ -1559,26 +1497,19 @@ con igualdad si y solo si todos los $\dot x_t$ son nulos, es decir, si los incre
 son constantes. En otro caso, $t^{\mathrm{HAC}}_j$ está bien definido.
 \end{lema}
 
-\begin{proof}
-Al desarrollar el cuadrado, el producto $\dot x_s\dot x_{s'}$ con $\abs{s-s'}=k\le\bar m-1$
-aparece una vez por cada $t$ con $s,s'\in\{t-\bar m+1,\dots,t\}$, es decir, $\bar m-k$ veces. Por
-tanto, la suma vale
-$\bar m\sum_s\dot x_s^2+2\sum_{k=1}^{\bar m-1}(\bar m-k)\sum_s\dot x_s\dot x_{s-k}
-=n'\bar m\bigl[\hat\Gamma_0+2\sum_{k=1}^{\bar m-1}(1-k/\bar m)\hat\Gamma_k\bigr]$, que es
-$n'\bar m\,\hat\sigma^2_{\mathrm{HAC},j}$. Si la suma es nula, todas las sumas móviles lo son; la
-primera, $t=1$, da $\dot x_1=0$, y por inducción $\dot x_t=0$ para todo $t$.
-\end{proof}
+La demostración, propia, se presenta en la \cref{ap:dem-hac}.
 
 La propiedad del \cref{lem:hac} es la que da nombre al estimador de \textcite{newey_west_1987}; la
-demostración anterior es propia y solo usa la forma del núcleo.
+demostración del anexo es propia y solo usa la forma del núcleo.
 
 \begin{definicion}[Nulo de tendencias mixto]\label{def:nulo-mixto}
 Cada serie $j$ recibe un tratamiento según su clase de la decisión D5 y el estadístico de la
 \cref{def:hac}:
 \begin{enumerate}[label=(\alph*)]
-  \item serie TS: $x^\ast_{tj}=\hat x_{tj}+\hat\epsilon_{\pib(t)j}$, donde $\hat x_{tj}$ es la recta
-    de mínimos cuadrados de la serie sobre el tiempo y $\hat\epsilon_{tj}=x_{tj}-\hat x_{tj}$ son sus
-    residuos, remuestreados en bloques;
+  \item serie TS: $x^\ast_{tj}=\hat x_{tj}+\hat\epsilon_{\pib(t)j}$, $t=1,\dots,n$, donde $\hat x_{tj}$
+    es la recta de mínimos cuadrados de la serie sobre el tiempo, $\hat\epsilon_{tj}=x_{tj}-\hat
+    x_{tj}$ son sus residuos y $\pib$ es una sucesión de índices por bloques con $n'=n$
+    (\cref{def:bloques}; decisión D19);
   \item serie DS con $\abs{t^{\mathrm{HAC}}_j}>2$ (con deriva): $x^\ast_{1j}=0$ y
     $x^\ast_{t+1,j}=x^\ast_{tj}+\Delta x_{\pib(t)+1,j}$;
   \item serie DS con $\abs{t^{\mathrm{HAC}}_j}\le2$ (sin deriva): como (b), con los incrementos menos
@@ -1596,9 +1527,12 @@ igualan o superan la inercia observada.
 serie, es decir, que sus incrementos (o sus residuos, si es TS) son débilmente dependientes. El
 umbral $\abs{t^{\mathrm{HAC}}_j}>2$ hereda ese supuesto. (b) D8 pide declarar las series con
 $\abs{t^{\mathrm{HAC}}_j}$ cercano a 2, sin fijar qué distancia cuenta como cercana; el texto no la
-fija. (c) La rama TS usa, para $n$ residuos, los inicios sorteados para $n-1$ incrementos: la
-sucesión de índices tiene $\mb\Lb$ términos y cubre los $n$ meses solo si $\mb\Lb\ge n$, lo que
-depende de que $\Lb$ no divida a $n-1$.
+fija. (c) Por la decisión D19, la rama TS sortea sus propios inicios de bloque para los $n$
+residuos, en $\{1,\dots,n-\Lb+1\}$, de modo que todo residuo, incluido el del último mes, puede
+iniciar un bloque y la sucesión de índices cubre siempre los $n$ meses. Hasta la iteración 3b,
+la rama TS reutilizaba los inicios sorteados para los $n-1$ incrementos de las ramas DS: el
+residuo del último mes nunca iniciaba un bloque, y la sucesión cubría los $n$ meses solo si
+$\Lb$ no dividía a $n-1$ (auditoría de la iteración 3b, hallazgo N-04).
 \end{observacion}
 
 \subsection{Nulo de estructura constante}
@@ -1697,16 +1631,7 @@ $\widetilde{\pval}=\bigl(1+\#\{\zeta\ge1:\tilde\varpi_\zeta\ge\tilde\varpi_0\}\b
 $\Pr(\widetilde{\pval}\le\alpha_0)\le\alpha_0$ para todo $\alpha_0\in[0,1]$.
 \end{proposicion}
 
-\begin{proof}
-Cada $\tilde\varpi_j$ es la misma función de $\mathcal{P}_j$ y del conjunto de los demás perfiles, de modo que permutar
-los perfiles permuta los $\tilde\varpi_j$; por el supuesto, $(\tilde\varpi_0,\dots,\tilde\varpi_B)$ es intercambiable. Para
-$k\in\{1,\dots,B+1\}$ sea $\mathcal{J}=\{j:\#\{c\ne j:\tilde\varpi_c\ge\tilde\varpi_j\}\le k-1\}$. Si $\mathcal{J}$ tuviera $k+1$ elementos
-o más, el de menor $\tilde\varpi$ en $\mathcal{J}$ tendría al menos $k$ índices distintos con $\tilde\varpi$ mayor o igual, contra
-la definición de $\mathcal{J}$; luego $\#\mathcal{J}\le k$. Por la intercambiabilidad, cada índice pertenece a $\mathcal{J}$ con
-la misma probabilidad, de modo que $\Pr(0\in\mathcal{J})=\mathbb{E}[\#\mathcal{J}]/(B+1)\le k/(B+1)$. Como $0\in\mathcal{J}$
-equivale a $\widetilde{\pval}\le k/(B+1)$, y $\widetilde{\pval}$ solo toma valores $k/(B+1)$, se sigue
-$\Pr(\widetilde{\pval}\le\alpha_0)\le\lfloor\alpha_0(B+1)\rfloor/(B+1)\le\alpha_0$.
-\end{proof}
+La demostración, propia, se presenta en la \cref{ap:dem-oe4}.
 
 \begin{observacion}[La versión implementada]\label{obs:oe4}
 La \cref{def:oe4} difiere de la versión simétrica en dos puntos: el umbral de cada réplica se
@@ -1747,6 +1672,11 @@ como ambigüedad.
 % -----------------------------------------------------------------------------
 \section[Aprendizaje profundo]{Aprendizaje profundo: autoencoders, LSTM y\texorpdfstring{\\}{} LSTM-autoencoder}
 \label{sec:dl}
+
+Los métodos anteriores son lineales y descriptivos. Esta sección formaliza el complemento de
+aprendizaje profundo que prevén los objetivos \labelcref{oe:dl,oe:incertidumbre} y la hipótesis
+HT4, y lo ancla en el PCA. Con las \nSeries{} series vigentes, estos modelos todavía no se han
+vuelto a entrenar (decisión D17.4; \cref{cap:pendientes}).
 
 \subsection{Autoencoders}
 
@@ -1937,37 +1867,3 @@ recuperación de cada método y calibrar sus parámetros: número de factores, n
 de ventana y pesos de los análisis evolutivos. Es el único escenario en el que la «verdad» del
 régimen está disponible sin circularidad. Por ello, complementa y no sustituye la validación con
 episodios externos.
-
-% -----------------------------------------------------------------------------
-\section{Vacíos identificados y aporte de la tesis}
-\label{sec:vacios}
-
-La revisión permite identificar cinco vacíos:
-
-\begin{enumerate}[leftmargin=*]
-  \item \textbf{Ausencia de aprendizaje profundo en el antecedente peruano.}
-    \textcite{camiz_cerda_atoche_2026} se mantiene dentro del marco exploratorio clásico.
-  \item \textbf{Ausencia de una HFC evolutiva unificada.} No existe en la literatura revisada un
-    algoritmo EHFC publicado. \textcite{camiz_roig_2011} y \textcite{camiz_cerda_atoche_2026}
-    aplican la HFC y el EPCA de forma secuencial, y la integración se produce en la interpretación
-    conjunta, no en un algoritmo.
-  \item \textbf{Ausencia de una clasificación explícita de fases.}
-    \textcite{camiz_cerda_atoche_2026} interpretan indicadores por grupo, pero no clasifican
-    intervalos en expansión, contracción o transición ni los contrastan con episodios fechados de
-    manera independiente.
-  \item \textbf{Muestra anterior a la pospandemia.} La muestra de
-    \textcite{camiz_cerda_atoche_2026} termina en 2020.
-  \item \textbf{Ausencia de un criterio objetivo para el ancho de ventana del EPCA.} Las tres
-    aplicaciones de la escuela fijan el ancho de manera informal.
-\end{enumerate}
-
-El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la
-incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la
-\cref{prop:ae-lineal}; (2) la clasificación explícita de fases, validada contra episodios fechados
-con fuentes externas; (3) la actualización de la muestra hasta \fechaFinDatos{}, que cubre la
-dinámica pospandemia; y (4) un criterio para el ancho de ventana del EPCA, basado en la
-similitud entre ventanas adyacentes no solapadas, medida con el coeficiente RV de cargas
-(\cref{def:rv-cargas,def:pares}) y contrastada con un nulo de estructura constante del mismo ancho
-(\cref{def:oe4}); por la decisión D10, la grilla de anchos se lee como multiescala y no como la
-búsqueda de un ancho único. La formalización de una EHFC queda como objetivo
-exploratorio condicional, porque no existe una especificación previa contra la cual validarla.

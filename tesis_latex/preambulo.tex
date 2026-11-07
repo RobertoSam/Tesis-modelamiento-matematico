@@ -44,7 +44,7 @@
 % ---- Idioma -----------------------------------------------------------------
 % es-tabla: «Tabla» en lugar de «Cuadro»; es-noshorthands evita conflictos de «"» y «~»;
 % es-nodecimaldot conserva el punto en modo matemático (la coma decimal la da icomma).
-\usepackage[spanish, es-tabla, es-noshorthands, es-nodecimaldot]{babel}
+\usepackage[english, spanish, es-tabla, es-noshorthands, es-nodecimaldot]{babel}
 \usepackage{csquotes}
 \DeclareQuoteStyle{spanish}{\guillemotleft}{\guillemotright}{\textquotedblleft}{\textquotedblright}
 
@@ -78,7 +78,9 @@
 % ---- Tablas, figuras y listas ------------------------------------------------
 \usepackage{booktabs, longtable, array}
 \usepackage{graphicx}
-\graphicspath{{../reports/figures/}{../reports/figures/niveles/}}
+% Las figuras se citan con su subcarpeta (final/ para las vigentes, 16 series): la carpeta
+% niveles/ guarda figuras del antecedente con 17 series y no se usa en la tesis.
+\graphicspath{{../reports/figures/}}
 \usepackage[font=small, labelfont=bf]{caption}
 \usepackage{enumitem}
 \setlist{itemsep=2pt, topsep=4pt}
@@ -89,7 +91,9 @@
 \addbibresource{../tesis/referencias.bib}
 
 % ---- Enlaces y referencias cruzadas (hyperref antes de cleveref) --------------
+\usepackage{seqsplit}                % permite cortar nombres de macros largos en \cifrafalta
 \usepackage[hidelinks, unicode, pdfusetitle]{hyperref}
+\usepackage{xurl}                    % \path{...}: rutas de archivos que pueden cortarse en cualquier punto
 \usepackage[spanish, noabbrev]{cleveref}
 
 % ---- Entornos de amsthm, numerados por capítulo -----------------------------
@@ -106,6 +110,10 @@
 \newtheorem{observacion}[teorema]{Observación}
 \renewcommand{\qedsymbol}{$\blacksquare$}
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
+\addto\captionsspanish{\renewcommand{\appendixname}{Anexo}}
+\addto\captionsspanish{\renewcommand{\contentsname}{Índice de contenidos}}
+\addto\captionsspanish{\renewcommand{\listfigurename}{Índice de figuras}}
+\addto\captionsspanish{\renewcommand{\listtablename}{Índice de tablas}}
 
 \crefname{teorema}{teorema}{teoremas}
 \Crefname{teorema}{Teorema}{Teoremas}
@@ -126,6 +134,12 @@
 \crefname{equation}{ecuación}{ecuaciones}
 \Crefname{equation}{Ecuación}{Ecuaciones}
 \creflabelformat{equation}{#2(#1)#3}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{appendix}{anexo}{anexos}
+\Crefname{appendix}{Anexo}{Anexos}
+\crefname{subappendix}{sección}{secciones}
+\Crefname{subappendix}{Sección}{Secciones}
 \crefname{table}{tabla}{tablas}
 \Crefname{table}{Tabla}{Tablas}
 \crefname{chapter}{capítulo}{capítulos}
@@ -143,7 +157,18 @@
 %   el PDF y cada uso se lista en la nota del redactor y en tesis/registro_verificacion.md.
 % \verificar{motivo}: obra con ficha y entrada en el .bib, pero con un dato por verificar
 %   (equivale a la marca [VERIFICAR: motivo] del informe). Va como nota al pie.
+% Las dos marcas se cuentan (paquete totcount): \total{npendiente} y \total{nverificar}
+% dan el número de marcas del documento compilado, sin escribirlo a mano (cap. 7).
+% No deben usarse dentro de \caption ni de \section: se contarían dos veces.
+\usepackage{totcount}
+\newtotcounter{npendiente}
+\newtotcounter{nverificar}
 \newcommand{\pendiente}[1]{%
+  \stepcounter{npendiente}%
   \textcolor{red!75!black}{\textbf{[PENDIENTE:}~\textit{#1}\textbf{]}}}
 \newcommand{\verificar}[1]{%
+  \stepcounter{nverificar}%
   \footnote{\textcolor{orange!70!black}{\textbf{VERIFICAR:}}~#1}}
+% Cifra que falta en cifras.tex: nombre de la macro solicitada y archivo de origen.
+% El texto va en tamaño menor y sin monoespaciado para que los nombres largos puedan cortarse.
+\newcommand{\cifrafalta}[2]{\pendiente{\small macro \textbackslash\seqsplit{#1} desde \detokenize{#2}}}

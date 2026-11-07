@@ -1,2 +1,146 @@
-% Apéndices · Vacío en la iteración 3a. Cada apéndice va en su propio archivo y se
-% incluye aquí con \input{apendices/NOMBRE}.
+% =============================================================================
+% Anexos (iteración 3c, 7-nov-2026). Van después de las referencias (guía del curso MMC102).
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+\chapter{Demostraciones técnicas}
+\label{ap:demostraciones}
+
+Este anexo reúne las demostraciones del \cref{cap:marco} que, por su extensión, cortarían la
+lectura del capítulo. Todas son propias. Los enunciados están en el capítulo y no se repiten.
+
+\section{Ganancia de la primera diferencia}
+\label{ap:dem-ganancia}
+
+Se demuestra la \cref{prop:ganancia}, que sustenta la decisión de analizar las series sin
+transformar (\cref{sec:epistemologia}).
+
+\begin{proof}[Demostración de la \cref{prop:ganancia}]
+Por la identidad
+\[
+  \cos\xi_1-\cos\xi_2=-2\sin\frac{\xi_1+\xi_2}{2}\sin\frac{\xi_1-\xi_2}{2},
+\]
+con $\xi_1=\vartheta t+\psi_0$ y $\xi_2=\vartheta(t-1)+\psi_0$,
+\[
+  \Delta x_t=-2\varrho\sin\frac{\vartheta}{2}\,\sin\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}\Bigr)
+  =2\varrho\sin\frac{\vartheta}{2}\,\cos\Bigl(\vartheta t+\psi_0-\frac{\vartheta}{2}+\frac{\pi}{2}\Bigr),
+\]
+porque $-\sin\xi=\cos(\xi+\pi/2)$ para todo $\xi$. Como $P\ge2$, $\vartheta/2=\pi/P\in(0,\pi/2]$ y
+$\sin(\pi/P)>0$, de modo que la amplitud es $2\varrho\sin(\pi/P)=\gamma(P)\varrho$. Además,
+$\abs{1-e^{-\mathrm{i}\vartheta}}^2=(1-\cos\vartheta)^2+\sin^2\vartheta=2-2\cos\vartheta
+=4\sin^2(\vartheta/2)$, lo que prueba la segunda igualdad de \cref{eq:ganancia}.
+\textup{(a)} Por \cref{eq:ganancia}, $x$ y $\Delta x$ son de la forma
+$y_t=\varrho_y\cos(\vartheta t+\psi_y)$, con $(\varrho_y,\psi_y)=(\varrho,\psi_0)$ y
+$(\varrho_y,\psi_y)=\bigl(\gamma(P)\varrho,\,\psi_0+(\pi-\vartheta)/2\bigr)$, respectivamente.
+Para $k\in\{1, 2\}$ y $\xi\in\RR$, si $e^{\mathrm{i}k\vartheta}\ne1$, la suma geométrica da
+\[
+  \Bigl\lvert\sum_{t=t_0+1}^{t_0+T}e^{\mathrm{i}(k\vartheta t+\xi)}\Bigr\rvert
+  =\frac{\abs{e^{\mathrm{i}k\vartheta T}-1}}{\abs{e^{\mathrm{i}k\vartheta}-1}}
+  \le\frac{2}{\abs{e^{\mathrm{i}k\vartheta}-1}},
+\]
+y la suma es nula si además $k\vartheta T\in2\pi\mathbb{Z}$. Tomando la parte real y usando
+$y_t^2=\frac{\varrho_y^2}{2}+\frac{\varrho_y^2}{2}\cos(2\vartheta t+2\psi_y)$ se distinguen dos
+casos. \emph{Caso $P>2$.} Entonces $\vartheta\in(0,\pi)$ y $2\vartheta\in(0,2\pi)$, de modo que
+$e^{\mathrm{i}\vartheta}\ne1$ y $e^{2\mathrm{i}\vartheta}\ne1$. Si $P$ es entero, $\vartheta P=2\pi$ y
+$2\vartheta P=4\pi$, las dos sumas sobre $T=P$ meses son nulas y
+$\prom{y}_{t_0,P}=0$, $\prom{y^2}_{t_0,P}=\varrho_y^2/2$, luego
+$\vart_{t_0,P}(y)=\varrho_y^2/2$ exactamente. Para $P$ real cualquiera, las sumas están acotadas
+uniformemente en $t_0$ y $T$, de modo que $\prom{y}_{t_0,T}\to0$ y
+$\prom{y^2}_{t_0,T}\to\varrho_y^2/2$, luego $\vart_{t_0,T}(y)\to\varrho_y^2/2$ sin depender de
+$t_0$. En ambos sentidos la varianza pasa de $\varrho^2/2$ a $\gamma(P)^2\varrho^2/2$.
+\emph{Caso $P=2$.} Entonces $\vartheta=\pi$, $e^{2\mathrm{i}\vartheta}=1$ y el promedio de
+$\cos^2$ ya no es $1/2$: $x_t=\varrho(-1)^t\cos\psi_0$, de modo que $x_t^2=\varrho^2\cos^2\psi_0$
+para todo $t$ y $\prom{x}_{t_0,T}$ vale $0$ si $T$ es par y tiende a $0$ en general; luego
+$\vart_{t_0,2}(x)=\varrho^2\cos^2\psi_0$ y $\vart_{t_0,T}(x)\to\varrho^2\cos^2\psi_0$. Además
+$x_{t-1}=-x_t$, de donde $\Delta x_t=2x_t=\gamma(2)\,x_t$ y
+$\vart_{t_0,T}(\Delta x)=\gamma(2)^2\vart_{t_0,T}(x)$ para todo $t_0$ y todo $T$.
+\textup{(b)} $\pi/P$ decrece en $P$ dentro de
+$(0,\pi/2]$, donde el seno es creciente; y $\sin x\sim x$ cuando $x\to0$. \textup{(c)}
+$2\sin(\pi/P)<1$ equivale a $\sin(\pi/P)<1/2$, es decir, a $\pi/P<\pi/6$ dentro de
+$(0,\pi/2]$, o sea, $P>6$.
+\end{proof}
+
+\section{Tamaño efectivo de los pesos de la ventana}
+\label{ap:dem-kish}
+
+Se demuestra la \cref{prop:kish}, que justifica usar el tamaño efectivo, y no el ancho, como
+escala de los umbrales por ventana (\cref{def:umbral-ventana}).
+
+\begin{proof}[Demostración de la \cref{prop:kish}]
+(a) Por la desigualdad de Cauchy-Schwarz,
+$1=\bigl(\sum_u\omega_u\cdot1\bigr)^2\le\nw\sum_u\omega_u^2$, es decir, $\nomega\le\nw$, con
+igualdad si y solo si $(\omega_u)$ es proporcional a $(1,\dots,1)$, o sea, si $\omega_u=1/\nw$.
+Como $0\le\omega_u\le1$, se tiene $\omega_u^2\le\omega_u$, con igualdad si y solo si
+$\omega_u\in\{0, 1\}$; sumando, $\sum_u\omega_u^2\le1$, es decir, $\nomega\ge1$, con igualdad si y
+solo si todos los pesos valen cero o uno, lo que, con suma uno, deja un único peso igual a uno.
+(b) Con $\nu=0$ los pesos son uniformes y se aplica (a). Con $\nu>0$, $\tilde\omega_u$ es
+estrictamente decreciente en $\abs{u-(\nw+1)/2}$. Si $\nw\ge3$, esa distancia vale $(\nw-1)/2$ en
+$u=1$ y $(\nw-3)/2$ en $u=2$, de modo que $\tilde\omega_2>\tilde\omega_1$; los pesos no son todos
+iguales y (a) da la desigualdad estricta. (c) La \cref{eq:pesos} solo contiene $u$, $\nw$ y $\nu$.
+(d) Sea $\xi_u=a_\nu(2u-\nw-1)/(\nw-1)$, de modo que $\tilde\omega_u=e^{-\xi_u^2/2}$ y los $\xi_u$ son
+$\nw$ puntos equiespaciados de $-a_\nu$ a $a_\nu$, con separación $2a_\nu/(\nw-1)$. Para $k\in\{1, 2\}$ sea
+$S_k=\frac{2a_\nu}{\nw-1}\sum_u e^{-k\xi_u^2/2}$. Son sumas de Riemann de funciones continuas en
+$[-a_\nu,a_\nu]$, salvo un término de orden $1/\nw$, de modo que $S_1\to I_1=\int_{-a_\nu}^{a_\nu}e^{-x^2/2}dx$ y
+$S_2\to I_2=\int_{-a_\nu}^{a_\nu}e^{-x^2}dx$. Como $\nomega=(\sum_u\tilde\omega_u)^2/\sum_u\tilde\omega_u^2$,
+\[
+  \frac{\nomega}{\nw}=\frac{\nw-1}{\nw}\cdot\frac{S_1^2}{2a_\nu\,S_2}\;\longrightarrow\;
+  \frac{I_1^2}{2a_\nu\,I_2}=c(\nu).
+\]
+Por la desigualdad de Cauchy-Schwarz en $[-a_\nu,a_\nu]$,
+$I_1^2=\bigl(\int e^{-x^2/2}\cdot1\,dx\bigr)^2\le2a_\nu\int e^{-x^2}dx=2a_\nu\,I_2$, con igualdad solo si
+$e^{-x^2/2}$ fuera constante en $[-a_\nu,a_\nu]$, lo que no ocurre con $a_\nu>0$. Luego $c(\nu)<1$, y
+$c(\nu)>0$ porque $I_1>0$.
+\end{proof}
+
+\section{No negatividad del estimador HAC}
+\label{ap:dem-hac}
+
+Se demuestra el \cref{lem:hac}, que garantiza que el estadístico de la deriva de la
+\cref{def:hac} esté bien definido.
+
+\begin{proof}[Demostración del \cref{lem:hac}]
+Al desarrollar el cuadrado, el producto $\dot x_s\dot x_{s'}$ con $\abs{s-s'}=k\le\bar m-1$
+aparece una vez por cada $t$ con $s,s'\in\{t-\bar m+1,\dots,t\}$, es decir, $\bar m-k$ veces. Por
+tanto, la suma vale
+$\bar m\sum_s\dot x_s^2+2\sum_{k=1}^{\bar m-1}(\bar m-k)\sum_s\dot x_s\dot x_{s-k}
+=n'\bar m\bigl[\hat\Gamma_0+2\sum_{k=1}^{\bar m-1}(1-k/\bar m)\hat\Gamma_k\bigr]$, que es
+$n'\bar m\,\hat\sigma^2_{\mathrm{HAC},j}$. Si la suma es nula, todas las sumas móviles lo son; la
+primera, $t=1$, da $\dot x_1=0$, y por inducción $\dot x_t=0$ para todo $t$.
+\end{proof}
+
+\section{Validez de la versión simétrica del criterio de OE4}
+\label{ap:dem-oe4}
+
+Se demuestra la \cref{prop:oe4}, que da el nivel del criterio de ancho de ventana bajo
+intercambiabilidad (\cref{sup:intercambiable}).
+
+\begin{proof}[Demostración de la \cref{prop:oe4}]
+Cada $\tilde\varpi_j$ es la misma función de $\mathcal{P}_j$ y del conjunto de los demás perfiles, de modo que permutar
+los perfiles permuta los $\tilde\varpi_j$; por el supuesto, $(\tilde\varpi_0,\dots,\tilde\varpi_B)$ es intercambiable. Para
+$k\in\{1,\dots,B+1\}$ sea $\mathcal{J}=\{j:\#\{c\ne j:\tilde\varpi_c\ge\tilde\varpi_j\}\le k-1\}$. Si $\mathcal{J}$ tuviera $k+1$ elementos
+o más, el de menor $\tilde\varpi$ en $\mathcal{J}$ tendría al menos $k$ índices distintos con $\tilde\varpi$ mayor o igual, contra
+la definición de $\mathcal{J}$; luego $\#\mathcal{J}\le k$. Por la intercambiabilidad, cada índice pertenece a $\mathcal{J}$ con
+la misma probabilidad, de modo que $\Pr(0\in\mathcal{J})=\mathbb{E}[\#\mathcal{J}]/(B+1)\le k/(B+1)$. Como $0\in\mathcal{J}$
+equivale a $\widetilde{\pval}\le k/(B+1)$, y $\widetilde{\pval}$ solo toma valores $k/(B+1)$, se sigue
+$\Pr(\widetilde{\pval}\le\alpha_0)\le\lfloor\alpha_0(B+1)\rfloor/(B+1)\le\alpha_0$.
+\end{proof}
+
+% -----------------------------------------------------------------------------
+\input{apendices/robustez}
+
+% -----------------------------------------------------------------------------
+\chapter{Notación}
+\label{ap:notacion}
+
+La tabla siguiente reúne los símbolos de la tesis, agrupados por método. La notación es única para
+todo el documento y se define en el archivo \texttt{tesis\_latex/notacion.tex}; antes de
+introducir un símbolo se verifica que no exista. Las abreviaturas se listan en las páginas
+preliminares.
+
+\listadesimbolos
+
+% -----------------------------------------------------------------------------
+\input{apendices/reproducibilidad}
+
+% -----------------------------------------------------------------------------
+\input{apendices/complementaria}

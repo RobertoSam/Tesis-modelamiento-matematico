@@ -1,0 +1,101 @@
+% =============================================================================
+% Capítulo 2 · Antecedentes y estado del arte (iteración 3c, 7-nov-2026)
+% Separado del marco teórico. Solo se citan obras con ficha en papers/ y entrada en
+% tesis/referencias.bib; lo demás va como \pendiente{...}.
+% =============================================================================
+\chapter{Antecedentes y estado del arte}
+\label{cap:estado-arte}
+
+ESQUELETO
+
+\section{El ciclo financiero y su medición}
+\label{sec:ea-ciclo}
+
+\section{Índices compuestos y de estrés financiero}
+\label{sec:ea-indices}
+
+\section{Regímenes y cambios estructurales}
+\label{sec:ea-regimenes}
+
+\section{Detección de puntos de cambio}
+\label{sec:ea-cambio}
+
+\section{Métodos factoriales franceses y la escuela de Camiz}
+\label{sec:ea-factoriales}
+
+\section{Aprendizaje profundo para series de tiempo}
+\label{sec:ea-dl}
+
+\section{Perú y América Latina}
+\label{sec:antecedentes}
+
+El antecedente más directo es el de
+\textcite{camiz_cerda_atoche_2026}\verificar{manuscrito fechado el 25 de abril de 2026 sin datos
+de revista, volumen ni DOI. Debe confirmarse con el Dr.~Camiz su estado de publicación.}, que,
+según esa misma fuente, continúa la tesis de maestría de
+\textcite{atoche_murrieta_2022}\verificar{la portada y el registro del repositorio difieren en el
+período del título; se usa el de la portada.}. Los autores aplican PCA, HFC y EPCA a 17
+series mensuales de indicadores macrofinancieros del BCRP, entre enero de 1999 y finales de 2020.
+El PCA global muestra un primer componente dominante. Dos series, el tipo de cambio interbancario
+y el apalancamiento global bancario, se correlacionan poco con ese componente y quedan fuera del
+análisis principal. Aplicada a las 17 series, la HFC deja aisladas esas dos series y agrupa las
+otras 15 en tres grupos: salud económica y financiera, con 7 series (activos internos,
+circulante, ahorro total, crédito total, fondos de pensiones, liquidez y reservas internacionales
+netas); tasas de interés, con 4 series (tasas activas y pasivas, en moneda nacional y
+extranjera); y riesgo del mercado financiero, con 4 series (reservas, índice bursátil de Lima,
+EMBIG y coeficiente de dolarización)\verificar{la ficha distingue «reservas» (grupo de riesgo) de
+«reservas internacionales netas» (grupo de salud). Confirmar en la Tabla~1 del manuscrito a qué
+series del BCRP corresponden.}. A continuación, el EPCA se aplica al conjunto completo y a cada
+grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio
+se particiona en subperíodos de estabilidad mediante el algoritmo de
+\textcite{fisher_1958}\verificar{páginas (789--798), que constan solo en fuentes secundarias;
+volumen, número y DOI ya verificados. La ficha es preliminar: el texto no se ha leído y solo se
+cita su aporte general.}, y el número de cortes se
+elige con el criterio de \textcite{calinski_harabasz_1974}\verificar{ficha preliminar: texto no
+consultado; páginas 1--27 solo en fuentes secundarias. Solo se cita su aporte general.}.
+
+Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más
+estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que
+podría funcionar como señal temprana; y el de riesgo de mercado es el menos unidimensional y el
+más sensible a perturbaciones puntuales. El estudio recomienda además un procedimiento en dos
+pasos: aplicar la HFC para identificar grupos suficientemente unidimensionales y luego el EPCA a
+cada grupo para verificar su estabilidad temporal. Tres rasgos de este antecedente son decisivos
+para la presente tesis. Primero, según los propios autores, la ventana de 48 meses y su
+ponderación resultaron de un proceso de experimentación, no de un procedimiento formal de
+selección. Segundo, la muestra no cubre el período posterior a la pandemia. Tercero, los
+resultados se interpretan como indicadores por grupo, sin una clasificación explícita de fases
+del ciclo.
+
+
+\section{Síntesis y vacío}
+\label{sec:vacios}
+
+La revisión permite identificar cinco vacíos:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Ausencia de aprendizaje profundo en el antecedente peruano.}
+    \textcite{camiz_cerda_atoche_2026} se mantiene dentro del marco exploratorio clásico.
+  \item \textbf{Ausencia de una HFC evolutiva unificada.} No existe en la literatura revisada un
+    algoritmo EHFC publicado. \textcite{camiz_roig_2011} y \textcite{camiz_cerda_atoche_2026}
+    aplican la HFC y el EPCA de forma secuencial, y la integración se produce en la interpretación
+    conjunta, no en un algoritmo.
+  \item \textbf{Ausencia de una clasificación explícita de fases.}
+    \textcite{camiz_cerda_atoche_2026} interpretan indicadores por grupo, pero no clasifican
+    intervalos en expansión, contracción o transición ni los contrastan con episodios fechados de
+    manera independiente.
+  \item \textbf{Muestra anterior a la pospandemia.} La muestra de
+    \textcite{camiz_cerda_atoche_2026} termina en 2020.
+  \item \textbf{Ausencia de un criterio objetivo para el ancho de ventana del EPCA.} Las tres
+    aplicaciones de la escuela fijan el ancho de manera informal.
+\end{enumerate}
+
+El aporte de la tesis responde a esos vacíos con cuatro contribuciones diferenciales: (1) la
+incorporación de autoencoders y redes LSTM, anclados formalmente en el PCA mediante la
+\cref{prop:ae-lineal}; (2) la clasificación explícita de fases, validada contra episodios fechados
+con fuentes externas; (3) la actualización de la muestra hasta \fechaFinDatos{}, que cubre la
+dinámica pospandemia; y (4) un criterio para el ancho de ventana del EPCA, basado en la
+similitud entre ventanas adyacentes no solapadas, medida con el coeficiente RV de cargas
+(\cref{def:rv-cargas,def:pares}) y contrastada con un nulo de estructura constante del mismo ancho
+(\cref{def:oe4}); por la decisión D10, la grilla de anchos se lee como multiescala y no como la
+búsqueda de un ancho único. La formalización de una EHFC queda como objetivo
+exploratorio condicional, porque no existe una especificación previa contra la cual validarla.

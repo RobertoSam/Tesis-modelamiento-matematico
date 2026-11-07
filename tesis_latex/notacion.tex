@@ -103,13 +103,11 @@
 \newcommand{\vb}{\mathbf{b}}           % sesgo
 
 % =============================================================================
-% Lista de símbolos (se imprime en las páginas preliminares con \listadesimbolos)
+% Lista de símbolos. Desde la iteración 3c se imprime en el anexo de notación
+% (apendices/apendices.tex) con \listadesimbolos, que produce solo la tabla.
 % =============================================================================
 \newcommand{\gruposimbolos}[1]{\multicolumn{2}{@{}l}{\textbf{#1}}\\[2pt]}
 \newcommand{\listadesimbolos}{%
-\chapter*{Lista de símbolos}
-\addcontentsline{toc}{chapter}{Lista de símbolos}
-\markboth{Lista de símbolos}{Lista de símbolos}
 {\small
 \begin{longtable}{@{}p{0.24\textwidth}p{0.70\textwidth}@{}}
 \toprule

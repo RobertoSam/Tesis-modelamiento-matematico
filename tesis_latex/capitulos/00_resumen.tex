@@ -1,0 +1,59 @@
+% =============================================================================
+% Resumen y abstract (un párrafo de 250 palabras como máximo, con 4 palabras clave).
+% Versión de avance (MMC102, 7-nov-2026): resume solo lo que sostienen los capítulos 3 a 6.
+% Las cifras de datos entran por macros de cifras.tex.
+% =============================================================================
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+\markboth{Resumen}{Resumen}
+
+Esta tesis formaliza y aplica una metodología exploratoria evolutiva para detectar, fechar y
+caracterizar los regímenes del ciclo financiero peruano con \nSeries{} series mensuales del Banco
+Central de Reserva del Perú, de \fechaInicioNiveles{} a \fechaFinDatos{}, analizadas sin
+transformar, según el principio de «datos primero». La cadena integra el análisis de componentes
+principales (PCA), la Clasificación Factorial Jerárquica (HFC), el análisis evolutivo de
+componentes principales (EPCA) y la partición óptima de Fisher; los autoencoders y las redes
+LSTM se formalizan como un complemento anidado en el PCA. Como aporte formal, se demuestran
+propiedades de la correlación ponderada por ventana, del tamaño efectivo de los pesos, del
+coeficiente RV de cargas y de la partición con longitud mínima, y se propone un criterio para el
+ancho de ventana del EPCA, basado en el RV entre ventanas adyacentes no solapadas y contrastado
+con un nulo de estructura constante. Los resultados de avance muestran un primer eje dominado por
+la tendencia común de profundización financiera, que no supera lo esperable en series
+independientes con su propia tendencia, y un eje de tasas de interés cuyo comovimiento sí lo
+supera. La HFC separa de forma estable tres bloques: crédito, liquidez y actividad; tasas de
+interés; y riesgo de mercado. Con las series sin transformar, el criterio de ventana no distingue
+los cambios de estructura de lo esperable bajo estructura constante, y el número de regímenes
+fechados depende de la regla que lo fija. Las conclusiones son preliminares y quedan sujetas a
+la discusión con el asesor.
+
+\medskip
+\textbf{Palabras clave:} ciclo financiero; Clasificación Factorial Jerárquica; análisis evolutivo
+de componentes principales; detección de regímenes.
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{Abstract}
+
+\begin{otherlanguage}{english}
+This thesis formalizes and applies an evolutionary exploratory methodology to detect, date and
+characterize the regimes of the Peruvian financial cycle, using \nSeries{} monthly series from
+the Central Reserve Bank of Peru, from \anioInicioDatos{} to \anioFinDatos{}, analyzed without
+transformation, following the ``data first'' principle. The chain combines principal component
+analysis (PCA), Hierarchical Factor Classification (HFC), evolutionary principal component
+analysis (EPCA) and Fisher's optimal partition; autoencoders and LSTM networks are formalized as
+a complement nested in PCA. As a formal contribution, the thesis proves properties of the
+window-weighted correlation, of the effective size of the weights, of the RV coefficient of
+loadings and of the partition with a minimum segment length, and it proposes a criterion for
+the EPCA window width, based on the RV coefficient between adjacent non-overlapping windows and
+tested against a constant-structure null. Preliminary results show a first axis dominated by the
+common trend of financial deepening, which does not exceed what independent series with their own
+trends would produce, and an interest-rate axis whose co-movement does exceed it. HFC stably
+separates three blocks: credit, liquidity and activity; interest rates; and market risk. With
+untransformed series, the window criterion does not distinguish structural changes from what a
+constant structure would produce, and the number of dated regimes depends on the rule that sets
+it. The conclusions are preliminary and subject to discussion with the advisor.
+
+\medskip
+\textbf{Keywords:} financial cycle; Hierarchical Factor Classification; evolutionary principal
+component analysis; regime detection.
+\end{otherlanguage}
