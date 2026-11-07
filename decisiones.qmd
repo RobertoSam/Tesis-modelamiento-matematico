@@ -21,6 +21,46 @@ cualquier resultado que dependa de ellas (criterio de aceptación 9 del plan). E
 recuperable en el commit `57104ff` de `main`.
 :::
 
+## D19 · 7 de noviembre de 2026 · Sorteo de bloques de la rama TS del nulo mixto (N-04)
+
+**Contexto.** La auditoría de la iteración 3b (hallazgo N-04, menor) observó que la rama TS del nulo
+de tendencias mixto (D8) usa, para $n$ residuos, los inicios de bloque sorteados para $n-1$
+incrementos. El residuo del último mes nunca se sortea como inicio de bloque, aunque con
+$n' = 227$ y $L_{\mathrm b}\in\{12, 24, 36\}$ los 228 meses siempre quedan cubiertos. La tesis lo
+declara en `obs:nulo-mixto` (c).
+
+**Decisión.** Se mantiene como **convención declarada** en la iteración 3b, que queda cerrada sin
+reabrir resultados. La corrección del sorteo (inicios en $\{1,\dots,n-L_{\mathrm b}+1\}$, en Python y
+en R, con paridad) entra como tarea de fase 0 de la iteración 4, con re-ejecución del nulo mixto y
+comparación con los resultados actuales.
+
+**Alternativa descartada.** Corregir el código dentro de 3b: obligaba a reabrir una iteración ya
+auditada (APROBADO, vuelta 2) por un efecto de 1 mes en 228.
+
+**Rastro.** `auditorias/2026-10-31_iteracion-3b_vuelta2.md` (N-04); estado del código en la rama
+`iteracion-3b`, commit `b893b23`.
+
+## D18 · 7 de noviembre de 2026 · Significado de «evento externo» en D7 (N-02)
+
+**Contexto.** D7 y `def:episodio` fechan cada episodio por el «evento o anuncio externo». La
+auditoría de la iteración 3b (hallazgo N-02, menor) observó que el texto no aclaraba si «externo»
+significa extranjero o externo al análisis: la ficha `congreso_2018` llamaba «evento interno» a la
+renuncia de Kuczynski y aun así fechaba un episodio, mientras que el registro descartaba
+`pcm_2020` como fecha por ser un evento interno.
+
+**Decisión.** «Externo» significa **externo al análisis**: un evento fechado por una fuente con
+ficha, independiente de las series y de cualquier indicador derivado de ellas (regla 6). El evento
+puede ser nacional o extranjero. En consecuencia, la renuncia de Kuczynski (`congreso_2018`) es una
+fecha admisible, y la declaración del estado de emergencia (`pcm_2020`, 15-03-2020) pasa a ser una
+fecha alternativa admisible del inicio del episodio COVID-19. Como cae en el mismo mes que
+`oms_2020b`, no cambia ninguna fecha de `data/referencia/episodios_referencia.csv`.
+
+**Alternativa descartada.** «Externo» como «extranjero»: excluía los episodios políticos domésticos,
+relevantes para el caso peruano, sin ganancia en la independencia de la validación.
+
+**Rastro.** `auditorias/2026-10-31_iteracion-3b_vuelta2.md` (N-02); textos ajustados en
+`def:episodio` (tesis e informe), `papers/congreso_2018.qmd` y `tesis/registro_verificacion.md`.
+
 ## D17 · 26 de octubre de 2026 · Criterios de la parte dinámica con 16 series
 
 **Contexto.** La adenda al plan de la iteración 3b (`asesoria/2026-10-26_adenda-plan-iteracion-3b.md`)

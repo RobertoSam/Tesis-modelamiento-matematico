@@ -22,7 +22,8 @@ Asesor: Dr. Sergio Camiz. El asesor revisa este repositorio y el sitio publicado
    nulo mixto, d = 3, grilla de ventanas, uso del CH, regla de respaldo, lectura de 2017-10 y
    alcance de los apuntes 2 y 7), D15 (Rmd final solo en niveles; el Rmd actual queda como
    exploración y las transformadas pasan a un anexo de robustez), D16 (se excluye M2: 16 series) y D17
-   (criterios de la parte dinámica con 16 series: regla K, RV, D13 en el 06, AE/LSTM pendientes).
+   (criterios de la parte dinámica con 16 series: regla K, RV, D13 en el 06, AE/LSTM pendientes), D18 («evento externo» = externo al análisis; puede ser nacional) y D19
+   (sorteo de bloques de la rama TS como convención; se corrige en la iteración 4).
    Si algo contradice una decisión, se avisa; no se corrige en
    silencio.
 5. **Epistemología:** posición del asesor «datos primero» (Benzécri, *laisser parler les

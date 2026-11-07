@@ -156,7 +156,9 @@ impacto en el Perú, tomado del texto de una fuente con ficha. El fin $\tfin{\ep
 evento externo que lo cierra, si existe una fuente para él. Si no la hay, el episodio es
 \emph{puntual} y se toma $\tfin{\epi}=\tini{\epi}$ como fin efectivo: el fin no se infiere ni de las
 series ni de un indicador. Todas las fechas se leen de un único archivo,
-\texttt{data/referencia/episodios\_referencia.csv}.
+\texttt{data/referencia/episodios\_referencia.csv}. Aquí, «externo» significa \emph{externo al
+análisis}: independiente de las series y de cualquier indicador derivado de ellas. El evento puede
+ser nacional o extranjero (decisión D18).
 \end{definicion}
 
 \begin{definicion}[Compatibilidad con tolerancia]\label{def:tolerancia}
@@ -1598,7 +1600,8 @@ umbral $\abs{t^{\mathrm{HAC}}_j}>2$ hereda ese supuesto. (b) D8 pide declarar la
 $\abs{t^{\mathrm{HAC}}_j}$ cercano a 2, sin fijar qué distancia cuenta como cercana; el texto no la
 fija. (c) La rama TS usa, para $n$ residuos, los inicios sorteados para $n-1$ incrementos: la
 sucesión de índices tiene $\mb\Lb$ términos y cubre los $n$ meses solo si $\mb\Lb\ge n$, lo que
-depende de que $\Lb$ no divida a $n-1$.
+depende de que $\Lb$ no divida a $n-1$. Se mantiene como convención declarada (decisión D19); la
+corrección del sorteo queda para la iteración 4.
 \end{observacion}
 
 \subsection{Nulo de estructura constante}
