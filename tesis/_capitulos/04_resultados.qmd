@@ -1,8 +1,83 @@
+::: {.callout-important title="Resultados preliminares"}
+Este capítulo presenta los resultados ejecutados hasta la iteración 3b sobre las {{< meta cifras.nSeries >}} series en niveles (decisiones D1, D15 y D16), entre {{< meta cifras.fechaInicioNiveles >}} y {{< meta cifras.fechaFinDatos >}} ({{< meta cifras.nMesesNiveles >}} meses). Es un avance para el Seminario de Tesis II: la interpretación todavía no está consolidada ni discutida con el asesor, y los autoencoders y las redes LSTM con {{< meta cifras.nSeries >}} series quedan para la iteración 4 (decisión D17.4). Todas las cifras se leen de `data/results/final/`; ninguna se escribe a mano.
+:::
+
 ## Resultados
 
-::: {.callout-note title="Pendiente"}
-Se redacta después de discutir con el asesor la propuesta de la Parte C (decisión D2). No se publican resultados sin aprobación de Roberto.
+### Estructura global: análisis de componentes principales
+
+Los tres primeros ejes del PCA sobre la matriz de correlaciones explican el {{< meta cifras.inerciaPCUnoNiveles >}} %, el {{< meta cifras.inerciaPCDosNiveles >}} % y el {{< meta cifras.inerciaPCTresNiveles >}} % de la inercia. El criterio de Kaiser retiene {{< meta cifras.kaiserNiveles >}} ejes y el análisis paralelo de Horn, {{< meta cifras.hornNiveles >}}. La especificación principal usa $d=3$ (decisión D9). La adecuación muestral es alta en la medida KMO ({{< meta cifras.kmoGlobalNiveles >}}). La prueba de Bartlett, en cambio, pierde casi toda su fuerza cuando el número de meses se sustituye por el tamaño efectivo de la muestra (mediana de {{< meta cifras.nEfMedianaNiveles >}} observaciones independientes): el estadístico baja de {{< meta cifras.chiBartlettNiveles >}} a {{< meta cifras.chiBartlettNefNiveles >}}, con $p$ = {{< meta cifras.pBartlettNefNiveles >}}. La @tbl-cargas resume las cargas de los tres ejes.
+
+{{< include _capitulos/_avance_tabla_cargas.md >}}
+
+: Cargas de las {{< meta cifras.nSeries >}} series en los tres primeros ejes del PCA en niveles. En negrita, las cargas de valor absoluto igual o mayor que 0,6. Fuente: `data/results/final/05_pca_cargas.csv`. {#tbl-cargas tbl-colwidths="[40,20,20,20]"}
+
+**Eje 1: tendencia común.** Casi todos los saldos (crédito, M1, M3, reservas), los precios y la actividad cargan por encima de 0,9, y la TAMN lo hace en sentido opuesto ({{< meta cifras.cargaTamnPCUno >}}). La coordenada del eje 1 está casi perfectamente correlacionada con el tiempo ($r$ = {{< meta cifras.rTiempoPCUnoNiveles >}}; @fig-scores). El nulo de tendencias lo confirma: dieciséis caminatas aleatorias independientes con deriva producirían un primer eje igual o mayor en una proporción {{< meta cifras.nuloConDerivaPCUno >}} de las simulaciones (mediana de {{< meta cifras.nuloConDerivaMedianaPCUno >}} %), y la variante mixta de D8 da {{< meta cifras.nuloMixtoTsPCUno >}}. *Lectura:* el eje 1 no aporta evidencia de una estructura cíclica común, sino de la tendencia que comparten las series en niveles. Al quitar la tendencia lineal, su inercia baja a {{< meta cifras.inerciaPCUnoSinTendencia >}} % y su congruencia con el eje 1 original es solo {{< meta cifras.congruenciaSinTendenciaPCUno >}}.
+
+**Eje 2: ciclo de la política monetaria.** Lo definen la tasa de referencia ({{< meta cifras.cargaTasaRefPCDos >}}), la tasa interbancaria y la TIPMN ({{< meta cifras.cargaTipmnPCDos >}}). Es el único eje que supera con claridad los nulos: la proporción de simulaciones con un segundo eje igual o mayor es {{< meta cifras.nuloConDerivaPCDos >}} con deriva y {{< meta cifras.nuloMixtoTsPCDos >}} y {{< meta cifras.nuloMixtoDsPCDos >}} en las variantes mixtas. Su coordenada sube antes de la crisis financiera global, cae con la flexibilización de 2009–2010, toca su mínimo en 2021 y vuelve a subir con el endurecimiento de 2022–2023 (@fig-scores).
+
+**Eje 3: riesgo de mercado.** Opone el EMBIG Perú ({{< meta cifras.cargaEmbigPCTres >}}) al índice BVL ({{< meta cifras.cargaBvlPCTres >}}). Sus máximos coinciden con la crisis financiera global, el final del colapso de las materias primas y el inicio de la pandemia. No supera el nulo con deriva (proporción de {{< meta cifras.nuloConDerivaPCTres >}}), de modo que su lectura como bloque estructural debe tomarse con cautela.
+
+**Estabilidad bajo remuestreo.** Con el bootstrap por bloques de 24 meses, el percentil 5 de la congruencia con el eje original es {{< meta cifras.congruenciaBootPCUnoNiveles >}} para el eje 1, {{< meta cifras.congruenciaBootPCDosNiveles >}} para el eje 2 y {{< meta cifras.congruenciaBootPCTresNiveles >}} para el eje 3, frente a {{< meta cifras.congruenciaBootPCCuatroNiveles >}} para el eje 4. Los tres ejes retenidos son reconocibles en casi todas las réplicas, y el cuarto no.
+
+![Coordenadas de los meses en los tres primeros ejes del PCA en niveles. En gris, los episodios de referencia fechados por fuentes externas (decisión D7); la línea discontinua marca el episodio puntual de 2018-03. Fuente: `data/results/final/05_pca_scores.csv`.](figuras/avance_scores_pca.png){#fig-scores}
+
+::: {.callout-tip title="Preguntas abiertas"}
+- Si el eje 1 es tendencia, ¿la tesis debe describir el ciclo con los ejes 2 y 3, o con una variante sin tendencia que D1 deja como contraste?
+- ¿Cómo leer que la TAMN cargue en el eje de tendencia y no en el de tasas? Una hipótesis es la caída secular del costo del crédito; está por verificar.
 :::
+
+### Clasificación de las variables: HFC
+
+La HFC agrupa las series en tres clases (@tbl-hfc). La primera reúne los saldos, los precios, la actividad, el tipo de cambio, las reservas y la TAMN. La segunda, las tasas de interés de corto plazo. La tercera opone el EMBIG Perú al índice BVL. La partición en cuatro clases solo separa estas dos últimas series. Las tres clases coinciden en contenido con los tres ejes del PCA.
+
+{{< include _capitulos/_avance_tabla_hfc.md >}}
+
+: Clases de la HFC en las particiones de 3 y 4 clases. Fuente: `data/results/final/07c_hfc_clases3.csv`. {#tbl-hfc tbl-colwidths="[16,10,74]"}
+
+En {{< meta cifras.hfcReplicas >}} réplicas por bloques, la partición en tres clases se reproduce exactamente en una proporción {{< meta cifras.hfcPropAriTres >}} de las réplicas (ARI medio de {{< meta cifras.hfcAriTresMedia >}}), y la de cuatro clases en {{< meta cifras.hfcPropAriCuatro >}}. La mediana de la correlación cofenética es {{< meta cifras.hfcCofeneticaMediana >}}. *Lectura:* la organización en tres bloques es robusta, y la cuarta clase es menos estable. Esto respalda la hipótesis de trabajo HT2 en su forma de tres bloques: tendencia o «salud económica», tasas y riesgo de mercado. Falta todavía la comparación bloque por bloque con @camiz_cerda_atoche_2026[^av-cca].
+
+### Dinámica de la estructura: EPCA y nulo de estructura constante
+
+La regla del notebook 06 sigue la estabilidad del eje {{< meta cifras.ejeReglaSeis >}} entre ventanas sucesivas, con paso de {{< meta cifras.pasoReglaSeis >}} meses (@fig-epca). Con la ventana de 60 meses marca transiciones candidatas en {{< meta cifras.epcaTransicionesSesenta >}}. Con anchos menores aparecen más caídas, y no siempre en los mismos meses. El análisis `aede` con ventana de 24 meses y pesos uniformes (criterio del codo) da cortes en {{< meta cifras.aedeCodoVeinticuatro >}}.
+
+![Estabilidad del eje 2 entre ventanas sucesivas del EPCA (regla del 06) para las ventanas de 24, 36, 48 y 60 meses. La línea naranja es el umbral de la regla; los puntos marcan las ventanas por debajo de él. En gris, los episodios de referencia. Fuente: `data/results/final/06_epca_estabilidad_ventanas_niveles.csv`.](figuras/avance_estabilidad_epca.png){#fig-epca}
+
+El nulo de estructura constante pone esas caídas en perspectiva. Simula series con la misma dependencia temporal y una correlación fija, y compara la proporción de pares de ventanas con un coeficiente RV inusualmente bajo con la que se obtiene sin ningún cambio de estructura. En ninguna de las {{< meta cifras.oeFilasPrincipales >}} configuraciones principales (anchos de 24 a 60 meses, pesos uniformes y gaussianos) la proporción observada se distingue del nulo: el menor $p$ es {{< meta cifras.oePMin >}}. El candidato de 2017-10, cuya lectura fijó de antemano la decisión D13, queda como «{{< meta cifras.clasificacionOctubreDiecisiete >}}».
+
+*Lectura:* con {{< meta cifras.nMesesNiveles >}} meses y series en niveles, las caídas de estabilidad del EPCA son compatibles con el ruido muestral de ventanas cortas. Por ahora, la evidencia **no respalda** la hipótesis HT1 de una estructura de correlación cambiante. Esta es una conclusión negativa relevante: los cortes del EPCA no deben leerse como regímenes sin un contraste de este tipo.
+
+::: {.callout-tip title="Preguntas abiertas"}
+- ¿El resultado se mantiene con la vía transformada del anexo de robustez, donde la tendencia común no domina la correlación?
+- ¿El nulo tiene poder suficiente para detectar un cambio de la magnitud que importa? Un experimento de potencia con un quiebre conocido lo diría, y enlaza con el contexto simulado de OE11.
+:::
+
+### Datación de regímenes con los *scores* del PCA
+
+La partición óptima de Fisher sobre los tres primeros *scores*, suavizados con una media móvil causal de {{< meta cifras.ventanaMediaMovil >}} meses (PCA-MM{{< meta cifras.ventanaMediaMovil >}}), con longitud mínima de 12 meses y la regla K con $K_{\max}=10$ (decisiones D12 y D17.1), da {{< meta cifras.datacionKPrincipal >}} regímenes, con cortes en {{< meta cifras.datacionCortesPrincipal >}} (@tbl-regimenes y @fig-datacion). Con $K_{\max}=15$ la regla K sube a {{< meta cifras.datacionKQuince >}} regímenes, de modo que el número depende de la cota.
+
+{{< include _capitulos/_avance_tabla_regimenes.md >}}
+
+: Regímenes de la datación principal (PCA-MM{{< meta cifras.ventanaMediaMovil >}}, $d=3$, regla K). El primer régimen empieza en 2007-12 porque la media móvil causal consume los primeros 11 meses. *Crédito medio:* promedio del crédito estandarizado en el régimen. *Etiqueta:* regla preliminar del notebook 09. *Frec. del corte:* proporción de réplicas bootstrap que reproducen el corte inicial del régimen con la tolerancia de ±3 meses (D7). Fuentes: `data/results/final/09a_regimenes_pca.csv` y `09a_estabilidad_cortes.csv`. {#tbl-regimenes tbl-colwidths="[6,20,8,11,13,10,32]"}
+
+![Scores suavizados (media móvil causal de 12 meses) de los tres primeros ejes del PCA, con los cortes de la datación principal (líneas negras) y los episodios de referencia (en gris). Fuentes: `data/results/final/05_pca_scores.csv` y `09a_regimenes_pca.csv`.](figuras/avance_datacion_pca.png){#fig-datacion}
+
+Cuatro de los cinco cortes se reproducen en más de cuatro de cada cinco réplicas (@tbl-regimenes). El de {{< meta cifras.datacionCorteFrecMin >}} solo en una proporción {{< meta cifras.datacionFrecMin >}}. Frente a los episodios, con la tolerancia de ±3 meses, el corte de 2008-12 cae dentro de la crisis financiera global, el de 2014-04 queda a dos meses del inicio del colapso de las materias primas y el de 2020-06, a dos meses del fin del episodio COVID-19. Los cortes de 2010-03 y 2022-11 no tienen un episodio compatible. La correspondencia es descriptiva, porque con seis episodios no hay poder estadístico (HT3).
+
+**Una advertencia sobre las etiquetas de fase.** La regla preliminar del notebook 09 etiqueta cada régimen según el promedio del crédito estandarizado (definición de fase del capítulo 2). Con series **en niveles**, ese promedio refleja sobre todo la posición en la tendencia: los regímenes iniciales quedan por debajo de la media de la muestra y los finales por encima. Por eso 2010-03 a 2014-03, años de fuerte crecimiento del crédito, recibe la etiqueta de «contracción». *Lectura:* las etiquetas actuales no miden la fase del ciclo. La clasificación en expansión, contracción y transición (OE9) necesita una regla sobre la desviación respecto de la tendencia o sobre la tasa de crecimiento. Esa regla debe fijarse de antemano y discutirse con el asesor, en coherencia con D1.
+
+### Autoencoders y redes LSTM
+
+Con {{< meta cifras.nSeries >}} series, los autoencoders y la red LSTM-autoencoder quedan para la iteración 4 (decisión D17.4). Su diseño, el anclaje lineal en el PCA y la validación por bloques y *walk-forward* están formalizados en el capítulo 3. Los resultados con 17 series se conservan como antecedente en el repositorio y no se informan aquí.
 
 ## Discusión de resultados
 
+Tres resultados ordenan el avance.
+
+1. **La estructura transversal es nítida y estable.** PCA y HFC coinciden en tres bloques: tendencia o «salud económica», tasas de política y riesgo de mercado. Los tres se reproducen bajo remuestreo. Esto es coherente con los bloques que reportan @camiz_cerda_atoche_2026[^av-cca] para series parecidas del BCRP, aunque la comparación formal está pendiente.
+2. **En niveles, la tendencia domina el primer eje y la dinámica es difícil de separar del ruido.** El eje 1 no supera un nulo de caminatas con deriva, y el EPCA no supera el nulo de estructura constante. La evidencia de regímenes, por tanto, no proviene del cambio en la estructura de correlación, sino del movimiento de los *scores*: la datación PCA-MM{{< meta cifras.ventanaMediaMovil >}} encuentra cortes estables y en parte compatibles con los episodios externos.
+3. **La clasificación en fases sigue abierta.** La regla actual confunde fase con tendencia. Es el punto metodológico más importante que debe resolverse antes de la versión final de la tesis, porque la clasificación explícita de fases es uno de sus aportes diferenciales.
+
+La tensión epistemológica del capítulo 2 se vuelve concreta. La posición «datos primero» pide trabajar con las series sin transformar (D1). Pero, en niveles, lo primero que «dicen» los datos es su tendencia común. Separar ciclo y tendencia exige una decisión del analista, y conviene tomarla de forma explícita y documentada antes de calcular, como se hizo con D5.
+
+[^av-cca]: VERIFICAR: manuscrito fechado el 25 de abril de 2026, sin datos de revista, volumen ni DOI; confirmar con el Dr. Camiz su estado de publicación.

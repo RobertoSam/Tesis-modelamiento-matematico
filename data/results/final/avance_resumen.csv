@@ -1,0 +1,23 @@
+medida,valor
+epca_bajo_umbral_nw24,7
+epca_ventanas_nw24,68
+epca_bajo_umbral_nw36,5
+epca_ventanas_nw36,64
+epca_bajo_umbral_nw48,7
+epca_ventanas_nw48,60
+epca_bajo_umbral_nw60,5
+epca_ventanas_nw60,56
+epca_transiciones_regla06,"2012-01, 2013-10, 2015-10, 2017-10, 2018-01"
+epca_n_transiciones_regla06,5
+oe4_p_min_principal,0.38
+oe4_filas_principales,8
+oe4_filas_p_menor_005,0
+hfc_replicas,500
+hfc_prop_ari3_uno,0.8
+hfc_prop_ari4_uno,0.632
+hfc_ari3_media,0.9527729285567275
+hfc_ari4_media,0.8799962462149223
+hfc_cofenetica_mediana,0.9927872195017233
+datacion_n_regimenes,6
+datacion_frec_min,0.4
+datacion_corte_frec_min,2014-04

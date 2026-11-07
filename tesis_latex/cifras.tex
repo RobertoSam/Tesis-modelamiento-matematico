@@ -144,3 +144,59 @@
 \newcommand{\clasesHfcMayor}{4}
 % Percentil del error de entrenamiento en la razón walk-forward (parámetro de diseño provisional; N-03) | data/results/final/parametros_diseno.csv | parametro=percentil_walkforward | valor
 \newcommand{\percentilWalkforward}{95}
+% Carga de la TAMN en el eje 1 (avance MMC102) | data/results/final/05_pca_cargas.csv | serie=TAMN | PC1
+\newcommand{\cargaTamnPCUno}{-0{,}87}
+% Carga de la tasa de referencia en el eje 2 (avance MMC102) | data/results/final/05_pca_cargas.csv | serie=Tasa de referencia | PC2
+\newcommand{\cargaTasaRefPCDos}{0{,}98}
+% Carga de la TIPMN en el eje 2 (avance MMC102) | data/results/final/05_pca_cargas.csv | serie=TIPMN | PC2
+\newcommand{\cargaTipmnPCDos}{0{,}90}
+% Carga del EMBIG en el eje 3 (avance MMC102) | data/results/final/05_pca_cargas.csv | serie=EMBIG Perú | PC3
+\newcommand{\cargaEmbigPCTres}{0{,}81}
+% Carga del índice BVL en el eje 3 (avance MMC102) | data/results/final/05_pca_cargas.csv | serie=Índice BVL | PC3
+\newcommand{\cargaBvlPCTres}{-0{,}61}
+% Percentil 5 de la congruencia bootstrap del eje 1 (L = 24) | data/results/final/05_bootstrap_congruencia.csv | L=24;componente=1 | p5
+\newcommand{\congruenciaBootPCUnoNiveles}{0{,}926}
+% Percentil 5 de la congruencia bootstrap del eje 3 (L = 24) | data/results/final/05_bootstrap_congruencia.csv | L=24;componente=3 | p5
+\newcommand{\congruenciaBootPCTresNiveles}{0{,}796}
+% Proporción del nulo con deriva que iguala o supera la inercia del eje 3 | data/results/final/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc3 | proporcion
+\newcommand{\nuloConDerivaPCTres}{0{,}204}
+% Proporción del nulo mixto (variante TS) que iguala o supera la inercia del eje 2 | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc2 | proporcion
+\newcommand{\nuloMixtoTsPCDos}{0{,}003}
+% Proporción del nulo mixto (variante DS) que iguala o supera la inercia del eje 2 | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ds;medida=inercia_pc2 | proporcion
+\newcommand{\nuloMixtoDsPCDos}{0{,}004}
+% Proporción del nulo mixto (variante TS) que iguala o supera la inercia del eje 1 | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc1 | proporcion
+\newcommand{\nuloMixtoTsPCUno}{0{,}783}
+% Congruencia del eje 1 sin tendencia con el eje 1 en niveles | data/results/final/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=congruencia;componente=1 | valor
+\newcommand{\congruenciaSinTendenciaPCUno}{0{,}49}
+% Transiciones candidatas de la regla del 06 con ventana de 60 meses | data/results/final/avance_resumen.csv | medida=epca_transiciones_regla06 | valor
+\newcommand{\epcaTransicionesSesenta}{2012-01, 2013-10, 2015-10, 2017-10, 2018-01}
+% Configuraciones principales del nulo de estructura constante | data/results/final/avance_resumen.csv | medida=oe4_filas_principales | valor
+\newcommand{\oeFilasPrincipales}{8}
+% Configuraciones principales con p < 0.05 | data/results/final/avance_resumen.csv | medida=oe4_filas_p_menor_005 | valor
+\newcommand{\oeFilasSignificativas}{0}
+% Menor p-valor de las configuraciones principales (OE4) | data/results/final/avance_resumen.csv | medida=oe4_p_min_principal | valor
+\newcommand{\oePMin}{0{,}38}
+% Clasificación del candidato 2017-10 | data/results/final/07b_clasificacion_2017_10.csv | objeto=cargas_sin_centrar | clasificacion
+\newcommand{\clasificacionOctubreDiecisiete}{transición no confirmada}
+% Cortes de aede con ventana de 24 meses y pesos uniformes (codo) | data/results/final/06c_aede_cortes.csv | nw=24;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | cortes
+\newcommand{\aedeCodoVeinticuatro}{2008-07 2009-06 2011-11 2020-10 2024-03}
+% Réplicas bootstrap de la HFC | data/results/final/avance_resumen.csv | medida=hfc_replicas | valor
+\newcommand{\hfcReplicas}{500}
+% Proporción de réplicas que reproducen exactamente la partición en 3 clases | data/results/final/avance_resumen.csv | medida=hfc_prop_ari3_uno | valor
+\newcommand{\hfcPropAriTres}{0{,}80}
+% Proporción de réplicas que reproducen exactamente la partición en 4 clases | data/results/final/avance_resumen.csv | medida=hfc_prop_ari4_uno | valor
+\newcommand{\hfcPropAriCuatro}{0{,}63}
+% ARI medio de la partición en 3 clases | data/results/final/avance_resumen.csv | medida=hfc_ari3_media | valor
+\newcommand{\hfcAriTresMedia}{0{,}95}
+% Mediana de la correlación cofenética bootstrap | data/results/final/avance_resumen.csv | medida=hfc_cofenetica_mediana | valor
+\newcommand{\hfcCofeneticaMediana}{0{,}99}
+% Número de regímenes de la datación principal (regla K) | data/results/final/09a_datacion_criterios.csv | maxcl=10;criterio=regla K (D12) | k
+\newcommand{\datacionKPrincipal}{6}
+% Cortes de la datación principal | data/results/final/09a_datacion_criterios.csv | maxcl=10;criterio=regla K (D12) | cortes
+\newcommand{\datacionCortesPrincipal}{2008-12 2010-03 2014-04 2020-06 2022-11}
+% Número de regímenes con maxcl = 15 (sensibilidad) | data/results/final/09a_datacion_criterios.csv | maxcl=15;criterio=regla K (D12) | k
+\newcommand{\datacionKQuince}{11}
+% Menor frecuencia bootstrap de un corte de la datación principal | data/results/final/avance_resumen.csv | medida=datacion_frec_min | valor
+\newcommand{\datacionFrecMin}{0{,}40}
+% Corte con la menor frecuencia bootstrap | data/results/final/avance_resumen.csv | medida=datacion_corte_frec_min | valor
+\newcommand{\datacionCorteFrecMin}{2014-04}

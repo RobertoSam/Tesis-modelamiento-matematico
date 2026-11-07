@@ -72,3 +72,31 @@ cifras:
   clasesHfcMenor: "3"  # data/results/final/parametros_diseno.csv | parametro=clases_hfc_menor | valor
   clasesHfcMayor: "4"  # data/results/final/parametros_diseno.csv | parametro=clases_hfc_mayor | valor
   percentilWalkforward: "95"  # data/results/final/parametros_diseno.csv | parametro=percentil_walkforward | valor
+  cargaTamnPCUno: "-0,87"  # data/results/final/05_pca_cargas.csv | serie=TAMN | PC1
+  cargaTasaRefPCDos: "0,98"  # data/results/final/05_pca_cargas.csv | serie=Tasa de referencia | PC2
+  cargaTipmnPCDos: "0,90"  # data/results/final/05_pca_cargas.csv | serie=TIPMN | PC2
+  cargaEmbigPCTres: "0,81"  # data/results/final/05_pca_cargas.csv | serie=EMBIG Perú | PC3
+  cargaBvlPCTres: "-0,61"  # data/results/final/05_pca_cargas.csv | serie=Índice BVL | PC3
+  congruenciaBootPCUnoNiveles: "0,926"  # data/results/final/05_bootstrap_congruencia.csv | L=24;componente=1 | p5
+  congruenciaBootPCTresNiveles: "0,796"  # data/results/final/05_bootstrap_congruencia.csv | L=24;componente=3 | p5
+  nuloConDerivaPCTres: "0,204"  # data/results/final/05_nulo_tendencias.csv | version=con_deriva;medida=inercia_pc3 | proporcion
+  nuloMixtoTsPCDos: "0,003"  # data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc2 | proporcion
+  nuloMixtoDsPCDos: "0,004"  # data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ds;medida=inercia_pc2 | proporcion
+  nuloMixtoTsPCUno: "0,783"  # data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc1 | proporcion
+  congruenciaSinTendenciaPCUno: "0,49"  # data/results/final/05_pca_contraste_tendencia.csv | version=niveles_sin_tendencia;medida=congruencia;componente=1 | valor
+  epcaTransicionesSesenta: "2012-01, 2013-10, 2015-10, 2017-10, 2018-01"  # data/results/final/avance_resumen.csv | medida=epca_transiciones_regla06 | valor
+  oeFilasPrincipales: "8"  # data/results/final/avance_resumen.csv | medida=oe4_filas_principales | valor
+  oeFilasSignificativas: "0"  # data/results/final/avance_resumen.csv | medida=oe4_filas_p_menor_005 | valor
+  oePMin: "0,38"  # data/results/final/avance_resumen.csv | medida=oe4_p_min_principal | valor
+  clasificacionOctubreDiecisiete: "transición no confirmada"  # data/results/final/07b_clasificacion_2017_10.csv | objeto=cargas_sin_centrar | clasificacion
+  aedeCodoVeinticuatro: "2008-07 2009-06 2011-11 2020-10 2024-03"  # data/results/final/06c_aede_cortes.csv | nw=24;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | cortes
+  hfcReplicas: "500"  # data/results/final/avance_resumen.csv | medida=hfc_replicas | valor
+  hfcPropAriTres: "0,80"  # data/results/final/avance_resumen.csv | medida=hfc_prop_ari3_uno | valor
+  hfcPropAriCuatro: "0,63"  # data/results/final/avance_resumen.csv | medida=hfc_prop_ari4_uno | valor
+  hfcAriTresMedia: "0,95"  # data/results/final/avance_resumen.csv | medida=hfc_ari3_media | valor
+  hfcCofeneticaMediana: "0,99"  # data/results/final/avance_resumen.csv | medida=hfc_cofenetica_mediana | valor
+  datacionKPrincipal: "6"  # data/results/final/09a_datacion_criterios.csv | maxcl=10;criterio=regla K (D12) | k
+  datacionCortesPrincipal: "2008-12 2010-03 2014-04 2020-06 2022-11"  # data/results/final/09a_datacion_criterios.csv | maxcl=10;criterio=regla K (D12) | cortes
+  datacionKQuince: "11"  # data/results/final/09a_datacion_criterios.csv | maxcl=15;criterio=regla K (D12) | k
+  datacionFrecMin: "0,40"  # data/results/final/avance_resumen.csv | medida=datacion_frec_min | valor
+  datacionCorteFrecMin: "2014-04"  # data/results/final/avance_resumen.csv | medida=datacion_corte_frec_min | valor

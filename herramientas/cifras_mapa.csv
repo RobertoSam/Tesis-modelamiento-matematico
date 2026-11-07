@@ -70,3 +70,31 @@ ventanaMediaMovil,data/results/final/parametros_diseno.csv,parametro=ventana_med
 clasesHfcMenor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_menor,valor,entero,Partición menor de la HFC en clases (parámetro de diseño provisional; N-03)
 clasesHfcMayor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_mayor,valor,entero,Partición mayor de la HFC en clases (parámetro de diseño provisional; N-03)
 percentilWalkforward,data/results/final/parametros_diseno.csv,parametro=percentil_walkforward,valor,entero,Percentil del error de entrenamiento en la razón walk-forward (parámetro de diseño provisional; N-03)
+cargaTamnPCUno,data/results/final/05_pca_cargas.csv,serie=TAMN,PC1,decimal:2,Carga de la TAMN en el eje 1 (avance MMC102)
+cargaTasaRefPCDos,data/results/final/05_pca_cargas.csv,serie=Tasa de referencia,PC2,decimal:2,Carga de la tasa de referencia en el eje 2 (avance MMC102)
+cargaTipmnPCDos,data/results/final/05_pca_cargas.csv,serie=TIPMN,PC2,decimal:2,Carga de la TIPMN en el eje 2 (avance MMC102)
+cargaEmbigPCTres,data/results/final/05_pca_cargas.csv,serie=EMBIG Perú,PC3,decimal:2,Carga del EMBIG en el eje 3 (avance MMC102)
+cargaBvlPCTres,data/results/final/05_pca_cargas.csv,serie=Índice BVL,PC3,decimal:2,Carga del índice BVL en el eje 3 (avance MMC102)
+congruenciaBootPCUnoNiveles,data/results/final/05_bootstrap_congruencia.csv,L=24;componente=1,p5,decimal:3,Percentil 5 de la congruencia bootstrap del eje 1 (L = 24)
+congruenciaBootPCTresNiveles,data/results/final/05_bootstrap_congruencia.csv,L=24;componente=3,p5,decimal:3,Percentil 5 de la congruencia bootstrap del eje 3 (L = 24)
+nuloConDerivaPCTres,data/results/final/05_nulo_tendencias.csv,version=con_deriva;medida=inercia_pc3,proporcion,decimal:3,Proporción del nulo con deriva que iguala o supera la inercia del eje 3
+nuloMixtoTsPCDos,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ts;medida=inercia_pc2,proporcion,decimal:3,Proporción del nulo mixto (variante TS) que iguala o supera la inercia del eje 2
+nuloMixtoDsPCDos,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ds;medida=inercia_pc2,proporcion,decimal:3,Proporción del nulo mixto (variante DS) que iguala o supera la inercia del eje 2
+nuloMixtoTsPCUno,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ts;medida=inercia_pc1,proporcion,decimal:3,Proporción del nulo mixto (variante TS) que iguala o supera la inercia del eje 1
+congruenciaSinTendenciaPCUno,data/results/final/05_pca_contraste_tendencia.csv,version=niveles_sin_tendencia;medida=congruencia;componente=1,valor,decimal:2,Congruencia del eje 1 sin tendencia con el eje 1 en niveles
+epcaTransicionesSesenta,data/results/final/avance_resumen.csv,medida=epca_transiciones_regla06,valor,texto,Transiciones candidatas de la regla del 06 con ventana de 60 meses
+oeFilasPrincipales,data/results/final/avance_resumen.csv,medida=oe4_filas_principales,valor,entero,Configuraciones principales del nulo de estructura constante
+oeFilasSignificativas,data/results/final/avance_resumen.csv,medida=oe4_filas_p_menor_005,valor,entero,Configuraciones principales con p < 0.05
+oePMin,data/results/final/avance_resumen.csv,medida=oe4_p_min_principal,valor,decimal:2,Menor p-valor de las configuraciones principales (OE4)
+clasificacionOctubreDiecisiete,data/results/final/07b_clasificacion_2017_10.csv,objeto=cargas_sin_centrar,clasificacion,texto,Clasificación del candidato 2017-10
+aedeCodoVeinticuatro,data/results/final/06c_aede_cortes.csv,nw=24;maxcl=10;pesos=uniformes;criterio=codo (caída máxima),cortes,texto,Cortes de aede con ventana de 24 meses y pesos uniformes (codo)
+hfcReplicas,data/results/final/avance_resumen.csv,medida=hfc_replicas,valor,entero,Réplicas bootstrap de la HFC
+hfcPropAriTres,data/results/final/avance_resumen.csv,medida=hfc_prop_ari3_uno,valor,decimal:2,Proporción de réplicas que reproducen exactamente la partición en 3 clases
+hfcPropAriCuatro,data/results/final/avance_resumen.csv,medida=hfc_prop_ari4_uno,valor,decimal:2,Proporción de réplicas que reproducen exactamente la partición en 4 clases
+hfcAriTresMedia,data/results/final/avance_resumen.csv,medida=hfc_ari3_media,valor,decimal:2,ARI medio de la partición en 3 clases
+hfcCofeneticaMediana,data/results/final/avance_resumen.csv,medida=hfc_cofenetica_mediana,valor,decimal:2,Mediana de la correlación cofenética bootstrap
+datacionKPrincipal,data/results/final/09a_datacion_criterios.csv,maxcl=10;criterio=regla K (D12),k,entero,Número de regímenes de la datación principal (regla K)
+datacionCortesPrincipal,data/results/final/09a_datacion_criterios.csv,maxcl=10;criterio=regla K (D12),cortes,texto,Cortes de la datación principal
+datacionKQuince,data/results/final/09a_datacion_criterios.csv,maxcl=15;criterio=regla K (D12),k,entero,Número de regímenes con maxcl = 15 (sensibilidad)
+datacionFrecMin,data/results/final/avance_resumen.csv,medida=datacion_frec_min,valor,decimal:2,Menor frecuencia bootstrap de un corte de la datación principal
+datacionCorteFrecMin,data/results/final/avance_resumen.csv,medida=datacion_corte_frec_min,valor,texto,Corte con la menor frecuencia bootstrap
