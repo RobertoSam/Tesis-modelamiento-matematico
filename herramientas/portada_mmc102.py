@@ -24,7 +24,7 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.shared import Pt
 
-ENTRADA, SALIDA = sys.argv[1], sys.argv[2]
+ENTRADA, SALIDA = [a for a in sys.argv[1:] if not a.startswith("--")][:2]
 
 # Datos de la portada (ficha de inscripción de la tesis, n.º 01)
 TITULO = ("Detección evolutiva de regímenes del ciclo financiero peruano mediante "
@@ -51,7 +51,7 @@ lineas = [
     ("MAESTRÍA EN CIENCIAS EN MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", False, 12, 30),
     (f"«{TITULO}»", True, 14, 24),
     ("CURSO: MMC102 – Seminario de Tesis II", True, 12, 4),
-    ("Borrador de tesis (avance)", False, 12, 36),
+    ("Informe de avance", False, 12, 36),
     ("__________________________", False, 12, 0),
     ("ASESOR", False, 11, 0),
     (ASESOR, True, 12, 24),
@@ -123,8 +123,10 @@ for i, el in enumerate(bloque):
     cuerpo.insert(pos + i, el)
 
 # 4. Cada capítulo (Heading 1) empieza en página nueva
+# (con --sin-saltos, solo el resumen empieza en página nueva: informes con límite de páginas)
+SIN_SALTOS = "--sin-saltos" in sys.argv
 for p in d.paragraphs:
-    if p.style.name == "Heading 1":
+    if p.style.name == "Heading 1" and (not SIN_SALTOS or p.text.strip() in ("Resumen", "Referencias")):
         p.paragraph_format.page_break_before = True
 
 # 5. Tablas al ancho de la página (las de Quarto salen con ancho automático y columnas estrechas)

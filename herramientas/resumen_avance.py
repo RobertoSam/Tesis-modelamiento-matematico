@@ -5,8 +5,8 @@ niveles; decisiones D1, D15 y D16). Escribe:
 
 - data/results/final/avance_resumen.csv: medidas agregadas (medida, valor) que lee
   herramientas/cifras_mapa.csv, de modo que ninguna cifra del capítulo 4 se escribe a mano;
-- tesis/_capitulos/_avance_tabla_*.md: tablas en Markdown que el capítulo 4 incluye;
-- tesis/figuras/avance_*.png: figuras del capítulo 4.
+- tesis/avance/_avance_tabla_*.md: tablas en Markdown que incluye tesis/avance_mmc102.qmd;
+- tesis/avance/figuras/avance_*.png: figuras del informe de avance.
 
 Uso, desde la raíz del repositorio:
     python3 herramientas/resumen_avance.py
@@ -25,9 +25,9 @@ import pandas as pd
 RAIZ = Path(__file__).resolve().parents[1]
 FINAL = RAIZ / "data" / "results" / "final"
 REF = RAIZ / "data" / "referencia" / "episodios_referencia.csv"
-CAP = RAIZ / "tesis" / "_capitulos"
-FIG = RAIZ / "tesis" / "figuras"
-FIG.mkdir(exist_ok=True)
+CAP = RAIZ / "tesis" / "avance"
+FIG = CAP / "figuras"
+FIG.mkdir(parents=True, exist_ok=True)
 
 # Paleta categórica de referencia (slots 1-3) y tintas recesivas
 AZUL, NARANJA, AGUAMARINA = "#2a78d6", "#eb6834", "#1baf7a"
@@ -59,6 +59,43 @@ def bandas_episodios(ax, episodios):
 
 episodios = pd.read_csv(REF, dtype=str).fillna("")
 resumen = []
+
+# ---- 0. Series analizadas y episodios de referencia (tablas) ---------------------------------
+cargas0 = pd.read_csv(FINAL / "05_pca_cargas.csv")
+filas = ["| Serie | Código BCRP |", "|---|---|"]
+for r in cargas0.itertuples():
+    filas.append(f"| {r.serie} | {r.codigo} |")
+(CAP / "_avance_tabla_series.md").write_text("\n".join(filas) + "\n", encoding="utf-8")
+
+AUTORES = {  # clave del .bib -> cita narrativa APA (fuentes con texto leído; ver fichas en papers/)
+    "lehman_brothers_2008": "@lehman_brothers_2008", "nber_2010": "@nber_2010",
+    "bernanke_2013": "@bernanke_2013", "reserva_federal_2013": "@reserva_federal_2013",
+    "stocker_et_al_2015": "@stocker_et_al_2015", "fmi_2016": "@fmi_2016",
+    "congreso_2018": "@congreso_2018", "ustr_2018": "@ustr_2018", "ustr_2020": "@ustr_2020",
+    "oms_2020b": "@oms_2020b", "nber_2021": "@nber_2021",
+}
+filas = ["| Episodio | Inicio | Fin | Fuente del inicio | Fuente del fin |", "|---|---|---|---|---|"]
+for e in episodios.itertuples():
+    filas.append(f"| {e.nombre} | {e.inicio} | {e.fin or 'puntual'} | {AUTORES.get(e.clave_inicio, e.clave_inicio)} | "
+                 f"{AUTORES.get(e.clave_fin, e.clave_fin) if e.clave_fin else '—'} |")
+(CAP / "_avance_tabla_episodios.md").write_text("\n".join(filas) + "\n", encoding="utf-8")
+
+# ---- 0b. Las 16 series en niveles (figura de datos) ------------------------------------------
+NIV = RAIZ / "data" / "processed" / "dataset_niveles_mensual.csv"
+EXCLUIDAS = ["Crédito SF sector privado", "IPC Subyacente", "Liquidez M2"]  # exclusiones documentadas
+niv = pd.read_csv(NIV, parse_dates=["fecha"]).set_index("fecha").drop(columns=EXCLUIDAS)
+assert niv.shape[1] == len(cargas0), "el número de series no coincide con el PCA vigente"
+fig, axes = plt.subplots(4, 4, figsize=(7.0, 6.4), sharex=True)
+for ax, col in zip(axes.flat, niv.columns):
+    bandas_episodios(ax, episodios)
+    ax.plot(niv.index, niv[col], color=AZUL, lw=1.1)
+    ax.set_title({"embi_peru": "EMBIG Perú (pbs)"}.get(col, col), fontsize=7.5, color=TINTA, loc="left", pad=2)
+    ax.tick_params(labelsize=6.5)
+    ax.xaxis.set_major_locator(mdates.YearLocator(6))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+fig.tight_layout(h_pad=0.6, w_pad=0.4)
+fig.savefig(FIG / "avance_series_niveles.png")
+plt.close(fig)
 
 # ---- 1. PCA global: cargas de los tres primeros ejes (tabla) -------------------------------
 cargas = pd.read_csv(FINAL / "05_pca_cargas.csv")
@@ -142,7 +179,7 @@ for (p, c), g in cl.groupby(["particion", "clase"], sort=True):
 reg = pd.read_csv(FINAL / "09a_regimenes_pca.csv").fillna("")
 estab = pd.read_csv(FINAL / "09a_estabilidad_cortes.csv")
 frec = dict(zip(estab["corte"], estab["frecuencia"]))
-filas = ["| N.º | Período | Meses | Crédito medio | Etiqueta | Frec. del corte | Episodios contenidos |",
+filas = ["| N.º | Período | Meses | Crédito medio | Etiqueta preliminar | Frec. del corte | Episodios contenidos |",
          "|---:|---|---:|---:|---|---:|---|"]
 for i, r in enumerate(reg.itertuples(), 1):
     f = frec.get(r.inicio)

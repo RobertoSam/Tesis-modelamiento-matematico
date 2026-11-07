@@ -1,4 +1,4 @@
-| N.º | Período | Meses | Crédito medio | Etiqueta | Frec. del corte | Episodios contenidos |
+| N.º | Período | Meses | Crédito medio | Etiqueta preliminar | Frec. del corte | Episodios contenidos |
 |---:|---|---:|---:|---|---:|---|
 | 1 | 2007-12 a 2008-11 | 12 | -1,45 | Transición | — | Crisis financiera global |
 | 2 | 2008-12 a 2010-02 | 15 | -1,30 | Transición | 0,85 | Crisis financiera global |

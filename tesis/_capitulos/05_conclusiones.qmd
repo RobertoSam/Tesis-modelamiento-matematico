@@ -1,21 +1,8 @@
 ## Conclusiones preliminares
 
-Las conclusiones corresponden al nivel de avance de la investigación y pueden cambiar cuando se completen la vía de robustez, los autoencoders y las redes LSTM.
-
-1. **Datos y trazabilidad (OE2).** El conjunto de {{< meta cifras.nSeries >}} series mensuales del BCRP entre {{< meta cifras.fechaInicioNiveles >}} y {{< meta cifras.fechaFinDatos >}} está congelado (D4) y versionado. Las exclusiones están documentadas en el repositorio: el crédito total del sistema financiero, el IPC subyacente y, por la decisión D16, la Liquidez M2.
-2. **Estructura transversal (OE3, OE5, OE6).** El PCA y la HFC coinciden en tres bloques de series: tendencia o «salud económica», tasas de política y riesgo de mercado. La partición en tres clases es robusta bajo remuestreo por bloques. Este resultado es el más firme del avance.
-3. **Tendencia frente a ciclo.** En niveles, el primer eje del PCA es la tendencia común de las series y no supera un nulo de caminatas aleatorias con deriva. Solo el eje de las tasas de política supera con claridad los nulos de tendencias.
-4. **Dinámica (OE4, HT1).** Las caídas de estabilidad del EPCA no se distinguen de las que produce una estructura de correlación constante. Con los datos actuales en niveles, la hipótesis de trabajo HT1 no recibe respaldo.
-5. **Datación (OE9, OE10, HT3).** La partición de Fisher sobre los *scores* suavizados identifica regímenes con cortes en su mayoría estables, y parte de ellos es compatible con episodios fechados externamente (crisis financiera global, colapso de las materias primas, COVID-19). La correspondencia es descriptiva.
-6. **Fases.** La regla preliminar de etiquetado no mide la fase del ciclo cuando se aplica a series en niveles. La clasificación en expansión, contracción y transición, aporte diferencial de la tesis, requiere una regla nueva, fijada de antemano.
+::: {.callout-note title="Pendiente"}
+Se redactan a partir del capítulo 4.
+:::
 
 ## Recomendaciones y trabajos futuros
 
-1. **Regla de fases.** Definir y registrar, antes de calcular, una regla de etiquetado basada en la desviación respecto de la tendencia o en la tasa de crecimiento del crédito, y discutirla con el asesor junto con la propuesta de la Parte C de D2.
-2. **Iteración 4.** Implementar los autoencoders y la red LSTM-autoencoder con {{< meta cifras.nSeries >}} series (D17.4), con anclaje lineal en el PCA, validación por bloques y *walk-forward* y Monte Carlo Dropout (OE7, OE8). Como tarea de fase 0, corregir el sorteo de bloques de la rama TS del nulo mixto (D19).
-3. **Potencia del nulo de estructura.** Medir con un quiebre simulado de magnitud conocida si el nulo de estructura constante puede detectar los cambios que interesan. Esto conecta con la comparación en un contexto simulado (OE11).
-4. **Anexo de robustez.** Repetir el EPCA, la HFC y la datación con la vía transformada (D15), para separar lo que depende de la tendencia de lo que es estructura del ciclo.
-5. **Comparación con la literatura peruana.** Contrastar bloque por bloque los grupos de la HFC con los de @camiz_cerda_atoche_2026[^co-cca], una vez confirmado su estado de publicación.
-6. **Bibliografía y formato.** Cerrar las marcas de verificación pendientes del registro y ajustar el documento a las pautas de tesis de maestría de la UNI, que todavía no se han incorporado al proyecto.
-
-[^co-cca]: VERIFICAR: manuscrito fechado el 25 de abril de 2026, sin datos de revista, volumen ni DOI; confirmar con el Dr. Camiz su estado de publicación.
