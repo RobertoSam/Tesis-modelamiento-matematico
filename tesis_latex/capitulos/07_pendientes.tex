@@ -1,4 +1,261 @@
+% =============================================================================
+% Capítulo 7 · Temas pendientes y agenda de investigación (iteración 3c, 7-nov-2026)
+% Fuentes: decisiones.qmd (D2, D11, D14, D15, D17, D19), auditorias/2026-10-31_iteracion-3b_vuelta2.md,
+% notas del bibliotecario y del desarrollador del 7-nov-2026, plan 3b y su adenda (asesoria/).
+% Los conteos de marcas los calcula LaTeX (totcount); no se escriben a mano.
+% =============================================================================
 \chapter{Temas pendientes y agenda de investigación}
 \label{cap:pendientes}
-\section{Parte C}\label{sec:pend-parte-c}
-\section{Operativos}\label{sec:pend-operativos}
+
+Este capítulo ordena lo que falta para pasar del avance a la versión final de la tesis. Cada tema
+se describe con cuatro elementos: \emph{qué falta}, \emph{por qué} falta, \emph{de qué o de quién
+depende} y el \emph{efecto esperado} en la tesis. Los temas se agrupan en decisiones que requieren
+al asesor o al tesista (\cref{sec:pend-decisiones}), trabajo metodológico y computacional
+(\cref{sec:pend-metodo}), fuentes y verificaciones (\cref{sec:pend-fuentes}) y asuntos operativos
+(\cref{sec:pend-operativos}). La \cref{tab:pendientes} los resume al final.
+
+% Formato de cada tema.
+\newcommand{\tema}[4]{%
+\begin{description}[style=nextline, leftmargin=1.2em, itemsep=1pt]
+  \item[Qué falta] #1
+  \item[Por qué] #2
+  \item[Depende de] #3
+  \item[Efecto esperado] #4
+\end{description}}
+
+% -----------------------------------------------------------------------------
+\section{Decisiones que requieren al asesor o al tesista}
+\label{sec:pend-decisiones}
+
+\subsection{La Parte~C de la decisión D2: qué mide cada vía}
+\label{sec:pend-parte-c}
+
+\tema{Discutir con el Dr.~Camiz qué aspecto del ciclo mide cada vía (series sin transformar y
+transformadas) y cómo se combinan en la interpretación; redactar la sección «Qué vía mide qué»
+(\cref{sec:met-vias}), hoy vacía.}
+{La decisión D2 dejó la propuesta pendiente de discusión, y la decisión D15 la adoptó en la
+práctica (análisis en niveles y transformadas en un anexo). Se presenta al asesor como propuesta,
+no como hecho consumado. Los resultados del \cref{cap:resultados} le dan ahora contenido: en niveles,
+el criterio de OE4 no discrimina y el primer eje es tendencia; en la vía transformada, la detección
+de episodios es informativa.}
+{Reunión con el asesor (decisión N del plan de la iteración 3b), con este documento como insumo.
+Deben comunicársele también las decisiones D15 y D16.}
+{Definir en qué vía se evalúan HT1 y el criterio de OE4, y consolidar o revisar las conclusiones
+\ref{conc:tendencia}, \ref{conc:oe4} y \ref{conc:datacion}.}
+
+\subsection{Representante de clase de la HFC}
+\label{sec:pend-representante}
+
+\tema{Fijar la definición del representante de cada clase de la HFC.}
+{El código lo define como la serie de la clase más correlacionada, en valor absoluto, con el
+factor; es una definición operativa, no una decisión registrada (\cref{sec:met-hfc}).}
+{El asesor (pregunta llevada desde la adenda del plan 3b).}
+{Cambiaría, a lo sumo, la serie que se nombra como representante en la \cref{tab:res-hfc} y las
+correlaciones entre representantes; no cambia la partición.}
+
+\subsection{Definición de transición fuera del nulo}
+\label{sec:pend-fuera-nulo}
+
+\tema{Registrar en \texttt{decisiones.qmd} la \cref{def:fuera-nulo}, o reemplazarla.}
+{Es la definición operativa del código y no figura en el registro de decisiones. Lo mismo ocurre
+con otros puntos que el código resuelve con una lectura propia (\cref{sec:met-criterios}): la
+distancia al intervalo del episodio, el codo de \texttt{aede} como fuente de candidatas, el conteo
+de segmentos en la longitud mínima y qué distancia a 2 cuenta como «cercana» para el estadístico
+HAC.}
+{El tesista, con el asesor.}
+{Las transiciones que «cuentan» (\cref{sec:res-transiciones}) y la lectura de octubre de 2017
+dependen de esta definición; si cambia, se recalculan con el mismo código.}
+
+\subsection{Parámetros de diseño provisionales}
+\label{sec:pend-parametros}
+
+\tema{Decidir si los siete parámetros de \path{data/results/final/parametros_diseno.csv} pasan
+a \texttt{decisiones.qmd}: $\nu=\nuGauss$ de los pesos gaussianos, el paso de \pasoReglaSeis{}
+meses y el eje \ejeReglaSeis{} de la regla del 06, la media móvil de \ventanaMediaMovil{} meses de
+la datación, las particiones en \clasesHfcMenor{} y \clasesHfcMayor{} clases de la HFC y el
+percentil \percentilWalkforward{} de la razón \emph{walk-forward}.}
+{Se fijaron en el plan de la iteración 3b o en el código anterior, no en una decisión registrada.
+El texto los toma por macro y los declara provisionales.}
+{El tesista.}
+{Si se registran sin cambios, desaparece la salvedad; si alguno cambia, el resultado se regenera
+automáticamente.}
+
+\subsection{Diseño del sorteo de la rama TS (decisión D19)}
+\label{sec:pend-d19}
+
+\tema{Validar el diseño con que se implementó la decisión D19.}
+{D19 fija el rango del sorteo de los inicios de bloque de la rama TS, pero no dice si se sortea
+aparte o si se reemplaza el sorteo común. El desarrollador eligió un sorteo aparte, a continuación
+del de los incrementos, que solo cambia las series tratadas como TS (nota del desarrollador del
+7-nov-2026).}
+{El tesista o el asesor.}
+{Si se prefiere otro diseño, el cambio es local y solo afecta a las cifras del nulo mixto de la
+\cref{sec:res-tendencia}; la lectura no cambiaría.}
+
+\subsection{Regla de etiquetado de las fases}
+\label{sec:pend-fases}
+
+\tema{Discutir la regla que asigna la etiqueta de expansión, contracción o transición a cada
+régimen (\cref{def:fase}).}
+{La regla del notebook 09 es una propuesta preliminar del proyecto; sus umbrales no se han
+discutido con el asesor.}
+{El asesor.}
+{Las etiquetas de la \cref{tab:res-regimenes} pueden cambiar; los cortes no.}
+
+\subsection{Episodios de referencia}
+\label{sec:pend-episodios}
+
+\tema{Decidir si fuentes peruanas como el decreto que declaró el estado de emergencia nacional
+\parencite{pcm_2020} fijan algún extremo de un episodio, y fechar episodios posteriores a la pandemia.}
+{Con la decisión D18, una fuente peruana es admisible si es externa al análisis. La ficha
+\texttt{pcm\_2020} podría fijar el inicio local de la pandemia (el mes no cambiaría, solo la fuente
+citada), y ningún episodio cubre el período posterior a 2020, de modo que el último corte de la
+datación queda sin contraste (\cref{sec:res-validacion}).}
+{El tesista decide; el bibliotecario ficha las fuentes.}
+{Más episodios con fuente darían contraste al tramo pospandemia; no cambian los cortes.}
+
+% -----------------------------------------------------------------------------
+\section{Trabajo metodológico y computacional}
+\label{sec:pend-metodo}
+
+\subsection{Autoencoders y redes LSTM con las \texorpdfstring{\nSeries{}}{16} series}
+\label{sec:pend-dl}
+
+\tema{Volver a entrenar los autoencoders y las redes LSTM con las \nSeries{} series vigentes, con
+el diseño de la \cref{sec:dl}: anclaje lineal, validación por bloques, estabilidad entre réplicas,
+Monte Carlo Dropout y detección \emph{walk-forward}.}
+{El entorno de cómputo no dispone de la biblioteca \texttt{torch}; los resultados anteriores, con la
+liquidez M2 incluida, se conservan como antecedente (decisión D17.4).}
+{La iteración 4 y la instalación de \texttt{torch}; lo ejecuta el desarrollador.}
+{Permitirá evaluar HT4 y los objetivos \labelcref{oe:dl,oe:incertidumbre,oe:comparacion}, hoy sin
+evaluar.}
+
+\subsection{Cifras pendientes de generar}
+\label{sec:pend-cifras}
+
+\tema{Agregar a \texttt{herramientas/cifras\_mapa.csv} las macros que el \cref{cap:resultados} y
+los anexos piden y que se muestran como pendientes.}
+{Las cifras no se escriben a mano (regla 3). El redactor dejó la lista con su archivo, filtro,
+columna y formato en su nota del 7-nov-2026; algunas exigen un archivo de resumen o una columna de
+orden nueva.}
+{El desarrollador.}
+{Al regenerar \texttt{cifras.tex}, las cifras aparecen en el documento sin editar el texto.}
+
+\subsection{Productos que faltan del análisis vigente}
+\label{sec:pend-productos}
+
+\tema{Una tabla de compatibilidad entre los cortes de la datación y los episodios, con $h=3$ y
+$h=6$; las figuras del dendrograma de la HFC y de la trayectoria de la datación con sus cortes.}
+{La correspondencia de HT3 se describe hoy por contención de episodios en regímenes, no por
+distancia (\cref{sec:res-validacion}); el análisis vigente no generó esas figuras.}
+{El desarrollador.}
+{Precisará la evaluación de HT3 y hará más legible el \cref{cap:resultados}.}
+
+\subsection{Contexto simulado y potencia del criterio de ventana}
+\label{sec:pend-simulado}
+
+\tema{Construir el contexto simulado de \cref{oe:simulado}, con regímenes conocidos por
+construcción y series integradas como las del BCRP.}
+{Es el único escenario en que la verdad del régimen está disponible sin circularidad
+(\cref{sec:criterios}), y es necesario para saber si el criterio de OE4 tiene potencia en niveles
+(\ref{conc:oe4}).}
+{El desarrollador y el redactor, tras la discusión de la Parte~C.}
+{Permitirá interpretar el resultado nulo del criterio de OE4 y calibrar anchos, pesos y número de
+clases.}
+
+\subsection{Formalizaciones incompletas}
+\label{sec:pend-formal}
+
+\tema{Formalizar el criterio de Rencher (\cref{oe:dimension}); definir la normalización de la
+distancia de Procrustes como alternativa al RV en el criterio de ventana; precisar la
+\cref{obs:tolerancia} y la ambigüedad del codo de \texttt{aede} como fuente de candidatas.}
+{El criterio de Rencher espera la lectura de su fuente directa; las demás son lecturas del código
+declaradas como tales.}
+{El redactor, con las fuentes del bibliotecario.}
+{Completa el objetivo \ref{oe:dimension} y cierra ambigüedades declaradas en la
+\cref{sec:met-criterios}.}
+
+\subsection{Objetivos condicionales y preguntas abiertas}
+\label{sec:pend-condicionales}
+
+\tema{La HFC evolutiva (OC1), el STATIS dual como detector independiente (OC2), la anticipación
+de transiciones con el LSTM (OC3) y la extensión de la muestra a años anteriores a
+\anioInicioDatos{} (OC4); el apunte 2 del asesor, fuera de alcance hasta que se aclare su sentido
+(decisión D14); la pregunta al asesor sobre si el número de grados de libertad del índice de
+\texttt{aede} es deliberado (decisión D11).}
+{Los objetivos condicionales se abordan solo si los firmes lo justifican; las preguntas esperan la
+reunión con el asesor.}
+{Los resultados de los objetivos firmes y el asesor.}
+{Ampliarían el alcance de la tesis; no son condición para concluirla.}
+
+% -----------------------------------------------------------------------------
+\section{Fuentes y verificaciones}
+\label{sec:pend-fuentes}
+
+\subsection{Marcas de verificación y de pendiente}
+\label{sec:pend-marcas}
+
+\tema{Cerrar las marcas abiertas de este documento: \total{nverificar} notas
+\textcolor{orange!70!black}{\textbf{VERIFICAR}} sobre obras con ficha y \total{npendiente} marcas
+\textcolor{red!75!black}{\textbf{PENDIENTE}}, contadas automáticamente al compilar. Entre las
+pendientes están las cifras de la \cref{sec:pend-cifras} y las fuentes sin ficha: Frontier (1976),
+Kwiatkowski et al. (1992) en la bibliografía, Denimal (2001), Camiz y Diblasi (2013), Bry y
+Boschan (1971), Harding y Pagan (2006), Christiano y Fitzgerald (2003) y las fuentes de las ayudas a
+la interpretación.}
+{Varias fichas son preliminares (texto no consultado) y algunas obras no se han localizado. El
+registro de verificación (\texttt{tesis/registro\_verificacion.md}) lleva el detalle por obra.}
+{El bibliotecario.}
+{Cada marca cerrada elimina una salvedad del texto; ninguna cambia los resultados.}
+
+\subsection{Literatura peruana del BCRP}
+\label{sec:pend-bcrp}
+
+\tema{Fichar los documentos de trabajo y las revistas del BCRP sobre condiciones financieras y
+estrés financiero del Perú, los informes de estabilidad financiera y una tesis de la PUCP sobre el
+ciclo financiero global y el crédito en el Perú.}
+{Los sitios del BCRP y el repositorio de la PUCP bloquearon el acceso automatizado (nota del
+bibliotecario del 7-nov-2026).}
+{El tesista, que debe descargarlos manualmente; después, el bibliotecario.}
+{Completará la línea peruana del estado del arte (\cref{sec:antecedentes}), hoy la más débil.}
+
+% -----------------------------------------------------------------------------
+\section{Asuntos operativos}
+\label{sec:pend-operativos}
+
+\tema{Crear y subir el tag \texttt{v0.4-17series-dos-vias} sobre el commit \texttt{2be3665}, que
+marca el antecedente con la liquidez M2 y en dos vías; completar el código UNI en la portada y la
+documentación complementaria (\cref{ap:complementaria}); adoptar el formato definitivo cuando se
+disponga de las pautas de la UNI para la tesis de maestría.}
+{El tag quedó pendiente desde la auditoría de la iteración 3b (N-01); el formato actual es
+provisional.}
+{El tesista.}
+{Ninguno sobre el contenido; asegura la trazabilidad y el cumplimiento formal.}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Resumen de los temas pendientes}
+\label{tab:pendientes}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}l@{}}
+\toprule
+Tema & Depende de & Sección \\
+\midrule
+Parte~C de D2 & Asesor & \cref{sec:pend-parte-c} \\
+Representante de clase de la HFC & Asesor & \cref{sec:pend-representante} \\
+Transición fuera del nulo y lecturas del código & Tesista y asesor & \cref{sec:pend-fuera-nulo} \\
+Parámetros de diseño provisionales & Tesista & \cref{sec:pend-parametros} \\
+Diseño del sorteo de D19 & Tesista o asesor & \cref{sec:pend-d19} \\
+Regla de etiquetado de fases & Asesor & \cref{sec:pend-fases} \\
+Episodios peruanos y pospandemia & Tesista y bibliotecario & \cref{sec:pend-episodios} \\
+AE y LSTM con \nSeries{} series & Desarrollador (iteración 4) & \cref{sec:pend-dl} \\
+Cifras pendientes & Desarrollador & \cref{sec:pend-cifras} \\
+Tabla de compatibilidad y figuras & Desarrollador & \cref{sec:pend-productos} \\
+Contexto simulado & Desarrollador y redactor & \cref{sec:pend-simulado} \\
+Formalizaciones incompletas & Redactor & \cref{sec:pend-formal} \\
+Objetivos condicionales y preguntas & Asesor & \cref{sec:pend-condicionales} \\
+Marcas de verificación y pendiente & Bibliotecario & \cref{sec:pend-marcas} \\
+Literatura del BCRP & Tesista y bibliotecario & \cref{sec:pend-bcrp} \\
+Tag, código UNI y formato & Tesista & \cref{sec:pend-operativos} \\
+\bottomrule
+\end{tabular}
+\end{table}
