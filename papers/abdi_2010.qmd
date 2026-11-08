@@ -1,0 +1,23 @@
+---
+title: "Abdi (2010) — Congruence: Congruence coefficient, RV coefficient, and Mantel coefficient"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto completo leído el 7-11-2026 (PDF de la carpeta de Dropbox del asesor). Falta: páginas del capítulo y DOI de la enciclopedia. |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Abdi, H. (2010). Congruence: Congruence coefficient, RV coefficient, and Mantel coefficient. En N. J. Salkind (Ed.), *Encyclopedia of research design*. Sage.
+
+## 3. Resumen analítico
+
+Define y compara tres coeficientes de congruencia entre configuraciones factoriales: el coeficiente de congruencia de Tucker (coseno entre matrices de cargas), el RV de Escoufier (coseno entre matrices de productos escalares, entre 0 y 1, insensible a rotaciones y dilataciones) y el de Mantel (correlación entre matrices de distancias). Explica que sus distribuciones bajo la hipótesis nula no tienen forma analítica simple y se evalúan con permutaciones o aproximaciones (Kazi-Aoual et al., 1995; Josse et al., 2008).
+
+## 4. Aporte a la tesis
+
+Fuente de la definición conceptual y de la fórmula del coeficiente RV y del coeficiente de congruencia usados para comparar ventanas del EPCA y réplicas bootstrap (§2.2.7 del informe).

@@ -180,3 +180,22 @@ Lectura del cambio en la tesis:
   y West (2), Granger y Newbold (3), Phillips (3), Dickey y Fuller (2), Kwiatkowski et al. (2),
   quiebres estructurales (2), Bartlett (1), Kaiser y Rice (1), Tucker (1), Kaiser 1960 (1) y
   Frontier (1). Cada una tiene su fila arriba.
+
+## Actualización del 8-11-2026 (revisión del informe preliminar, N8)
+
+Fuentes leídas desde la carpeta de Dropbox «Camiz - Samaniego» compartida por el asesor. Las
+referencias están en `tesis/informe_preliminar_uni/referencias_extra.bib`; falta trasladarlas a
+`tesis/referencias.bib`.
+
+| Clave | Estado | Pendiente |
+|---|---|---|
+| `fisher_1958` | Texto completo leído (ficha actualizada) | Revisar las secciones 4 a 6 de la ficha |
+| `horn_1965` | Texto completo leído (ficha actualizada) | — |
+| `camiz_diblasi_2013` | **Localizada** y leída completa (antes «no localizada») | Datos de edición de las actas |
+| `abdi_2010` | Leída completa; ficha nueva | Páginas y DOI del capítulo |
+| `camiz_2021_pca` | Leída (secciones 1–2.1); material de clase no publicado | Usar junto con fuentes publicadas |
+| `camiz_spada_2024` | Leída (métodos y conclusiones); ficha nueva | Resultados completos |
+| `purizaca_2023` | Leída completa; ficha nueva | URL del repositorio PUCP |
+| `torres_baltazar_2023` | Lectura parcial; ficha nueva | URL del repositorio |
+| `camiz_aedeclahfac`, `camiz_claede_2025` | Programas del asesor (no publicados) | Confirmar con el Dr. Camiz cómo citarlos |
+| `samaniego_2026` | Informe propio del curso MMC101 | — |

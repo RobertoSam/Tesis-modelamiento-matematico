@@ -1,0 +1,23 @@
+---
+title: "Torres y Baltazar (2023) — Análisis de los componentes cíclicos de las principales variables macroeconómicas para el Perú, 2004–2022"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto leído parcialmente el 8-11-2026 (PDF de la carpeta de Dropbox del asesor): resumen, hipótesis, metodología y tablas de correlaciones. Falta: URL del repositorio. |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Torres Armas, F., & Baltazar Chávez, J. O. (2023). *Análisis de los componentes cíclicos de las principales variables macroeconómicas para el Perú en el periodo 2004–2022* [Trabajo de suficiencia profesional, Universidad ESAN].
+
+## 3. Resumen analítico
+
+Con datos trimestrales del BCRP (2004–2022), desestacionalizados con TRAMO/SEATS, extrae el componente cíclico de cada variable con el filtro de Baxter-King y calcula su correlación de Pearson con el ciclo del PBI, adelantada y rezagada, en 2004–2015 y 2016–2022. En 2016–2022, el consumo, la inversión, las exportaciones, las importaciones, la inflación y la tasa activa en soles son procíclicos; el tipo de cambio y los términos de intercambio, contracíclicos.
+
+## 4. Aporte a la tesis
+
+Antecedente peruano reciente que mide ciclos con la tradición de filtros (contraste con el enfoque exploratorio de la tesis).

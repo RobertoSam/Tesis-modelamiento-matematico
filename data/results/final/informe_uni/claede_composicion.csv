@@ -1,0 +1,15 @@
+ventana,clase,series
+2009-07,1,"Tasa de referencia, Tasa interbancaria, TAMN, TIPMN"
+2009-07,2,"Tipo de cambio, Índice BVL, EMBIG Perú"
+2009-07,3,"Crédito empresarial, Crédito consumo, Crédito hipotecario, M1, M3, IPC Lima, PBI, Demanda interna, RIN"
+2014-07,1,"Crédito empresarial, Crédito consumo, Crédito hipotecario, M1, M3, TAMN, IPC Lima, Tipo de cambio, Índice BVL, EMBIG Perú, PBI, Demanda interna, RIN"
+2014-07,2,"Tasa de referencia, Tasa interbancaria, TIPMN"
+2020-07,1,Crédito consumo
+2020-07,2,"Tasa de referencia, Tasa interbancaria"
+2020-07,3,"Índice BVL, EMBIG Perú, PBI, Demanda interna"
+2020-07,4,"Crédito empresarial, Crédito hipotecario, M1, M3, TAMN, TIPMN, IPC Lima, Tipo de cambio, RIN"
+2023-07,1,Demanda interna
+2023-07,2,"Tasa de referencia, Tasa interbancaria, TIPMN"
+2023-07,3,"M1, RIN"
+2023-07,4,"M3, Índice BVL, EMBIG Perú, PBI"
+2023-07,5,"Crédito empresarial, Crédito consumo, Crédito hipotecario, TAMN, IPC Lima, Tipo de cambio"

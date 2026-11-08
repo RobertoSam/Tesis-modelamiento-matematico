@@ -55,7 +55,7 @@ cifras["inerciaPCUnoNivelesEn"] = cifras["inerciaPCUnoNiveles"].replace(",", "."
 cifras["oePMinEn"] = cifras["oePMin"].replace(",", ".")
 
 # Resultados de los programas del asesor (resultados_camiz.py)
-CAMIZ = Path(sys.argv[3]) if len(sys.argv) > 3 else AQUI / "camiz"
+CAMIZ = Path(sys.argv[3]) if len(sys.argv) > 3 else REPO / "data" / "results" / "final" / "informe_uni"
 cz = pd.read_csv(CAMIZ / "camiz_resumen.csv", index_col=0)["valor"]
 
 
@@ -70,6 +70,8 @@ txt = [mes_texto(c) for c in cortes_aede]
 cifras["czAedeCortesTexto"] = ", ".join(txt[:-1]) + " y " + txt[-1] if len(txt) > 1 else txt[0]
 cifras["czAedeCortesEn"] = " and ".join(f"{MESES_EN[int(c[5:]) - 1]} {c[:4]}" for c in cortes_aede)
 cifras["czAedeK"] = str(int(float(cz["aede_k_ch"])))
+cifras["czAedeCorteCodo"] = mes_texto(cz["aede_cortes_codo"])
+cifras["czAedeCorteCodoEn"] = f"{MESES_EN[int(cz['aede_cortes_codo'][5:]) - 1]} {cz['aede_cortes_codo'][:4]}"
 cifras["czAlturaRaiz"] = coma(cz["altura_raiz"], 2)
 cifras["czClasesCorte"] = str(int(float(cz["clases_corte_07"])))
 cifras["czInerciaRepr"] = coma(cz["inercia_repr_pct"], 1)
@@ -82,6 +84,12 @@ cifras["czClaedeMin"] = str(int(float(cz["claede_clases_min"])))
 cifras["czClaedeMax"] = str(int(float(cz["claede_clases_max"])))
 cifras["czClaedeModa"] = str(int(float(cz["claede_clases_moda"])))
 cifras["czClaedeProp3"] = coma(cz["claede_prop_3clases"], 2)
+cifras["czAedeVentanas"] = str(int(float(cz["aede_ventanas"])))
+for t in "ABC":
+    cifras[f"czL1Tramo{t}"] = coma(cz[f"aede_l1_tramo{t}"], 2)
+    cifras[f"czL2Tramo{t}"] = coma(cz[f"aede_l2_tramo{t}"], 2)
+for n in (25, 28, 29, 30):
+    cifras[f"czIndiceNodo{n}"] = coma(cz[f"indice_nodo{n}"], 3)
 
 md = open(AQUI / "informe_preliminar.md", encoding="utf-8").read()
 faltan = set()
@@ -105,17 +113,20 @@ for marca, nombre in TABLAS.items():
     t = open(REPO / f"tesis/avance/_avance_tabla_{nombre}.md", encoding="utf-8").read().strip()
     md = md.replace(f"[[{marca}]]", t)
 md = md.replace("| Etiqueta preliminar |", "| Fase (preliminar) |")
+md = re.sub(r"(?<![\d,])[−-]0,00(?!\d)", "0,00", md)
 
 
 def csv_a_md(nombre):
-    """Tabla Markdown desde un CSV de resultados, con coma decimal."""
-    t = pd.read_csv(CAMIZ / nombre)
+    """Tabla Markdown desde un CSV de resultados (texto tal cual, con coma decimal)."""
+    t = pd.read_csv(CAMIZ / nombre, dtype=str, keep_default_na=False)
+    if nombre == "perfil_regimenes.csv":
+        t = t.rename(columns={"Inflación (%)": "IPC (%)", "Tasa de referencia (%)": "Tasa BCRP (%)",
+                              "Fase preliminar": "Fase"})
     if "Une" in t.columns:
         t = t.drop(columns=["Une"])
+    num = re.compile(r"^-?\d+\.\d+$")
     def fmt(v):
-        if isinstance(v, float):
-            return f"{v:.3f}".rstrip("0").rstrip(".").replace(".", ",") if abs(v) < 1000 else f"{v:,.1f}"
-        return str(v)
+        return v.replace(".", ",").replace("-", "−") if num.match(v) else v
     filas = ["| " + " | ".join(t.columns) + " |", "|" + "---|" * len(t.columns)]
     for r in t.itertuples(index=False):
         filas.append("| " + " | ".join(fmt(v) for v in r) + " |")
@@ -358,10 +369,22 @@ def repartir_columnas(tabla, total_cm=15.5):
     for col in tabla.columns:
         textos = [c.text for c in col.cells]
         palabra = max((len(w) for t in textos for w in t.split()), default=4)
-        minimos.append(0.22 * palabra + 0.35)
+        # Celdas cortas del cuerpo (p. ej., «5,00 → 6,50») no deben partirse
+        palabra = max([palabra] + [len(t) for t in textos[1:] if len(t) <= 12])
+        minimos.append(0.24 * palabra + 0.45)
         pesos.append(max(len(t) for t in textos))
+    if sum(minimos) > total_cm:
+        # Tabla ancha: letra de 9 puntos y mínimos más ajustados
+        minimos = [(m - 0.45) / 0.24 * 0.2 + 0.4 for m in minimos]
+        letra_tabla(tabla, 9)
+        tabla._letra9 = True
     libre = max(0.0, total_cm - sum(minimos))
     anchos = [Cm(m + libre * w / sum(pesos)) for m, w in zip(minimos, pesos)]
+    tblPr = tabla._tbl.tblPr
+    if tblPr.find(qn("w:tblLayout")) is None:
+        lay = OxmlElement("w:tblLayout")
+        lay.set(qn("w:type"), "fixed")
+        tblPr.append(lay)
     grid = tabla._tbl.tblGrid
     for gc, a in zip(grid.findall(qn("w:gridCol")), anchos):
         gc.set(qn("w:w"), str(int(a.twips)))
@@ -374,7 +397,8 @@ for t in d.tables:
     ancho_completo(t)
     repartir_columnas(t)
     bordes_apa(t)
-    letra_tabla(t, 10)
+    if not getattr(t, '_letra9', False):
+        letra_tabla(t, 10)
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
 
 # ---------------------------------------------------------------- Carátula
@@ -590,7 +614,7 @@ enc = secciones[0].header
 enc.is_linked_to_previous = False
 pe = enc.paragraphs[0]
 pe.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-re_ = pe.add_run("Informe preliminar de tesis — versión del 7 de noviembre de 2026")
+re_ = pe.add_run("Informe preliminar de tesis — versión del 8 de noviembre de 2026")
 re_.italic = True
 re_.font.size = Pt(8)
 re_.font.color.rgb = RGBColor(0x59, 0x59, 0x59)

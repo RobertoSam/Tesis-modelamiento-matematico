@@ -1,0 +1,23 @@
+---
+title: "Purizaca (2023) — EPCA aplicado a precios de commodities"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 (PDF de la carpeta de Dropbox del asesor). Falta: URL del repositorio PUCP (las citas internas del PDF aparecen como «?»). |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Purizaca Rosillo, L. G. (2023). *EPCA aplicado a precios de commodities* [Tesis de maestría, Pontificia Universidad Católica del Perú].
+
+## 3. Resumen analítico
+
+Tesis de maestría en Estadística (asesor: S. Camiz). Aplica PCA, EPCA y PCA dinámico generalizado (GDPC) a 21 precios mensuales de materias primas del FMI, 1990–2021. PCA: el primer componente recoge 70,6 % de la inercia (tendencia común). EPCA: ventana de 72 meses y pesos gaussianos con 3 desviaciones; Fisher sobre el primer valor propio; el índice de Caliński y Harabasz no alcanza un máximo, por lo que fija 7 tramos donde los incrementos se vuelven marginales. El GDPC reduce el error de reconstrucción, a costa de parsimonia.
+
+## 4. Aporte a la tesis
+
+Antecedente peruano reciente del EPCA con datación de Fisher, y precedente de que el índice de Caliński y Harabasz puede no tener un máximo interior.

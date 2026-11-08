@@ -1,0 +1,23 @@
+---
+title: "Camiz y Spada (2024) — Checking the stability of correlation of chronologies over time"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto leído el 8-11-2026 (PDF de la carpeta de Dropbox del asesor): introducción, métodos (ventana móvil, pesos, EHFC, partición de períodos) y conclusiones; resultados leídos parcialmente. Metadatos tomados de la primera página del PDF. |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Spada, F. (2024). Checking the stability of correlation of chronologies over time: An example on *Pinus pinea* L. rings widths. *Annals of Silvicultural Research, 49*(1), 13–23. https://doi.org/10.12899/asr-2455
+
+## 3. Resumen analítico
+
+Propone el análisis evolutivo conjunto con PCA y HFC: el EPCA y la **HFC evolutiva (EHFC)**, ambas sobre una ventana móvil de 10 años (el doble del número de series) con pesos gaussianos (k = 3), aplicadas a cinco cronologías de *Pinus pinea* (1925–2003). Explica los criterios para elegir el ancho de la ventana (sensibilidad frente a ruido, ventana mucho mayor que p, múltiplo de la periodicidad). Para la EHFC sigue la evolución de las inercias de los nodos y la topología de los dendrogramas (animación, formato Newick y distancias de Robinson-Foulds). Parte el período con el algoritmo de Fisher sobre la serie del primer valor propio y elige el número de intervalos con máximos locales del índice de Caliński y Harabasz entre 2 y 10; obtiene siete intervalos y estudia dos de ellos por separado.
+
+## 4. Aporte a la tesis
+
+Antecedente publicado de la HFC evolutiva (corrige la afirmación previa de que no había una EHFC publicada) y del procedimiento de datación con Fisher sobre el primer valor propio.

@@ -1,0 +1,23 @@
+---
+title: "Camiz y Diblasi (2013) — Evolutionary principal component analysis"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto completo leído el 7-11-2026 (PDF de la carpeta de Dropbox del asesor, «Camiz Diblasi 2013 XLI CAE.pdf»). Corrige el estado «no localizada» del registro. Falta: datos de edición de las actas (ISBN o URL), si existen. |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Diblasi, A. (2013). *Evolutionary principal component analysis* [Ponencia]. XLI Coloquio Argentino de Estadística, Mendoza, Argentina.
+
+## 3. Resumen analítico
+
+Formaliza el EPCA: un PCA en cada posición de una ventana móvil, resumido en dos gráficos (evolución de los primeros valores propios y de las correlaciones de las series con los primeros ejes). Propone pesos gaussianos que dan más importancia a los meses centrales, porque con pesos uniformes la diferencia entre ventanas depende solo de dos observaciones. Ejemplo: diez acciones de la bolsa de París, 2009–2010, ventana de 15 días y pesos en [−4, 4]; los pesos gaussianos suavizan las curvas. El signo de los ejes se fija para conservar el de las series más correlacionadas, aunque los cambios progresivos de signo son difíciles de controlar.
+
+## 4. Aporte a la tesis
+
+Fuente original del esquema de pesos gaussianos del EPCA y de su lectura (§2.2.6).

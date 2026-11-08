@@ -9,7 +9,7 @@ title: "Horn (1965) — A rationale and test for the number of factors in factor
 | **Código de ficha** | FB-020 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
 | **Fecha de procesamiento** | 20 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
-| **Estado de lectura** | Resumen leído (página de la editorial); texto no consultado |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 (PDF de la carpeta de Dropbox «Camiz - Samaniego», compartida por el asesor). Contenido verificado: crítica al criterio de Kaiser por la inflación muestral de los primeros valores propios; procedimiento con matrices de variables aleatorias y promedio de sus valores propios; ejemplo con 65 variables y 297 adultos (16 raíces > 1, 9 factores retenidos). |
 
 ## 2. Referencia completa (APA 7.ª edición)
 

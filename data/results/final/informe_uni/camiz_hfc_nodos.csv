@@ -1,0 +1,9 @@
+Nodo,Une,Composición,Series,λ1,λ2 (índice),% local λ1,% global λ2 acum.
+31,nodo 30 + nodo 25,las 16 series,16,10.337,2.768,78.9,35.39
+30,nodo 28 + nodo 29,"Tipo de cambio, EMBIG Perú, Índice BVL, TAMN, RIN, IPC Lima, M1, PBI, Demanda interna, Crédito consumo, Crédito hipotecario, Crédito empresarial, M3",13,10.314,1.11,90.3,18.1
+29,EMBIG Perú + Índice BVL,"EMBIG Perú, Índice BVL",2,1.506,0.494,75.3,11.16
+28,Tipo de cambio + nodo 27,"Tipo de cambio, TAMN, RIN, IPC Lima, M1, PBI, Demanda interna, Crédito consumo, Crédito hipotecario, Crédito empresarial, M3",11,9.919,0.353,96.6,8.07
+27,TAMN + nodo 26,"TAMN, RIN, IPC Lima, M1, PBI, Demanda interna, Crédito consumo, Crédito hipotecario, Crédito empresarial, M3",10,9.272,0.252,97.4,5.86
+26,nodo 23 + nodo 24,"RIN, IPC Lima, M1, PBI, Demanda interna, Crédito consumo, Crédito hipotecario, Crédito empresarial, M3",9,8.524,0.21,97.6,4.29
+25,TIPMN + nodo 17,"TIPMN, Tasa de referencia, Tasa interbancaria",3,2.791,0.207,93.1,2.97
+24,RIN + nodo 21,"RIN, PBI, Demanda interna",3,2.875,0.101,96.6,1.68

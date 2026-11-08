@@ -2,10 +2,15 @@
 title: "Fisher (1958) — On grouping for maximum homogeneity"
 ---
 
-::: {.callout-warning title="Ficha PRELIMINAR"}
-Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
-documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
-final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+::: {.callout-note title="Texto completo leído el 8-11-2026"}
+Leído desde el PDF de la carpeta de Dropbox «Camiz - Samaniego» compartida por el asesor.
+Verificado en el texto: pp. 789–798; problema de agrupamiento que minimiza la suma de cuadrados
+ponderada D; problemas sin restricción y restringido (orden previo y particiones contiguas);
+ejemplo del nivel del lago Michigan-Huron, 1860–1955 (96 años, G = 1 a 10, Tabla 794); lema de
+suboptimización; utilidad de la variación de D con G para elegir el número de grupos; sugerencia
+de reducir un problema multivariado con el primer componente principal; prueba (apéndice) de que
+la partición de mínimos cuadrados es contigua en el problema sin restricción. Las secciones 4 a 6
+de esta ficha, redactadas antes de la lectura, deben revisarse contra estas notas.
 :::
 
 ## 1. Datos identificadores
@@ -15,7 +20,7 @@ final hay que leer el artículo y completar o corregir las secciones 4 a 6.
 | **Código de ficha** | FB-017 *(verificar numeración contra las fichas existentes)* |
 | **Fecha de procesamiento** | 4 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
-| **Estado de lectura** | No leído — localizado (preliminar) |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 (ver nota inicial) |
 
 ## 2. Referencia completa (APA 7.ª edición)
 

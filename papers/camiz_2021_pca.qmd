@@ -1,0 +1,23 @@
+---
+title: "Camiz (2021) — Principal component analysis (material de clase)"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de procesamiento** | 8 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
+| **Estado de lectura** | Texto leído el 7-11-2026 (PDF de la carpeta de Dropbox del asesor, «Camiz - 2021 - Principal Component Analysis.pdf», fechado el 13-06-2021): secciones 1 a 2.1 completas y ejemplo de Linnerud. Material no publicado: usar como apoyo docente, junto con fuentes publicadas. |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S. (2021). *Principal component analysis* [Material de clase no publicado].
+
+## 3. Resumen analítico
+
+Presenta el PCA en el marco del análisis exploratorio: inercia, ejes, componentes, cargas, calidad de representación (cos²) y contribuciones de variables y unidades. Cita el principio de Benzécri (1982) de que los datos deben «hablar por sí mismos». Discute la vara quebrada (Barton y David, 1956; Frontier, 1976) y la prueba de Rencher–Bartlett, y concluye que en un marco exploratorio no hay una regla de parada única; recomienda interpretar los ejes con sentido sin reducir artificialmente la tabla. Recomienda la varianza con divisor n.
+
+## 4. Aporte a la tesis
+
+Apoyo conceptual del §2.2.3 y §2.2.4 del informe.

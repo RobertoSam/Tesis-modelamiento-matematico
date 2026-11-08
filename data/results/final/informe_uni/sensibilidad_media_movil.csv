@@ -1,0 +1,11 @@
+version,k,corte,episodio_mas_cercano,distancia_meses,compatible_3,compatible_6
+causal (principal),6,2008-12,Crisis financiera global,0,True,True
+causal (principal),6,2010-03,Crisis financiera global,9,False,False
+causal (principal),6,2014-04,Colapso de las materias primas,2,True,True
+causal (principal),6,2020-06,COVID-19,2,True,True
+causal (principal),6,2022-11,COVID-19,31,False,False
+centrada,6,2008-07,Crisis financiera global,2,True,True
+centrada,6,2009-09,Crisis financiera global,3,True,True
+centrada,6,2013-11,Taper tantrum,0,True,True
+centrada,6,2020-01,Guerra comercial EE. UU.–China,0,True,True
+centrada,6,2022-05,COVID-19,25,False,False
