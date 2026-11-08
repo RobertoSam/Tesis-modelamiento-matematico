@@ -2496,6 +2496,9 @@ cortes_boot <- lapply(1:B_cortes, function(b) {
 frecuencia <- sapply(cortes3, function(c0) mean(sapply(cortes_boot, function(cb) any(abs(cb - c0) <= 3))))
 estab_cortes <- data.frame(corte = fechas_corte(cortes3, fechas_z), frecuencia = frecuencia, k_ref = k_ref,
                            replicas = B_cortes, L = 24, tolerancia_meses = 3)
+# Columna orden (1, 2, …, en orden cronológico; pedido del redactor del 7-nov-2026), al final como en Python
+stopifnot(identical(estab_cortes$corte, sort(estab_cortes$corte)))
+estab_cortes$orden <- seq_len(nrow(estab_cortes))
 write.csv(estab_cortes, file.path(dir_final, "R_estabilidad_cortes.csv"), row.names = FALSE)
 comp_credito <- rowMeans(Z[, c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario")])
 clasificar <- function(seg, umbral = 0.25, dur_min = 18) {
@@ -2510,12 +2513,47 @@ clasificar <- function(seg, umbral = 0.25, dur_min = 18) {
   }))
 }
 regimenes <- clasificar(segmentos(cortes3, fechas_z))
+stopifnot(identical(regimenes$inicio, sort(regimenes$inicio)))
+regimenes$orden <- seq_len(nrow(regimenes))
 write.csv(regimenes, file.path(dir_final, "R_regimenes_pca.csv"), row.names = FALSE)
 knitr::kable(data.frame(estab_cortes[, c("corte", "frecuencia")]), row.names = FALSE, col.names = c("Inicio del régimen", "Réplicas que lo reproducen a ±3 meses"),
              digits = 3, caption = paste(B_cortes, "réplicas bootstrap por bloques de 24 meses. Escrito en R_estabilidad_cortes.csv."))
-knitr::kable(regimenes, row.names = FALSE, col.names = c("Inicio", "Fin", "Meses", "Componente de crédito", "Fase", "Episodios contenidos"),
+knitr::kable(regimenes[, setdiff(names(regimenes), "orden")], row.names = FALSE, col.names = c("Inicio", "Fin", "Meses", "Componente de crédito", "Fase", "Episodios contenidos"),
              caption = "Regímenes de la datación principal y su fase (regla del 09). Escrito en R_regimenes_pca.csv.")
 r_credito_tiempo <- cor(comp_credito, seq_len(n))
+```
+
+### Compatibilidad de cada corte con cada episodio
+
+Definición de la tesis (`def:tolerancia`, D7): un mes $\tau$ es compatible con el episodio $e$ con
+tolerancia $h$ si $\text{inicio}(e) - h \le \tau \le \text{fin}(e) + h$, con el fin efectivo (un
+episodio puntual termina en su mes de inicio); la distancia se mide al intervalo del episodio. El
+corte es el primer mes del régimen nuevo, sin desplazarlo por el rezago de la media móvil causal.
+La tabla informa distancias y marcas con $h = 3$ y $h = 6$; no asigna episodios a cortes.
+
+```{r b6-compatibilidad}
+mes_num <- function(f) as.integer(format(f, "%Y")) * 12L + as.integer(format(f, "%m"))
+compat_cortes <- do.call(rbind, lapply(seq_len(nrow(estab_cortes)), function(i) {
+  tau <- as.Date(paste0(estab_cortes$corte[i], "-01"))
+  a <- mes_num(episodios$inicio); b <- mes_num(episodios$fin_efectivo); t0 <- mes_num(tau)
+  dist <- ifelse(t0 < a, a - t0, ifelse(t0 > b, t0 - b, 0L))
+  data.frame(orden = estab_cortes$orden[i], corte = estab_cortes$corte[i], episodio = episodios$nombre, tipo = episodios$tipo,
+             inicio = format(episodios$inicio, "%Y-%m"), fin_efectivo = format(episodios$fin_efectivo, "%Y-%m"),
+             lado = ifelse(t0 < a, "antes", ifelse(t0 > b, "después", "dentro")), distancia_meses = as.integer(dist),
+             compatible_h3 = dist <= 3, compatible_h6 = dist <= 6, stringsAsFactors = FALSE)
+}))
+# Comprobación interna: equivale a inicio − h ≤ τ ≤ fin + h
+for (h in c(3, 6)) {
+  t0 <- mes_num(as.Date(paste0(compat_cortes$corte, "-01")))
+  stopifnot(identical(compat_cortes[[paste0("compatible_h", h)]],
+                      mes_num(as.Date(paste0(compat_cortes$inicio, "-01"))) - h <= t0 &
+                        t0 <= mes_num(as.Date(paste0(compat_cortes$fin_efectivo, "-01"))) + h))
+}
+write.csv(compat_cortes, file.path(dir_final, "R_compatibilidad_cortes.csv"), row.names = FALSE)
+tab_dist <- reshape(compat_cortes[, c("episodio", "corte", "distancia_meses")], idvar = "episodio", timevar = "corte", direction = "wide")
+names(tab_dist) <- sub("^distancia_meses\\.", "", names(tab_dist))
+knitr::kable(tab_dist, row.names = FALSE,
+             caption = "Distancia (meses) de cada corte a cada episodio; compatible con h = 3 si es ≤ 3 y con h = 6 si es ≤ 6. Escrito en R_compatibilidad_cortes.csv.")
 ```
 
 ::: {.lectura}
@@ -3094,13 +3132,17 @@ par_dr <- rbind(par_dr,
              clave_grilla(grilla_dat), clave_grilla),
   fila_tabla("niveles", s6, "Grilla d ∈ {2, 3, 4} × maxcl × criterio (D12)", "09a_datacion_dimension.csv",
              paste(grilla_dim$d, clave_grilla(grilla_dim)), function(py) paste(py$d, clave_grilla(py))),
-  fila_tabla("niveles", s6, "Cortes de referencia y k de la estabilidad", "09a_estabilidad_cortes.csv",
-             with(estab_cortes, paste(corte, k_ref, replicas)), function(py) with(py, paste(corte, k_ref, replicas))),
+  fila_tabla("niveles", s6, "Cortes de referencia, orden y k de la estabilidad", "09a_estabilidad_cortes.csv",
+             with(estab_cortes, paste(orden, corte, k_ref, replicas)), function(py) with(py, paste(orden, corte, k_ref, replicas))),
   fila_num("niveles", s6, "Frecuencia de cada corte a ±3 meses (200 réplicas, L = 24, índices compartidos)",
            "09a_estabilidad_cortes.csv", estab_cortes$frecuencia, function(py) py$frecuencia, 1e-12),
-  fila_tabla("niveles", s6, "Regímenes: inicio, fin, meses, fase y episodios contenidos", "09a_regimenes_pca.csv",
-             with(regimenes, paste(inicio, fin, meses, fase, episodios_contenidos)),
-             function(py) with(py, paste(inicio, fin, meses, fase, sin_na(episodios_contenidos)))),
+  fila_tabla("niveles", s6, "Regímenes: orden, inicio, fin, meses, fase y episodios contenidos", "09a_regimenes_pca.csv",
+             with(regimenes, paste(orden, inicio, fin, meses, fase, episodios_contenidos)),
+             function(py) with(py, paste(orden, inicio, fin, meses, fase, sin_na(episodios_contenidos)))),
+  fila_tabla("niveles", s6, "Compatibilidad corte × episodio: distancia, lado y marcas con h = 3 y h = 6 (def:tolerancia)", "09a_compatibilidad_cortes.csv",
+             with(compat_cortes, paste(orden, corte, episodio, inicio, fin_efectivo, lado, distancia_meses, compatible_h3, compatible_h6)),
+             function(py) with(py, paste(orden, corte, episodio, inicio, fin_efectivo, lado, distancia_meses,
+                                         as.logical(compatible_h3), as.logical(compatible_h6)))),
   fila_num("niveles", s6, "Componente de crédito medio de cada régimen (2 decimales)", "09a_regimenes_pca.csv",
            regimenes$componente_credito_medio, function(py) py$componente_credito_medio, 0.0051))
 par_niv <- rbind(par_niv, par_dr)
@@ -3135,6 +3177,9 @@ write.csv(tend_pc, file.path(dir_final, "R_tendencia_componentes.csv"), row.name
 write.csv(tend_series, file.path(dir_final, "R_tendencia_series.csv"), row.names = FALSE)
 write.csv(dim_tab, file.path(dir_final, "R_pca_dimension.csv"), row.names = FALSE)
 write.csv(par_niv, file.path(dir_final, "R_paridad_python.csv"), row.names = FALSE)
+# Resumen de la paridad (macros filasParidad y filasParidadCoinciden de la tesis)
+write.csv(data.frame(archivo = "R_paridad_python.csv", filas = nrow(par_niv), coinciden = sum(par_niv$coincide == "sí")),
+          file.path(dir_final, "R_paridad_resumen.csv"), row.names = FALSE)
 # Criterio 16 de la adenda: ningún CSV de la carpeta final contiene la columna o la serie excluida
 nombres_excluidos <- c(params$excluidas, meta$nombre_corto[meta$columna %in% params$excluidas])
 for (f in list.files(dir_final, pattern = "\\.csv$", full.names = TRUE)) {

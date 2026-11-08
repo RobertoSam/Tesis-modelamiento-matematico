@@ -10,6 +10,8 @@ carpetas temporales y leyendo los índices y los CSV R_* del antecedente (`data/
      `segmentos_en_minimo`) al final;
    - `09a_regimenes_pca.csv`: columna `episodios_contenidos` al final (D9; el antecedente no la
      tenía en el 09a).
+   - `09a_regimenes_pca.csv`, `09a_estabilidad_cortes.csv` y `R_estabilidad_cortes.csv`: columna
+     `orden` (1, 2, …, cronológico) al final (pedido del redactor, 7-nov-2026; desarrollador, 8-nov-2026).
 2. **Rmd final** con `excluidas = character(0)` (solo vía en niveles): `R_aede_cortes.csv`,
    `R_hfc_clases3.csv` y los demás R_* de las secciones 4 a 6 que existían en `data/results/niveles/`
    se reproducen byte a byte (con la misma excepción de columnas nuevas en `R_datacion_criterios.csv`).
@@ -36,7 +38,8 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RAIZ)
 ANT_N = os.path.join(RAIZ, 'data/results/niveles')
 ANT_T = os.path.join(RAIZ, 'data/results')
-AMPLIADOS_COLUMNAS = {'09a_datacion_criterios.csv', '09a_regimenes_pca.csv', 'R_datacion_criterios.csv'}
+AMPLIADOS_COLUMNAS = {'09a_datacion_criterios.csv', '09a_regimenes_pca.csv', 'R_datacion_criterios.csv',
+                      '09a_estabilidad_cortes.csv', 'R_estabilidad_cortes.csv'}
 NOTEBOOKS = ['06_epca', '06c_aede_grilla', '07c_hfc_clases', '09a_datacion_pca']
 fallos = []
 

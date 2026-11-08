@@ -1,0 +1,31 @@
+"orden","corte","episodio","tipo","inicio","fin_efectivo","lado","distancia_meses","compatible_h3","compatible_h6"
+1,"2008-12","Crisis financiera global","periodo","2008-09","2009-06","dentro",0,TRUE,TRUE
+1,"2008-12","Taper tantrum","periodo","2013-05","2013-12","antes",53,FALSE,FALSE
+1,"2008-12","Colapso de las materias primas","periodo","2014-06","2016-01","antes",66,FALSE,FALSE
+1,"2008-12","Kuczynski / Odebrecht","puntual","2018-03","2018-03","antes",111,FALSE,FALSE
+1,"2008-12","Guerra comercial EE. UU.–China","periodo","2018-06","2020-01","antes",114,FALSE,FALSE
+1,"2008-12","COVID-19","periodo","2020-03","2020-04","antes",135,FALSE,FALSE
+2,"2010-03","Crisis financiera global","periodo","2008-09","2009-06","después",9,FALSE,FALSE
+2,"2010-03","Taper tantrum","periodo","2013-05","2013-12","antes",38,FALSE,FALSE
+2,"2010-03","Colapso de las materias primas","periodo","2014-06","2016-01","antes",51,FALSE,FALSE
+2,"2010-03","Kuczynski / Odebrecht","puntual","2018-03","2018-03","antes",96,FALSE,FALSE
+2,"2010-03","Guerra comercial EE. UU.–China","periodo","2018-06","2020-01","antes",99,FALSE,FALSE
+2,"2010-03","COVID-19","periodo","2020-03","2020-04","antes",120,FALSE,FALSE
+3,"2014-04","Crisis financiera global","periodo","2008-09","2009-06","después",58,FALSE,FALSE
+3,"2014-04","Taper tantrum","periodo","2013-05","2013-12","después",4,FALSE,TRUE
+3,"2014-04","Colapso de las materias primas","periodo","2014-06","2016-01","antes",2,TRUE,TRUE
+3,"2014-04","Kuczynski / Odebrecht","puntual","2018-03","2018-03","antes",47,FALSE,FALSE
+3,"2014-04","Guerra comercial EE. UU.–China","periodo","2018-06","2020-01","antes",50,FALSE,FALSE
+3,"2014-04","COVID-19","periodo","2020-03","2020-04","antes",71,FALSE,FALSE
+4,"2020-06","Crisis financiera global","periodo","2008-09","2009-06","después",132,FALSE,FALSE
+4,"2020-06","Taper tantrum","periodo","2013-05","2013-12","después",78,FALSE,FALSE
+4,"2020-06","Colapso de las materias primas","periodo","2014-06","2016-01","después",53,FALSE,FALSE
+4,"2020-06","Kuczynski / Odebrecht","puntual","2018-03","2018-03","después",27,FALSE,FALSE
+4,"2020-06","Guerra comercial EE. UU.–China","periodo","2018-06","2020-01","después",5,FALSE,TRUE
+4,"2020-06","COVID-19","periodo","2020-03","2020-04","después",2,TRUE,TRUE
+5,"2022-11","Crisis financiera global","periodo","2008-09","2009-06","después",161,FALSE,FALSE
+5,"2022-11","Taper tantrum","periodo","2013-05","2013-12","después",107,FALSE,FALSE
+5,"2022-11","Colapso de las materias primas","periodo","2014-06","2016-01","después",82,FALSE,FALSE
+5,"2022-11","Kuczynski / Odebrecht","puntual","2018-03","2018-03","después",56,FALSE,FALSE
+5,"2022-11","Guerra comercial EE. UU.–China","periodo","2018-06","2020-01","después",34,FALSE,FALSE
+5,"2022-11","COVID-19","periodo","2020-03","2020-04","después",31,FALSE,FALSE
