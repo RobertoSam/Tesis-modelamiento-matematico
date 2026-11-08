@@ -144,3 +144,229 @@
 \newcommand{\clasesHfcMayor}{4}
 % Percentil del error de entrenamiento en la razón walk-forward (parámetro de diseño provisional; N-03) | data/results/final/parametros_diseno.csv | parametro=percentil_walkforward | valor
 \newcommand{\percentilWalkforward}{95}
+% KMO individual de la tasa de referencia | data/results/final/05_adecuacion.csv | ambito=Tasa de referencia;medida=kmo_individual | valor
+\newcommand{\kmoTasaReferencia}{0{,}61}
+% KMO individual de la tasa interbancaria | data/results/final/05_adecuacion.csv | ambito=Tasa interbancaria;medida=kmo_individual | valor
+\newcommand{\kmoTasaInterbancaria}{0{,}62}
+% KMO individual del EMBIG | data/results/final/05_adecuacion.csv | ambito=EMBIG Perú;medida=kmo_individual | valor
+\newcommand{\kmoEmbig}{0{,}68}
+% Inercia acumulada (%) de los tres primeros ejes | data/results/final/05_pca_valores_propios.csv | componente=3 | inercia_acumulada
+\newcommand{\inerciaAcumTresNiveles}{92{,}2}
+% Tercer valor propio del PCA global | data/results/final/05_pca_valores_propios.csv | componente=3 | valor_propio
+\newcommand{\lambdaTresNiveles}{1{,}21}
+% Umbral de Horn del tercer valor propio | data/results/final/05_pca_valores_propios.csv | componente=3 | horn_umbral_p95
+\newcommand{\hornUmbralTresNiveles}{1{,}36}
+% Componentes retenidos por la vara quebrada | data/results/final/05_pca_retencion.csv | criterio=vara_quebrada | componentes
+\newcommand{\varaQuebradaNiveles}{2}
+% p5 de la congruencia bootstrap de PC1 (L = 24) | data/results/final/05_bootstrap_congruencia.csv | L=24;componente=1 | p5
+\newcommand{\congruenciaBootPCUnoNiveles}{0{,}926}
+% p5 de la congruencia bootstrap de PC3 (L = 24) | data/results/final/05_bootstrap_congruencia.csv | L=24;componente=3 | p5
+\newcommand{\congruenciaBootPCTresNiveles}{0{,}796}
+% Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC1 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc1 | proporcion
+\newcommand{\nuloMixtoTsPCUno}{0{,}775}
+% Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC2 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc2 | proporcion
+\newcommand{\nuloMixtoTsPCDos}{0{,}002}
+% Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC3 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ts;medida=inercia_pc3 | proporcion
+\newcommand{\nuloMixtoTsPCTres}{0{,}221}
+% Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC1 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ds;medida=inercia_pc1 | proporcion
+\newcommand{\nuloMixtoDsPCUno}{0{,}824}
+% Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC2 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ds;medida=inercia_pc2 | proporcion
+\newcommand{\nuloMixtoDsPCDos}{0{,}003}
+% Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC3 >= observado | data/results/final/05_nulo_tendencias.csv | version=mixto_ind_ds;medida=inercia_pc3 | proporcion
+\newcommand{\nuloMixtoDsPCTres}{0{,}218}
+% Ventanas de aede con nw = 24 | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=uniformes;eje=1 | ventanas
+\newcommand{\ventanasAedeVeinticuatro}{205}
+% Ventanas de aede con nw = 36 | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=uniformes;eje=1 | ventanas
+\newcommand{\ventanasAedeTreintayseis}{193}
+% Ventanas de aede con nw = 48 | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=uniformes;eje=1 | ventanas
+\newcommand{\ventanasAedeCuarentayocho}{181}
+% Ventanas de aede con nw = 60 | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=uniformes;eje=1 | ventanas
+\newcommand{\ventanasAedeSesenta}{169}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 24, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=uniformes;eje=2 | bajo_horn
+\newcommand{\bajoHornDosVeinticuatroU}{117}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 24, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=2 | bajo_horn
+\newcommand{\bajoHornDosVeinticuatroG}{126}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 36, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=uniformes;eje=2 | bajo_horn
+\newcommand{\bajoHornDosTreintayseisU}{52}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 36, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=2 | bajo_horn
+\newcommand{\bajoHornDosTreintayseisG}{56}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 48, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=uniformes;eje=2 | bajo_horn
+\newcommand{\bajoHornDosCuarentayochoU}{20}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 48, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=2 | bajo_horn
+\newcommand{\bajoHornDosCuarentayochoG}{32}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 60, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=uniformes;eje=2 | bajo_horn
+\newcommand{\bajoHornDosSesentaU}{2}
+% Ventanas con lambda_2 bajo el umbral de Horn (nw = 60, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=2 | bajo_horn
+\newcommand{\bajoHornDosSesentaG}{13}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 24, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=uniformes;eje=3 | bajo_horn
+\newcommand{\bajoHornTresVeinticuatroU}{199}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 24, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=gaussianos_nsd3;eje=3 | bajo_horn
+\newcommand{\bajoHornTresVeinticuatroG}{199}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 36, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=uniformes;eje=3 | bajo_horn
+\newcommand{\bajoHornTresTreintayseisU}{179}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 36, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=36;pesos=gaussianos_nsd3;eje=3 | bajo_horn
+\newcommand{\bajoHornTresTreintayseisG}{179}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 48, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=uniformes;eje=3 | bajo_horn
+\newcommand{\bajoHornTresCuarentayochoU}{141}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 48, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=48;pesos=gaussianos_nsd3;eje=3 | bajo_horn
+\newcommand{\bajoHornTresCuarentayochoG}{164}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 60, uniformes) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=uniformes;eje=3 | bajo_horn
+\newcommand{\bajoHornTresSesentaU}{110}
+% Ventanas con lambda_3 bajo el umbral de Horn (nw = 60, gaussianos_nsd3) | data/results/final/06c_aede_valores_propios_resumen.csv | nw=60;pesos=gaussianos_nsd3;eje=3 | bajo_horn
+\newcommand{\bajoHornTresSesentaG}{121}
+% Ventanas de 24 meses con alguna serie constante | data/results/final/06c_aede_valores_propios_resumen.csv | nw=24;pesos=uniformes;eje=1 | serie_constante
+\newcommand{\ventanasSerieConstanteVeinticuatro}{7}
+% Segmentos del codo de aede (nw = 24, uniformes, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=24;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | k
+\newcommand{\kCodoVeinticuatroU}{6}
+% Único corte del codo de aede (nw = 24, gaussianos_nsd3, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=24;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoVeinticuatroG}{junio de 2018}
+% Único corte del codo de aede (nw = 36, uniformes, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=36;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoTreintayseisU}{mayo de 2020}
+% Único corte del codo de aede (nw = 36, gaussianos_nsd3, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=36;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoTreintayseisG}{septiembre de 2020}
+% Único corte del codo de aede (nw = 48, uniformes, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=48;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoCuarentayochoU}{abril de 2020}
+% Único corte del codo de aede (nw = 48, gaussianos_nsd3, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=48;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoCuarentayochoG}{mayo de 2020}
+% Único corte del codo de aede (nw = 60, uniformes, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=60;maxcl=10;pesos=uniformes;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoSesentaU}{febrero de 2020}
+% Único corte del codo de aede (nw = 60, gaussianos_nsd3, maxcl = 10) | data/results/final/06c_aede_cortes.csv | nw=60;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima) | cortes
+\newcommand{\corteCodoSesentaG}{abril de 2020}
+% p-valor del criterio de OE4 (nw = 24, uniformes, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=24;pesos=uniformes | p_valor
+\newcommand{\pOEcuatroVeinticuatroU}{0{,}695}
+% Proporción observada de pares bajo el p5 (nw = 24, uniformes) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=24;pesos=uniformes | prop_obs
+\newcommand{\propOEcuatroVeinticuatroU}{0{,}022}
+% p-valor del criterio de OE4 (nw = 24, gaussianos_nsd3, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=24;pesos=gaussianos_nsd3 | p_valor
+\newcommand{\pOEcuatroVeinticuatroG}{0{,}620}
+% Proporción observada de pares bajo el p5 (nw = 24, gaussianos_nsd3) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=24;pesos=gaussianos_nsd3 | prop_obs
+\newcommand{\propOEcuatroVeinticuatroG}{0{,}033}
+% p-valor del criterio de OE4 (nw = 36, uniformes, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=36;pesos=uniformes | p_valor
+\newcommand{\pOEcuatroTreintayseisU}{0{,}450}
+% Proporción observada de pares bajo el p5 (nw = 36, uniformes) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=36;pesos=uniformes | prop_obs
+\newcommand{\propOEcuatroTreintayseisU}{0{,}051}
+% p-valor del criterio de OE4 (nw = 36, gaussianos_nsd3, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=36;pesos=gaussianos_nsd3 | p_valor
+\newcommand{\pOEcuatroTreintayseisG}{0{,}380}
+% Proporción observada de pares bajo el p5 (nw = 36, gaussianos_nsd3) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=36;pesos=gaussianos_nsd3 | prop_obs
+\newcommand{\propOEcuatroTreintayseisG}{0{,}064}
+% p-valor del criterio de OE4 (nw = 48, uniformes, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=48;pesos=uniformes | p_valor
+\newcommand{\pOEcuatroCuarentayochoU}{1{,}000}
+% Proporción observada de pares bajo el p5 (nw = 48, uniformes) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=48;pesos=uniformes | prop_obs
+\newcommand{\propOEcuatroCuarentayochoU}{0{,}000}
+% p-valor del criterio de OE4 (nw = 48, gaussianos_nsd3, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=48;pesos=gaussianos_nsd3 | p_valor
+\newcommand{\pOEcuatroCuarentayochoG}{0{,}475}
+% Proporción observada de pares bajo el p5 (nw = 48, gaussianos_nsd3) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=48;pesos=gaussianos_nsd3 | prop_obs
+\newcommand{\propOEcuatroCuarentayochoG}{0{,}015}
+% p-valor del criterio de OE4 (nw = 60, uniformes, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=60;pesos=uniformes | p_valor
+\newcommand{\pOEcuatroSesentaU}{1{,}000}
+% Proporción observada de pares bajo el p5 (nw = 60, uniformes) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=60;pesos=uniformes | prop_obs
+\newcommand{\propOEcuatroSesentaU}{0{,}000}
+% p-valor del criterio de OE4 (nw = 60, gaussianos_nsd3, objeto principal) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=60;pesos=gaussianos_nsd3 | p_valor
+\newcommand{\pOEcuatroSesentaG}{1{,}000}
+% Proporción observada de pares bajo el p5 (nw = 60, gaussianos_nsd3) | data/results/final/07b_nulo_estructura_oe4.csv | principal=True;nw=60;pesos=gaussianos_nsd3 | prop_obs
+\newcommand{\propOEcuatroSesentaG}{0{,}000}
+% Réplicas del bootstrap de la HFC | data/results/final/07c_hfc_correlaciones3.csv | version=original;tipo=factores;clase_a=C1;clase_b=C2 | replicas
+\newcommand{\replicasHfc}{500}
+% r de la correlación entre los factores C1 y C3 (original) | data/results/final/07c_hfc_correlaciones3.csv | version=original;tipo=factores;clase_a=C1;clase_b=C3 | r
+\newcommand{\rFactoresUnoTres}{-0{,}48}
+% p5 de la correlación entre los factores C1 y C3 (original) | data/results/final/07c_hfc_correlaciones3.csv | version=original;tipo=factores;clase_a=C1;clase_b=C3 | p5
+\newcommand{\rFactoresUnoTresPcinco}{-0{,}64}
+% p95 de la correlación entre los factores C1 y C3 (original) | data/results/final/07c_hfc_correlaciones3.csv | version=original;tipo=factores;clase_a=C1;clase_b=C3 | p95
+\newcommand{\rFactoresUnoTresPnoventaycinco}{-0{,}18}
+% r de la correlación entre los factores C1 y C2 (sin_tendencia) | data/results/final/07c_hfc_correlaciones3.csv | version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2 | r
+\newcommand{\rFactoresUnoDosSinTendencia}{-0{,}41}
+% p5 de la correlación entre los factores C1 y C2 (sin_tendencia) | data/results/final/07c_hfc_correlaciones3.csv | version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2 | p5
+\newcommand{\rFactoresUnoDosSinTendenciaPcinco}{-0{,}64}
+% p95 de la correlación entre los factores C1 y C2 (sin_tendencia) | data/results/final/07c_hfc_correlaciones3.csv | version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2 | p95
+\newcommand{\rFactoresUnoDosSinTendenciaPnoventaycinco}{-0{,}01}
+% Regímenes de la regla K con maxcl = 10 (D17.1) | data/results/final/09a_datacion_criterios.csv | maxcl=10;criterio=regla K (D12) | k
+\newcommand{\nRegimenesPrincipal}{6}
+% Regímenes de la regla K con maxcl = 15 | data/results/final/09a_datacion_criterios.csv | maxcl=15;criterio=regla K (D12) | k
+\newcommand{\nRegimenesQuince}{11}
+% Regímenes de la regla K con maxcl = 20 | data/results/final/09a_datacion_criterios.csv | maxcl=20;criterio=regla K (D12) | k
+\newcommand{\nRegimenesVeinte}{11}
+% Regímenes de la regla K con d = 2 | data/results/final/09a_datacion_dimension.csv | d=2;maxcl=10;criterio=regla K (D12) | k
+\newcommand{\nRegimenesDimDos}{6}
+% Regímenes de la regla K con d = 4 | data/results/final/09a_datacion_dimension.csv | d=4;maxcl=10;criterio=regla K (D12) | k
+\newcommand{\nRegimenesDimCuatro}{4}
+% Congruencia del eje 1 tras el logaritmo | data/results/final/anexo/05c_pasos.csv | version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=1 | valor
+\newcommand{\congruenciaLogPCUno}{0{,}999}
+% Congruencia del eje 2 tras el logaritmo | data/results/final/anexo/05c_pasos.csv | version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=2 | valor
+\newcommand{\congruenciaLogPCDos}{0{,}996}
+% Congruencia del eje 3 tras el logaritmo | data/results/final/anexo/05c_pasos.csv | version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=3 | valor
+\newcommand{\congruenciaLogPCTres}{0{,}992}
+% Inercia (%) de PC1 con solo la primera diferencia | data/results/final/anexo/05c_pasos.csv | version=solo_diferencia;medida=inercia;componente=1 | valor
+\newcommand{\inerciaPCUnoDiferencia}{23{,}5}
+% Falsas alarmas (%) en transformadas, h = 3 | data/results/final/anexo/09b_discriminacion_episodios.csv | via=transformadas;series=16;metodo=pca;tolerancia_meses=3;medida=falsas_alarmas_% | valor
+\newcommand{\falsasAlarmasTransformadasTres}{0{,}9}
+% Sensibilidad (%) en la pandemia, transformadas, h = 3 | data/results/final/anexo/09b_discriminacion_episodios.csv | via=transformadas;series=16;metodo=pca;tolerancia_meses=3;medida=sensibilidad_%;episodio=COVID-19 | valor
+\newcommand{\sensibilidadCovidTransformadasTres}{62{,}5}
+% Falsas alarmas (%) sin transformar, h = 3 | data/results/final/anexo/09b_discriminacion_episodios.csv | via=niveles;series=16;metodo=pca;tolerancia_meses=3;medida=falsas_alarmas_% | valor
+\newcommand{\falsasAlarmasNivelesTres}{59{,}6}
+% Transiciones candidatas de D10 (regla del 06 y codo de aede; objeto principal) | data/results/final/07b_transiciones_d10_resumen.csv | objeto=cargas_sin_centrar | candidatas
+\newcommand{\nTransicionesCandidatas}{36}
+% Candidatas que no son borde de ventana (±3 meses) y están fuera del nulo | data/results/final/07b_transiciones_d10_resumen.csv | objeto=cargas_sin_centrar | cuentan
+\newcommand{\nTransicionesCuentan}{1}
+% Fecha de la única candidata que cuenta (vacía si no es única) | data/results/final/07b_transiciones_d10_resumen.csv | objeto=cargas_sin_centrar | fecha_cuenta_unica
+\newcommand{\transicionCuentaFecha}{julio de 2012}
+% Mediana del Rand ajustado de la partición en 3 clases (bootstrap de la HFC) | data/results/final/07c_hfc_bootstrap_resumen.csv | (única fila) | ari_3_mediana
+\newcommand{\ariTresMediana}{1{,}00}
+% Media del Rand ajustado de la partición en 3 clases (bootstrap de la HFC) | data/results/final/07c_hfc_bootstrap_resumen.csv | (única fila) | ari_3_media
+\newcommand{\ariTresMedia}{0{,}95}
+% Media del Rand ajustado de la partición en 4 clases (bootstrap de la HFC) | data/results/final/07c_hfc_bootstrap_resumen.csv | (única fila) | ari_4_media
+\newcommand{\ariCuatroMedia}{0{,}88}
+% Mediana de la correlación cofenética (bootstrap de la HFC) | data/results/final/07c_hfc_bootstrap_resumen.csv | (única fila) | cofenetica_mediana
+\newcommand{\cofeneticaMediana}{0{,}99}
+% Corte 1 de la datación principal (primer mes del régimen nuevo) | data/results/final/09a_estabilidad_cortes.csv | orden=1 | corte
+\newcommand{\corteDatacionUno}{diciembre de 2008}
+% Proporción de réplicas que reproducen el corte 1 a ±3 meses | data/results/final/09a_estabilidad_cortes.csv | orden=1 | frecuencia
+\newcommand{\estabilidadCorteUno}{0{,}855}
+% Corte 2 de la datación principal (primer mes del régimen nuevo) | data/results/final/09a_estabilidad_cortes.csv | orden=2 | corte
+\newcommand{\corteDatacionDos}{marzo de 2010}
+% Proporción de réplicas que reproducen el corte 2 a ±3 meses | data/results/final/09a_estabilidad_cortes.csv | orden=2 | frecuencia
+\newcommand{\estabilidadCorteDos}{0{,}975}
+% Corte 3 de la datación principal (primer mes del régimen nuevo) | data/results/final/09a_estabilidad_cortes.csv | orden=3 | corte
+\newcommand{\corteDatacionTres}{abril de 2014}
+% Proporción de réplicas que reproducen el corte 3 a ±3 meses | data/results/final/09a_estabilidad_cortes.csv | orden=3 | frecuencia
+\newcommand{\estabilidadCorteTres}{0{,}400}
+% Corte 4 de la datación principal (primer mes del régimen nuevo) | data/results/final/09a_estabilidad_cortes.csv | orden=4 | corte
+\newcommand{\corteDatacionCuatro}{junio de 2020}
+% Proporción de réplicas que reproducen el corte 4 a ±3 meses | data/results/final/09a_estabilidad_cortes.csv | orden=4 | frecuencia
+\newcommand{\estabilidadCorteCuatro}{0{,}955}
+% Corte 5 de la datación principal (primer mes del régimen nuevo) | data/results/final/09a_estabilidad_cortes.csv | orden=5 | corte
+\newcommand{\corteDatacionCinco}{noviembre de 2022}
+% Proporción de réplicas que reproducen el corte 5 a ±3 meses | data/results/final/09a_estabilidad_cortes.csv | orden=5 | frecuencia
+\newcommand{\estabilidadCorteCinco}{1{,}000}
+% Réplicas bootstrap de la estabilidad de los cortes | data/results/final/09a_estabilidad_cortes.csv | orden=1 | replicas
+\newcommand{\replicasDatacion}{200}
+% Primer mes del régimen 1 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=1 | inicio
+\newcommand{\regimenUnoInicio}{diciembre de 2007}
+% Último mes del régimen 1 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=1 | fin
+\newcommand{\regimenUnoFin}{noviembre de 2008}
+% Primer mes del régimen 2 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=2 | inicio
+\newcommand{\regimenDosInicio}{diciembre de 2008}
+% Último mes del régimen 2 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=2 | fin
+\newcommand{\regimenDosFin}{febrero de 2010}
+% Primer mes del régimen 3 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=3 | inicio
+\newcommand{\regimenTresInicio}{marzo de 2010}
+% Último mes del régimen 3 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=3 | fin
+\newcommand{\regimenTresFin}{marzo de 2014}
+% Primer mes del régimen 4 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=4 | inicio
+\newcommand{\regimenCuatroInicio}{abril de 2014}
+% Último mes del régimen 4 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=4 | fin
+\newcommand{\regimenCuatroFin}{mayo de 2020}
+% Primer mes del régimen 5 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=5 | inicio
+\newcommand{\regimenCincoInicio}{junio de 2020}
+% Último mes del régimen 5 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=5 | fin
+\newcommand{\regimenCincoFin}{octubre de 2022}
+% Primer mes del régimen 6 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=6 | inicio
+\newcommand{\regimenSeisInicio}{noviembre de 2022}
+% Último mes del régimen 6 de la datación principal | data/results/final/09a_regimenes_pca.csv | orden=6 | fin
+\newcommand{\regimenSeisFin}{diciembre de 2025}
+% Mediana (%) de la varianza en períodos de 24 meses o más, niveles sin tendencia | data/results/final/anexo/05c_espectro_resumen.csv | version=niv_det | mediana_pct
+\newcommand{\espectroLentoMedianaNivelesSinTendencia}{93{,}4}
+% Mediana (%) de la varianza en períodos de 24 meses o más, transformadas | data/results/final/anexo/05c_espectro_resumen.csv | version=tr | mediana_pct
+\newcommand{\espectroLentoMedianaTransformadas}{23{,}4}
+% Comprobaciones de paridad R–Python (vía en niveles) | data/results/final/R_paridad_resumen.csv | (única fila) | filas
+\newcommand{\filasParidad}{56}
+% Comprobaciones de paridad R–Python que coinciden (vía en niveles) | data/results/final/R_paridad_resumen.csv | (única fila) | coinciden
+\newcommand{\filasParidadCoinciden}{56}

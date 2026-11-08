@@ -70,3 +70,116 @@ ventanaMediaMovil,data/results/final/parametros_diseno.csv,parametro=ventana_med
 clasesHfcMenor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_menor,valor,entero,Partición menor de la HFC en clases (parámetro de diseño provisional; N-03)
 clasesHfcMayor,data/results/final/parametros_diseno.csv,parametro=clases_hfc_mayor,valor,entero,Partición mayor de la HFC en clases (parámetro de diseño provisional; N-03)
 percentilWalkforward,data/results/final/parametros_diseno.csv,parametro=percentil_walkforward,valor,entero,Percentil del error de entrenamiento en la razón walk-forward (parámetro de diseño provisional; N-03)
+kmoTasaReferencia,data/results/final/05_adecuacion.csv,ambito=Tasa de referencia;medida=kmo_individual,valor,decimal:2,KMO individual de la tasa de referencia
+kmoTasaInterbancaria,data/results/final/05_adecuacion.csv,ambito=Tasa interbancaria;medida=kmo_individual,valor,decimal:2,KMO individual de la tasa interbancaria
+kmoEmbig,data/results/final/05_adecuacion.csv,ambito=EMBIG Perú;medida=kmo_individual,valor,decimal:2,KMO individual del EMBIG
+inerciaAcumTresNiveles,data/results/final/05_pca_valores_propios.csv,componente=3,inercia_acumulada,decimal:1,Inercia acumulada (%) de los tres primeros ejes
+lambdaTresNiveles,data/results/final/05_pca_valores_propios.csv,componente=3,valor_propio,decimal:2,Tercer valor propio del PCA global
+hornUmbralTresNiveles,data/results/final/05_pca_valores_propios.csv,componente=3,horn_umbral_p95,decimal:2,Umbral de Horn del tercer valor propio
+varaQuebradaNiveles,data/results/final/05_pca_retencion.csv,criterio=vara_quebrada,componentes,entero,Componentes retenidos por la vara quebrada
+congruenciaBootPCUnoNiveles,data/results/final/05_bootstrap_congruencia.csv,L=24;componente=1,p5,decimal:3,p5 de la congruencia bootstrap de PC1 (L = 24)
+congruenciaBootPCTresNiveles,data/results/final/05_bootstrap_congruencia.csv,L=24;componente=3,p5,decimal:3,p5 de la congruencia bootstrap de PC3 (L = 24)
+nuloMixtoTsPCUno,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ts;medida=inercia_pc1,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC1 >= observado"
+nuloMixtoTsPCDos,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ts;medida=inercia_pc2,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC2 >= observado"
+nuloMixtoTsPCTres,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ts;medida=inercia_pc3,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ts, D8 y D19) con PC3 >= observado"
+nuloMixtoDsPCUno,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ds;medida=inercia_pc1,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC1 >= observado"
+nuloMixtoDsPCDos,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ds;medida=inercia_pc2,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC2 >= observado"
+nuloMixtoDsPCTres,data/results/final/05_nulo_tendencias.csv,version=mixto_ind_ds;medida=inercia_pc3,proporcion,decimal:3,"Proporción del nulo mixto (mixto_ind_ds, D8 y D19) con PC3 >= observado"
+ventanasAedeVeinticuatro,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=uniformes;eje=1,ventanas,entero,Ventanas de aede con nw = 24
+ventanasAedeTreintayseis,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=uniformes;eje=1,ventanas,entero,Ventanas de aede con nw = 36
+ventanasAedeCuarentayocho,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=uniformes;eje=1,ventanas,entero,Ventanas de aede con nw = 48
+ventanasAedeSesenta,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=uniformes;eje=1,ventanas,entero,Ventanas de aede con nw = 60
+bajoHornDosVeinticuatroU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=uniformes;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 24, uniformes)"
+bajoHornDosVeinticuatroG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=gaussianos_nsd3;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 24, gaussianos_nsd3)"
+bajoHornDosTreintayseisU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=uniformes;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 36, uniformes)"
+bajoHornDosTreintayseisG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=gaussianos_nsd3;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 36, gaussianos_nsd3)"
+bajoHornDosCuarentayochoU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=uniformes;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 48, uniformes)"
+bajoHornDosCuarentayochoG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=gaussianos_nsd3;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 48, gaussianos_nsd3)"
+bajoHornDosSesentaU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=uniformes;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 60, uniformes)"
+bajoHornDosSesentaG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=gaussianos_nsd3;eje=2,bajo_horn,entero,"Ventanas con lambda_2 bajo el umbral de Horn (nw = 60, gaussianos_nsd3)"
+bajoHornTresVeinticuatroU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=uniformes;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 24, uniformes)"
+bajoHornTresVeinticuatroG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=gaussianos_nsd3;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 24, gaussianos_nsd3)"
+bajoHornTresTreintayseisU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=uniformes;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 36, uniformes)"
+bajoHornTresTreintayseisG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=36;pesos=gaussianos_nsd3;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 36, gaussianos_nsd3)"
+bajoHornTresCuarentayochoU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=uniformes;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 48, uniformes)"
+bajoHornTresCuarentayochoG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=48;pesos=gaussianos_nsd3;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 48, gaussianos_nsd3)"
+bajoHornTresSesentaU,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=uniformes;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 60, uniformes)"
+bajoHornTresSesentaG,data/results/final/06c_aede_valores_propios_resumen.csv,nw=60;pesos=gaussianos_nsd3;eje=3,bajo_horn,entero,"Ventanas con lambda_3 bajo el umbral de Horn (nw = 60, gaussianos_nsd3)"
+ventanasSerieConstanteVeinticuatro,data/results/final/06c_aede_valores_propios_resumen.csv,nw=24;pesos=uniformes;eje=1,serie_constante,entero,Ventanas de 24 meses con alguna serie constante
+kCodoVeinticuatroU,data/results/final/06c_aede_cortes.csv,nw=24;maxcl=10;pesos=uniformes;criterio=codo (caída máxima),k,entero,"Segmentos del codo de aede (nw = 24, uniformes, maxcl = 10)"
+corteCodoVeinticuatroG,data/results/final/06c_aede_cortes.csv,nw=24;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 24, gaussianos_nsd3, maxcl = 10)"
+corteCodoTreintayseisU,data/results/final/06c_aede_cortes.csv,nw=36;maxcl=10;pesos=uniformes;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 36, uniformes, maxcl = 10)"
+corteCodoTreintayseisG,data/results/final/06c_aede_cortes.csv,nw=36;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 36, gaussianos_nsd3, maxcl = 10)"
+corteCodoCuarentayochoU,data/results/final/06c_aede_cortes.csv,nw=48;maxcl=10;pesos=uniformes;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 48, uniformes, maxcl = 10)"
+corteCodoCuarentayochoG,data/results/final/06c_aede_cortes.csv,nw=48;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 48, gaussianos_nsd3, maxcl = 10)"
+corteCodoSesentaU,data/results/final/06c_aede_cortes.csv,nw=60;maxcl=10;pesos=uniformes;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 60, uniformes, maxcl = 10)"
+corteCodoSesentaG,data/results/final/06c_aede_cortes.csv,nw=60;maxcl=10;pesos=gaussianos_nsd3;criterio=codo (caída máxima),cortes,fecha_mes,"Único corte del codo de aede (nw = 60, gaussianos_nsd3, maxcl = 10)"
+pOEcuatroVeinticuatroU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=24;pesos=uniformes,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 24, uniformes, objeto principal)"
+propOEcuatroVeinticuatroU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=24;pesos=uniformes,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 24, uniformes)"
+pOEcuatroVeinticuatroG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=24;pesos=gaussianos_nsd3,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 24, gaussianos_nsd3, objeto principal)"
+propOEcuatroVeinticuatroG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=24;pesos=gaussianos_nsd3,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 24, gaussianos_nsd3)"
+pOEcuatroTreintayseisU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=36;pesos=uniformes,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 36, uniformes, objeto principal)"
+propOEcuatroTreintayseisU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=36;pesos=uniformes,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 36, uniformes)"
+pOEcuatroTreintayseisG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=36;pesos=gaussianos_nsd3,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 36, gaussianos_nsd3, objeto principal)"
+propOEcuatroTreintayseisG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=36;pesos=gaussianos_nsd3,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 36, gaussianos_nsd3)"
+pOEcuatroCuarentayochoU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=48;pesos=uniformes,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 48, uniformes, objeto principal)"
+propOEcuatroCuarentayochoU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=48;pesos=uniformes,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 48, uniformes)"
+pOEcuatroCuarentayochoG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=48;pesos=gaussianos_nsd3,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 48, gaussianos_nsd3, objeto principal)"
+propOEcuatroCuarentayochoG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=48;pesos=gaussianos_nsd3,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 48, gaussianos_nsd3)"
+pOEcuatroSesentaU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=60;pesos=uniformes,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 60, uniformes, objeto principal)"
+propOEcuatroSesentaU,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=60;pesos=uniformes,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 60, uniformes)"
+pOEcuatroSesentaG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=60;pesos=gaussianos_nsd3,p_valor,decimal:3,"p-valor del criterio de OE4 (nw = 60, gaussianos_nsd3, objeto principal)"
+propOEcuatroSesentaG,data/results/final/07b_nulo_estructura_oe4.csv,principal=True;nw=60;pesos=gaussianos_nsd3,prop_obs,decimal:3,"Proporción observada de pares bajo el p5 (nw = 60, gaussianos_nsd3)"
+replicasHfc,data/results/final/07c_hfc_correlaciones3.csv,version=original;tipo=factores;clase_a=C1;clase_b=C2,replicas,entero,Réplicas del bootstrap de la HFC
+rFactoresUnoTres,data/results/final/07c_hfc_correlaciones3.csv,version=original;tipo=factores;clase_a=C1;clase_b=C3,r,decimal:2,r de la correlación entre los factores C1 y C3 (original)
+rFactoresUnoTresPcinco,data/results/final/07c_hfc_correlaciones3.csv,version=original;tipo=factores;clase_a=C1;clase_b=C3,p5,decimal:2,p5 de la correlación entre los factores C1 y C3 (original)
+rFactoresUnoTresPnoventaycinco,data/results/final/07c_hfc_correlaciones3.csv,version=original;tipo=factores;clase_a=C1;clase_b=C3,p95,decimal:2,p95 de la correlación entre los factores C1 y C3 (original)
+rFactoresUnoDosSinTendencia,data/results/final/07c_hfc_correlaciones3.csv,version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2,r,decimal:2,r de la correlación entre los factores C1 y C2 (sin_tendencia)
+rFactoresUnoDosSinTendenciaPcinco,data/results/final/07c_hfc_correlaciones3.csv,version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2,p5,decimal:2,p5 de la correlación entre los factores C1 y C2 (sin_tendencia)
+rFactoresUnoDosSinTendenciaPnoventaycinco,data/results/final/07c_hfc_correlaciones3.csv,version=sin_tendencia;tipo=factores;clase_a=C1;clase_b=C2,p95,decimal:2,p95 de la correlación entre los factores C1 y C2 (sin_tendencia)
+nRegimenesPrincipal,data/results/final/09a_datacion_criterios.csv,maxcl=10;criterio=regla K (D12),k,entero,Regímenes de la regla K con maxcl = 10 (D17.1)
+nRegimenesQuince,data/results/final/09a_datacion_criterios.csv,maxcl=15;criterio=regla K (D12),k,entero,Regímenes de la regla K con maxcl = 15
+nRegimenesVeinte,data/results/final/09a_datacion_criterios.csv,maxcl=20;criterio=regla K (D12),k,entero,Regímenes de la regla K con maxcl = 20
+nRegimenesDimDos,data/results/final/09a_datacion_dimension.csv,d=2;maxcl=10;criterio=regla K (D12),k,entero,Regímenes de la regla K con d = 2
+nRegimenesDimCuatro,data/results/final/09a_datacion_dimension.csv,d=4;maxcl=10;criterio=regla K (D12),k,entero,Regímenes de la regla K con d = 4
+congruenciaLogPCUno,data/results/final/anexo/05c_pasos.csv,version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=1,valor,decimal:3,Congruencia del eje 1 tras el logaritmo
+congruenciaLogPCDos,data/results/final/anexo/05c_pasos.csv,version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=2,valor,decimal:3,Congruencia del eje 2 tras el logaritmo
+congruenciaLogPCTres,data/results/final/anexo/05c_pasos.csv,version=solo_logaritmo;medida=congruencia_con_sin_transformar;componente=3,valor,decimal:3,Congruencia del eje 3 tras el logaritmo
+inerciaPCUnoDiferencia,data/results/final/anexo/05c_pasos.csv,version=solo_diferencia;medida=inercia;componente=1,valor,decimal:1,Inercia (%) de PC1 con solo la primera diferencia
+falsasAlarmasTransformadasTres,data/results/final/anexo/09b_discriminacion_episodios.csv,via=transformadas;series=16;metodo=pca;tolerancia_meses=3;medida=falsas_alarmas_%,valor,decimal:1,"Falsas alarmas (%) en transformadas, h = 3"
+sensibilidadCovidTransformadasTres,data/results/final/anexo/09b_discriminacion_episodios.csv,via=transformadas;series=16;metodo=pca;tolerancia_meses=3;medida=sensibilidad_%;episodio=COVID-19,valor,decimal:1,"Sensibilidad (%) en la pandemia, transformadas, h = 3"
+falsasAlarmasNivelesTres,data/results/final/anexo/09b_discriminacion_episodios.csv,via=niveles;series=16;metodo=pca;tolerancia_meses=3;medida=falsas_alarmas_%,valor,decimal:1,"Falsas alarmas (%) sin transformar, h = 3"
+nTransicionesCandidatas,data/results/final/07b_transiciones_d10_resumen.csv,objeto=cargas_sin_centrar,candidatas,entero,Transiciones candidatas de D10 (regla del 06 y codo de aede; objeto principal)
+nTransicionesCuentan,data/results/final/07b_transiciones_d10_resumen.csv,objeto=cargas_sin_centrar,cuentan,entero,Candidatas que no son borde de ventana (±3 meses) y están fuera del nulo
+transicionCuentaFecha,data/results/final/07b_transiciones_d10_resumen.csv,objeto=cargas_sin_centrar,fecha_cuenta_unica,fecha_mes,Fecha de la única candidata que cuenta (vacía si no es única)
+ariTresMediana,data/results/final/07c_hfc_bootstrap_resumen.csv,,ari_3_mediana,decimal:2,Mediana del Rand ajustado de la partición en 3 clases (bootstrap de la HFC)
+ariTresMedia,data/results/final/07c_hfc_bootstrap_resumen.csv,,ari_3_media,decimal:2,Media del Rand ajustado de la partición en 3 clases (bootstrap de la HFC)
+ariCuatroMedia,data/results/final/07c_hfc_bootstrap_resumen.csv,,ari_4_media,decimal:2,Media del Rand ajustado de la partición en 4 clases (bootstrap de la HFC)
+cofeneticaMediana,data/results/final/07c_hfc_bootstrap_resumen.csv,,cofenetica_mediana,decimal:2,Mediana de la correlación cofenética (bootstrap de la HFC)
+corteDatacionUno,data/results/final/09a_estabilidad_cortes.csv,orden=1,corte,fecha_mes,Corte 1 de la datación principal (primer mes del régimen nuevo)
+estabilidadCorteUno,data/results/final/09a_estabilidad_cortes.csv,orden=1,frecuencia,decimal:3,Proporción de réplicas que reproducen el corte 1 a ±3 meses
+corteDatacionDos,data/results/final/09a_estabilidad_cortes.csv,orden=2,corte,fecha_mes,Corte 2 de la datación principal (primer mes del régimen nuevo)
+estabilidadCorteDos,data/results/final/09a_estabilidad_cortes.csv,orden=2,frecuencia,decimal:3,Proporción de réplicas que reproducen el corte 2 a ±3 meses
+corteDatacionTres,data/results/final/09a_estabilidad_cortes.csv,orden=3,corte,fecha_mes,Corte 3 de la datación principal (primer mes del régimen nuevo)
+estabilidadCorteTres,data/results/final/09a_estabilidad_cortes.csv,orden=3,frecuencia,decimal:3,Proporción de réplicas que reproducen el corte 3 a ±3 meses
+corteDatacionCuatro,data/results/final/09a_estabilidad_cortes.csv,orden=4,corte,fecha_mes,Corte 4 de la datación principal (primer mes del régimen nuevo)
+estabilidadCorteCuatro,data/results/final/09a_estabilidad_cortes.csv,orden=4,frecuencia,decimal:3,Proporción de réplicas que reproducen el corte 4 a ±3 meses
+corteDatacionCinco,data/results/final/09a_estabilidad_cortes.csv,orden=5,corte,fecha_mes,Corte 5 de la datación principal (primer mes del régimen nuevo)
+estabilidadCorteCinco,data/results/final/09a_estabilidad_cortes.csv,orden=5,frecuencia,decimal:3,Proporción de réplicas que reproducen el corte 5 a ±3 meses
+replicasDatacion,data/results/final/09a_estabilidad_cortes.csv,orden=1,replicas,entero,Réplicas bootstrap de la estabilidad de los cortes
+regimenUnoInicio,data/results/final/09a_regimenes_pca.csv,orden=1,inicio,fecha_mes,Primer mes del régimen 1 de la datación principal
+regimenUnoFin,data/results/final/09a_regimenes_pca.csv,orden=1,fin,fecha_mes,Último mes del régimen 1 de la datación principal
+regimenDosInicio,data/results/final/09a_regimenes_pca.csv,orden=2,inicio,fecha_mes,Primer mes del régimen 2 de la datación principal
+regimenDosFin,data/results/final/09a_regimenes_pca.csv,orden=2,fin,fecha_mes,Último mes del régimen 2 de la datación principal
+regimenTresInicio,data/results/final/09a_regimenes_pca.csv,orden=3,inicio,fecha_mes,Primer mes del régimen 3 de la datación principal
+regimenTresFin,data/results/final/09a_regimenes_pca.csv,orden=3,fin,fecha_mes,Último mes del régimen 3 de la datación principal
+regimenCuatroInicio,data/results/final/09a_regimenes_pca.csv,orden=4,inicio,fecha_mes,Primer mes del régimen 4 de la datación principal
+regimenCuatroFin,data/results/final/09a_regimenes_pca.csv,orden=4,fin,fecha_mes,Último mes del régimen 4 de la datación principal
+regimenCincoInicio,data/results/final/09a_regimenes_pca.csv,orden=5,inicio,fecha_mes,Primer mes del régimen 5 de la datación principal
+regimenCincoFin,data/results/final/09a_regimenes_pca.csv,orden=5,fin,fecha_mes,Último mes del régimen 5 de la datación principal
+regimenSeisInicio,data/results/final/09a_regimenes_pca.csv,orden=6,inicio,fecha_mes,Primer mes del régimen 6 de la datación principal
+regimenSeisFin,data/results/final/09a_regimenes_pca.csv,orden=6,fin,fecha_mes,Último mes del régimen 6 de la datación principal
+espectroLentoMedianaNivelesSinTendencia,data/results/final/anexo/05c_espectro_resumen.csv,version=niv_det,mediana_pct,decimal:1,"Mediana (%) de la varianza en períodos de 24 meses o más, niveles sin tendencia"
+espectroLentoMedianaTransformadas,data/results/final/anexo/05c_espectro_resumen.csv,version=tr,mediana_pct,decimal:1,"Mediana (%) de la varianza en períodos de 24 meses o más, transformadas"
+filasParidad,data/results/final/R_paridad_resumen.csv,,filas,entero,Comprobaciones de paridad R–Python (vía en niveles)
+filasParidadCoinciden,data/results/final/R_paridad_resumen.csv,,coinciden,entero,Comprobaciones de paridad R–Python que coinciden (vía en niveles)
