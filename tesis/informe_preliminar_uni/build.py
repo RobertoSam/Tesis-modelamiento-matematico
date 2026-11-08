@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import docx
+import pandas as pd
 import yaml
 from docx.enum.section import WD_ORIENT
 from docx.enum.table import WD_TABLE_ALIGNMENT
@@ -53,6 +54,35 @@ cifras["nSeriesEn"] = NUM_EN[cifras["nSeries"]]
 cifras["inerciaPCUnoNivelesEn"] = cifras["inerciaPCUnoNiveles"].replace(",", ".")
 cifras["oePMinEn"] = cifras["oePMin"].replace(",", ".")
 
+# Resultados de los programas del asesor (resultados_camiz.py)
+CAMIZ = Path(sys.argv[3]) if len(sys.argv) > 3 else AQUI / "camiz"
+cz = pd.read_csv(CAMIZ / "camiz_resumen.csv", index_col=0)["valor"]
+
+
+def coma(x, dec):
+    return f"{float(x):.{dec}f}".replace(".", ",")
+
+
+MESES_EN = ["January", "February", "March", "April", "May", "June", "July", "August",
+            "September", "October", "November", "December"]
+cortes_aede = cz["aede_cortes"].split()
+txt = [mes_texto(c) for c in cortes_aede]
+cifras["czAedeCortesTexto"] = ", ".join(txt[:-1]) + " y " + txt[-1] if len(txt) > 1 else txt[0]
+cifras["czAedeCortesEn"] = " and ".join(f"{MESES_EN[int(c[5:]) - 1]} {c[:4]}" for c in cortes_aede)
+cifras["czAedeK"] = str(int(float(cz["aede_k_ch"])))
+cifras["czAlturaRaiz"] = coma(cz["altura_raiz"], 2)
+cifras["czClasesCorte"] = str(int(float(cz["clases_corte_07"])))
+cifras["czInerciaRepr"] = coma(cz["inercia_repr_pct"], 1)
+cifras["czInerciaJer"] = coma(cz["inercia_jerarquia_pct"], 1)
+cifras["czLambdaMin"] = coma(cz["aede_lambda1_min"], 2)
+cifras["czLambdaMax"] = coma(cz["aede_lambda1_max"], 2)
+cifras["czFechaLambdaMin"] = mes_texto(cz["fecha_lambda1_min"])
+cifras["czClaedeVentanas"] = str(int(float(cz["claede_ventanas"])))
+cifras["czClaedeMin"] = str(int(float(cz["claede_clases_min"])))
+cifras["czClaedeMax"] = str(int(float(cz["claede_clases_max"])))
+cifras["czClaedeModa"] = str(int(float(cz["claede_clases_moda"])))
+cifras["czClaedeProp3"] = coma(cz["claede_prop_3clases"], 2)
+
 md = open(AQUI / "informe_preliminar.md", encoding="utf-8").read()
 faltan = set()
 
@@ -76,14 +106,45 @@ for marca, nombre in TABLAS.items():
     md = md.replace(f"[[{marca}]]", t)
 md = md.replace("| Etiqueta preliminar |", "| Fase (preliminar) |")
 
+
+def csv_a_md(nombre):
+    """Tabla Markdown desde un CSV de resultados, con coma decimal."""
+    t = pd.read_csv(CAMIZ / nombre)
+    if "Une" in t.columns:
+        t = t.drop(columns=["Une"])
+    def fmt(v):
+        if isinstance(v, float):
+            return f"{v:.3f}".rstrip("0").rstrip(".").replace(".", ",") if abs(v) < 1000 else f"{v:,.1f}"
+        return str(v)
+    filas = ["| " + " | ".join(t.columns) + " |", "|" + "---|" * len(t.columns)]
+    for r in t.itertuples(index=False):
+        filas.append("| " + " | ".join(fmt(v) for v in r) + " |")
+    return "\n".join(filas)
+
+
+md = re.sub(r"\[\[CSV:([\w.]+)\]\]", lambda m: csv_a_md(m.group(1)), md)
+
+# Numeración de tablas y figuras en el orden de sus rótulos
+numeros = {}
+for tipo, letra in (("Tabla", "T"), ("Figura", "F")):
+    for k, clave in enumerate(re.findall(r"\*\*" + tipo + r" \{" + letra + r":(\w+)\}\*\*", md), start=1):
+        numeros[(letra, clave)] = k
+def numero(m):
+    clave = (m.group(1), m.group(2))
+    if clave not in numeros:
+        sys.exit(f"Referencia sin rótulo: {clave}")
+    return str(numeros[clave])
+md = re.sub(r"\{([TF]):(\w+)\}", numero, md)
+
 tmp = AQUI / "_tmp_informe.md"
 tmp.write_text(md, encoding="utf-8")
 
 # ---------------------------------------------------------------- 2. Pandoc
 intermedio = AQUI / "_tmp_informe.docx"
 subprocess.run(["pandoc", str(tmp), "-o", str(intermedio), "--citeproc",
-                "--bibliography", str(REPO / "tesis/referencias.bib"), "--csl", str(REPO / "tesis/apa.csl"),
-                "--reference-doc", str(REPO / "tesis/plantilla_uni.docx"), "--resource-path", str(AQUI)],
+                "--bibliography", str(AQUI / "referencias.bib"),
+                "--bibliography", str(AQUI / "referencias_extra.bib"), "--csl", str(AQUI / "apa.csl"),
+                "--reference-doc", str(AQUI / "plantilla_uni.docx"), "--resource-path", str(AQUI)],
                check=True)
 
 # ---------------------------------------------------------------- 3. Ajustes con python-docx
@@ -236,7 +297,7 @@ titulos = [(p.text, int(p.style.name[-1]) - 1) for p in d.paragraphs
            if p.style.name in ("Heading 1", "Heading 2", "Heading 3")]
 campo_indice("[[TOC]]", 'TOC \\o "1-3" \\h \\z \\u', titulos)
 campo_indice("[[LISTA_TABLAS]]", 'TOC \\h \\z \\t "Rótulo tabla,1"',
-             [(t, 0) for t in rotulos["tabla"]] + [("Tabla 8. Matriz de consistencia", 0)])
+             [(t, 0) for t in rotulos["tabla"]])
 campo_indice("[[LISTA_FIGURAS]]", 'TOC \\h \\z \\t "Rótulo figura,1"',
              [(t, 0) for t in rotulos["figura"]])
 
@@ -395,13 +456,6 @@ FILA2 = [
     "Fisher, autoencoders y LSTM; nulos simulados y bootstrap por bloques (Python y R).",
 ]
 anexo1 = next(p for p in d.paragraphs if p.text.strip() == "[[MATRIZ]]")
-rot = d.add_paragraph(style=rt)
-r = rot.add_run("Tabla 8")
-r.bold = True
-r.add_break()
-r2 = rot.add_run("Matriz de consistencia")
-r2.italic = True
-anexo1._element.addprevious(rot._element)
 tabla = d.add_table(rows=3, cols=6)
 anchos = [3.2, 4.3, 4.3, 4.3, 3.9, 5.0]
 for fila_idx, valores in enumerate([H, [ESTUDIO] + FILA1, [""] + FILA2]):
