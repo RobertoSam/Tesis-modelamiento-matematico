@@ -1,6 +1,6 @@
 # 5. CONCLUSIONES Y RECOMENDACIONES
 
-Las conclusiones son preliminares. La estructura factorial y su evolución están establecidas con las series en niveles; la identificación de los regímenes, en cambio, no supera todavía el contraste con las series de referencia simuladas, y su validación estadística está en estudio. Los regímenes que se caracterizan en este informe se presentan, por ello, como una descripción tentativa.
+La estructura factorial y su evolución están establecidas con las series en niveles; la identificación de los regímenes, en cambio, no supera todavía el contraste con las series de referencia simuladas, y su validación estadística está en estudio. Los regímenes que se caracterizan en este informe se presentan, por ello, como una descripción tentativa.
 
 ## 5.1 Conclusiones
 
@@ -10,7 +10,7 @@ Las conclusiones son preliminares. La estructura factorial y su evolución está
 
 3. **Segmentación temporal (OE3).** Con las series en niveles, ninguna partición de las trayectorias de estructura y de posición supera a las series de referencia simuladas: el corte de 2020 en la trayectoria de estructura queda en el límite ($\hat p=0{,}065$), y los regímenes de posición no se distinguen de los que produce la tendencia común. El contraste con series de referencia simuladas muestra que la partición de una trayectoria con tendencia produce regímenes aparentes, y es por ello un componente necesario del modelo.
 
-4. **Caracterización de los regímenes (OE4).** Con la especificación preliminar, los seis regímenes de posición describen una secuencia económica coherente —auge previo a la crisis, crisis, expansión, desaceleración, reactivación con estancamiento del crédito real y contracción real del crédito—, y tres de sus cinco cortes coinciden con episodios documentados, más de lo esperable por azar, aunque sin significación. La regla de fases basada en el crecimiento real del crédito produce una secuencia con sentido económico con $c=0{,}5$, y con $c=1$ clasifica la mayoría de los regímenes como transición.
+4. **Caracterización de los regímenes (OE4).** Con la especificación de trabajo, los seis regímenes de posición describen una secuencia económica coherente —auge previo a la crisis, crisis, expansión, desaceleración, reactivación con estancamiento del crédito real y contracción real del crédito—, y tres de sus cinco cortes coinciden con episodios documentados, más de lo esperable por azar, aunque sin significación. La regla de fases basada en el crecimiento real del crédito produce una secuencia con sentido económico con $c=0{,}5$, y con $c=1$ clasifica la mayoría de los regímenes como transición.
 
 5. **Representaciones no lineales (OE5).** En la corrida exploratoria, el autoencoder no supera al PCA en el error de reconstrucción fuera de muestra, y su principal aporte es señalar los meses atípicos de la pandemia. La comparación definitiva requiere repetir los modelos con la base vigente.
 

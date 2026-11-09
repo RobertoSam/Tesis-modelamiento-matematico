@@ -2,7 +2,7 @@
 
 <!-- Plantilla: las marcas TABLA se sustituyen con tablas_cap4.py, que lee los resultados sin transcribirlos. -->
 
-Los resultados de este capítulo son preliminares. La estructura factorial y su evolución se informan como resultados del análisis; los regímenes, en cambio, se obtienen con la especificación preliminar de la sección 3.2.4, porque su validación estadística frente a las series de referencia simuladas no los respalda y está en estudio (sección 4.3).
+La estructura factorial y su evolución se informan como resultados del análisis; los regímenes, en cambio, se obtienen con la especificación de trabajo de la sección 3.2.4, porque su validación estadística frente a las series de referencia simuladas no los respalda y está en estudio (sección 4.3).
 
 ## 4.1 Estructura factorial global (OE1)
 
@@ -198,13 +198,13 @@ En las ventanas asignadas a los meses de enero de 2009 a diciembre de 2019, el p
 
 ::: {custom-style="Rotulo"}
 **Figura {F:aede}**\
-*Primer valor propio del EPCA y cortes de la especificación preliminar*
+*Primer valor propio del EPCA y cortes de la especificación de trabajo*
 :::
 
 ![](fig/c4_trayectoria_estructura.png){width=100%}
 
 ::: {custom-style="Nota"}
-*Nota.* Ventana de 48 meses con pesos gaussianos ($\nu=3$). Líneas verticales: cortes de la especificación preliminar; en punteado, los cortes relacionados con la entrada o salida de los meses atípicos de 2020. Línea discontinua: trayectoria con los meses de marzo a junio de 2020 interpolados. En gris, los episodios. Elaboración propia con datos del BCRP.
+*Nota.* Ventana de 48 meses con pesos gaussianos ($\nu=3$). Líneas verticales: cortes de la especificación de trabajo; en punteado, los cortes relacionados con la entrada o salida de los meses atípicos de 2020. Línea discontinua: trayectoria con los meses de marzo a junio de 2020 interpolados. En gris, los episodios. Elaboración propia con datos del BCRP.
 :::
 
 La Figura {F:aedecorr} muestra la correlación de cada serie con los dos primeros ejes en cada ventana. Hasta 2014, el crédito, la liquidez, los precios y la actividad tienen correlaciones mayores que 0,8 con el primer eje. Entre 2015 y 2020, el PBI y la demanda interna se desacoplan del crédito. Desde 2020, el crédito empresarial, M1 y M3 dejan de correlacionarse con el primer eje, mientras el crédito hipotecario, el de consumo y los precios se mantienen. En las ventanas de 2021, el primer y el segundo valor propio son casi iguales (6,20 y 5,79), de modo que los ejes no están determinados por separado y solo el plano 1–2 es interpretable.
@@ -289,13 +289,13 @@ La Tabla {T:sens} resume los cortes con las reglas alternativas. La partición d
 *Nota.* Trayectoria de posición principal: coordenadas sin estandarizar, media móvil centrada. Elaboración propia con datos del BCRP.
 :::
 
-### 4.3.2 Regímenes preliminares
+### 4.3.2 Regímenes tentativos
 
-Con la especificación preliminar de la sección 3.2.4 se obtienen seis regímenes de posición, con cortes en diciembre de 2008, marzo de 2010, abril de 2014, junio de 2020 y noviembre de 2022 (Figura {F:posicion}), y seis de estructura, con cortes en febrero de 2015, abril de 2017, mayo de 2018, agosto de 2020 y diciembre de 2021 (Figura {F:aede}). En la trayectoria de posición, la regla del 10 % no se cumple para ningún $K$, y el número de tramos corresponde a la mayor caída de la reducción.
+Con la especificación de trabajo de la sección 3.2.4 se obtienen seis regímenes de posición, con cortes en diciembre de 2008, marzo de 2010, abril de 2014, junio de 2020 y noviembre de 2022 (Figura {F:posicion}), y seis de estructura, con cortes en febrero de 2015, abril de 2017, mayo de 2018, agosto de 2020 y diciembre de 2021 (Figura {F:aede}). En la trayectoria de posición, la regla del 10 % no se cumple para ningún $K$, y el número de tramos corresponde a la mayor caída de la reducción.
 
 ::: {custom-style="Rotulo"}
 **Figura {F:posicion}**\
-*Coordenadas suavizadas y cortes de los regímenes preliminares de posición*
+*Coordenadas suavizadas y cortes de los regímenes tentativos de posición*
 :::
 
 ![](fig/avance_datacion_pca.png){width=100%}
@@ -308,7 +308,7 @@ Con la especificación preliminar de la sección 3.2.4 se obtienen seis regímen
 
 ::: {custom-style="Rotulo"}
 **Tabla {T:precision}**\
-*Precisión de la ubicación de los cortes preliminares*
+*Precisión de la ubicación de los cortes tentativos*
 :::
 
 {{TABLA:precision}}
@@ -319,11 +319,11 @@ Con la especificación preliminar de la sección 3.2.4 se obtienen seis regímen
 
 ## 4.4 Caracterización de los regímenes (OE4)
 
-Las Tablas {T:reg_posición} y {T:reg_estructura} caracterizan los regímenes preliminares, y la Figura {F:fases} muestra el crecimiento real del crédito con los umbrales de la regla de fases (mediana del período $m=6{,}2$ %, desviación estándar $s=8{,}1$ puntos).
+Las Tablas {T:reg_posición} y {T:reg_estructura} caracterizan los regímenes tentativos, y la Figura {F:fases} muestra el crecimiento real del crédito con los umbrales de la regla de fases (mediana del período $m=6{,}2$ %, desviación estándar $s=8{,}1$ puntos).
 
 ::: {custom-style="Rotulo"}
 **Tabla {T:reg_posición}**\
-*Perfil y fase de los regímenes preliminares de posición*
+*Perfil y fase de los regímenes tentativos de posición*
 :::
 
 {{TABLA:reg_posición}}
@@ -334,7 +334,7 @@ Las Tablas {T:reg_posición} y {T:reg_estructura} caracterizan los regímenes pr
 
 ::: {custom-style="Rotulo"}
 **Tabla {T:reg_estructura}**\
-*Perfil y fase de los regímenes preliminares de estructura*
+*Perfil y fase de los regímenes tentativos de estructura*
 :::
 
 {{TABLA:reg_estructura}}
@@ -345,7 +345,7 @@ Las Tablas {T:reg_posición} y {T:reg_estructura} caracterizan los regímenes pr
 
 ::: {custom-style="Rotulo"}
 **Figura {F:fases}**\
-*Crecimiento interanual real del crédito, regímenes preliminares de posición y umbrales de la regla de fases*
+*Crecimiento interanual real del crédito, regímenes tentativos de posición y umbrales de la regla de fases*
 :::
 
 ![](fig/c4_credito_real_fases.png){width=100%}
@@ -360,7 +360,7 @@ Los regímenes de posición describen una secuencia económica coherente: un aug
 
 ::: {custom-style="Rotulo"}
 **Tabla {T:episodios_azar}**\
-*Compatibilidad de los cortes preliminares con los episodios frente a la esperada por azar*
+*Compatibilidad de los cortes tentativos con los episodios frente a la esperada por azar*
 :::
 
 {{TABLA:episodios}}
@@ -407,7 +407,7 @@ Con las series en logaritmos, los tres ejes del PCA son prácticamente los mismo
 
 **Un cambio de estructura en 2020, sin respaldo estadístico.** La intensidad del movimiento común cae desde 2020, y el mayor cambio entre ventanas ocurre en la frontera de junio de 2020; la HFC evolutiva muestra en esas ventanas la fragmentación de los bloques. Pero ni la partición del primer valor propio ($\hat p=0{,}065$) ni el mínimo del RV ($\hat p=0{,}37$) se distinguen de lo que produce una estructura constante. Con unas diez observaciones independientes, el contraste puede carecer de potencia para detectar un cambio de este tamaño.
 
-**Los regímenes preliminares.** Los regímenes de posición describen una secuencia económica reconocible, y tres de sus cortes coinciden con episodios documentados, más de lo esperable por azar, aunque sin significación. Sin embargo, la misma especificación aplicada a series que solo comparten su tendencia produce particiones igual de marcadas: los regímenes son, por ahora, una descripción de la trayectoria y no una demostración de cambios de régimen del ciclo financiero. Distinguir ambas cosas requiere una formulación de la segmentación que separe la velocidad del crecimiento de su nivel acumulado, objeto de las alternativas en estudio.
+**Los regímenes tentativos.** Los regímenes de posición describen una secuencia económica reconocible, y tres de sus cortes coinciden con episodios documentados, más de lo esperable por azar, aunque sin significación. Sin embargo, la misma especificación aplicada a series que solo comparten su tendencia produce particiones igual de marcadas: los regímenes son, por ahora, una descripción de la trayectoria y no una demostración de cambios de régimen del ciclo financiero. Distinguir ambas cosas requiere una formulación de la segmentación que separe la velocidad del crecimiento de su nivel acumulado, objeto de las alternativas en estudio.
 
 **Aprendizaje profundo.** Con unas diez observaciones efectivas, el autoencoder ajusta particularidades de la muestra que no se repiten fuera de ella; @tuhin_et_al_2025 advierten esa exigencia de datos. Su aporte está en señalar meses atípicos, como la pandemia.
 

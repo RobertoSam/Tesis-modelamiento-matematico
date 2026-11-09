@@ -72,7 +72,8 @@ for tipo in ("posición", "estructura"):
         "Crédito real (%)": d.credito_real_mediana.map(lambda x: num(x, 1)),
         "PBI (%)": d.pbi.map(lambda x: num(x, 1)), "Inflación (%)": d.inflacion.map(lambda x: num(x, 1)),
         "Tasa BCRP (%)": [f"{num(a)} → {num(b)}" for a, b in zip(d.tasa_inicio, d.tasa_fin)],
-        "EMBIG (pb)": d.embig.map(lambda x: num(x, 0)), "Fase (c = 1)": d.fase_c1, "Fase (c = 0,5)": d.fase_c05}))
+        "EMBIG (pb)": d.embig.map(lambda x: num(x, 0)),
+        "Fase (c = 1; c = 0,5)": [f"{a}; {b}" for a, b in zip(d.fase_c1, d.fase_c05)]}))
 pr = pd.read_csv(M / "preliminar_precision_cortes.csv")
 T["precision"] = md(pd.DataFrame({"Trayectoria": pr.trayectoria.str.capitalize(), "Corte": pr.corte,
                                   "Frecuencia ±3 meses": pr.frecuencia_3m.map(num),
