@@ -14,7 +14,11 @@ output:
 ---
 
 ```{r configuracion, include = FALSE}
-invisible(Sys.setlocale("LC_CTYPE", "C.UTF-8"))
+if (!l10n_info()$`UTF-8`) for (loc in c("C.UTF-8", "en_US.UTF-8", "es_PE.UTF-8", "Spanish_Peru.utf8")) {
+  if (nzchar(suppressWarnings(Sys.setlocale("LC_CTYPE", loc)))) break
+}
+for (paquete in c("rmarkdown", "knitr", "ggplot2", "gridExtra"))
+  if (!requireNamespace(paquete, quietly = TRUE)) install.packages(paquete, repos = "https://cloud.r-project.org")
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 9, fig.height = 4.6,
                       dpi = 110, fig.align = "center")
 library(ggplot2)
