@@ -179,7 +179,7 @@ El **índice del nodo** es $\eta_2$: la inercia que se pierde al resumir ambos g
 ![](fig/c2_hfc_dendrograma.png){width=80%}
 
 ::: {custom-style="Nota"}
-*Nota.* Seis variables simuladas: V1–V3 comparten un factor; V4 y V5 comparten otro con signos opuestos (dipolo), y V6 es independiente. Calculado con la rutina clahfac [@camiz_aedeclahfac]. Elaboración propia con datos simulados.
+*Nota.* Seis variables simuladas: V1–V3 comparten un factor; V4 y V5 comparten otro con signos opuestos (dipolo), y V6 es independiente. Calculado con la rutina clahfac del paquete AedeClahfac. Elaboración propia con datos simulados.
 :::
 
 
@@ -189,9 +189,9 @@ El **índice del nodo** es $\eta_2$: la inercia que se pierde al resumir ambos g
 
 El análisis evolutivo estudia la variación temporal de la estructura de asociación repitiendo el análisis en subperíodos consecutivos [@camiz_maulucci_roig_2010; @camiz_spada_2024].
 
-**Ventana móvil.** Una ventana de ancho $w$ es un conjunto de $w$ meses consecutivos $\{t_0,\dots,t_0+w-1\}$; la ventana se desplaza un mes cada vez, de modo que una muestra de $n$ meses produce $n-w+1$ ventanas. Cada resultado se asigna al centro de su ventana: el mes $t_0+(w-1)/2$ si $w$ es impar y, si $w$ es par, por convención de la rutina de referencia, el mes $t_0+w/2$ [@camiz_aedeclahfac]. En consecuencia, las trayectorias evolutivas no cubren alrededor de $w/2$ meses en cada extremo de la muestra. Como en cada ventana las series se centran, el análisis evolutivo capta los cambios de la estructura de asociación y no los de nivel; estos se recogen en las coordenadas del análisis global.
+**Ventana móvil.** Una ventana de ancho $w$ es un conjunto de $w$ meses consecutivos $\{t_0,\dots,t_0+w-1\}$; la ventana se desplaza un mes cada vez, de modo que una muestra de $n$ meses produce $n-w+1$ ventanas. Cada resultado se asigna al centro de su ventana: el mes $t_0+(w-1)/2$ si $w$ es impar y, si $w$ es par, por convención de la rutina de referencia, el mes $t_0+w/2$. En consecuencia, las trayectorias evolutivas no cubren alrededor de $w/2$ meses en cada extremo de la muestra. Como en cada ventana las series se centran, el análisis evolutivo capta los cambios de la estructura de asociación y no los de nivel; estos se recogen en las coordenadas del análisis global.
 
-**Pesos gaussianos.** Para atenuar el efecto de los meses que entran y salen de la ventana, el mes que ocupa la posición $r=1,\dots,w$ recibe un peso [@camiz_aedeclahfac]
+**Pesos gaussianos.** Para atenuar el efecto de los meses que entran y salen de la ventana, el mes que ocupa la posición $r=1,\dots,w$ recibe un peso [@camiz_cerda_atoche_2026]
 
 $$
 \omega_r\propto\exp\!\Big[-\tfrac12\Big(\nu\,\frac{r-\bar r}{\kappa}\Big)^2\Big],\qquad \bar r=\frac{w+1}{2},\qquad \kappa=\frac{w-1}{\sqrt2},\qquad \sum_r\omega_r=1,
@@ -213,7 +213,7 @@ donde $x_{rj}$ denota el valor del indicador $j$ en el mes $t_0+r-1$. La pondera
 ![](fig/c2_ventana_pesos.png){width=95%}
 
 ::: {custom-style="Nota"}
-*Nota.* (a) Tres ventanas de 48 meses desplazadas seis meses entre sí, con su mes central. (b) Pesos de una ventana de 48 meses con $\nu=0$ y $\nu=3$, y tamaño efectivo $n_\omega$ de la segunda. Pesos calculados con la rutina de referencia [@camiz_aedeclahfac]. Elaboración propia.
+*Nota.* (a) Tres ventanas de 48 meses desplazadas seis meses entre sí, con su mes central. (b) Pesos de una ventana de 48 meses con $\nu=0$ y $\nu=3$, y tamaño efectivo $n_\omega$ de la segunda. Pesos calculados con la rutina de referencia del paquete AedeClahfac. Elaboración propia.
 :::
 
 

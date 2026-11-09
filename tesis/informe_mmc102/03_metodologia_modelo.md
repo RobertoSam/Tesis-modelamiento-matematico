@@ -104,7 +104,7 @@ El análisis avanza de la estructura global a su evolución y de esta a los reg�
 
 ### 3.1.5 Implementación computacional
 
-El procesamiento se realizó en R y en Python. Los métodos factoriales, las series de referencia, los remuestreos y la segmentación temporal se implementaron en ambos lenguajes, con verificación de que producen resultados idénticos hasta $10^{-12}$, y se contrastaron con las rutinas de referencia de @camiz_aedeclahfac (clahfac para la HFC y aede para el análisis evolutivo y la partición de Fisher); la HFC evolutiva sigue el procedimiento del programa claede [@camiz_claede_2025]. Los autoencoders se implementaron con la biblioteca PyTorch, con semillas fijas. Los datos, el código y los resultados se publican en un repositorio de acceso público (https://github.com/RobertoSam/Tesis-modelamiento-matematico), con una versión etiquetada que corresponde a los resultados de este documento.
+El procesamiento se realizó en R y en Python. Los métodos factoriales, las series de referencia, los remuestreos y la segmentación temporal se implementaron en ambos lenguajes, con verificación de que producen resultados idénticos hasta $10^{-12}$, y se contrastaron con las rutinas de referencia en R del paquete AedeClahfac, de S. Camiz (clahfac para la HFC y aede para el análisis evolutivo y la partición de Fisher); la HFC evolutiva sigue el procedimiento de su programa claede. Los autoencoders se implementaron con la biblioteca PyTorch, con semillas fijas. Los datos, el código y los resultados se publican en un repositorio de acceso público (https://github.com/RobertoSam/Tesis-modelamiento-matematico), con una versión etiquetada que corresponde a los resultados de este documento.
 
 ## 3.2 Desarrollo del modelo matemático y computacional
 
