@@ -49,10 +49,11 @@ Harding, D., & Pagan, A. (2002). Dissecting the cycle: A methodological investig
 
 ### Limitaciones (relevantes para la adaptación)
 
-- Solo resumen; el índice de concordancia es de Harding y Pagan (2006), obra no fichada.
+- Solo resumen. El resumen menciona «una nueva medida de prociclicidad»; si el índice de concordancia se define aquí o en Harding y Pagan (2006, `harding_pagan_2006`, fichada el 09-11-2026) no se verificó en los textos.
 
 ## 7. Referencias internas relevantes
 
 | Referencia citada | Prioridad | Estado en el proyecto |
 |---|---|---|
-| Harding y Pagan (2006), *Journal of Econometrics* | Media | No fichada |
+| Harding y Pagan (2006), *Journal of Econometrics* | Media | Fichada (`harding_pagan_2006`, resumen) |
+| Bry y Boschan (1971) | Media | Fichada (`bry_boschan_1971`, texto parcial) |

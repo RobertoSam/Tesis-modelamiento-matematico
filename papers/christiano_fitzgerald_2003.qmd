@@ -1,0 +1,61 @@
+---
+title: "Christiano y Fitzgerald (2003) — The band pass filter"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-102 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 9 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (NBER Working Paper 7257, versión previa); artículo publicado no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Christiano, L. J., & Fitzgerald, T. J. (2003). The band pass filter. *International Economic Review*, *44*(2), 435–465. https://doi.org/10.1111/1468-2354.t01-1-00076
+
+> **Verificación (09-11-2026):** Registro de Crossref (api.crossref.org): autores Lawrence J. Christiano y Terry J. Fitzgerald, título («The Band Pass Filter*»; el asterisco es la llamada de nota del original y no forma parte del título), *International Economic Review*, volumen 44, número 2, páginas 435–465, mayo de 2003, Wiley, DOI. La página del NBER (Working Paper 7257, julio de 1999, DOI 10.3386/w7257) da la misma versión publicada (vol. 44, n.º 2, mayo, pp. 435–465); allí se leyó el resumen. Existe además el documento de trabajo 9906 del Banco de la Reserva Federal de Cleveland (DOI 10.26509/frbc-wp-199906), que no se cita.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Extracción de componentes cíclicos |
+| **Área secundaria** | Filtros pasa-banda en muestras finitas |
+| **Relevancia para la tesis** | **MEDIA.** Fuente primaria del filtro de Christiano-Fitzgerald, que usan Gómez-González et al. (2013) para el Perú y parte de la literatura del ciclo financiero. La tesis no lo usa. |
+| **Frente de la tesis al que aporta** | Capítulo 2, `sec:ea-ciclo` (filtros de frecuencia) |
+
+## 4. Resumen analítico
+
+**Según el resumen del documento de trabajo (NBER WP 7257):**
+
+- El filtro pasa-banda «ideal» aísla el componente de una serie dentro de una banda de frecuencias, pero exige una muestra de longitud infinita.
+- Derivan aproximaciones basadas en proyecciones, óptimas cuando la serie tiene raíz unitaria o es estacionaria alrededor de una tendencia.
+- Identifican una aproximación que es óptima solo para una representación, pero que funciona bien con las series macroeconómicas habituales.
+- Aplicación: poco cambio en la curva de Phillips antes y después de los años sesenta, y cambio sustancial en la relación entre crecimiento del dinero e inflación.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Banda de frecuencias fijada de antemano (p. ej., 8 a 30 años) | La tesis no fija frecuencias: con menos de veinte años de datos mensuales no puede identificar esa banda (`sec:ea-ciclo`) |
+| Aproximación en muestra finita | Problema de los extremos de la muestra, compartido con el filtro HP (`hamilton_2018`) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria del filtro de frecuencia con que la literatura extrae el ciclo financiero; sirve para contrastar la vía exploratoria de la tesis, que no impone una banda.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen del documento de trabajo; no atribuirle detalles de la versión publicada.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Hodrick y Prescott (1997) | Media | No fichada |
+| Gómez-González et al. (2013) | — | Fichada (`gomez_gonzalez_et_al_2013`), usa este filtro |

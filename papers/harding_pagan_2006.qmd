@@ -1,0 +1,63 @@
+---
+title: "Harding y Pagan (2006) — Synchronization of cycles"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-101 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 9 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (portal de investigación de la Australian National University); texto completo no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Harding, D., & Pagan, A. (2006). Synchronization of cycles. *Journal of Econometrics*, *132*(1), 59–79. https://doi.org/10.1016/j.jeconom.2005.01.023
+
+> **Verificación (09-11-2026):** Registro de Crossref del DOI (api.crossref.org): autores Don Harding y Adrian Pagan, título, *Journal of Econometrics*, volumen 132, número 1, páginas 59–79, mayo de 2006, Elsevier. Coincide con el portal de investigación de la ANU (researchportalplus.anu.edu.au), donde se leyó el resumen.
+>
+> **Ambigüedad registrada («Harding y Pagan, 2006»).** Hay cuatro obras de los mismos autores fechadas en 2006: este artículo y tres documentos de trabajo («Measurement of business cycles», Universidad de Melbourne, WP 966; «The econometric analysis of constructed binary time series», Universidad de Melbourne, WP 963, y NCER WP 1). Los documentos de trabajo se vieron solo en IDEAS (secundaria) y no se ficharon. Crossref no registra otro artículo de revista de ambos autores en 2005–2007 salvo Harding y Pagan (2005), *Journal of Applied Econometrics*, 20(2). Se fichó el artículo porque es el único revisado por pares y el único que trata la sincronización; **que sea la fuente del «índice de concordancia» que cita el capítulo 2 no se pudo confirmar** (ver sección 6).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Sincronización de ciclos |
+| **Área secundaria** | Ciclo de referencia; pruebas robustas |
+| **Relevancia para la tesis** | **MEDIA.** Medida y pruebas de sincronización entre ciclos, que la literatura del ciclo financiero usa para comparar sus componentes. |
+| **Frente de la tesis al que aporta** | Capítulo 2, `sec:ea-ciclo` |
+
+## 4. Resumen analítico
+
+**Según el resumen oficial (ANU):**
+
+- Definen qué significa que dos ciclos estén sincronizados y cómo medir el grado de sincronización.
+- Proponen pruebas, robustas a heteroscedasticidad y correlación serial, de las hipótesis de ciclos no sincronizados y de ciclos perfectamente sincronizados.
+- Las aplican a la producción industrial, a índices bursátiles mensuales y a las series con que se construye el ciclo de referencia de EE. UU.
+- Desarrollan un algoritmo para extraer un ciclo común, con el que derivan el ciclo de referencia de EE. UU. y ciclos comunes de los precios de las acciones y de la producción industrial europea.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Sincronización entre ciclos binarios (fases) | La tesis no compara fases serie por serie; describe la estructura de correlación común con el PCA |
+| Ciclo común extraído de varias series | Análogo de la datación sobre el primer componente (no equivalente) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Referencia de la medición de la sincronización de ciclos y de sus pruebas, a la que remite la literatura del ciclo financiero.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen. El resumen no nombra el «índice de concordancia». Cuál obra lo define (este artículo o Harding y Pagan, 2002, cuyo resumen menciona «una nueva medida de prociclicidad») **queda por verificar en los textos**; mientras tanto no se atribuye la definición del índice a ninguna de las dos.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Harding y Pagan (2002) | Media | Fichada (`harding_pagan_2002`) |
+| Bry y Boschan (1971) | Media | Fichada (`bry_boschan_1971`) |

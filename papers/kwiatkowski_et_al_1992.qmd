@@ -2,8 +2,8 @@
 title: "Kwiatkowski et al. (1992) — Testing the null hypothesis of stationarity against the alternative of a unit root"
 ---
 
-::: {.callout-warning title="Ficha PRELIMINAR"}
-Elaborada con el resumen de la versión de documento de trabajo. No se describe el contenido más allá de lo indicado en la sección 4. Antes de usarla
+::: {.callout-warning title="Contenido PRELIMINAR (metadatos verificados el 09-11-2026)"}
+Los metadatos de la versión publicada están verificados en Crossref. El contenido se conoce solo por el resumen de la versión de documento de trabajo: no se describe más allá de lo indicado en la sección 4. Antes de usarla
 para sostener una afirmación sustantiva hay que leer el texto y completar las secciones 4 a 6.
 :::
 
@@ -15,12 +15,15 @@ para sostener una afirmación sustantiva hay que leer el texto y completar las s
 | **Fecha de procesamiento** | 20 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
 | **Estado de lectura** | Resumen leído (versión de documento de trabajo, EconPapers); versión publicada no consultada |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
 
 ## 2. Referencia completa (APA 7.ª edición)
 
-Referencia APA pendiente: **la lista de autores de la versión publicada no se verificó** (ver abajo). No tiene entrada en `tesis/referencias.bib` hasta verificarla.
+Kwiatkowski, D., Phillips, P. C. B., Schmidt, P., & Shin, Y. (1992). Testing the null hypothesis of stationarity against the alternative of a unit root. *Journal of Econometrics*, *54*(1–3), 159–178. https://doi.org/10.1016/0304-4076(92)90104-y
 
-> **Verificación:** EconPapers (Cowles Foundation Discussion Paper 979, mayo de 1991, 28 p.) registra como autores a Denis Kwiatkowski, Peter Phillips y Peter Schmidt, y como versión publicada *Journal of Econometrics*, 54(1–3), 159–178, 1992, sin DOI. La versión publicada se cita habitualmente con un cuarto autor; **no se vio en ninguna fuente oficial en esta iteración**. Verificar autores y DOI en Elsevier.
+> **Verificación (09-11-2026):** Registro de Crossref del DOI (api.crossref.org/works/10.1016/0304-4076(92)90104-y): **cuatro autores** en este orden, Denis Kwiatkowski (primero), Peter C. B. Phillips, Peter Schmidt y Yongcheol Shin; título «Testing the null hypothesis of stationarity against the alternative of a unit root», sin subtítulo; *Journal of Econometrics*, volumen 54, número 1-3, páginas 159-178, octubre de 1992, Elsevier BV, ISSN 0304-4076. Con esto se cierra la duda de la iteración 3a: la versión publicada tiene cuatro autores, aunque el documento de trabajo previo (Cowles Foundation Discussion Paper 979, mayo de 1991, según EconPapers, secundaria) lista tres. Crossref no trae resumen. ScienceDirect no se consultó (inaccesible en la iteración 3c). El DOI se transcribe como lo da Crossref (en minúsculas; los DOI no distinguen mayúsculas).
+>
+> **No confundir** con Kwiatkowski, Phillips y Schmidt (1991, 1992), «Testing for stationarity in the components representation of a time series», *Econometric Theory*, 7(4), 543–544, y 8(4), 586–591, que Crossref devuelve en la misma búsqueda y que no se citan.
 
 ## 3. Clasificación temática
 
@@ -55,7 +58,7 @@ Según el mismo resumen y el título: contrastar la estacionariedad como hipóte
 
 ### Limitaciones (relevantes para la adaptación)
 
-- Autoría de la versión publicada por verificar; sin entrada en el `.bib`.
+- Contenido conocido solo por el resumen del documento de trabajo; la forma del estadístico y sus variantes (nivel o tendencia) no se atribuyen hasta leer el texto. Entrada en el `.bib`: `kwiatkowski_et_al_1992` (09-11-2026).
 
 ## 7. Referencias internas relevantes
 

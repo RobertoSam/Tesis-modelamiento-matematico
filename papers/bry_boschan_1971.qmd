@@ -1,0 +1,74 @@
+---
+title: "Bry y Boschan (1971) — Cyclical analysis of time series: Selected procedures and computer programs"
+---
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-100 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 9 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto parcial: capítulo 2, «Programmed selection of cyclical turning points» (pp. 7–63), consultado en el PDF del NBER mediante una herramienta de extracción que devuelve un resumen. Los demás capítulos no se consultaron |
+| **Tipo de fuente** | Libro institucional (NBER, serie *Technical Paper*) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Bry, G., & Boschan, C. (1971). *Cyclical analysis of time series: Selected procedures and computer programs* (Technical Paper No. 20). National Bureau of Economic Research. https://www.nber.org/books-and-chapters/cyclical-analysis-time-series-selected-procedures-and-computer-programs
+
+> **Verificación (09-11-2026):**
+>
+> - **Página del libro en el NBER** (nber.org): título, autores (Gerhard Bry y Charlotte Boschan), editorial (NBER), fecha (enero de 1971, *copyright* 1971), ISBN 0870142232 y capítulos (pp. 1–216). La página no da DOI ni número de la serie.
+> - **Catálogo de la biblioteca de la Universidad de Filipinas** (tuklas.up.edu.ph): autor principal Bry, Gerhard; otro autor Boschan, Charlotte; «New York: National Bureau of Economic Research [c1971]»; serie «Technical paper, National Bureau of Economic Research, 20».
+> - **Discrepancia anotada:** la página del NBER atribuye cada capítulo solo a Charlotte Boschan, mientras que el PDF del capítulo 2 lo encabeza con los dos autores. Se cita el libro completo, con los dos autores, como lo registran el NBER y el catálogo.
+> - No se encontró DOI. Número de páginas del volumen: no visto (los capítulos llegan a la p. 216).
+> - IDEAS/EconPapers (RePEc `nbr:nberbk:bry_71-1`) solo sirvieron para localizar la obra.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Datación de ciclos por puntos de giro |
+| **Área secundaria** | Ciclo económico (tradición de Burns y Mitchell, NBER) |
+| **Relevancia para la tesis** | **MEDIA.** Fuente primaria del algoritmo de puntos de giro que la literatura del ciclo financiero aplica a cada serie por separado. |
+| **Frente de la tesis al que aporta** | Capítulo 2, `sec:ea-ciclo`: datación univariada como contraste de la datación multivariada de la tesis |
+
+## 4. Resumen analítico
+
+**Qué se leyó.** Solo el capítulo 2, y a través de una herramienta que resume el PDF. Lo que sigue es lo que esa lectura devolvió, con las páginas que indicó; las cifras deben cotejarse en el PDF antes de citarse textualmente.
+
+**Procedimiento (cap. 2, tabla 1, p. 21, y texto siguiente).** Selección programada de puntos de giro en una serie mensual, por etapas:
+
+1. reemplazo de observaciones extremas respecto de una curva de Spencer preliminar (p. 21);
+2. giros tentativos en el promedio móvil de 12 meses y alternancia de picos y valles (pp. 22–23);
+3. refinamiento en la curva de Spencer, con duración mínima entre giros del mismo tipo (pp. 23–24);
+4. refinamiento en un promedio de corto plazo, cuyo término depende de los meses de dominancia cíclica (pp. 25–26);
+5. giros en la serie sin suavizar y pruebas finales: exclusión de giros cercanos a los extremos de la serie, duración mínima del ciclo completo y de cada fase (pp. 26–27).
+
+Según la extracción, las reglas finales fijan **15 meses** como mínimo para el ciclo completo, **5 meses** para cada fase y excluyen giros a menos de **6 meses** de los extremos.
+
+**Advertencia de los autores (según la extracción).** Presentan el procedimiento como experimental y señalan que la amplitud no se considera de forma explícita (pp. 18, 31, 56–57).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Puntos de giro de una serie, con reglas de duración mínima fijadas de antemano | La tesis no fecha giros serie por serie: fecha cortes de régimen sobre el primer componente (Fisher) con reglas fijadas de antemano (D5, D12) |
+| Duración mínima de fase y de ciclo | Análogo de la longitud mínima de tramo en la partición de Fisher (no equivalente) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria de la datación de puntos de giro (algoritmo de Bry-Boschan) que extienden Harding y Pagan (2002) y que usa la literatura del ciclo financiero.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Diseñado para series mensuales del ciclo económico; las duraciones mínimas no se trasladan al ciclo financiero sin ajustes (eso lo hace la literatura posterior, no verificada aquí).
+- Lectura parcial y asistida: no atribuirle más que el procedimiento del capítulo 2.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Harding y Pagan (2002) | Media | Fichada (`harding_pagan_2002`) |
