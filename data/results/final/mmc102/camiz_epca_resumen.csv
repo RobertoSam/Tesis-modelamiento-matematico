@@ -1,0 +1,12 @@
+,valor
+n_ef_ventana,37.013161069857375
+umbral_paralelo_1,2.654069647559006
+umbral_paralelo_2,2.220096155486159
+umbral_paralelo_3,1.92768475432143
+ventanas,181
+intercambios,2011-06 (1-3-2); 2014-04 (1-2-3); 2018-05 (1-3-2)
+congr_min_consecutiva,0.5706327161299112
+ventanas_l2_sobre_umbral,149
+ventanas_l3_sobre_umbral,17
+tamano_c1_min,3
+tamano_c1_max,15

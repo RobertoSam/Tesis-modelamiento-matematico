@@ -6,15 +6,15 @@
 
 ### 2.1.1 Medición del ciclo financiero y del ciclo económico
 
-La medición del ciclo financiero se ha basado en dos procedimientos aplicados a series individuales: la identificación de puntos de giro y los filtros de frecuencia. @drehmann_borio_tsatsaronis_2012 aplican ambos al crédito, a la razón entre crédito y producto y a los precios inmobiliarios de siete economías desarrolladas, y encuentran un componente común de mediano plazo, de 8 a 30 años, cuyos máximos coinciden con crisis bancarias.
+La medición del ciclo financiero se ha basado en dos procedimientos aplicados a series individuales: la identificación de puntos de giro y los filtros de frecuencia. @borio_2014 sintetiza los resultados de aplicar ambos al crédito, a la razón entre crédito y producto y a los precios inmobiliarios de siete economías desarrolladas: un componente común de mediano plazo, captado con filtros de 8 a 30 años y con una duración media de unos 16 años, cuyos máximos coinciden con crisis bancarias sistémicas.
 
-En el Perú, la medición se ha orientado sobre todo al ciclo económico y al crediticio. @winkelried_2017 identifica las fases del ciclo económico entre 1992 y 2016 a partir de 145 indicadores mensuales de actividad: identifica primero los puntos de giro de cada indicador y luego los agrega en un índice de difusión, con el que obtiene seis fases contractivas que suman cerca de la cuarta parte del período. @torres_baltazar_2023 extraen el componente cíclico de series trimestrales con el filtro de Baxter-King y miden su correlación con el ciclo del PBI. @alcaraz_cabello_nivin_2024 miden los ciclos de distintas medidas del crédito y encuentran que no guardan una correlación dinámica fuerte con el ciclo del PBI. En estos trabajos cada indicador se analiza por separado o en relación bivariada con el producto, y la síntesis, cuando existe, es un agregado posterior: la estructura conjunta de asociación entre los indicadores no se modela.
+En el Perú, la medición se ha orientado sobre todo al ciclo económico y al crediticio. @winkelried_2017 identifica las fases del ciclo económico entre 1992 y 2016 a partir de 145 indicadores mensuales de actividad: identifica primero los puntos de giro de cada indicador y luego los agrega en un índice de difusión, con el que obtiene seis fases contractivas que suman cerca de la cuarta parte del período. @alcaraz_cabello_nivin_2024 miden los ciclos de distintas medidas del crédito y encuentran que no guardan una correlación dinámica fuerte con el ciclo del PBI. En estos trabajos cada indicador se analiza por separado o en relación bivariada con el producto, y la síntesis, cuando existe, es un agregado posterior: la estructura conjunta de asociación entre los indicadores no se modela.
 
 ### 2.1.2 Métodos factoriales exploratorios aplicados a series temporales
 
-Una segunda línea modela directamente la estructura de asociación entre las series. El análisis en componentes principales evolutivo repite el análisis en ventanas móviles para seguir la evolución de esa estructura [@camiz_maulucci_roig_2010; @camiz_diblasi_2013]. @camiz_spada_2024 lo extienden a la clasificación factorial jerárquica y delimitan intervalos de estructura homogénea mediante la partición de Fisher del primer valor propio. @purizaca_2023 aplica el análisis evolutivo y la partición de Fisher a 21 precios internacionales de materias primas entre 1990 y 2021; como el índice de Caliński y Harabasz no presenta un máximo, el número de tramos se fija por un criterio de incrementos marginales.
+Una segunda línea modela directamente la estructura de asociación entre las series. El análisis en componentes principales evolutivo repite el análisis en ventanas móviles para seguir la evolución de esa estructura [@camiz_maulucci_roig_2010; @camiz_spada_2024]. @camiz_spada_2024 lo extienden a la clasificación factorial jerárquica y delimitan intervalos de estructura homogénea mediante la partición de Fisher del primer valor propio. @purizaca_2023 aplica el análisis evolutivo y la partición de Fisher a 21 precios internacionales de materias primas entre 1990 y 2021; como el índice de Caliński y Harabasz no presenta un máximo, el número de tramos se fija por un criterio de incrementos marginales.
 
-Para el Perú, @atoche_murrieta_2022 aplica el análisis en componentes principales, la clasificación factorial jerárquica y su versión evolutiva a 17 indicadores mensuales del BCRP e identifica tres componentes, asociados a la evolución del sistema financiero, a las tasas de interés y a la volatilidad del mercado. @camiz_cerda_atoche_2026 aplican los mismos métodos a 17 indicadores entre 1999 y 2020, identifican tres grupos —salud económica y financiera, tasas de interés y riesgo de mercado— y delimitan transiciones con la partición de Fisher del primer valor propio, con el número de cortes elegido mediante el índice de Caliński y Harabasz.
+Para el Perú, @atoche_murrieta_2022 aplica el análisis en componentes principales, la clasificación factorial jerárquica y su versión evolutiva a 17 indicadores mensuales del BCRP e identifica tres componentes, asociados a la evolución del sistema financiero, a las tasas de interés y a la volatilidad del mercado. @camiz_cerda_atoche_2026 aplican los mismos métodos a 17 indicadores entre 1999 y 2020, identifican tres grupos (salud económica y financiera, tasas de interés y riesgo de mercado) y delimitan transiciones con la partición de Fisher del primer valor propio, con el número de cortes elegido mediante el índice de Caliński y Harabasz.
 
 ### 2.1.3 Representaciones no lineales
 
@@ -43,13 +43,13 @@ Los procedimientos univariados no modelan la estructura conjunta de asociación 
 
 ### 2.2.1 Ciclo financiero, régimen y fase
 
-El **ciclo financiero** es la alternancia de fases de expansión y contracción del crédito y de los precios de los activos. @drehmann_borio_tsatsaronis_2012 lo caracterizan por el comportamiento conjunto del crédito, la razón entre crédito y producto y los precios inmobiliarios, que comparten un componente de mediano plazo de 8 a 30 años, más largo que el ciclo económico de 1 a 8 años; los precios bursátiles, más volátiles y menos sincronizados con el crédito, quedan fuera de ese componente.
+El **ciclo financiero** es la alternancia de fases de expansión y contracción del crédito y de los precios de los activos. @borio_2014 lo caracteriza por el comportamiento conjunto del crédito y los precios inmobiliarios, que comparten un componente de mediano plazo de 8 a 30 años, más largo que el ciclo económico de 1 a 8 años; los precios bursátiles, que covarían mucho menos con esas dos series, quedan fuera de ese componente.
 
 Sobre esta base se definen los conceptos operativos de la investigación:
 
 - Un **régimen** es un intervalo de meses consecutivos $I=\{t_a,\dots,t_b\}$ en el que una propiedad del conjunto de indicadores permanece relativamente estable. Se distinguen dos tipos: en un **régimen de estructura** permanece estable la estructura de asociación entre los indicadores; en un **régimen de posición**, su nivel conjunto, es decir, la zona del espacio de los indicadores en que se encuentra el sistema.
 - Un **corte** es el primer mes de cada régimen distinto del primero; $K$ regímenes se separan por $K-1$ cortes, y la sucesión de cortes define una **partición** del período.
-- Una **fase** es la etiqueta económica —expansión, contracción o transición— que se asigna a un régimen según el comportamiento del crédito en el intervalo. La delimitación del régimen usa la información multivariada; la fase es una interpretación posterior.
+- Una **fase** es la etiqueta económica (expansión, contracción o transición) que se asigna a un régimen según el comportamiento del crédito en el intervalo. La delimitación del régimen usa la información multivariada; la fase es una interpretación posterior.
 
 ### 2.2.2 Series temporales multivariadas
 
@@ -101,7 +101,7 @@ donde $J$ es el retardo máximo considerado [@pyper_peterman_1998]. La aproximac
 
 ### 2.2.3 Análisis en componentes principales
 
-El análisis en componentes principales (PCA) resume $p$ variables correlacionadas en un número menor de variables no correlacionadas que conservan la mayor parte de su variabilidad [@camiz_2021_pca].
+El análisis en componentes principales (PCA) resume $p$ variables correlacionadas en un número menor de variables no correlacionadas que conservan la mayor parte de su variabilidad [@jolliffe_cadima_2016].
 
 **Datos y matriz de correlaciones.** Como los indicadores tienen unidades distintas, cada uno se estandariza:
 
@@ -109,7 +109,7 @@ $$
 z_{tj}=\frac{x_{tj}-\bar x_j}{s_j},\qquad \bar x_j=\frac1n\sum_t x_{tj},\qquad s_j^2=\frac1n\sum_t (x_{tj}-\bar x_j)^2 .
 $$
 
-La tabla estandarizada $Z\in\mathbb{R}^{n\times p}$ define la matriz de correlaciones $R=\tfrac1n Z^\top Z$. Cada mes es un punto de $\mathbb{R}^p$, y la **inercia** de la nube de puntos —la media de sus distancias cuadradas al centro de gravedad— es $\operatorname{tr}R=p$: cada indicador estandarizado aporta una unidad.
+La tabla estandarizada $Z\in\mathbb{R}^{n\times p}$ define la matriz de correlaciones $R=\tfrac1n Z^\top Z$. Cada mes es un punto de $\mathbb{R}^p$, y la **inercia** de la nube de puntos (la media de sus distancias cuadradas al centro de gravedad) es $\operatorname{tr}R=p$: cada indicador estandarizado aporta una unidad.
 
 **Ejes y valores propios.** El PCA es la descomposición espectral
 
@@ -121,11 +121,11 @@ La columna $\mathbf v_k$ es el $k$-ésimo **eje factorial** y $\lambda_k$ es la 
 
 **Coordenadas e interpretación.** Las coordenadas de los meses (*scores*) son $F=ZV$; en series temporales, cada columna de $F$ es una nueva serie. La interpretación de cada eje se basa en tres medidas:
 
-- la **carga** $a_{jk}=\sqrt{\lambda_k}\,v_{jk}$, igual a la correlación entre el indicador $j$ y el eje $k$;
-- la **calidad de representación** $\cos^2_{jk}=a_{jk}^2$, proporción de la varianza del indicador $j$ que recoge el eje $k$, aditiva entre ejes;
-- la **contribución** $v_{jk}^2$, peso del indicador $j$ en la construcción del eje $k$, con $\sum_j v_{jk}^2=1$.
+- la **correlación** del indicador $j$ con el eje $k$, $r_{jk}=\sqrt{\lambda_k}\,v_{jk}$, que con las series estandarizadas es la coordenada del indicador en el eje;
+- la **calidad de representación** $\cos^2_{jk}=r_{jk}^2$, proporción de la varianza del indicador $j$ que recoge el eje $k$, aditiva entre ejes;
+- la **contribución** $v_{jk}^2=r_{jk}^2/\lambda_k$, peso del indicador $j$ en la construcción del eje $k$, con $\sum_j v_{jk}^2=1$.
 
-Las cargas se representan en el **círculo de correlaciones**: para indicadores bien representados en el plano, el ángulo entre sus vectores aproxima su correlación, y el cuadrado de la longitud de cada vector es su calidad de representación en el plano. El signo de un eje es arbitrario; solo es interpretable el signo relativo de las cargas. La Figura {F:pca} ilustra ambos elementos.
+Estas correlaciones se representan en el **círculo de correlaciones**: para indicadores bien representados en el plano, el ángulo entre sus vectores aproxima su correlación, y el cuadrado de la longitud de cada vector es su calidad de representación en el plano. El signo de un eje es arbitrario; solo es interpretable el signo relativo de las correlaciones. La Figura {F:pca} ilustra ambos elementos.
 
 ::: {custom-style="Rotulo"}
 **Figura {F:pca}**\
@@ -135,7 +135,7 @@ Las cargas se representan en el **círculo de correlaciones**: para indicadores 
 ![](fig/c2_pca_geometria.png){width=95%}
 
 ::: {custom-style="Nota"}
-*Nota.* (a) Nube de 300 observaciones de dos variables estandarizadas y sus ejes factoriales, con longitud proporcional a $\sqrt{\lambda_k}$. (b) Círculo de correlaciones con cargas ilustrativas de cinco variables. Elaboración propia con datos simulados.
+*Nota.* (a) Nube de 300 observaciones de dos variables estandarizadas y sus ejes factoriales, con longitud proporcional a $\sqrt{\lambda_k}$. (b) Círculo de correlaciones de cinco variables ilustrativas. Elaboración propia con datos simulados.
 :::
 
 
@@ -147,7 +147,7 @@ Las cargas se representan en el **círculo de correlaciones**: para indicadores 
 - *Vara quebrada:* se retienen los ejes cuya proporción de inercia supera la esperada si la inercia se repartiera al azar, $b_k=\frac1p\sum_{i=k}^{p}\frac1i$.
 - *Análisis paralelo:* se retienen los ejes cuyo valor propio supera la media de los valores propios obtenidos en tablas de variables aleatorias independientes del mismo tamaño [@horn_1965]. Como las variables simuladas carecen de autocorrelación, con series persistentes el criterio tiende a retener más ejes de los justificados.
 
-**Limitaciones.** El PCA es lineal y global: describe la asociación mediante correlaciones calculadas con todo el período, de modo que, si la estructura cambia, produce un promedio que puede no representar a ningún subperíodo [@camiz_diblasi_2013]. Sus ejes son ortogonales por construcción, lo que puede mezclar grupos de variables [@camiz_et_al_2020]. Si dos valores propios son casi iguales, los ejes correspondientes no están determinados por separado y solo es interpretable el plano que generan.
+**Limitaciones.** El PCA es lineal y global: describe la asociación mediante correlaciones calculadas con todo el período, de modo que, si la estructura cambia, produce un promedio que puede no representar a ningún subperíodo [@camiz_spada_2024]. Sus ejes son ortogonales por construcción, lo que puede mezclar grupos de variables [@camiz_et_al_2020]. Si dos valores propios son casi iguales, los ejes correspondientes no están determinados por separado y solo es interpretable el plano que generan.
 
 ### 2.2.4 Clasificación factorial jerárquica
 
@@ -187,11 +187,11 @@ El **índice del nodo** es $\eta_2$: la inercia que se pierde al resumir ambos g
 
 ### 2.2.5 Análisis evolutivo
 
-El análisis evolutivo estudia la variación temporal de la estructura de asociación repitiendo el análisis en subperíodos consecutivos [@camiz_maulucci_roig_2010; @camiz_diblasi_2013].
+El análisis evolutivo estudia la variación temporal de la estructura de asociación repitiendo el análisis en subperíodos consecutivos [@camiz_maulucci_roig_2010; @camiz_spada_2024].
 
 **Ventana móvil.** Una ventana de ancho $w$ es un conjunto de $w$ meses consecutivos $\{t_0,\dots,t_0+w-1\}$; la ventana se desplaza un mes cada vez, de modo que una muestra de $n$ meses produce $n-w+1$ ventanas. Cada resultado se asigna al centro de su ventana: el mes $t_0+(w-1)/2$ si $w$ es impar y, si $w$ es par, por convención de la rutina de referencia, el mes $t_0+w/2$ [@camiz_aedeclahfac]. En consecuencia, las trayectorias evolutivas no cubren alrededor de $w/2$ meses en cada extremo de la muestra. Como en cada ventana las series se centran, el análisis evolutivo capta los cambios de la estructura de asociación y no los de nivel; estos se recogen en las coordenadas del análisis global.
 
-**Pesos gaussianos.** Para atenuar el efecto de los meses que entran y salen de la ventana, el mes que ocupa la posición $r=1,\dots,w$ recibe un peso [@camiz_diblasi_2013; @camiz_aedeclahfac]
+**Pesos gaussianos.** Para atenuar el efecto de los meses que entran y salen de la ventana, el mes que ocupa la posición $r=1,\dots,w$ recibe un peso [@camiz_aedeclahfac]
 
 $$
 \omega_r\propto\exp\!\Big[-\tfrac12\Big(\nu\,\frac{r-\bar r}{\kappa}\Big)^2\Big],\qquad \bar r=\frac{w+1}{2},\qquad \kappa=\frac{w-1}{\sqrt2},\qquad \sum_r\omega_r=1,
@@ -217,27 +217,27 @@ donde $x_{rj}$ denota el valor del indicador $j$ en el mes $t_0+r-1$. La pondera
 :::
 
 
-**EPCA.** El análisis en componentes principales evolutivo aplica el PCA a la matriz $R^{\omega}$ de cada ventana. Sus resultados se resumen en dos trayectorias [@camiz_diblasi_2013]: los primeros valores propios $\lambda_k(t)$, que miden la intensidad de la asociación común en torno al mes $t$, y las correlaciones de cada variable con los primeros ejes, que indican si cambia el significado de los ejes. Como el signo de cada vector propio es arbitrario, se alinea con el de la ventana anterior [@camiz_spada_2024]; cuando dos valores propios son casi iguales, los ejes pueden intercambiar su orden entre ventanas, y su correspondencia se establece con el valor absoluto del coeficiente de congruencia. Ventanas sucesivas comparten $w-1$ meses, de modo que las trayectorias son suaves por construcción, y un cambio ocurrido en un mes afecta a todas las ventanas que lo contienen: su ubicación en la trayectoria tiene una imprecisión del orden de la semiamplitud efectiva de la ventana.
+**EPCA.** El análisis en componentes principales evolutivo aplica el PCA a la matriz $R^{\omega}$ de cada ventana. Sus resultados se resumen en dos trayectorias [@camiz_spada_2024]: los primeros valores propios $\lambda_k(t)$, que miden la intensidad de la asociación común en torno al mes $t$, y las correlaciones de cada variable con los primeros ejes, que indican si cambia el significado de los ejes. Como el signo de cada vector propio es arbitrario, se alinea con el de la ventana anterior [@camiz_spada_2024]; cuando dos valores propios son casi iguales, los ejes pueden intercambiar su orden entre ventanas, y su correspondencia se establece con el valor absoluto del coeficiente de congruencia. Ventanas sucesivas comparten $w-1$ meses, de modo que las trayectorias son suaves por construcción, y un cambio ocurrido en un mes afecta a todas las ventanas que lo contienen: su ubicación en la trayectoria tiene una imprecisión del orden de la semiamplitud efectiva de la ventana.
 
 **HFC evolutiva.** La clasificación factorial jerárquica se aplica, con los mismos pesos, a cada ventana; se siguen los índices de los nodos superiores, que miden la diferenciación entre los grupos principales, y la composición de los grupos [@camiz_spada_2024].
 
-**Similitud entre configuraciones.** Para comparar dos estructuras de las mismas variables se emplean dos coeficientes [@abdi_2010]. El **coeficiente de congruencia** entre dos vectores de cargas $\mathbf a$ y $\mathbf b$,
+**Similitud entre configuraciones.** Para comparar dos estructuras de las mismas variables se emplean dos coeficientes. El **coeficiente de congruencia** [@lorenzo_seva_ten_berge_2006] entre dos vectores de correlaciones con un eje, $\mathbf a$ y $\mathbf b$,
 
 $$
 \phi(\mathbf a,\mathbf b)=\frac{\sum_j a_jb_j}{\sqrt{\sum_j a_j^2\,\sum_j b_j^2}}\in[-1,1],
 $$
 
-compara un eje concreto; por la arbitrariedad del signo, se usa su valor absoluto. El **coeficiente RV** entre dos matrices de cargas $A$ y $C$,
+compara un eje concreto; por la arbitrariedad del signo, se usa su valor absoluto. El **coeficiente RV** [@robert_escoufier_1976] entre dos matrices de correlaciones de las variables con los ejes, $A$ y $C$,
 
 $$
 \mathrm{RV}(A,C)=\frac{\operatorname{tr}(AA^\top CC^\top)}{\sqrt{\operatorname{tr}\big((AA^\top)^2\big)\operatorname{tr}\big((CC^\top)^2\big)}}\in[0,1],
 $$
 
-compara configuraciones completas y es invariante a rotaciones y cambios de signo de los ejes. Su valor esperado bajo ausencia de relación depende del número de filas y columnas, por lo que se evalúa frente a una distribución de referencia y no con un umbral fijo [@abdi_2010].
+compara configuraciones completas y es invariante a rotaciones y cambios de signo de los ejes. Su valor esperado bajo ausencia de relación depende del número de filas y columnas, por lo que se evalúa frente a una distribución de referencia y no con un umbral fijo [@josse_pages_husson_2008].
 
 ### 2.2.6 Partición óptima de Fisher
 
-Una forma de delimitar regímenes es dividir una trayectoria ordenada $\mathbf y_1,\dots,\mathbf y_n$ —univariada o multivariada— en $K$ intervalos contiguos $I_1,\dots,I_K$ de máxima homogeneidad interna. @fisher_1958 plantea el problema de minimizar la suma de cuadrados dentro de los grupos,
+Una forma de delimitar regímenes es dividir una trayectoria ordenada $\mathbf y_1,\dots,\mathbf y_n$ (univariada o multivariada) en $K$ intervalos contiguos $I_1,\dots,I_K$ de máxima homogeneidad interna. @fisher_1958 plantea el problema de minimizar la suma de cuadrados dentro de los grupos,
 
 $$
 \mathrm{SCD}_K=\sum_{k=1}^{K}\sum_{t\in I_k}\lVert\mathbf y_t-\bar{\mathbf y}_{I_k}\rVert^2,
@@ -275,7 +275,7 @@ donde $\mathrm{SCE}_K$ es la suma de cuadrados entre tramos, se usa para elegir 
 
 ### 2.2.7 Contraste con series de referencia simuladas y remuestreo por bloques
 
-**Contraste con series de referencia simuladas.** Todo método exploratorio produce un resultado aunque los datos carezcan de la estructura buscada: el PCA siempre tiene un primer eje y la partición de Fisher siempre produce $K$ tramos. El contraste consiste en: (i) especificar un mecanismo generador que conserve determinadas propiedades de los datos —por ejemplo, la tendencia de cada serie o su autocorrelación— y carezca de la estructura buscada; (ii) generar $B$ conjuntos de series con ese mecanismo; (iii) aplicar a cada uno el mismo procedimiento y calcular el estadístico de interés $T_b$, y (iv) comparar el valor observado $T$ con la distribución de $\{T_b\}$ mediante
+**Contraste con series de referencia simuladas.** Todo método exploratorio produce un resultado aunque los datos carezcan de la estructura buscada: el PCA siempre tiene un primer eje y la partición de Fisher siempre produce $K$ tramos. El contraste consiste en: (i) especificar un mecanismo generador que conserve determinadas propiedades de los datos (por ejemplo, la tendencia de cada serie o su autocorrelación) y carezca de la estructura buscada; (ii) generar $B$ conjuntos de series con ese mecanismo; (iii) aplicar a cada uno el mismo procedimiento y calcular el estadístico de interés $T_b$, y (iv) comparar el valor observado $T$ con la distribución de $\{T_b\}$ mediante
 
 $$
 \hat p=\frac{1+\sum_{b=1}^{B}\mathbf 1\{T_b\ge T\}}{B+1},
@@ -295,7 +295,7 @@ en un contraste unilateral cuya dirección depende del estadístico. Una proporc
 :::
 
 
-**Remuestreo por bloques.** El remuestreo ordinario sortea observaciones independientes y destruye la dependencia temporal. El bootstrap por bloques móviles [@kunsch_1989] sortea, con reemplazo, bloques de $\ell$ meses consecutivos y los concatena hasta completar $n$ meses; con los mismos inicios de bloque para todas las series se conservan la autocorrelación de cada una y la correlación entre ellas. El procedimiento supone series estacionarias con dependencia débil y no conserva la ubicación cronológica de las observaciones, por lo que es adecuado para evaluar la estabilidad de resultados globales —valores propios, cargas, grupos— y no la de cortes temporales; para estos se requieren esquemas que conserven el orden, como el remuestreo dentro de cada régimen. El largo $\ell$ es un compromiso: bloques largos conservan mejor la dependencia, pero producen réplicas más parecidas entre sí. La Figura {F:bloques} esquematiza el procedimiento.
+**Remuestreo por bloques.** El remuestreo ordinario sortea observaciones independientes y destruye la dependencia temporal. El bootstrap por bloques móviles [@kunsch_1989] sortea, con reemplazo, bloques de $\ell$ meses consecutivos y los concatena hasta completar $n$ meses; con los mismos inicios de bloque para todas las series se conservan la autocorrelación de cada una y la correlación entre ellas. El procedimiento supone series estacionarias con dependencia débil y no conserva la ubicación cronológica de las observaciones, por lo que es adecuado para evaluar la estabilidad de resultados globales (valores propios, correlaciones con los ejes, grupos) y no la de cortes temporales; para estos se requieren esquemas que conserven el orden, como el remuestreo dentro de cada régimen. El largo $\ell$ es un compromiso: bloques largos conservan mejor la dependencia, pero producen réplicas más parecidas entre sí. La Figura {F:bloques} esquematiza el procedimiento.
 
 ::: {custom-style="Rotulo"}
 **Figura {F:bloques}**\
@@ -313,7 +313,7 @@ en un contraste unilateral cuya dirección depende del estadístico. Una proporc
 
 ### 2.2.8 Redes neuronales artificiales
 
-Una **red neuronal artificial** es una función paramétrica compuesta por unidades elementales organizadas en capas [@goodfellow_bengio_courville_2016].
+Una **red neuronal artificial** es una función paramétrica compuesta por unidades elementales organizadas en capas [@lecun_bengio_hinton_2015].
 
 **Neurona y función de activación.** Una neurona transforma un vector de entrada $\mathbf u\in\mathbb R^{q}$ en
 
@@ -331,14 +331,14 @@ $$
 
 y su salida es $f_\theta(\mathbf u)=\mathbf h^{(M)}$, con parámetros $\theta=\{W^{(m)},\mathbf b^{(m)}\}$.
 
-**Entrenamiento.** Los parámetros se estiman minimizando una **función de pérdida** sobre los datos de entrenamiento, por ejemplo el error cuadrático medio $\mathcal L(\theta)=\frac1n\sum_t\lVert\mathbf y_t-f_\theta(\mathbf u_t)\rVert^2$, mediante descenso de gradiente, $\theta\leftarrow\theta-\eta\,\nabla_\theta\mathcal L$, con tasa de aprendizaje $\eta$. El gradiente se calcula por **retropropagación**, que aplica la regla de la cadena desde la capa de salida hacia la de entrada [@rumelhart_hinton_williams_1986]. Como la red puede ajustar particularidades de la muestra de entrenamiento, su desempeño se evalúa **fuera de muestra** y se emplean técnicas de **regularización**, como la desactivación aleatoria de neuronas durante el entrenamiento (*dropout*) [@goodfellow_bengio_courville_2016].
+**Entrenamiento.** Los parámetros se estiman minimizando una **función de pérdida** sobre los datos de entrenamiento, por ejemplo el error cuadrático medio $\mathcal L(\theta)=\frac1n\sum_t\lVert\mathbf y_t-f_\theta(\mathbf u_t)\rVert^2$, mediante descenso de gradiente, $\theta\leftarrow\theta-\eta\,\nabla_\theta\mathcal L$, con tasa de aprendizaje $\eta$. El gradiente se calcula por **retropropagación**, que aplica la regla de la cadena desde la capa de salida hacia la de entrada [@rumelhart_hinton_williams_1986]. Como la red puede ajustar particularidades de la muestra de entrenamiento, su desempeño se evalúa **fuera de muestra** y se emplean técnicas de **regularización**, como la desactivación aleatoria de neuronas durante el entrenamiento (*dropout*) [@srivastava_et_al_2014].
 
-**Clasificación.** Para los fines de esta investigación, las redes se distinguen según dos criterios independientes, a partir de la exposición de @goodfellow_bengio_courville_2016:
+**Clasificación.** Para los fines de esta investigación, las redes se distinguen según dos criterios independientes, a partir de la revisión de @lecun_bengio_hinton_2015:
 
 - *Por el tipo de aprendizaje:* **supervisado**, en el que la red aprende una relación entre entradas y salidas conocidas, y **no supervisado**, en el que solo se dispone de las entradas y el objetivo es describir su estructura.
 - *Por la arquitectura:* **prealimentada**, que procesa cada observación de forma independiente, y **recurrente**, que transmite información de un período al siguiente y procesa secuencias.
 
-El **autoencoder** se define por su objetivo —reproducir la entrada a través de una representación de menor dimensión— y no por su arquitectura: es una forma de aprendizaje no supervisado en la que la salida objetivo es la propia entrada. En esta investigación se emplean dos combinaciones de ambos criterios: el autoencoder prealimentado, al que se denomina simplemente autoencoder, y el autoencoder LSTM, de arquitectura recurrente. La Figura {F:taxonomia} resume la clasificación.
+El **autoencoder** se define por su objetivo (reproducir la entrada a través de una representación de menor dimensión) y no por su arquitectura: es una forma de aprendizaje no supervisado en la que la salida objetivo es la propia entrada. En esta investigación se emplean dos combinaciones de ambos criterios: el autoencoder prealimentado, al que se denomina simplemente autoencoder, y el autoencoder LSTM, de arquitectura recurrente. La Figura {F:taxonomia} resume la clasificación.
 
 ::: {custom-style="Rotulo"}
 **Figura {F:taxonomia}**\
@@ -348,13 +348,13 @@ El **autoencoder** se define por su objetivo —reproducir la entrada a través 
 ![](fig/c2_taxonomia_redes.png){width=80%}
 
 ::: {custom-style="Nota"}
-*Nota.* Elaboración propia a partir de @goodfellow_bengio_courville_2016.
+*Nota.* Elaboración propia a partir de @lecun_bengio_hinton_2015.
 :::
 
 
 ### 2.2.9 Autoencoders
 
-Un **autoencoder** está formado por un codificador $\mathrm{enc}:\mathbb R^p\to\mathbb R^d$ y un decodificador $\mathrm{dec}:\mathbb R^d\to\mathbb R^p$, con $d<p$, cuyos parámetros se estiman para reproducir la entrada [@goodfellow_bengio_courville_2016]:
+Un **autoencoder** está formado por un codificador $\mathrm{enc}:\mathbb R^p\to\mathbb R^d$ y un decodificador $\mathrm{dec}:\mathbb R^d\to\mathbb R^p$, con $d<p$, cuyos parámetros se estiman para reproducir la entrada [@hinton_salakhutdinov_2006]:
 
 $$
 \min\ \frac1n\sum_{t=1}^{n}\big\lVert\mathbf z_t-\mathrm{dec}(\mathrm{enc}(\mathbf z_t))\big\rVert^2 .
@@ -376,9 +376,9 @@ El vector $\mathrm{enc}(\mathbf z_t)$ es la **representación latente** del mes 
 
 **Relación con el PCA.** Si el codificador y el decodificador son lineales y la pérdida es cuadrática, el óptimo genera el mismo subespacio que los $d$ primeros ejes del PCA, aunque no recupera los ejes individuales ni su orden [@baldi_hornik_1989]. Con activaciones no lineales, el autoencoder puede representar relaciones que el PCA no capta [@hinton_salakhutdinov_2006]; la variante con eliminación de ruido, que reconstruye la entrada original a partir de una versión perturbada, mejora la robustez de la representación [@vincent_et_al_2008].
 
-**Error de reconstrucción.** El error de cada observación, $e_t=\lVert\mathbf z_t-\hat{\mathbf z}_t\rVert^2$, mide cuánto se aparta el mes $t$ de la estructura aprendida. Calculado fuera de muestra, permite comparar modelos en una misma escala —incluido el PCA, mediante la reconstrucción de la sección 2.2.3— y señalar los meses atípicos.
+**Error de reconstrucción.** El error de cada observación, $e_t=\lVert\mathbf z_t-\hat{\mathbf z}_t\rVert^2$, mide cuánto se aparta el mes $t$ de la estructura aprendida. Calculado fuera de muestra, permite comparar modelos en una misma escala (incluido el PCA, mediante la reconstrucción de la sección 2.2.3) y señalar los meses atípicos.
 
-**Limitaciones.** La representación latente no es identificable: cualquier reparametrización invertible del espacio latente produce la misma reconstrucción, por lo que sus coordenadas no tienen la interpretación de las cargas del PCA. El entrenamiento parte de una inicialización aleatoria y puede conducir a soluciones distintas, y con pocas observaciones el riesgo de sobreajuste es alto. En series temporales, la evaluación fuera de muestra exige separar los datos de entrenamiento y de evaluación por orden cronológico.
+**Limitaciones.** La representación latente no es identificable: cualquier reparametrización invertible del espacio latente produce la misma reconstrucción, por lo que sus coordenadas no tienen la interpretación de las correlaciones con los ejes del PCA. El entrenamiento parte de una inicialización aleatoria y puede conducir a soluciones distintas, y con pocas observaciones el riesgo de sobreajuste es alto. En series temporales, la evaluación fuera de muestra exige separar los datos de entrenamiento y de evaluación por orden cronológico.
 
 ### 2.2.10 Redes recurrentes y LSTM
 
@@ -433,7 +433,6 @@ donde $\mathbf i_t$, $\mathbf f_t$ y $\mathbf o_t$ son las compuertas de entrada
 - **Trayectoria:** sucesión ordenada en el tiempo de un resultado del análisis evolutivo, de las coordenadas de un análisis factorial o de una representación latente.
 - **Inercia:** dispersión total de la nube de observaciones; con variables estandarizadas, igual al número de variables.
 - **Eje factorial:** dirección de máxima dispersión de la nube de observaciones entre las ortogonales a las anteriores.
-- **Carga:** correlación entre un indicador y un eje factorial.
 - **Representante:** primer componente principal del análisis de los representantes de los dos grupos que se fusionan; en el paso inicial, la propia variable estandarizada.
 - **Índice de nodo:** inercia que se pierde al resumir dos grupos con un único factor.
 - **Dipolo:** grupo cuyas variables se correlacionan con su representante con signos opuestos.

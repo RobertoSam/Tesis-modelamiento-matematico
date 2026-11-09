@@ -31,11 +31,15 @@ T["valores"] = md(pd.DataFrame({"Eje": v.componente, "Valor propio": v.valor_pro
                                 "Acumulada (%)": v.inercia_acumulada.map(lambda x: num(x, 1)),
                                 "Umbral del análisis paralelo": v.horn_umbral_p95.map(lambda x: num(x, 3)),
                                 "Vara quebrada (%)": v.vara_quebrada.map(lambda x: num(x, 1))}))
-T["cargas"] = (RAIZ / "tesis/avance/_avance_tabla_cargas.md").read_text().strip().replace("-0,00", "0,00").replace("-", "−").replace("|−−−", "|---").replace("−−−:", "---:")
-T["cargas"] = re.sub(r"\|[−-]+(:?)\|", lambda m_: "|---" + m_.group(1) + "|", T["cargas"])
-T["cargas"] = "\n".join(l if not set(l) <= set("|−-: ") else l.replace("−", "-") for l in T["cargas"].splitlines())
-cc = pd.read_csv(F / "informe_uni/camiz_pca_cos2_contrib.csv", dtype=str).fillna("")
-T["cos2"] = md(cc.apply(lambda s: s.str.replace(".", ",", regex=False)))
+# PCA: por eje, correlación de la serie con el eje, cos² y contribución (salidas del programa)
+pi = pd.read_csv(M / "camiz_pca_indicadores.csv")
+tab = {"Serie": pi.Serie}
+for k in (1, 2, 3):
+    tab[f"r eje {k}"] = [f"**{num(v)}**" if abs(v) >= 0.6 else num(v) for v in pi[f"r{k}"]]
+    tab[f"cos² eje {k}"] = pi[f"cos2_{k}"].map(num)
+    tab[f"Ctr. eje {k} (%)"] = pi[f"ctr{k}"].map(lambda x: num(x, 1))
+tab["Calidad (1–3)"] = pi.calidad.map(num)
+T["pca"] = md(pd.DataFrame(tab))
 c2 = pd.read_csv(F / "05_pca_cos2.csv")
 ad = pd.read_csv(F / "05_adecuacion.csv").set_index(["ambito", "medida"]).valor
 T["kmo"] = md(pd.DataFrame({"Serie": c2.serie, "KMO": c2.kmo_individual.map(num),
@@ -49,8 +53,12 @@ e = pd.read_csv(M / "estabilidad_resumen.csv")
 T["estab"] = md(pd.DataFrame({"Bloque (meses)": e.L,
                               **{f"Congruencia eje {k}: mediana [p5]": [f"{num(a)} [{num(b)}]" for a, b in zip(e[f"cong{k}_mediana"], e[f"cong{k}_p5"])] for k in (1, 2, 3)},
                               "λ₁ [p5; p95]": [f"[{num(a, 1)}; {num(b, 1)}]" for a, b in zip(e.lambda1_p5, e.lambda1_p95)]}))
-nod = pd.read_csv(F / "informe_uni/camiz_hfc_nodos.csv", dtype=str).drop(columns=["Une"])
-T["nodos"] = md(nod.apply(lambda s: s.str.replace(".", ",", regex=False)))
+nod = pd.read_csv(M / "camiz_hfc_nodos_completo.csv")
+T["nodos"] = md(pd.DataFrame({"Nodo": nod.nodo, "Une": nod.une, "Series": nod.series,
+                              "λ1": nod.lambda1.map(lambda x: num(x, 3)), "Índice (λ2)": nod.indice.map(lambda x: num(x, 3)),
+                              "% local λ1": nod.local1.map(lambda x: num(x, 1)), "% local λ2": nod.local2.map(lambda x: num(x, 1)),
+                              "% global λ1": nod.global1.map(lambda x: num(x, 1)), "% global λ2": nod.global2.map(lambda x: num(x, 2)),
+                              "% acum. λ2": nod.acum2.map(lambda x: num(x, 2))}))
 T["hfc"] = (RAIZ / "tesis/avance/_avance_tabla_hfc.md").read_text().strip()
 c = pd.read_csv(M / "contraste_particion.csv")
 fil = []
