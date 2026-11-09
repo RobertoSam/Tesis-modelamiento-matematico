@@ -101,7 +101,7 @@ donde $J$ es el retardo máximo considerado [@pyper_peterman_1998]. La aproximac
 
 ### 2.2.3 Análisis en componentes principales
 
-El análisis en componentes principales (PCA) resume $p$ variables correlacionadas en un número menor de variables no correlacionadas que conservan la mayor parte de su variabilidad [@jolliffe_cadima_2016].
+El análisis en componentes principales (PCA) resume $p$ variables correlacionadas en un número menor de variables no correlacionadas que conservan la mayor parte de su variabilidad.
 
 **Datos y matriz de correlaciones.** Como los indicadores tienen unidades distintas, cada uno se estandariza:
 
@@ -141,7 +141,7 @@ Estas correlaciones se representan en el **círculo de correlaciones**: para ind
 
 **Reconstrucción.** La aproximación de rango $d$ es $\hat Z=ZV_dV_d^\top$, con $V_d$ las $d$ primeras columnas de $V$, y el error de reconstrucción del mes $t$ es $\lVert\mathbf z_t-V_dV_d^\top\mathbf z_t\rVert^2$. Para evaluarlo fuera de muestra, $V_d$ y los parámetros de estandarización se estiman con los datos de entrenamiento.
 
-**Número de ejes.** No existe una regla única [@camiz_pillar_2018]. Se emplean tres criterios con supuestos distintos:
+**Número de ejes.** No existe una regla única. Se emplean tres criterios con supuestos distintos:
 
 - *Kaiser:* se retienen los ejes con $\lambda_k>1$, que resumen más que un indicador.
 - *Vara quebrada:* se retienen los ejes cuya proporción de inercia supera la esperada si la inercia se repartiera al azar, $b_k=\frac1p\sum_{i=k}^{p}\frac1i$.
@@ -313,7 +313,7 @@ en un contraste unilateral cuya dirección depende del estadístico. Una proporc
 
 ### 2.2.8 Redes neuronales artificiales
 
-Una **red neuronal artificial** es una función paramétrica compuesta por unidades elementales organizadas en capas [@lecun_bengio_hinton_2015].
+Una **red neuronal artificial** es una función paramétrica compuesta por unidades elementales organizadas en capas.
 
 **Neurona y función de activación.** Una neurona transforma un vector de entrada $\mathbf u\in\mathbb R^{q}$ en
 
@@ -331,9 +331,9 @@ $$
 
 y su salida es $f_\theta(\mathbf u)=\mathbf h^{(M)}$, con parámetros $\theta=\{W^{(m)},\mathbf b^{(m)}\}$.
 
-**Entrenamiento.** Los parámetros se estiman minimizando una **función de pérdida** sobre los datos de entrenamiento, por ejemplo el error cuadrático medio $\mathcal L(\theta)=\frac1n\sum_t\lVert\mathbf y_t-f_\theta(\mathbf u_t)\rVert^2$, mediante descenso de gradiente, $\theta\leftarrow\theta-\eta\,\nabla_\theta\mathcal L$, con tasa de aprendizaje $\eta$. El gradiente se calcula por **retropropagación**, que aplica la regla de la cadena desde la capa de salida hacia la de entrada [@rumelhart_hinton_williams_1986]. Como la red puede ajustar particularidades de la muestra de entrenamiento, su desempeño se evalúa **fuera de muestra** y se emplean técnicas de **regularización**, como la desactivación aleatoria de neuronas durante el entrenamiento (*dropout*) [@srivastava_et_al_2014].
+**Entrenamiento.** Los parámetros se estiman minimizando una **función de pérdida** sobre los datos de entrenamiento, por ejemplo el error cuadrático medio $\mathcal L(\theta)=\frac1n\sum_t\lVert\mathbf y_t-f_\theta(\mathbf u_t)\rVert^2$, mediante descenso de gradiente, $\theta\leftarrow\theta-\eta\,\nabla_\theta\mathcal L$, con tasa de aprendizaje $\eta$. El gradiente se calcula por **retropropagación**, que aplica la regla de la cadena desde la capa de salida hacia la de entrada. Como la red puede ajustar particularidades de la muestra de entrenamiento, su desempeño se evalúa **fuera de muestra** y se emplean técnicas de **regularización**, como la desactivación aleatoria de neuronas durante el entrenamiento (*dropout*).
 
-**Clasificación.** Para los fines de esta investigación, las redes se distinguen según dos criterios independientes, a partir de la revisión de @lecun_bengio_hinton_2015:
+**Clasificación.** Para los fines de esta investigación, las redes se distinguen según dos criterios independientes:
 
 - *Por el tipo de aprendizaje:* **supervisado**, en el que la red aprende una relación entre entradas y salidas conocidas, y **no supervisado**, en el que solo se dispone de las entradas y el objetivo es describir su estructura.
 - *Por la arquitectura:* **prealimentada**, que procesa cada observación de forma independiente, y **recurrente**, que transmite información de un período al siguiente y procesa secuencias.
@@ -348,7 +348,7 @@ El **autoencoder** se define por su objetivo (reproducir la entrada a través de
 ![](fig/c2_taxonomia_redes.png){width=80%}
 
 ::: {custom-style="Nota"}
-*Nota.* Elaboración propia a partir de @lecun_bengio_hinton_2015.
+*Nota.* Elaboración propia.
 :::
 
 
@@ -374,7 +374,7 @@ El vector $\mathrm{enc}(\mathbf z_t)$ es la **representación latente** del mes 
 :::
 
 
-**Relación con el PCA.** Si el codificador y el decodificador son lineales y la pérdida es cuadrática, el óptimo genera el mismo subespacio que los $d$ primeros ejes del PCA, aunque no recupera los ejes individuales ni su orden [@baldi_hornik_1989]. Con activaciones no lineales, el autoencoder puede representar relaciones que el PCA no capta [@hinton_salakhutdinov_2006]; la variante con eliminación de ruido, que reconstruye la entrada original a partir de una versión perturbada, mejora la robustez de la representación [@vincent_et_al_2008].
+**Relación con el PCA.** Con activaciones no lineales, el autoencoder puede representar relaciones que el PCA no capta [@hinton_salakhutdinov_2006]; en la variante con eliminación de ruido, la red reconstruye la entrada original a partir de una versión perturbada.
 
 **Error de reconstrucción.** El error de cada observación, $e_t=\lVert\mathbf z_t-\hat{\mathbf z}_t\rVert^2$, mide cuánto se aparta el mes $t$ de la estructura aprendida. Calculado fuera de muestra, permite comparar modelos en una misma escala (incluido el PCA, mediante la reconstrucción de la sección 2.2.3) y señalar los meses atípicos.
 
@@ -403,7 +403,7 @@ $$
 \end{aligned}
 $$
 
-donde $\mathbf i_t$, $\mathbf f_t$ y $\mathbf o_t$ son las compuertas de entrada, de olvido y de salida, y $\odot$ el producto elemento a elemento. La compuerta de olvido fue incorporada posteriormente [@gers_schmidhuber_cummins_2000]. La Figura {F:lstm} esquematiza la celda.
+donde $\mathbf i_t$, $\mathbf f_t$ y $\mathbf o_t$ son las compuertas de entrada, de olvido y de salida, y $\odot$ el producto elemento a elemento. La Figura {F:lstm} esquematiza la celda.
 
 ::: {custom-style="Rotulo"}
 **Figura {F:lstm}**\
@@ -417,9 +417,8 @@ donde $\mathbf i_t$, $\mathbf f_t$ y $\mathbf o_t$ son las compuertas de entrada
 :::
 
 
-**Autoencoder LSTM.** Un codificador LSTM lee una ventana de $q$ meses consecutivos y la resume en un vector latente; un decodificador LSTM reconstruye la ventana a partir de ese vector [@srivastava_mansimov_salakhutdinov_2015]. La sucesión de vectores latentes de ventanas consecutivas forma una **trayectoria latente** que resume la evolución del sistema; como las ventanas se solapan, la trayectoria es suave por construcción.
+**Autoencoder LSTM.** Un codificador LSTM lee una ventana de $q$ meses consecutivos y la resume en un vector latente; un decodificador LSTM reconstruye la ventana a partir de ese vector. La sucesión de vectores latentes de ventanas consecutivas forma una **trayectoria latente** que resume la evolución del sistema; como las ventanas se solapan, la trayectoria es suave por construcción.
 
-**Incertidumbre.** El método Monte Carlo Dropout mantiene activa la desactivación aleatoria de neuronas al predecir y repite la predicción $R_d$ veces; la dispersión de las predicciones aproxima la incertidumbre del modelo bajo una interpretación bayesiana aproximada y depende de la tasa de desactivación [@gal_ghahramani_2016].
 
 ## 2.3 Definición de términos
 
