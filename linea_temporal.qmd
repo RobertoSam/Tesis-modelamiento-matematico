@@ -13,6 +13,48 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 8–9 de noviembre de 2026
+
+**Informe para el Seminario de Tesis II (MMC102): documento consolidado de cinco capítulos y primeras observaciones del asesor**
+
+- **Reingeniería del informe.** El informe se rehízo capítulo por capítulo con la estructura
+  del curso MMC102: introducción, marco teórico, metodología y desarrollo del modelo,
+  resultados y discusión, y conclusiones y recomendaciones. No se formulan hipótesis, porque
+  el estudio es exploratorio, y la omisión queda justificada en el texto.
+- **Introducción.** Problema planteado como de modelización matemática y computacional, cinco
+  objetivos específicos y dos tipos de régimen: de estructura y de posición.
+- **Marco teórico.** Definiciones formales del PCA, la HFC, el análisis evolutivo, la
+  partición de Fisher, el contraste con series de referencia simuladas, el remuestreo por
+  bloques y las redes neuronales (autoencoders y LSTM), con figuras de apoyo.
+- **Metodología.** Series en niveles sin transformar, con la base congelada; segmentación
+  temporal con la partición de Fisher; validación con series de referencia simuladas y
+  remuestreo por bloques; regla de fases con el crédito real.
+- **Resultados y conclusiones.** Se presentan como parciales: la validación estadística de los
+  regímenes sigue en estudio. Los resultados preliminares van solo en el documento Word y no
+  se publican en este sitio.
+- **Observaciones del Dr. Camiz incorporadas:**
+  - en el PCA se muestran, para cada eje, la correlación de cada serie, el cos² y la
+    contribución, en lugar de las cargas;
+  - tabla completa de los nodos de la HFC;
+  - en el EPCA, valores propios de cada ventana frente al análisis paralelo, correlaciones
+    en el tiempo con los ejes seguidos entre ventanas y composición de la clase C1 en cada
+    ventana;
+  - bibliografía apoyada en artículos científicos verificados; los programas en R se
+    mencionan en el texto y no como referencias, y las fuentes de las fechas de los
+    episodios se listan aparte;
+  - revisión de la redacción.
+- **Recomendaciones.** Se listan los pendientes estructurales y las variantes posibles para
+  los componentes y los autoencoders.
+
+**Pendientes**
+
+- Enviar el informe al Dr. Camiz y recoger sus observaciones.
+- Repetir los autoencoders con las 16 series.
+- Validar la segmentación con la partición por tendencias segmentadas.
+- Verificar la HFC evolutiva contra el programa original.
+- Obtener el crédito de 2006 y el crédito a tipo de cambio constante, y fijar el parámetro c
+  de la regla de fases.
+
 ## 26 de octubre de 2026
 
 **Iteración 3b: fase 0 terminada, Rmd final en niveles con 16 series y decisiones D15 a D17**
