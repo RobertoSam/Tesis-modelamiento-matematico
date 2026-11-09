@@ -6,7 +6,7 @@
 
 El ciclo financiero se ha caracterizado como la alternancia de fases de expansión y contracción del crédito y de los precios de los activos; su duración excede la del ciclo económico y sus puntos máximos tienden a coincidir con crisis bancarias [@drehmann_borio_tsatsaronis_2012]. En el Perú, los ciclos crediticios no presentan una correlación dinámica fuerte con el ciclo del producto, por lo que una medida macroprudencial basada en este último podría tener una efectividad limitada para atenuar el sobrecalentamiento del crédito [@alcaraz_cabello_nivin_2024]. La fase del ciclo financiero no puede, en consecuencia, inferirse del ciclo del producto: su identificación requiere incorporar información del sistema financiero junto con la de la actividad y los precios.
 
-En esta investigación, un **régimen financiero** es un intervalo de tiempo contiguo en el que el nivel conjunto de los indicadores macrofinancieros y la estructura de asociación entre ellos permanecen relativamente estables. Como el período de estudio es menor que la duración reportada del ciclo, los regímenes se entienden como subperíodos del ciclo y no como ciclos completos. Un régimen no es directamente observable: se manifiesta de forma parcial en indicadores de crédito, agregados monetarios, tasas de interés, precios, actividad, reservas internacionales, mercado bursátil y riesgo soberano. Entre ellos hay información redundante y señales divergentes, sus movimientos no son necesariamente sincrónicos y su estructura de asociación puede variar en el tiempo. Cada régimen puede asociarse, además, a una fase del ciclo financiero —expansión, contracción o transición— según el comportamiento del crédito durante el intervalo.
+En esta investigación, un **régimen financiero** es un intervalo de tiempo contiguo en el que la estructura de asociación entre los indicadores macrofinancieros —régimen de estructura— o su nivel conjunto —régimen de posición— permanece relativamente estable. Como el período de estudio es menor que la duración reportada del ciclo, los regímenes se entienden como subperíodos del ciclo y no como ciclos completos. Un régimen no es directamente observable: se manifiesta de forma parcial en indicadores de crédito, agregados monetarios, tasas de interés, precios, actividad, reservas internacionales, mercado bursátil y riesgo soberano. Entre ellos hay información redundante y señales divergentes, sus movimientos no son necesariamente sincrónicos y su estructura de asociación puede variar en el tiempo. Cada régimen puede asociarse, además, a una fase del ciclo financiero —expansión, contracción o transición— según el comportamiento del crédito durante el intervalo.
 
 La multiplicidad de indicadores plantea así tres dificultades de modelización: resumir la información común en pocas dimensiones sin imponer de antemano ponderaciones ni agrupaciones de los indicadores; seguir la evolución de esa representación, porque una estimación sobre el período completo puede ocultar sus cambios, y segmentar el período con un criterio explícito cuyos cortes puedan contrastarse con los que producirían la dependencia temporal de las series y la variabilidad muestral. A ello se suma que las relaciones entre los indicadores pueden no ser lineales, lo que plantea si una representación no lineal recoge información que la lineal no capta.
 
@@ -14,7 +14,7 @@ En el Perú, los estudios identificados que aplican métodos de reducción de di
 
 ### 1.1.1 Problema general
 
-¿Cómo construir un modelo matemático-computacional de reducción de dimensión de los indicadores macrofinancieros mensuales del Perú, en el período 2007–2025, que identifique los regímenes del ciclo financiero mediante un criterio de segmentación explícito y validado estadísticamente, y que permita interpretarlos en términos de los indicadores originales?
+¿Cómo construir un modelo matemático-computacional de reducción de dimensión de los indicadores macrofinancieros mensuales del Perú observados en el período 2007–2025, que identifique los regímenes del ciclo financiero mediante un criterio de segmentación explícito y validado estadísticamente, y que permita interpretarlos en términos de los indicadores originales?
 
 ### 1.1.2 Problemas específicos
 
@@ -36,7 +36,7 @@ En el Perú, los estudios identificados que aplican métodos de reducción de di
 
 ### 1.3.1 Objetivo general
 
-Construir un modelo matemático-computacional de reducción de dimensión de los indicadores macrofinancieros mensuales del Perú, en el período 2007–2025, que identifique los regímenes del ciclo financiero mediante un criterio de segmentación explícito y validado estadísticamente, y que permita interpretarlos en términos de los indicadores originales.
+Construir un modelo matemático-computacional de reducción de dimensión de los indicadores macrofinancieros mensuales del Perú observados en el período 2007–2025, que identifique los regímenes del ciclo financiero mediante un criterio de segmentación explícito y validado estadísticamente, y que permita interpretarlos en términos de los indicadores originales.
 
 ### 1.3.2 Objetivos específicos
 

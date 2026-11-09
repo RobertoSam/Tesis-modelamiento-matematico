@@ -47,7 +47,7 @@ El **ciclo financiero** es la alternancia de fases de expansión y contracción 
 
 Sobre esta base se definen los conceptos operativos de la investigación:
 
-- Un **régimen** es un intervalo de meses consecutivos $I=\{t_a,\dots,t_b\}$ en el que el nivel conjunto de los indicadores y la estructura de asociación entre ellos permanecen relativamente estables.
+- Un **régimen** es un intervalo de meses consecutivos $I=\{t_a,\dots,t_b\}$ en el que una propiedad del conjunto de indicadores permanece relativamente estable. Se distinguen dos tipos: en un **régimen de estructura** permanece estable la estructura de asociación entre los indicadores; en un **régimen de posición**, su nivel conjunto, es decir, la zona del espacio de los indicadores en que se encuentra el sistema.
 - Un **corte** es el primer mes de cada régimen distinto del primero; $K$ regímenes se separan por $K-1$ cortes, y la sucesión de cortes define una **partición** del período.
 - Una **fase** es la etiqueta económica —expansión, contracción o transición— que se asigna a un régimen según el comportamiento del crédito en el intervalo. La delimitación del régimen usa la información multivariada; la fase es una interpretación posterior.
 
@@ -423,7 +423,9 @@ donde $\mathbf i_t$, $\mathbf f_t$ y $\mathbf o_t$ son las compuertas de entrada
 
 ## 2.3 Definición de términos
 
-- **Régimen:** intervalo de meses consecutivos en el que el nivel conjunto de los indicadores y su estructura de asociación permanecen relativamente estables.
+- **Régimen:** intervalo de meses consecutivos en el que una propiedad del conjunto de indicadores permanece relativamente estable.
+- **Régimen de estructura:** régimen en el que permanece estable la estructura de asociación entre los indicadores.
+- **Régimen de posición:** régimen en el que permanece estable el nivel conjunto de los indicadores.
 - **Corte:** primer mes de cada régimen distinto del primero.
 - **Partición:** división del período en intervalos contiguos y disjuntos.
 - **Fase:** etiqueta económica (expansión, contracción o transición) asignada a un régimen según el comportamiento del crédito.
