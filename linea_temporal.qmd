@@ -30,8 +30,8 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
   temporal con la partición de Fisher; validación con series de referencia simuladas y
   remuestreo por bloques; regla de fases con el crédito real.
 - **Resultados y conclusiones.** Se presentan como parciales: la validación estadística de los
-  regímenes sigue en estudio. Los resultados preliminares van solo en el documento Word y no
-  se publican en este sitio.
+  regímenes sigue en estudio. Los resultados preliminares se muestran en el documento de corridas
+  en R, publicado con el conforme de Roberto.
 - **Observaciones del Dr. Camiz incorporadas:**
   - en el PCA se muestran, para cada eje, la correlación de cada serie, el cos² y la
     contribución, en lugar de las cargas;
@@ -45,6 +45,9 @@ cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tes
   - revisión de la redacción.
 - **Recomendaciones.** Se listan los pendientes estructurales y las variantes posibles para
   los componentes y los autoencoders.
+- **Corridas en R.** Documento con las corridas del informe (PCA, HFC, EPCA, HFC evolutiva,
+  segmentación y regímenes tentativos), publicado con el conforme de Roberto:
+  [corridas del informe MMC102](corridas_mmc102.html).
 
 **Pendientes**
 
