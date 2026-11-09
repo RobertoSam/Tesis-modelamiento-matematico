@@ -150,6 +150,8 @@ $$
 
 supera el percentil 95 de la misma reducción en las series de referencia de la sección 3.2.5: un tramo adicional se acepta solo si reduce la heterogeneidad más de lo que lo haría en series sin la estructura buscada. Como sensibilidad se informan la regla del menor $K$ a partir del cual un tramo adicional reduce $\mathrm{SCD}_K$ en menos de 10 % —con umbrales de 10, 12 y 15 %— y la regla de la mayor caída. El índice de @calinski_harabasz_1974 se informa, pero no se usa para elegir $K$ (sección 2.2.6).
 
+**Especificación preliminar.** Como el contraste de la sección 3.2.5 no identifica regímenes que superen a las series de referencia (capítulo 4), los regímenes que se caracterizan en este informe se obtienen con una especificación preliminar, que se declara como tal y no como resultado validado: para la trayectoria de posición, las coordenadas de los tres primeros ejes suavizadas con la media móvil de los 12 meses anteriores y estandarizadas; para ambas trayectorias, el número de tramos elegido con la regla del menor $K$ a partir del cual un tramo adicional reduce $\mathrm{SCD}_K$ en menos de 10 % y, si ningún $K$ cumple esa condición, el de mayor caída de esa reducción. Esta especificación permite describir y caracterizar los regímenes de forma tentativa mientras se evalúan formulaciones alternativas de la segmentación.
+
 **Sensibilidad.** Se informan los cortes obtenidos con $d=2$ y $d=4$ ejes en la trayectoria de posición, y con los anchos de 24, 36 y 60 meses en la trayectoria de estructura.
 
 ### 3.2.5 Validación

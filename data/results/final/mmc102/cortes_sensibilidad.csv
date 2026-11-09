@@ -1,0 +1,17 @@
+trayectoria,variante,K,cortes
+estructura,referencia simulada (principal),1,
+estructura,umbral 10 %,6,2015-02 2017-04 2018-05 2020-08 2021-12
+estructura,umbral 12 %,4,2015-02 2017-03 2020-06
+estructura,umbral 15 %,3,2014-12 2020-07
+estructura,mayor caída,2,2020-05
+posición,referencia simulada (principal),1,
+posición,umbral 10 %,2,2016-12
+posición,umbral 12 %,2,2016-12
+posición,umbral 15 %,9,2008-07 2009-08 2011-01 2013-10 2017-09 2020-03 2022-05 2024-05
+posición,mayor caída,2,2016-12
+posición,media causal,1,
+posición,estandarizada,1,
+posición,d = 2,1,
+posición,d = 4,1,
+estructura,w = 36,1,
+estructura,w = 60,1,
