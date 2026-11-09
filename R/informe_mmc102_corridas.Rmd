@@ -1,0 +1,615 @@
+---
+title: "Ciclo financiero del Perú: corridas del informe MMC102"
+subtitle: "16 indicadores macrofinancieros mensuales del BCRP, enero de 2007 a diciembre de 2025"
+author: "Roberto Carlos Samaniego Salcedo"
+date: "9 de noviembre de 2026"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+    code_folding: hide
+    self_contained: true
+---
+
+```{r configuracion, include = FALSE}
+invisible(Sys.setlocale("LC_CTYPE", "C.UTF-8"))
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 9, fig.height = 4.6,
+                      dpi = 110, fig.align = "center")
+library(ggplot2)
+raiz <- normalizePath(file.path(dirname(knitr::current_input(dir = TRUE)), ".."))
+knitr::opts_knit$set(root.dir = raiz)
+source(file.path(raiz, "R/camiz_port.R"))
+RES <- file.path(raiz, "data/results/final/mmc102")
+RES_UNI <- file.path(raiz, "data/results/final/informe_uni")
+FIG_AE <- file.path(raiz, "tesis/informe_mmc102/fig")
+AZUL <- "#2a78d6"; NARANJA <- "#eb6834"; VERDE <- "#1baf7a"; GRIS <- "#b9b8b2"
+theme_set(theme_minimal(base_size = 11) + theme(panel.grid.minor = element_blank()))
+coma <- function(x, d = 2) formatC(x, format = "f", digits = d, decimal.mark = ",")
+tabla <- function(df, d = 3) {
+  df <- as.data.frame(df, check.names = FALSE); rownames(df) <- NULL
+  num <- vapply(df, is.numeric, logical(1))
+  df[num] <- lapply(df[num], function(v)
+    if (all(is.na(v) | v == round(v))) as.character(v) else coma(v, d))
+  knitr::kable(df, align = ifelse(num, "r", "l"), row.names = FALSE)
+}
+```
+
+```{r datos-carga, include = FALSE}
+d <- read.csv(file.path(raiz, "data/processed/dataset_niveles_mensual.csv"), check.names = FALSE,
+              encoding = "UTF-8")
+columnas <- c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario", "Liquidez M1", "Liquidez M3",
+              "Tasa referencia BCRP", "Tasa interbancaria", "Tasa activa TAMN", "Tasa pasiva TIPMN",
+              "IPC Lima", "Tipo de cambio", "Índice BVL", "embi_peru", "PBI desestacionalizado",
+              "Demanda interna", "Reservas internacionales")
+nombres <- c("Crédito empresarial", "Crédito consumo", "Crédito hipotecario", "M1", "M3",
+             "Tasa de referencia", "Tasa interbancaria", "TAMN", "TIPMN", "IPC Lima", "Tipo de cambio",
+             "Índice BVL", "EMBIG Perú", "PBI", "Demanda interna", "RIN")
+X <- as.matrix(d[, columnas]); colnames(X) <- nombres
+fechas_txt <- substr(d$fecha, 1, 7); rownames(X) <- fechas_txt
+fechas <- as.Date(paste0(fechas_txt, "-01"))
+n <- nrow(X); p <- ncol(X)
+stopifnot(n == 228, p == 16, !anyNA(X))
+
+epi <- read.csv(file.path(raiz, "data/referencia/episodios_referencia.csv"), encoding = "UTF-8")
+epi$fin[is.na(epi$fin) | epi$fin == ""] <- epi$inicio[is.na(epi$fin) | epi$fin == ""]
+epi$a <- as.Date(paste0(epi$inicio, "-01")); epi$b <- as.Date(paste0(epi$fin, "-28"))
+bandas <- function() geom_rect(data = epi, aes(xmin = a, xmax = b, ymin = -Inf, ymax = Inf),
+                               inherit.aes = FALSE, fill = "#e8e7e2")
+```
+
+```{r funciones, include = FALSE}
+estandarizar <- function(M) {
+  M <- as.matrix(M); m <- colMeans(M)
+  s <- sqrt(colMeans(sweep(M, 2, m)^2)); sweep(sweep(M, 2, m), 2, s, "/")
+}
+pca_basico <- function(Z) {
+  e <- eigen(crossprod(Z) / nrow(Z), symmetric = TRUE); V <- e$vectors
+  for (k in seq_len(ncol(V))) if (sum(V[V[, k] < 0, k]^2) > sum(V[V[, k] > 0, k]^2)) V[, k] <- -V[, k]
+  list(valores = e$values, vectores = V, scores = Z %*% V)
+}
+mm_causal <- function(x, w) as.numeric(stats::filter(x, rep(1 / w, w), sides = 1))
+particion_fisher <- function(Y, k_max = 10, tam_min = 12) {
+  Y <- as.matrix(Y); n <- nrow(Y)
+  S1 <- rbind(0, apply(Y, 2, cumsum)); S2 <- c(0, cumsum(rowSums(Y^2)))
+  sce <- function(i, j) { s <- S1[j + 1, ] - S1[i + 1, ]; S2[j + 1] - S2[i + 1] - sum(s * s) / (j - i) }
+  D <- matrix(Inf, k_max, n); B <- matrix(0L, k_max, n)
+  for (j in tam_min:n) D[1, j] <- sce(0, j)
+  for (k in 2:k_max) {
+    if (k * tam_min > n) break
+    for (j in (k * tam_min):n) {
+      ini <- ((k - 1) * tam_min):(j - tam_min)
+      costos <- vapply(ini, function(i) D[k - 1, i] + sce(i, j), numeric(1))
+      D[k, j] <- min(costos); B[k, j] <- ini[which.min(costos)]
+    }
+  }
+  res <- list()
+  for (k in 1:k_max) {
+    if (!is.finite(D[k, n])) next
+    cortes <- integer(0); j <- n
+    if (k > 1) for (kk in k:2) { i <- B[kk, j]; cortes <- c(i, cortes); j <- i }
+    res[[k]] <- list(sce = D[k, n], cortes = cortes)
+  }
+  res
+}
+regla_d12 <- function(sce, umbral = 0.10) {
+  r <- (head(sce, -1) - tail(sce, -1)) / head(sce, -1)
+  bajo <- which(r < umbral)
+  if (length(bajo)) return(min(bajo))
+  caida <- c(NA, head(r, -1)) - r
+  which.max(caida)
+}
+tucker <- function(a, b) sum(a * b) / sqrt(sum(a^2) * sum(b^2))
+```
+
+# Datos
+
+## Series
+
+```{r tabla-series}
+series <- data.frame(
+  Serie = nombres,
+  Código = c("PN00532MM", "PN00533MM", "PN00534MM", "PN00199MM", "PN00214MM", "PD04722MM", "PN07819NM",
+             "PN07807NM", "PN07816NM", "PN38705PM", "PN01246PM", "PN01142MM", "PD04709XD", "PN01773AM",
+             "PN01774AM", "PN00027MM"),
+  Unidad = c(rep("Millones de soles", 5), rep("Porcentaje", 4), "Índice", "Soles por dólar", "Índice",
+             "Puntos básicos", "Índice, desestacionalizado", "Índice, desestacionalizado",
+             "Millones de dólares"),
+  Inicio = fechas_txt[1], Fin = fechas_txt[n])
+knitr::kable(series)
+```
+
+## Series en unidades originales
+
+```{r fig-series, fig.height = 8}
+largo <- data.frame(fecha = rep(fechas, p), serie = factor(rep(nombres, each = n), levels = nombres),
+                    valor = as.vector(X))
+ggplot(largo, aes(fecha, valor)) + bandas() + geom_line(colour = AZUL, linewidth = 0.6) +
+  facet_wrap(~serie, scales = "free_y", ncol = 4) + labs(x = NULL, y = NULL)
+```
+
+## Clasificación de tendencia
+
+```{r tendencia}
+knitr::kable(read.csv(file.path(RES_UNI, "tendencia_series.csv"), check.names = FALSE, encoding = "UTF-8"))
+```
+
+# Análisis en componentes principales
+
+```{r pca-calculo}
+Z <- estandarizar(X)
+R <- crossprod(Z) / n
+pc <- pca_basico(Z)
+lam <- pc$valores
+r_eje <- sweep(pc$vectores, 2, sqrt(lam), "*")
+F_scores <- pc$scores
+```
+
+## Adecuación de los datos
+
+```{r kmo}
+Ri <- solve(R)
+P_parcial <- -Ri / sqrt(outer(diag(Ri), diag(Ri))); diag(P_parcial) <- 0
+R0 <- R; diag(R0) <- 0
+kmo_global <- sum(R0^2) / (sum(R0^2) + sum(P_parcial^2))
+kmo_serie <- colSums(R0^2) / (colSums(R0^2) + colSums(P_parcial^2))
+chi2 <- -(n - 1 - (2 * p + 5) / 6) * log(det(R)); gl <- p * (p - 1) / 2
+data.frame(Medida = c("KMO global", "Bartlett: chi cuadrado", "Bartlett: grados de libertad", "Bartlett: p"),
+           Valor = c(coma(kmo_global), coma(chi2, 1), gl, format.pval(pchisq(chi2, gl, lower.tail = FALSE)))) |>
+  knitr::kable()
+tabla(data.frame(Serie = nombres, KMO = kmo_serie, `Calidad en los ejes 1–3` = rowSums(r_eje[, 1:3]^2),
+                 check.names = FALSE), 2)
+```
+
+## Valores propios
+
+```{r valores-propios}
+set.seed(42)
+sims <- t(replicate(1000, eigen(cor(matrix(rnorm(n * p), n)), symmetric = TRUE, only.values = TRUE)$values))
+horn95 <- apply(sims, 2, quantile, 0.95)
+vara <- sapply(1:p, function(k) 100 * sum(1 / (k:p)) / p)
+vp <- data.frame(Eje = 1:p, `Valor propio` = lam, `Inercia (%)` = 100 * lam / p,
+                 `Acumulada (%)` = cumsum(100 * lam / p), `Análisis paralelo (p95)` = horn95,
+                 `Vara quebrada (%)` = vara, check.names = FALSE)
+tabla(vp[1:8, ], 3)
+```
+
+```{r fig-sedimentacion, fig.height = 3.8}
+ggplot(vp, aes(Eje)) + geom_line(aes(y = `Valor propio`, colour = "Valor propio")) +
+  geom_point(aes(y = `Valor propio`, colour = "Valor propio")) +
+  geom_line(aes(y = `Análisis paralelo (p95)`, colour = "Análisis paralelo (p95)"), linetype = 2) +
+  geom_line(aes(y = `Vara quebrada (%)` * p / 100, colour = "Vara quebrada"), linetype = 3) +
+  geom_hline(yintercept = 1, colour = GRIS) +
+  scale_colour_manual(values = c(AZUL, NARANJA, VERDE), name = NULL) +
+  scale_x_continuous(breaks = 1:p) + labs(y = "Valor propio") + theme(legend.position = "top")
+```
+
+## Correlación con el eje, calidad de representación y contribución
+
+```{r pca-indicadores}
+ind <- data.frame(Serie = nombres)
+for (k in 1:3) {
+  ind[[paste0("r eje ", k)]] <- r_eje[, k]
+  ind[[paste0("cos² eje ", k)]] <- r_eje[, k]^2
+  ind[[paste0("Ctr. eje ", k, " (%)")]] <- 100 * r_eje[, k]^2 / lam[k]
+}
+ind[["Calidad (1–3)"]] <- rowSums(r_eje[, 1:3]^2)
+tabla(ind, 2)
+```
+
+## Círculos de correlaciones
+
+```{r fig-circulos, fig.width = 10, fig.height = 5}
+circulo <- function(i, j) {
+  df <- data.frame(serie = nombres, x = r_eje[, i], y = r_eje[, j])
+  t <- seq(0, 2 * pi, length.out = 200)
+  ggplot(df) + geom_path(data = data.frame(x = cos(t), y = sin(t)), aes(x, y), colour = "grey40") +
+    geom_hline(yintercept = 0, colour = GRIS) + geom_vline(xintercept = 0, colour = GRIS) +
+    geom_segment(aes(x = 0, y = 0, xend = x, yend = y), colour = AZUL,
+                 arrow = arrow(length = unit(0.12, "cm"))) +
+    geom_text(aes(x * 1.1, y * 1.1, label = serie), size = 2.6) + coord_equal() +
+    labs(x = sprintf("Eje %d (%s %%)", i, coma(100 * lam[i] / p, 1)),
+         y = sprintf("Eje %d (%s %%)", j, coma(100 * lam[j] / p, 1)))
+}
+gridExtra_ok <- requireNamespace("gridExtra", quietly = TRUE)
+if (gridExtra_ok) gridExtra::grid.arrange(circulo(1, 2), circulo(1, 3), ncol = 2) else {
+  print(circulo(1, 2)); print(circulo(1, 3))
+}
+```
+
+## Coordenadas de los meses
+
+```{r fig-scores}
+sc <- data.frame(fecha = rep(fechas, 3), eje = factor(rep(paste("Eje", 1:3), each = n)),
+                 valor = as.vector(F_scores[, 1:3]))
+ggplot(sc, aes(fecha, valor, colour = eje)) + bandas() + geom_line(linewidth = 0.7) +
+  scale_colour_manual(values = c(AZUL, NARANJA, VERDE), name = NULL) +
+  labs(x = NULL, y = "Coordenada") + theme(legend.position = "top")
+```
+
+## Contraste con series de referencia con tendencia
+
+```{r ref-ejes}
+rt <- read.csv(file.path(RES, "referencia_tendencia_ejes.csv"))
+tabla(data.frame(Versión = ifelse(rt$version == "ind_TS", "Indeterminadas como TS", "Indeterminadas como DS"),
+                 Eje = rt$eje, `Inercia observada (%)` = 100 * rt$inercia_obs,
+                 `Mediana simulada (%)` = 100 * rt$p50, `Percentil 95 simulado (%)` = 100 * rt$p95,
+                 `p̂` = rt$p, check.names = FALSE), 3)
+```
+
+## Estabilidad frente al remuestreo de los incrementos
+
+```{r estabilidad}
+es <- read.csv(file.path(RES, "estabilidad_resumen.csv"))
+tabla(data.frame(`Bloque (meses)` = es$L,
+                 `Eje 1: mediana` = es$cong1_mediana, `Eje 1: p5` = es$cong1_p5,
+                 `Eje 2: mediana` = es$cong2_mediana, `Eje 2: p5` = es$cong2_p5,
+                 `Eje 3: mediana` = es$cong3_mediana, `Eje 3: p5` = es$cong3_p5,
+                 `λ1 p5` = es$lambda1_p5, `λ1 p95` = es$lambda1_p95, check.names = FALSE), 2)
+er <- read.csv(file.path(RES, "estabilidad_replicas.csv")); er <- er[er$L == 24, ]
+ggplot(data.frame(cong = c(er$cong_1, er$cong_2, er$cong_3),
+                  eje = rep(paste("Eje", 1:3), each = nrow(er))), aes(cong, colour = eje)) +
+  geom_freqpoly(bins = 25, linewidth = 0.8) + scale_colour_manual(values = c(AZUL, NARANJA, VERDE), name = NULL) +
+  labs(x = "Congruencia con el eje original (bloques de 24 meses)", y = "Réplicas") +
+  theme(legend.position = "top")
+```
+
+# Clasificación factorial jerárquica
+
+```{r hfc-calculo}
+invisible(capture.output(h <- clahfac_r(as.data.frame(X), out = TRUE)))
+```
+
+## Dendrograma
+
+```{r fig-dendrograma, fig.height = 5.5}
+plot(h$hier, hang = -1, main = "", sub = "", xlab = "", ylab = "Índice", cex = 0.75)
+abline(h = 0.7, col = "#c0392b", lty = 2)
+```
+
+## Nodos de la jerarquía
+
+```{r hfc-nodos}
+hi <- as.data.frame(h$hierar, check.names = FALSE)
+etiqueta <- function(k) ifelse(k <= p, nombres[pmin(k, p)], paste("nodo", k))
+nodos <- data.frame(Nodo = as.integer(rownames(hi)), Une = paste(etiqueta(hi$N1), "+", etiqueta(hi$N2)),
+                    Series = hi$Num, `λ1` = hi$Eigenv, `Índice (λ2)` = hi$Index,
+                    `% local λ1` = hi[["Loc_%1"]], `% local λ2` = hi[["Loc_%2"]],
+                    `% global λ1` = hi[["Glob_%1"]], `% global λ2` = hi[["Glob_%2"]],
+                    `% acum. λ2` = hi[["Cum_%2"]], check.names = FALSE)
+tabla(nodos[nrow(nodos):1, ], 3)
+```
+
+## Descomposición de la inercia
+
+```{r hfc-inercia}
+knitr::kable(round(h$inertia, 3), row.names = TRUE)
+```
+
+## Clases con el corte en 0,7
+
+```{r hfc-clases}
+clases_corte <- function(merge, altura, umbral = 0.7) {
+  nod <- list()
+  for (i in seq_len(nrow(merge))) {
+    g <- function(k) if (k < 0) -k else nod[[k]]
+    nod[[i]] <- c(g(merge[i, 1]), g(merge[i, 2]))
+  }
+  clases <- as.list(seq_len(nrow(merge) + 1))
+  for (i in seq_len(nrow(merge))) if (altura[i] <= umbral) {
+    u <- nod[[i]]; clases <- c(Filter(function(cl) !all(cl %in% u), clases), list(u))
+  }
+  clases
+}
+cl07 <- clases_corte(h$hier$merge, h$hier$height)
+data.frame(Clase = seq_along(cl07), Series = sapply(cl07, function(cl) paste(nombres[sort(cl)], collapse = ", ")),
+           `N.º de series` = lengths(cl07), check.names = FALSE) |> knitr::kable()
+```
+
+## Estabilidad frente al remuestreo de los incrementos
+
+```{r hfc-estabilidad}
+eh <- read.csv(file.path(RES, "estabilidad_hfc.csv"))
+etq <- c(prop_ari3_igual = "Réplicas con la misma partición en 3 clases", ari3_mediana = "Rand ajustado (mediana)",
+         cofenetica_mediana = "Correlación cofenética (mediana)", prop_tres_clases = "Réplicas con 3 clases en el corte 0,7")
+data.frame(Medida = unname(ifelse(eh[[1]] %in% names(etq), etq[eh[[1]]], eh[[1]])), Valor = coma(eh[[2]], 3)) |> knitr::kable()
+```
+
+# Análisis en componentes principales evolutivo
+
+```{r epca-calculo}
+a <- aede_r(serie = as.data.frame(X), nw = 48, nsd = 3, ndim = 3, maxcl = 10)
+ev <- a$eigenvalues
+f_ev <- as.Date(paste0(rownames(ev), "-01"))
+C <- a$correlationlsq
+horn <- read.csv(file.path(raiz, "data/results/final/R_aede_horn_umbrales.csv"))
+w_aede <- exp(-0.5 * (((1:48) - 24.5) / (47 / sqrt(2)) * 3)^2); w_aede <- w_aede / sum(w_aede)
+n_ef <- 1 / sum(w_aede^2)
+umbral <- sapply(1:3, function(k) approx(horn$n_horn[horn$eje == k], horn$horn_p95[horn$eje == k], n_ef)$y)
+```
+
+## Valores propios por ventana
+
+```{r fig-epca-vp, fig.height = 5.5}
+vl <- data.frame(fecha = rep(f_ev, 3), eje = factor(rep(c("λ1", "λ2", "λ3"), each = nrow(ev))),
+                 valor = as.vector(as.matrix(ev)))
+um <- data.frame(eje = factor(c("λ1", "λ2", "λ3")), u = umbral)
+ggplot(vl, aes(fecha, valor, colour = eje)) + bandas() + geom_line(linewidth = 0.8) +
+  geom_hline(data = um, aes(yintercept = u, colour = eje), linetype = 3) +
+  facet_grid(eje ~ ., scales = "free_y") + scale_colour_manual(values = c(AZUL, NARANJA, VERDE), guide = "none") +
+  labs(x = NULL, y = "Valor propio")
+data.frame(Eje = 1:3, `Umbral del análisis paralelo` = unname(umbral),
+           `Ventanas sobre el umbral` = unname(colSums(sweep(as.matrix(ev), 2, umbral, ">"))),
+           `Mínimo` = unname(apply(ev, 2, min)), `Máximo` = unname(apply(ev, 2, max)), check.names = FALSE) |> tabla(2)
+```
+
+## Seguimiento de los ejes entre ventanas
+
+```{r epca-seguimiento}
+permutaciones <- list(c(1, 2, 3), c(1, 3, 2), c(2, 1, 3), c(2, 3, 1), c(3, 1, 2), c(3, 2, 1))
+Cs <- C; previa <- c(1, 2, 3); cambios <- character(0)
+for (t in 2:dim(C)[1]) {
+  val <- sapply(permutaciones, function(pm) sum(sapply(1:3, function(k) abs(tucker(C[t, , pm[k]], Cs[t - 1, , k])))))
+  pm <- permutaciones[[which.max(val)]]
+  if (!identical(pm, previa)) { cambios <- c(cambios, rownames(ev)[t]); previa <- pm }
+  Cs[t, , ] <- C[t, , pm]
+  for (k in 1:3) if (tucker(Cs[t, , k], Cs[t - 1, , k]) < 0) Cs[t, , k] <- -Cs[t, , k]
+}
+congr <- t(sapply(2:dim(Cs)[1], function(t) sapply(1:3, function(k) tucker(Cs[t, , k], Cs[t - 1, , k]))))
+data.frame(`Ventanas con intercambio de ejes` = paste(cambios, collapse = ", "),
+           `Congruencia consecutiva mínima` = coma(min(abs(congr))),
+           `Ventanas con congruencia < 0,9` = sum(apply(abs(congr) < 0.9, 1, any)), check.names = FALSE) |>
+  knitr::kable()
+```
+
+## Correlaciones evolutivas con los dos primeros ejes
+
+```{r fig-epca-mapa, fig.height = 8}
+mapa <- do.call(rbind, lapply(1:2, function(k) data.frame(
+  fecha = rep(f_ev, p), serie = factor(rep(nombres, each = length(f_ev)), levels = rev(nombres)),
+  r = as.vector(Cs[, , k]), eje = paste("Eje", k, "seguido"))))
+ggplot(mapa, aes(fecha, serie, fill = r)) + geom_tile() +
+  scale_fill_gradient2(low = "#2166ac", mid = "white", high = "#b2182b", limits = c(-1, 1), name = "r") +
+  facet_wrap(~eje, ncol = 1) + labs(x = NULL, y = NULL)
+```
+
+```{r fig-epca-series, fig.height = 9}
+lineas <- do.call(rbind, lapply(1:2, function(k) data.frame(
+  fecha = rep(f_ev, p), serie = factor(rep(nombres, each = length(f_ev)), levels = nombres),
+  r = as.vector(Cs[, , k]), eje = paste("Eje", k))))
+ggplot(lineas, aes(fecha, r, colour = eje)) + bandas() + geom_hline(yintercept = 0, colour = GRIS) +
+  geom_line(linewidth = 0.6) + facet_wrap(~serie, ncol = 4) +
+  scale_colour_manual(values = c(AZUL, NARANJA), name = NULL) + labs(x = NULL, y = "Correlación") +
+  theme(legend.position = "top")
+```
+
+## Coeficiente RV entre ventanas adyacentes
+
+```{r fig-rv}
+rv <- read.csv(file.path(RES, "cambio_estructura_perfil.csv"))
+rv$f <- as.Date(paste0(rv$frontera, "-01"))
+ggplot(rv, aes(f)) + bandas() + geom_line(aes(y = rv_obs, colour = "Observado"), linewidth = 0.8) +
+  geom_line(aes(y = p05_sim, colour = "Percentil 5, estructura constante"), linetype = 2) +
+  geom_line(aes(y = mediana_sim, colour = "Mediana, estructura constante")) +
+  scale_colour_manual(values = c(GRIS, AZUL, NARANJA), name = NULL) + ylim(0, 1) +
+  labs(x = NULL, y = "RV") + theme(legend.position = "top")
+cr <- read.csv(file.path(RES, "cambio_estructura_resumen.csv"), check.names = FALSE)
+cr <- setNames(as.list(cr[[2]]), cr[[1]])
+data.frame(`RV mínimo observado` = coma(as.numeric(cr$min_rv_obs)), Frontera = cr$frontera_min,
+           `p̂` = coma(as.numeric(cr$p_min)), Réplicas = cr$replicas, check.names = FALSE) |> knitr::kable()
+```
+
+# Clasificación factorial jerárquica evolutiva
+
+```{r claede-calculo}
+hfc_ventana <- function(V) {
+  Rw <- .bstatw_ac(V, w_aede)$correlations
+  j <- agrega_r(Rw)
+  merge <- ifelse(j$nab <= p, -j$nab, j$nab - p)
+  list(merge = merge, height = j$indice)
+}
+wn <- n - 48 + 1
+jer <- lapply(1:wn, function(t) hfc_ventana(X[t:(t + 47), ]))
+cls <- lapply(jer, function(j) clases_corte(j$merge, j$height))
+ref <- which(nombres == "Crédito hipotecario")
+M_c1 <- t(sapply(cls, function(cl) as.integer(seq_len(p) %in% Filter(function(x) ref %in% x, cl)[[1]])))
+n_clases <- lengths(cls)
+alturas <- t(sapply(jer, function(j) sort(j$height, decreasing = TRUE)[1:3]))
+```
+
+## Índices de los nodos superiores
+
+```{r fig-claede-indices}
+ia <- data.frame(fecha = rep(f_ev, 3), nodo = factor(rep(c("Raíz", "Segundo", "Tercero"), each = wn),
+                                                     levels = c("Raíz", "Segundo", "Tercero")),
+                 indice = as.vector(alturas))
+ggplot(ia, aes(fecha, indice, colour = nodo)) + bandas() + geom_line(linewidth = 0.7) +
+  geom_hline(yintercept = 0.7, colour = "#c0392b", linetype = 2) +
+  scale_colour_manual(values = c(AZUL, NARANJA, VERDE), name = NULL) + labs(x = NULL, y = "Índice") +
+  theme(legend.position = "top")
+```
+
+## Dendrogramas en cuatro ventanas
+
+```{r fig-claede-dendrogramas, fig.height = 8}
+op <- par(mfrow = c(2, 2), mar = c(7, 4, 2, 1))
+for (s in c("2009-07", "2014-07", "2020-07", "2023-07")) {
+  j <- jer[[which(rownames(ev) == s)]]
+  hc <- structure(list(merge = j$merge, height = j$height, order = {
+    hojas <- function(k) if (k < 0) -k else c(hojas(j$merge[k, 1]), hojas(j$merge[k, 2]))
+    hojas(nrow(j$merge)) }, labels = nombres, method = "hfc"), class = "hclust")
+  plot(hc, hang = -1, main = paste("Ventana", s), sub = "", xlab = "", ylab = "Índice", cex = 0.6)
+  abline(h = 0.7, col = "#c0392b", lty = 2)
+}
+par(op)
+```
+
+## Clase C1 en cada ventana
+
+```{r fig-claede-c1, fig.height = 7}
+c1 <- data.frame(fecha = rep(f_ev, p), serie = factor(rep(nombres, each = wn), levels = rev(nombres)),
+                 en_c1 = factor(as.vector(M_c1), levels = 0:1, labels = c("Fuera de C1", "En C1")))
+g1 <- ggplot(data.frame(fecha = f_ev, n = n_clases), aes(fecha, n)) + bandas() +
+  geom_step(colour = AZUL) + labs(x = NULL, y = "Clases")
+g2 <- ggplot(c1, aes(fecha, serie, fill = en_c1)) + geom_tile() +
+  scale_fill_manual(values = c("#f2f1ec", AZUL), name = NULL) + labs(x = NULL, y = NULL) +
+  theme(legend.position = "top")
+if (gridExtra_ok) gridExtra::grid.arrange(g1, g2, ncol = 1, heights = c(1, 3)) else { print(g1); print(g2) }
+data.frame(Clases = sort(unique(n_clases)), Ventanas = as.vector(table(n_clases))) |> knitr::kable()
+data.frame(Serie = nombres, `Fracción de ventanas en C1` = colMeans(M_c1), check.names = FALSE) |>
+  (\(x) x[order(-x[[2]]), ])() |> tabla(2)
+```
+
+# Segmentación temporal
+
+```{r segmentacion-calculo}
+l1 <- ev[, 1]
+part_e <- particion_fisher(matrix(l1), 10, 12)
+sce_e <- sapply(part_e, `[[`, "sce")
+K_e <- regla_d12(sce_e)
+Yp <- sapply(1:3, function(k) mm_causal(F_scores[, k], 12))
+ok <- complete.cases(Yp); f_p <- fechas[ok]
+Yp <- estandarizar(Yp[ok, ])
+part_p <- particion_fisher(Yp, 10, 12)
+sce_p <- sapply(part_p, `[[`, "sce")
+K_p <- regla_d12(sce_p)
+cortes_e <- format(f_ev[part_e[[K_e]]$cortes + 1], "%Y-%m")
+cortes_p <- format(f_p[part_p[[K_p]]$cortes + 1], "%Y-%m")
+```
+
+## Reducción relativa de la suma de cuadrados
+
+```{r tabla-reduccion}
+red <- function(sce) c(NA, (head(sce, -1) - tail(sce, -1)) / head(sce, -1))
+tabla(data.frame(K = 1:10, `SCD estructura` = sce_e, `Δ estructura` = red(sce_e),
+                 `SCD posición` = sce_p, `Δ posición` = red(sce_p), check.names = FALSE), 3)
+```
+
+## Contraste con series de referencia simuladas
+
+```{r contraste}
+cp_ <- read.csv(file.path(RES, "contraste_particion.csv"), check.names = FALSE)
+ce <- cp_[cp_$trayectoria == "estructura", ]; cpo <- cp_[cp_$trayectoria == "posición", ]
+tabla(rbind(data.frame(Trayectoria = "Estructura", K = ce$K, `Δ observado` = ce$delta_obs,
+                       `Percentil 95 simulado` = ce[["p95_estructura constante"]],
+                       `p̂` = ce[["p_estructura constante"]], check.names = FALSE),
+            data.frame(Trayectoria = "Posición", K = cpo$K, `Δ observado` = cpo$delta_obs,
+                       `Percentil 95 simulado` = cpo$p95_ind_DS, `p̂` = cpo$p_ind_DS, check.names = FALSE)), 3)
+cg <- rbind(data.frame(K = ce$K, obs = ce$delta_obs, p95 = ce[["p95_estructura constante"]], t = "Estructura"),
+            data.frame(K = cpo$K, obs = cpo$delta_obs, p95 = cpo$p95_ind_DS, t = "Posición"))
+ggplot(cg, aes(K)) + geom_line(aes(y = obs, colour = "Observado")) + geom_point(aes(y = obs, colour = "Observado")) +
+  geom_line(aes(y = p95, colour = "Percentil 95 simulado"), linetype = 2) + facet_wrap(~t) +
+  scale_colour_manual(values = c(AZUL, NARANJA), name = NULL) + scale_x_continuous(breaks = 2:10) +
+  labs(y = "Δ_K") + theme(legend.position = "top")
+```
+
+## Cortes según la regla
+
+```{r sensibilidad}
+knitr::kable(read.csv(file.path(RES, "cortes_sensibilidad.csv"), check.names = FALSE))
+```
+
+# Regímenes tentativos
+
+## Cortes
+
+```{r cortes}
+data.frame(Trayectoria = c("Estructura (λ1)", "Posición (ejes 1–3, media de 12 meses)"), K = c(K_e, K_p),
+           Cortes = c(paste(cortes_e, collapse = ", "), paste(cortes_p, collapse = ", "))) |> knitr::kable()
+```
+
+```{r fig-estructura}
+ggplot(data.frame(fecha = f_ev, l1 = l1), aes(fecha, l1)) + bandas() + geom_line(colour = AZUL, linewidth = 0.8) +
+  geom_vline(xintercept = as.Date(paste0(cortes_e, "-01")), colour = "grey20") + labs(x = NULL, y = "λ1")
+```
+
+```{r fig-posicion}
+yp <- data.frame(fecha = rep(f_p, 3), eje = rep(paste("Eje", 1:3), each = length(f_p)), y = as.vector(Yp))
+ggplot(yp, aes(fecha, y, colour = eje)) + bandas() + geom_line(linewidth = 0.7) +
+  geom_vline(xintercept = as.Date(paste0(cortes_p, "-01")), colour = "grey20") +
+  scale_colour_manual(values = c(AZUL, NARANJA, VERDE), name = NULL) + labs(x = NULL, y = "Coordenada suavizada") +
+  theme(legend.position = "top")
+```
+
+## Precisión de la ubicación de los cortes
+
+```{r precision}
+pr <- read.csv(file.path(RES, "preliminar_precision_cortes.csv"))
+tabla(data.frame(Trayectoria = pr$trayectoria, Corte = pr$corte, `Frecuencia ±3 meses` = pr$frecuencia_3m,
+                 `Intervalo p5–p95` = paste(pr$p5, "a", pr$p95), `Tramo previo` = pr$meses_tramo_previo,
+                 `Tramo siguiente` = pr$meses_tramo_siguiente, check.names = FALSE), 2)
+```
+
+# Caracterización de los regímenes
+
+```{r caracterizacion}
+interanual <- function(x) c(rep(NA, 12), 100 * (x[13:n] / x[1:(n - 12)] - 1))
+cred <- X[, "Crédito empresarial"] + X[, "Crédito consumo"] + X[, "Crédito hipotecario"]
+g <- interanual(cred / X[, "IPC Lima"])
+m_g <- median(g, na.rm = TRUE); s_g <- sqrt(mean((g - mean(g, na.rm = TRUE))^2, na.rm = TRUE))
+fase <- function(mk, c) ifelse(mk > m_g + c * s_g, "expansión", ifelse(mk < m_g - c * s_g, "contracción", "transición"))
+perfil <- function(cortes, f0, f1) {
+  ini <- match(c(f0, cortes), fechas_txt); fin <- c(ini[-1] - 1, match(f1, fechas_txt))
+  do.call(rbind, lapply(seq_along(ini), function(k) {
+    a <- ini[k]; b <- fin[k]; mk <- median(g[a:b], na.rm = TRUE)
+    data.frame(`N.º` = k, Período = paste(fechas_txt[a], "a", fechas_txt[b]), Meses = b - a + 1,
+               `Crédito real (%)` = mk, `PBI (%)` = mean(interanual(X[, "PBI"])[a:b], na.rm = TRUE),
+               `Inflación (%)` = mean(interanual(X[, "IPC Lima"])[a:b], na.rm = TRUE),
+               `Tasa inicio` = mean(X[a:(a + 2), "Tasa de referencia"]), `Tasa fin` = mean(X[(b - 2):b, "Tasa de referencia"]),
+               `EMBIG (pb)` = mean(X[a:b, "EMBIG Perú"]), `Fase (c = 1)` = fase(mk, 1), `Fase (c = 0,5)` = fase(mk, 0.5),
+               check.names = FALSE)
+  }))
+}
+data.frame(Medida = c("Mediana del crecimiento real del crédito (m)", "Desviación estándar (s)"),
+           Valor = coma(c(m_g, s_g))) |> knitr::kable()
+```
+
+## Regímenes de posición
+
+```{r perfil-posicion}
+tabla(perfil(cortes_p, format(f_p[1], "%Y-%m"), fechas_txt[n]), 2)
+```
+
+## Regímenes de estructura
+
+```{r perfil-estructura}
+tabla(perfil(cortes_e, rownames(ev)[1], rownames(ev)[nrow(ev)]), 2)
+```
+
+## Crecimiento real del crédito y umbrales de la regla de fases
+
+```{r fig-fases}
+ggplot(data.frame(fecha = fechas, g = g), aes(fecha, g)) + geom_line(colour = AZUL, linewidth = 0.7) +
+  geom_hline(yintercept = m_g, colour = GRIS) +
+  geom_hline(yintercept = m_g + c(-1, 1) * s_g, colour = NARANJA, linetype = 2) +
+  geom_hline(yintercept = m_g + c(-0.5, 0.5) * s_g, colour = NARANJA, linetype = 3) +
+  geom_vline(xintercept = as.Date(paste0(cortes_p, "-01")), colour = "grey60") +
+  labs(x = NULL, y = "Crecimiento interanual real del crédito (%)")
+```
+
+## Correspondencia con los episodios
+
+```{r episodios}
+knitr::kable(epi[, c("nombre", "inicio", "fin")], col.names = c("Episodio", "Inicio", "Fin"))
+ep <- read.csv(file.path(RES, "preliminar_episodios.csv"))
+tabla(data.frame(Trayectoria = ep$trayectoria, `Tolerancia (meses)` = ep$tolerancia,
+                 Compatibles = paste(ep$compatibles, "de", ep$cortes), `Esperados por azar` = ep$esperados_azar,
+                 `Probabilidad por azar` = ep$p_azar, `Distancias (meses)` = ep$distancias, check.names = FALSE), 2)
+```
+
+# Representaciones no lineales (corrida exploratoria con 17 series)
+
+```{r fig-ae-cv, out.width = "75%"}
+knitr::include_graphics(file.path(FIG_AE, "17series_08_cv_pca_vs_ae.png"), rel_path = FALSE)
+```
+
+```{r fig-ae-error, out.width = "75%"}
+knitr::include_graphics(file.path(FIG_AE, "17series_08_error_reconstruccion.png"), rel_path = FALSE)
+```
+
+# Entorno de cálculo
+
+```{r entorno}
+sessionInfo()
+```
