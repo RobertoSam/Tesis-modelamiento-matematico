@@ -16,9 +16,18 @@ La estructura factorial y su evolución están establecidas con las series en ni
 
 ## 5.2 Recomendaciones
 
-1. Completar la validación de la segmentación con formulaciones que distingan la velocidad del crecimiento de su nivel acumulado sin transformar las series, en particular la partición por tendencias segmentadas, con un contraste global sobre el número de tramos, tramos de al menos 24 meses y un análisis de la influencia de los choques transitorios de 2008–2009 y 2020.
-2. Medir la potencia del contraste de cambio de estructura con series simuladas que contengan un cambio de tamaño conocido, para establecer si el cambio de 2020 no es detectable por falta de información o porque la estructura es estable.
-3. Extender la muestra hacia 1999 y obtener el crédito de 2006 y el crédito a tipo de cambio constante, para aumentar la información independiente y completar la regla de fases.
-4. Fijar con el asesor el valor del parámetro $c$ de la regla de fases antes de recalcular.
-5. Verificar la HFC evolutiva contra el programa original y repetir los autoencoders con las 16 series y la especificación de la sección 3.2.7.
-6. Como trabajo futuro, aplicar el análisis evolutivo a cada bloque por separado, como proponen @camiz_cerda_atoche_2026.
+El proceso de análisis está en desarrollo, y los resultados de este informe son parciales. La representación factorial global y su evolución están establecidas, pero la segmentación en regímenes todavía no supera el contraste con las series de referencia simuladas, y la comparación con las representaciones no lineales se hizo con una versión anterior de la base.
+
+Lo que aún falta mejorar es lo siguiente:
+
+1. **Validación de la segmentación.** Completar la partición por tendencias segmentadas, que distingue la velocidad del crecimiento de su nivel acumulado sin transformar las series, con un contraste global sobre el número de tramos, tramos de al menos 24 meses, el análisis de la influencia de los choques transitorios de 2008–2009 y 2020, la sensibilidad al largo de los bloques del remuestreo y la descomposición del resultado por eje.
+2. **Potencia del contraste de cambio de estructura.** Simular series con un cambio de estructura de tamaño conocido para establecer si el cambio de 2020 no se detecta por falta de información o porque la estructura es estable.
+3. **Representaciones no lineales.** Repetir el autoencoder y el autoencoder LSTM con las 16 series y la especificación de la sección 3.2.7, y documentar los hiperparámetros con los que se obtienen los resultados.
+4. **HFC evolutiva.** Verificar la implementación contra el programa original del asesor.
+5. **Datos.** Obtener el crédito de 2006 y el crédito a tipo de cambio constante, para completar la regla de fases y separar el efecto del tipo de cambio; extender la muestra hacia 1999, con verificación serie por serie, para aumentar la información independiente, y buscar una serie mensual de precios inmobiliarios o un sustituto documentado.
+6. **Regla de fases.** Fijar con el asesor el valor del parámetro $c$ antes de recalcular.
+
+Algunas variantes que podrían ayudar son las siguientes:
+
+- *En los componentes.* Aplicar el análisis evolutivo a cada bloque de indicadores por separado, como proponen @camiz_cerda_atoche_2026; elegir el ancho de la ventana con un criterio de estabilidad, como el coeficiente RV entre ventanas sucesivas; seguir el plano 1–2 completo, y no cada eje, en los períodos en que los dos primeros valores propios son casi iguales, como en 2021, y segmentar una trayectoria que combine los tres primeros valores propios con las correlaciones evolutivas, en lugar del primer valor propio solo.
+- *En los autoencoders.* Preentrenar la red por capas [@hinton_salakhutdinov_2006] para estabilizar la estimación con pocas observaciones; estimar la incertidumbre de la reconstrucción con *dropout* activo en la predicción [@gal_ghahramani_2016], para distinguir un mes atípico del error propio del modelo; aumentar los datos de entrenamiento con réplicas del remuestreo por bloques, que conservan la dependencia temporal, y usar el error de reconstrucción como insumo del diagnóstico de meses atípicos de la segmentación.
