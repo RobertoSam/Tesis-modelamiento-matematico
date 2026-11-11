@@ -1,0 +1,69 @@
+---
+title: "Said y Dickey (1984) — Testing for unit roots in autoregressive-moving average models of unknown order"
+---
+
+::: {.callout-warning title="Contenido PRELIMINAR (metadatos verificados el 11-11-2026)"}
+Los metadatos están verificados en Crossref y en la página de la editorial (Oxford Academic). El contenido se conoce solo por el resumen oficial: no se describe más allá de lo indicado en la sección 4. Antes de usarla para sostener una afirmación sobre la regla de rezagos o la distribución del estadístico hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-103 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 11 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (página de la editorial, Oxford Academic); texto no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Said, S. E., & Dickey, D. A. (1984). Testing for unit roots in autoregressive-moving average models of unknown order. *Biometrika*, *71*(3), 599–607. https://doi.org/10.1093/biomet/71.3.599
+
+> **Verificación (11-11-2026):** Registro de Crossref del DOI (api.crossref.org/works/10.1093/biomet/71.3.599): dos autores, Said E. Said (primero) y David A. Dickey; título «Testing for unit roots in autoregressive-moving average models of unknown order»; *Biometrika*, volumen 71, número 3, páginas 599-607, 1984; Oxford University Press; ISSN 0006-3444 (impreso) y 1464-3510 (electrónico). La página de la editorial (academic.oup.com/biomet/article-abstract/71/3/599/258758) da los mismos datos, la fecha de publicación (diciembre de 1984; recibido el 1-11-1983, revisado el 1-02-1984), las afiliaciones (East Carolina University y North Carolina State University) y el resumen. La resolución directa en doi.org no respondió (permiso no concedido a tiempo) y no se reintentó.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Pruebas de raíz unitaria |
+| **Área secundaria** | Modelos ARMA de orden desconocido; aproximación autorregresiva |
+| **Relevancia para la tesis** | **MEDIA.** Fuente de la versión aumentada de la prueba de Dickey-Fuller (ADF) que usa el código en la regla D5. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y diagnóstico de la regla D5 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el resumen oficial: las pruebas de raíz unitaria previas exigían especificar el número de coeficientes autorregresivos y de media móvil del modelo ARMA.
+
+### Propuesta metodológica
+
+Según el mismo resumen: una prueba de raíz unitaria basada en la aproximación de un modelo ARMA por una autorregresión; el estadístico se obtiene de la salida de una regresión estándar y tiene una distribución límite cuyos percentiles están tabulados. El resumen incluye un ejemplo.
+
+### Lo que el resumen no dice
+
+El resumen **no** menciona el término «aumentada», no da la regla para el orden de la autorregresión en función del tamaño muestral ni dice de dónde provienen las tablas de percentiles. Nada de eso se atribuye a esta obra hasta leer el texto.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Aproximación de un ARMA de orden desconocido por una autorregresión | Rezagos de las diferencias en la regresión ADF aplicada a los residuos de la tendencia lineal (regla D5) |
+| Estadístico obtenido de la salida de una regresión | Estadístico ADF calculado por el código (especificación y rezagos fijos, declarados en el código) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente revisada por pares de la versión aumentada de la prueba de Dickey-Fuller: complementa a `dickey_fuller_1979`, a la que la tesis no atribuye la versión aumentada.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo resumen. No atribuirle la regla de elección de rezagos que usa el código ni los valores críticos que reporta el programa.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Dickey y Fuller (1979) | — | Fichada (`dickey_fuller_1979`, preliminar) |

@@ -67,5 +67,5 @@ La generalización de Rencher y el bootstrap de Pillar dan resultados «much bet
 | Referencia citada | Prioridad | Estado en el proyecto |
 |---|---|---|
 | [3] Rencher, *Methods of multivariate analysis* (edición por confirmar) | Alta | Ficha preliminar de la 3.ª ed. (`rencher_christensen_2012`) |
-| [10] Frontier (1976), vara quebrada en PCA | Alta | No localizada en fuente oficial; sin ficha |
+| [10] Frontier (1976), vara quebrada en PCA | Alta | Fichada el 11-11-2026 (`frontier_1976`, preliminar: metadatos en Crossref); correspondencia con la ref. [10] no cotejada |
 | [19] Pillar, bootstrap | Media | Sin ficha |

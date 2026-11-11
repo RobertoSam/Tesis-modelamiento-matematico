@@ -1,0 +1,67 @@
+---
+title: "Frontier (1976) — Étude de la décroissance des valeurs propres dans une analyse en composantes principales: comparaison avec le modèle du bâton brisé"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (metadatos verificados el 11-11-2026)"}
+Los metadatos están verificados en Crossref. No se consultó el texto ni un resumen oficial (Crossref no trae resumen). El contenido no se describe más allá de lo que dice el título. Antes de usarla para sostener una afirmación sustantiva (la forma del modelo o la regla de retención) hay que leer el texto y completar las secciones 4 a 6.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-104 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 11 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | No leído — localizado (preliminar); metadatos verificados |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Frontier, S. (1976). Étude de la décroissance des valeurs propres dans une analyse en composantes principales: Comparaison avec le modèle du bâton brisé. *Journal of Experimental Marine Biology and Ecology*, *25*(1), 67–75. https://doi.org/10.1016/0022-0981(76)90076-9
+
+> **Verificación (11-11-2026):** Registro de Crossref del DOI (api.crossref.org/works/10.1016/0022-0981(76)90076-9): un autor, Serge Frontier; título como arriba (idioma: francés); *Journal of Experimental Marine Biology and Ecology*, volumen 25, número 1, páginas 67-75, noviembre de 1976; Elsevier BV; ISSN 0022-0981. Crossref no incluye resumen. ScienceDirect no se consultó (inaccesible en la iteración 3c; no se buscó otra ruta).
+>
+> **Correspondencia con Camiz y Pillar (2018):** ese artículo atribuye la aplicación de la vara quebrada al PCA a «Frontier» (su ref. [10]), pero su lista de referencias no se leyó (ver `camiz_pillar_2018`). La identificación de la ref. [10] con esta obra se apoya en el autor, el año que usa la tesis y el título; **no se cotejó** con la lista de referencias.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis en componentes principales |
+| **Área secundaria** | Número de componentes a retener; modelo de la vara quebrada (*bâton brisé*) |
+| **Relevancia para la tesis** | **ALTA.** Fuente primaria de la regla de la vara quebrada (OE6, `sec:retencion`). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Según el título: el estudio del decrecimiento de los valores propios en un PCA.
+
+### Propuesta metodológica
+
+Según el título: la comparación de ese decrecimiento con el modelo de la vara quebrada. No se conoce la forma en que el artículo formula el modelo ni una regla de retención: texto no consultado.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Modelo de la vara quebrada como referencia para los valores propios | Criterio de retención de componentes de la vara quebrada (`sec:retencion`), junto con Kaiser, Horn y Rencher |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Permite citar la fuente primaria de la vara quebrada en el PCA en lugar de citarla solo «según Camiz y Pillar (2018)».
+
+### Limitaciones (relevantes para la adaptación)
+
+- Texto no consultado: no atribuirle la fórmula de los valores esperados de la vara quebrada ni la regla operativa que usa el código.
+- Publicada en una revista de ecología marina; el contexto de aplicación del autor no se conoce.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Camiz y Pillar (2018) | — | Fichada (`camiz_pillar_2018`), cita a Frontier como ref. [10] |
