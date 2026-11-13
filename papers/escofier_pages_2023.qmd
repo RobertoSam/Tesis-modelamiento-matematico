@@ -1,0 +1,71 @@
+---
+title: "Escofier y Pagès (2023) — Analyses factorielles simples et multiples (5.ª ed.)"
+---
+
+::: {.callout-note title="Ficha con texto parcial (extracto oficial de la editorial, 13-11-2026)"}
+Se leyó el extracto que publica Dunod (páginas preliminares iii–viii, introducción pp. 1–6 y capítulo 1 hasta la sección 1.10, pp. 7–28), con una herramienta que resume y cita frases cortas. El resto del libro no se consultó. Solo se atribuye lo de la sección 1.9 que consta abajo.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-106 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 13 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto parcial: pp. iii–viii y 1–28 (extracto oficial de Dunod), lectura asistida por una herramienta que resume |
+| **Tipo de fuente** | Libro (manual universitario, editorial académica) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Escofier, B., & Pagès, J. (2023). *Analyses factorielles simples et multiples: Cours et études de cas* (5e éd.). Dunod.
+
+> **Verificación (13-11-2026):** extracto oficial de la editorial (dunod.com/sites/default/files/atoms/files/Feuilletage_3448.pdf), portada y página de créditos: autores Brigitte Escofier y Jérôme Pagès; «Analyses factorielles / simples et multiples», con la línea «Cours et études de cas»; «5e édition»; Dunod (Malakoff); «© Dunod, 2008, 2016, 2023 pour la nouvelle présentation»; depósito legal: mayo de 2023; ISBN 978-2-10-085957-3. Número total de páginas: no visto. Que «Cours et études de cas» sea subtítulo (y no línea de colección) es la lectura de la portada; si el catálogo de la BnF lo registra de otro modo, se ajusta.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial de la escuela francesa (PCA, AFC, ACM, AFM) |
+| **Área secundaria** | Ayudas a la interpretación: calidad de representación ($\cos^2$) y contribuciones |
+| **Relevancia para la tesis** | **ALTA** para `sec:cos2` (cap. 3) y la frase correspondiente del estado del arte. |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebooks de PCA |
+
+## 4. Resumen analítico
+
+### Problema abordado
+
+Manual de análisis factoriales simples (PCA, análisis de correspondencias) y múltiples (AFM). Tabla de contenidos (extracto): cap. 1, «Analyse en Composantes Principales»; cap. 3, «Analyse Factorielle des Correspondances»; cap. 9, «Méthodologie de l'AFM».
+
+### Lo leído: sección 1.9, «Aides à l'interprétation» (p. 24)
+
+- **1.9.1 Définitions:** a) «Qualité de représentation d'un élément par un axe»; b) «Qualité de représentation d'un nuage par un axe»; c) «Contribution d'un élément à l'inertie d'un axe». 1.9.2: ejemplo numérico.
+- La calidad de representación del elemento *i* (individuo **o variable**) por el eje *s* se mide por un cociente que el texto identifica como el **coseno cuadrado** del ángulo entre el vector del elemento y el eje.
+- La **contribución** del elemento *i* es su parte en la inercia del eje *s*.
+- El mismo rótulo «Aides à l'interprétation» reaparece en la sección 3.9 (AFC, p. 83) y 9.2 (AFM, p. 221); esas secciones no se leyeron.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Qualité de représentation (cos²) de un elemento por un eje | $\cos^2_{j\ell}$ de una serie y, para los individuos, de un mes (`def:cos2`) |
+| Contribution à l'inertie d'un axe | $\mathrm{ctr}_{j\ell}$ (serie) y $\mathrm{ctr}_{t\ell}$ (mes) (`def:cos2`) |
+| Aides à l'interprétation | Expresión de la tesis «ayudas a la interpretación» |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente de la terminología francesa de las ayudas a la interpretación en el PCA (calidad de representación como coseno cuadrado, contribución a la inercia del eje), para individuos y variables.
+
+### Limitaciones (relevantes para la adaptación)
+
+- No se cotejaron las fórmulas exactas ni las ponderaciones (pesos de los individuos, normalización de la contribución) con las de `def:cos2`: atribuir la **terminología y los conceptos**, no las fórmulas de la tesis. La calidad en un plano como suma de los $\cos^2$ de dos ejes no se vio en lo leído.
+- Edición de 2023 (nueva presentación de una obra con ediciones anteriores, la de 2008 según la página de créditos). No es una fuente fundacional; es un manual estándar de la escuela.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `lebart_morineau_piron_1995` | — | Fichada (metadatos); la sección de cos² no se localizó |
+| `benzecri_1973` | — | Ficha preliminar |

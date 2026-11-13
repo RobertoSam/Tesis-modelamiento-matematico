@@ -1,0 +1,70 @@
+---
+title: "Guttman (1953) — Image theory for the structure of quantitative variates"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (metadatos verificados el 13-11-2026; solo resumen)"}
+Los metadatos y el resumen se vieron en la página del artículo en Cambridge Core. No se consultó el texto. El contenido no se describe más allá de lo que dice el resumen oficial (sección 4). En particular, el resumen **no** menciona las correlaciones parciales: la identidad entre la correlación anti-imagen y la correlación parcial no se le atribuye mientras no se lea el texto.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-105 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 13 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (Cambridge Core, lectura asistida por una herramienta que resume; no se obtuvo cita literal completa); texto no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Guttman, L. (1953). Image theory for the structure of quantitative variates. *Psychometrika*, *18*(4), 277–296. https://doi.org/10.1007/BF02289264
+
+> **Verificación (13-11-2026):** página del artículo en Cambridge Core (cambridge.org/core/journals/psychometrika/article/abs/image-theory-for-the-structure-of-quantitative-variates/8F167AD3F1184DFF5CA858DBA1FF74E1): autor Louis Guttman (The Israel Institute of Applied Social Research); título como arriba; *Psychometrika*, volumen 18, número 4, páginas 277–296, diciembre de 1953; DOI 10.1007/BF02289264. Cambridge Core indica además una fecha de publicación en línea (1-1-2025) propia de su migración de la revista; se adopta 1953. La resolución en doi.org no se probó.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis factorial; teoría de la imagen |
+| **Área secundaria** | Imagen y anti-imagen de una variable; inversa de la matriz de correlaciones |
+| **Relevancia para la tesis** | **MEDIA.** Origen del concepto de anti-imagen que usa la medida KMO (`sec:adecuacion`, `def:kmo`, cap. 3 de la tesis). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y notebook 05 |
+
+## 4. Resumen analítico
+
+Todo lo que sigue procede del resumen oficial (Cambridge Core); no del texto.
+
+### Problema abordado
+
+Explicar por qué dos variables cuantitativas están correlacionadas y revelar la estructura de las intercorrelaciones, en un universo de infinitas variables del que se extrae una muestra de *n* variables.
+
+### Propuesta metodológica
+
+- Cada variable de la muestra se predice por regresión lineal de mínimos cuadrados sobre las *n* − 1 restantes: la predicción es su **imagen parcial** y el error de predicción su **anti-imagen parcial**. Los límites cuando la muestra abarca el universo son la imagen y la anti-imagen **totales**.
+- El resumen relaciona la teoría de la imagen con la del factor común, presentándola como más general.
+- Propone un procedimiento de cálculo **basado en la inversa de la matriz de correlaciones**.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Anti-imagen parcial (error de predicción de una variable por las demás) | Parte de cada serie no explicada linealmente por las otras 15; base de las correlaciones anti-imagen $q_{jj'}$ del KMO |
+| Cálculo a partir de la inversa de la matriz de correlaciones | Cálculo de $q_{jj'}$ a partir de $\mathbf{R}^{-1}$ en la función `kmo` |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente primaria revisada por pares del concepto de anti-imagen y de su cálculo desde $\mathbf{R}^{-1}$.
+
+### Limitaciones (relevantes para la adaptación)
+
+- El resumen no habla de correlaciones parciales ni da la fórmula de la correlación anti-imagen. **No** atribuirle la igualdad «correlación anti-imagen = correlación parcial dado el resto» ni la normalización $q_{jj'}=-r^{jj'}/\sqrt{r^{jj}r^{j'j'}}$ hasta leer el texto.
+- Texto no consultado.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Kaiser (1970); Kaiser y Rice (1974) | Alta | Fichas preliminares FB-024 y FB-025 (usan la anti-imagen en la MSA; sus registros oficiales no tratan la relación con las correlaciones parciales) |

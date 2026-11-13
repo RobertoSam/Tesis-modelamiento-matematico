@@ -8,7 +8,10 @@ los metadatos de Kwiatkowski et al. (1992) con su entrada en el `.bib`, y Camiz 
 sin localizarse (sección «Pendientes del cap. 2 (09-11-2026)»). El 11-11-2026 (seguimiento, sobre
 `780450d`) se ficharon Said y Dickey (1984) y Frontier (1976); Denimal (2001) y la fuente del
 bootstrap por bloques conjunto siguen sin localizarse (sección «Pendientes fuera de resultados
-(11-11-2026)»). Las marcas se contaron con
+(11-11-2026)»). El 13-11-2026 (seguimiento, sobre `c0fa997`) se ficharon Guttman (1953) —fuente de
+la anti-imagen desde la inversa de la matriz de correlaciones— y Escofier y Pagès (2023) —fuente
+verificada de la terminología cos²/contribuciones—, cerrando los dos `\pendiente` del marco teórico
+del encargo (sección «Pendientes del marco teórico (13-11-2026)»). Las marcas se contaron con
 `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
 Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada
@@ -67,8 +70,8 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `bartlett_1950`, `bartlett_1951` | Bartlett (1950), *British Journal of Statistical Psychology*, 3(2); Bartlett (1951), *Biometrika*, 38(3–4), 337–344 | 1950: páginas 77–85 (secundarias). 1951: metadatos verificados en Oxford Academic. En ambos, texto no consultado: no se verificó en cuál se formula la prueba de esfericidad sobre la matriz de correlaciones | Tesis e Informe: cap. 2, «Adecuación muestral» (`sec:adecuacion`; `\verificar` y nota `v2-bk-kmo`, conjuntos de las cuatro fichas). RmdF: 2.3, «Adecuación de la matriz de correlaciones». Rmd: A.2, «¿Tiene sentido un PCA con estos datos?». src: `multivariado.bartlett_esfericidad` | Fichadas (preliminares); pendiente |
 | `kaiser_1970`, `kaiser_rice_1974` | Kaiser (1970), *Psychometrika*, 35(4); Kaiser y Rice (1974), *EPM*, 34(1) | Metadatos verificados (Cambridge Core; SAGE). Texto no consultado: la forma de la MSA que usa el código solo consta en la documentación de `psych` | Tesis e Informe: la misma marca conjunta de «Adecuación muestral». RmdF: 2.3. Rmd: A.2, «¿Tiene sentido un PCA con estos datos?» (KMO). src: `multivariado.kmo` | Cerrado (metadatos); atribución de la fórmula pendiente |
 | `kaiser_1960` | Kaiser (1960), *EPM*, 20(1), 141–151 | Volumen, número y páginas (solo en fuentes secundarias; SAGE no accesible). La atribución del criterio $\lambda > 1$ es la habitual y no se verificó en el texto | Tesis e Informe: cap. 2, «Número de componentes» (`v2-kai`). RmdF: 3.1, «¿Cuántas componentes retener?». Rmd: A.2, «¿Cuántas componentes retener?» (marca conjunta con la vara quebrada) | Fichada (preliminar); pendiente |
-| — | Fuente de la relación entre la inversa de la matriz de correlaciones y las correlaciones parciales (matriz anti-imagen) | Sin ficha; no se buscó | Tesis: `\pendiente` en cap. 2, «Adecuación muestral». Informe: `[CITA PENDIENTE]` en la misma sección | Pendiente de fichar |
-| — | Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa | Sin ficha que lo sostenga. Candidata desde 3c: `lebart_morineau_piron_1995` (metadatos verificados en la base Horizon del IRD; texto no consultado: no se sabe en qué sección trata cos² y contribuciones). La edición de 2006 que cita la ficha de Camiz et al. (2020) no se verificó | Tesis: `\pendiente` en cap. 2, «Calidad de representación y contribuciones» (`sec:cos2`). Informe: `[CITA PENDIENTE]` en la misma sección | Pendiente de fichar |
+| `guttman_1953` | Fuente de la relación entre la inversa de la matriz de correlaciones y la anti-imagen (matriz anti-imagen); contexto del KMO | **13-11-2026:** Guttman (1953), *Psychometrika*, 18(4), 277–296, DOI 10.1007/BF02289264, metadatos y resumen verificados en Cambridge Core. El resumen define imagen/anti-imagen por regresión sobre las demás variables y un cálculo «basado en la inversa de la matriz de correlaciones», pero **no** menciona las «correlaciones parciales». Kaiser (1970) y Kaiser y Rice (1974) usan la anti-imagen en la MSA, pero sus registros oficiales tampoco tratan la relación con las correlaciones parciales | Tesis: `\pendiente` en cap. 3, «Adecuación muestral» (`sec:adecuacion`, l. ~544). Informe: `[CITA PENDIENTE]` en la misma sección | Cerrado en parte: se ficha la fuente de la anti-imagen desde $\mathbf{R}^{-1}$ (Guttman, 1953); la **igualdad** anti-imagen = correlación parcial sigue sin fuente vista (ver «Regla para el redactor») |
+| `escofier_pages_2023` | Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa | **13-11-2026:** no se localizó una tabla de contenidos oficial de `lebart_morineau_piron_1995` (ed. 1995) que muestre la sección de cos²/contribuciones; la ficha de Lebart queda como marco general. En su lugar se verificó Escofier y Pagès (2023), *Analyses factorielles simples et multiples*, 5e éd., Dunod, ISBN 978-2-10-085957-3: el extracto oficial de Dunod (Feuilletage_3448.pdf) incluye la sección 1.9 «Aides à l'interprétation» (p. 24), con «qualité de représentation» definida como **coseno cuadrado** y «contribution d'un élément à l'inertie d'un axe», para individuos y variables. Metadatos de la portada/créditos del extracto; total de páginas no visto | Tesis: `\pendiente` en cap. 3, «Calidad de representación y contribuciones» (`sec:cos2`, l. ~429) y cap. 2, estado del arte (`02_estado_arte.tex`, l. ~291). Informe: `[CITA PENDIENTE]` en la misma sección | Cerrado (terminología y conceptos; no las fórmulas exactas de `def:cos2`). La fila de `lebart_morineau_piron_1995` sigue abierta en cuanto a su sección de cos² |
 | `bruynooghe_1978` | Bruynooghe (1978), *Les Cahiers de l'Analyse des Données*, 3(1), 7–33 | Metadatos verificados en Numdam. Texto no consultado: la propiedad de reducibilidad que exige el índice de la HFC no se le atribuye | Tesis: cap. 2, «Clasificación Factorial Jerárquica» (`sec:hfc`), `\verificar` (sustituye al `\pendiente` de 3a). Informe: `v2-bru` | Cerrado (metadatos, 24-10-2026); contenido no consultado |
 | `hubert_arabie_1985` | Hubert y Arabie (1985), *Journal of Classification*, 2(1), 193–218 | Metadatos tomados de RePEc/IDEAS: contrastar con SpringerLink. La atribución del índice de Rand ajustado no se verificó en el texto | Tesis: cap. 3, «Clasificación Factorial Jerárquica» (`sec:met-hfc`), `\verificar`. Informe: `v3-ha`. Rmd: A.4, «HFC evolutiva» | Fichada (preliminar); pendiente |
 | — | Fuente del optimizador Adam | Sin ficha en `papers/`; citado por el nombre, sin autor ni año | Rmd: A.5, «Diseño del autoencoder» (tabla de parámetros). No figura en RmdF (la sección 7 no desarrolla las redes) | Pendiente |
@@ -222,6 +225,27 @@ el informe: es tarea del redactor y del editor.
 Entradas del `.bib`: 103 (101 + `said_dickey_1984` y `frontier_1976`), sin claves duplicadas y
 todas con ficha en `papers/`; comprobado con un parseo de pybtex. Conteo de marcas no rehecho (la
 tarea no toca los documentos).
+
+### Pendientes del marco teórico (13-11-2026)
+
+Encargo de la sesión de seguimiento del 13-11-2026 (rama `iteracion-3c`, commit de partida
+`c0fa997`): cerrar, en lo verificable contra fuentes oficiales, dos `\pendiente` del marco teórico.
+Detalle y fuente de cada dato en las fichas y en `auditorias/notas/2026-11-13_bibliotecario.md`.
+Las citas **no** se integraron en la tesis ni en el informe: es tarea del redactor y del editor.
+
+| Clave | Metadatos verificados en | Lectura | Qué falta | Marcas en los documentos | Estado |
+|---|---|---|---|---|---|
+| `guttman_1953` | Cambridge Core (página del artículo) | Resumen | Texto; que el resumen **no** menciona las correlaciones parciales (solo imagen/anti-imagen y la inversa de $\mathbf{R}$) | Tesis: `\pendiente` en cap. 3, `sec:adecuacion` (l. ~544). Informe: `[CITA PENDIENTE]` en la misma sección | Ficha preliminar (resumen). Sostiene la anti-imagen desde $\mathbf{R}^{-1}$, **no** la igualdad con la correlación parcial |
+| `escofier_pages_2023` | Portada y créditos del extracto oficial de Dunod (Feuilletage_3448.pdf) | Texto parcial: pp. iii–viii y 1–28 (incluye la sección 1.9) | Total de páginas; fórmulas exactas; secciones 3.9 y 9.2 | Tesis: `\pendiente` en cap. 3, `sec:cos2` (l. ~429), y cap. 2, `02_estado_arte.tex` (l. ~291). Informe: `[CITA PENDIENTE]` en la misma sección | Cerrado (terminología: qualité de représentation = cos², contribution à l'inertie, para individuos y variables) |
+| `lebart_morineau_piron_1995` | Base Horizon del IRD; autoridad de la BnF (metadatos, 07-11-2026) | Ninguna | La sección de cos²/contribuciones no se localizó en 3c | Era la candidata de `sec:cos2`; se sustituye por `escofier_pages_2023` | Sigue abierta en cuanto a su sección de cos²; queda como marco general de la escuela francesa |
+
+Búsquedas (dos o tres por tema, según el encargo): tema 1 (anti-imagen/correlación parcial) —
+Dempster «Covariance selection» (Crossref bloqueado y sin hallazgo útil) y Guttman (1953), hallado
+y verificado en Cambridge Core. Tema 2 (cos²/contribuciones) — tabla de contenidos de Lebart et al.
+(no localizada en las bases vistas), página de Dunod de la 4.ª ed. de Lebart (sommaire sin esas
+entradas) y, al seguir el enlace de «feuilletage» de esa página, el extracto de Escofier y Pagès
+(2023), cuya sección 1.9 sí las trae. Entradas del `.bib`: 105, sin claves duplicadas y todas con
+ficha en `papers/` (parseo de pybtex). Conteo de marcas no rehecho (la tarea no toca los documentos).
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe
 
