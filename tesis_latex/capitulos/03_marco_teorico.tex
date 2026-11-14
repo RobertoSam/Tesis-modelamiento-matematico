@@ -426,8 +426,12 @@ regla (\cref{alg:aede}).
 
 La escuela francesa acompaña cada eje con dos tipos de ayudas a la interpretación: la calidad con
 que el eje representa cada variable y la contribución de cada variable o de cada observación a la
-construcción del eje \pendiente{fuente de la terminología de calidad de representación
-($\cos^2$) y contribuciones de la escuela francesa; sin ficha}.
+construcción del eje. La terminología es la de \textcite{escofier_pages_2023}, que llaman
+\emph{calidad de representación} de un elemento por un eje al coseno cuadrado del ángulo entre el
+elemento y el eje, y \emph{contribución} a la parte de la inercia del eje que aporta el elemento,
+tanto para individuos como para variables. Las fórmulas exactas de la \cref{def:cos2}, en
+particular la calidad en un plano y la normalización de las contribuciones, son definiciones de
+esta tesis y no se atribuyen a esa obra.
 
 \begin{definicion}[Calidad y contribución]\label{def:cos2}
 Sea $\lambda_\ell>0$ y sea $\rho_{j\ell}$ la correlación entre la serie $\vz_j$ y la componente
@@ -476,7 +480,7 @@ posición en ese plano no debe interpretarse.
 \label{sec:retencion}
 
 \Cref{oe:dimension} compromete triangular el número $d$ con tres criterios. Se formalizan los dos
-que tienen una definición operativa en el código; las fuentes están pendientes.
+que tienen una definición operativa en el código; las fuentes primarias tienen ficha preliminar.
 
 \begin{definicion}[Vara quebrada y análisis paralelo]\label{def:retencion}
 \begin{enumerate}[label=(\alph*)]
@@ -540,9 +544,12 @@ La medida global y la individual de Kaiser-Meyer-Olkin son
 \end{equation}
 \end{definicion}
 
-Cuando sus denominadores no se anulan, ambas están en $[0,1]$. La correlación anti-imagen coincide con la correlación parcial entre las
-series $j$ y $j'$ dada el resto \pendiente{fuente de la relación entre la inversa de la matriz de
-correlaciones y las correlaciones parciales; sin ficha}. Un $\KMO$ cercano a uno indica que las
+Cuando sus denominadores no se anulan, ambas están en $[0,1]$. La anti-imagen de una variable es
+el error de su regresión de mínimos cuadrados sobre las demás, y se calcula a partir de la inversa
+de la matriz de correlaciones \parencite{guttman_1953}\verificar{solo resumen consultado; el resumen
+de Guttman no emplea el término «correlación parcial»}. Por un hecho de álgebra, que aquí no se
+atribuye a esa fuente, la expresión de $q_{jj'}$ en la \cref{def:kmo} coincide con la correlación
+parcial entre las series $j$ y $j'$ dado el resto. Un $\KMO$ cercano a uno indica que las
 correlaciones parciales son pequeñas frente a las totales, es decir, que la correlación entre dos
 series se explica por lo que comparten con las demás. Es la fórmula de la función \texttt{kmo} del
 documento en R.
