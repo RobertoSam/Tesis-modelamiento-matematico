@@ -1,0 +1,72 @@
+---
+title: "Lavit, Escoufier, Sabatier y Traissac (1994) — The ACT (STATIS method)"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (texto parcial, 15-11-2026)"}
+Los metadatos se tomaron de la cabecera impresa del artículo, vista en un facsímil del artículo publicado que aloja la *Three-Mode Bibliography* de la Universidad de Leiden; no se vieron en la página de la editorial (la resolución del DOI en doi.org quedó bloqueada). Del texto se leyeron, con una herramienta que resume, la primera página (resumen) y los pasajes de la introducción que nombran el «dual STATIS method». El resto del artículo no se describe. El número del fascículo y el DOI quedan por verificar.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-107 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 15 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto parcial: primera página (resumen) y pasajes de la sección 1 (introducción) sobre el STATIS dual, lectura asistida por una herramienta que resume |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Lavit, C., Escoufier, Y., Sabatier, R., & Traissac, P. (1994). The ACT (STATIS method). *Computational Statistics & Data Analysis*, *18*, 97–119. https://doi.org/10.1016/0167-9473(94)90134-1 [VERIFICAR: número del fascículo y DOI]
+
+> **Verificación (15-11-2026):** facsímil del artículo en three-mode.leidenuniv.nl/pdf/l/lavit_etal1994csda.pdf. Cabecera impresa de la primera página: «Computational Statistics & Data Analysis 18 (1994) 97-119», «North-Holland»; pie: «0167-9473/94/$07.00 © 1994 - Elsevier Science B.V. All rights reserved», «SSDI 0167-9473(92)00003-A» (el símbolo © aparece como «0» en la lectura del facsímil). Autores y filiaciones impresos: Christine Lavit e Yves Escoufier (Unité de Biométrie, ENSA.M-INRA-UM II, Montpellier); Robert Sabatier (Faculté de Pharmacie, UM I, Montpellier); Pierre Traissac (ORSTOM, Montpellier). Título: «The ACT (STATIS method)». **El número del fascículo no figura en la cabecera vista**, por lo que no se consigna. **DOI:** 10.1016/0167-9473(94)90134-1 solo visto en el portal MaRDI (base secundaria, que además fecha la publicación el 17-8-1995, en discrepancia con la cabecera impresa: se adopta 1994); la página del DOI en doi.org no respondió al permiso y no se reintentó. El repositorio Horizon del IRD, que aloja otra copia, estaba en mantenimiento.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis de tablas múltiples (STATIS, ACT) |
+| **Área secundaria** | STATIS dual: tablas con las mismas variables observadas en grupos distintos de individuos |
+| **Relevancia para la tesis** | **MEDIA.** Fuente en revista del STATIS dual, que Camiz et al. (2010) combinan con el EPCA (cap. 2, `sec:ea-factoriales`; objetivo condicional OC2). |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+Solo lo leído (resumen y pasajes de la introducción).
+
+### Problema abordado
+
+Según el resumen, ACT (método STATIS) es una técnica de análisis de datos que calcula distancias euclídeas entre configuraciones de las mismas observaciones obtenidas en *K* circunstancias distintas, y trata así los datos de tres vías como un conjunto de *K* matrices.
+
+### Propuesta metodológica
+
+- El resumen anuncia una descripción completa de los desarrollos recientes de ACT, con los conceptos y teoremas de escalamiento euclídeo en un apéndice y una ilustración del programa con datos reales.
+- En la introducción (sección 1) el artículo presenta dos programas: «ACT (STATIS method)» y «ACT (dual STATIS method)». La entrada del segundo son *K* grupos distintos de observaciones (*I*₁, …, *I*_K) medidas sobre las **mismas *J* variables**, y el texto define $V_k = X_k' D_k X_k$ como la matriz de covarianzas en la etapa *k*.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| STATIS dual: *K* tablas con las mismas *J* variables y grupos distintos de observaciones | Las ventanas del EPCA: las mismas 16 series observadas en tramos distintos de meses |
+| Matriz de covarianzas $V_k = X_k' D_k X_k$ de cada etapa | Matriz de correlaciones (series estandarizadas) de cada ventana |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente revisada por pares que nombra y define la entrada del STATIS dual (mismas variables, grupos distintos de observaciones, matrices de covarianzas por etapa). Complementa a `lavit_1988` (libro, texto no consultado).
+
+### Limitaciones (relevantes para la adaptación)
+
+- No se leyeron las secciones que desarrollan el método (interestructura, compromiso, intraestructura) ni su versión dual: **no** atribuirle fórmulas ni detalles de cálculo del STATIS dual.
+- No se verificó que el artículo trate expresamente las matrices de **correlación** (habla de covarianzas; con series estandarizadas coinciden, pero eso es una observación de la tesis, no del artículo).
+- Número del fascículo y DOI sin verificar en la editorial.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `lavit_1988` (*Analyse conjointe de tableaux quantitatifs*) | Media | Ficha preliminar FB-062 |
+| `robert_escoufier_1976` (coeficiente RV) | Alta | Fichada |
+| `camiz_maulucci_roig_2010` (EPCA y STATIS dual) | Alta | Fichada |

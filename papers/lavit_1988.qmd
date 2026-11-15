@@ -54,5 +54,5 @@ Solo los metadatos. Por la bibliografía de Leiden: la misma autora publicó la 
 
 | Referencia citada | Prioridad | Estado en el proyecto |
 |---|---|---|
-| Lavit, Escoufier, Sabatier y Traissac (1994), *CSDA*, 18, 97–119 | Media | Sin ficha; alternativa en revista |
+| Lavit, Escoufier, Sabatier y Traissac (1994), *CSDA*, 18, 97–119 | Media | Fichada el 15-11-2026 (`lavit_et_al_1994`, FB-107, preliminar): fuente en revista del STATIS dual |
 | `robert_escoufier_1976` (RV) | Alta | Fichada |
