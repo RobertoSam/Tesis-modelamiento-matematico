@@ -273,8 +273,11 @@ explícita de las series con representantes propios.
 El tercer desarrollo es el análisis evolutivo, que relaja el supuesto de estructura constante en
 el tiempo. \textcite{camiz_maulucci_roig_2010}\verificar{datos de edición de las actas (ISBN o
 DOI).} proponen el EPCA, un PCA independiente en cada ventana móvil, y lo combinan con el STATIS
-dual, que compara las matrices de correlación de todas las ventanas e identifica años de quiebre
-coherentes con el EPCA. \textcite{camiz_roig_2011} completan la cadena con la HFC y con la
+dual. Este método compara varias tablas con las mismas variables, observadas en grupos distintos de
+observaciones, a partir de sus matrices de covarianzas \parencite{lavit_et_al_1994}\verificar{número del fascículo y DOI sin ver en la editorial; texto leído en parte (resumen e introducción)};
+con series estandarizadas, esas matrices son de correlación, de modo que el STATIS dual compara
+las matrices de correlación de todas las ventanas e identifica años de quiebre coherentes con el
+EPCA. \textcite{camiz_roig_2011} completan la cadena con la HFC y con la
 partición de Fisher sobre el primer valor propio (\cref{sec:ea-cambio}). Para decidir cuántas
 dimensiones retener, \textcite{camiz_pillar_2018} comparan por simulación diez reglas, entre ellas
 la vara quebrada, el criterio de Kaiser y una generalización de la prueba de Bartlett que
@@ -291,8 +294,7 @@ tarea que asume el \cref{cap:marco}.
 Las ayudas a la interpretación de la escuela, la calidad de representación ($\cos^2$) y las
 contribuciones, se toman con la terminología de \textcite{escofier_pages_2023}
 (\cref{sec:cos2}).
-\pendiente{fuentes del STATIS dual y de la ponderación gaussiana de las ventanas (Camiz y Diblasi,
-2013): sin ficha}
+\pendiente{Camiz y Diblasi (2013), fuente de la ponderación gaussiana de las ventanas: sin ficha}
 
 % -----------------------------------------------------------------------------
 \section{Aprendizaje profundo para series de tiempo}
