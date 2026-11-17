@@ -20,7 +20,7 @@ para sostener una afirmación sustantiva hay que leer el texto y completar las s
 
 Künsch, H. R. (1989). The jackknife and the bootstrap for general stationary observations. *The Annals of Statistics, 17*(3), 1217–1241. https://doi.org/10.1214/aos/1176347265
 
-> **Verificación:** La dirección de la página de Project Euclid (editorial) contiene el volumen 17, el número 3 y el DOI; la página está bloqueada por un control antibots y no se pudo abrir (2026-10-20). Las páginas 1217–1241 solo constan en fuentes secundarias. **Verificar las páginas.**
+> **Verificación:** La dirección de la página de Project Euclid (editorial) contiene el volumen 17, el número 3 y el DOI; la página está bloqueada por un control antibots y no se pudo abrir (2026-10-20). Las páginas 1217–1241 solo constan en fuentes secundarias. **Verificar las páginas.** **17-11-2026:** nuevo intento sobre la versión de acceso abierto (projecteuclid.org, «…/10.1214/aos/1176347265.full»): devolvió la página del control antibots (Incapsula); no se reintentó. Sigue sin verificarse si el artículo trata observaciones vectoriales; la fuente del bootstrap por bloques conjunto se sostiene con `lahiri_2003` (sec. 2.5, p. 29).
 
 ## 3. Clasificación temática
 

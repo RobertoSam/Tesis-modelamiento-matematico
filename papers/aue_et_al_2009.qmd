@@ -1,0 +1,70 @@
+---
+title: "Aue, Hörmann, Horváth y Reimherr (2009) — Break detection in the covariance structure of multivariate time series models"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (resumen leído, 17-11-2026)"}
+Los metadatos se verificaron en el repositorio institucional de la Penn State University (Pure), cotejados con la referencia de revista que declara la versión de arXiv; no se vieron en la página de la editorial (Project Euclid bloquea el acceso automatizado) y la consulta a Crossref no obtuvo permiso. Solo se leyó el resumen. No se describe el contenido más allá de lo que dice el resumen.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-108 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
+| **Fecha de procesamiento** | 17 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (repositorio institucional y arXiv); texto no consultado |
+| **Tipo de fuente** | Artículo de revista con revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Aue, A., Hörmann, S., Horváth, L., & Reimherr, M. (2009). Break detection in the covariance structure of multivariate time series models. *The Annals of Statistics*, *37*(6B), 4046–4087. https://doi.org/10.1214/09-AOS707
+
+> **Verificación (17-11-2026):** registro en Penn State Pure (pure.psu.edu, repositorio institucional de la universidad de M. Reimherr): título, autores en el orden Alexander Aue, Siegfried Hörmann, Lajos Horváth, Matthew Reimherr; revista *Annals of Statistics*; volumen 37; número «6 B»; páginas 4046–4087; fecha de publicación diciembre de 2009; DOI 10.1214/09-AOS707; estado «Published»; marcado como revisado por pares. Coincide con el campo «Journal reference» de arXiv:0911.3796 («The Annals of Statistics, 2009, Vol. 37, No. 6B, 4046–4087»; DOI 10.1214/09-AOS707). **No visto en la editorial:** Project Euclid no es accesible (control antibots, ya documentado para `kunsch_1989`) y la consulta a api.crossref.org no obtuvo permiso a tiempo (no se reintentó).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de cambios estructurales (*change-points*) |
+| **Área secundaria** | Estabilidad de la matriz de covarianzas de series de tiempo multivariadas |
+| **Relevancia para la tesis** | **MEDIA.** Referencia revisada por pares para la literatura de detección de cambios en la matriz de covarianzas de series multivariadas (cap. 2, `sec:ea-cambio`, `\pendiente` de l. ~235). Contraste con la tesis: un contraste paramétrico-asintótico frente a la lectura descriptiva de la evolución de la estructura (EPCA/RV) |
+| **Frente de la tesis al que aporta** | Estado del arte (cap. 2); contexto del nulo de estructura constante (D7) |
+
+## 4. Resumen analítico
+
+Solo lo que dice el resumen.
+
+### Problema abordado
+
+Contrastar si las volatilidades y covolatilidades (la estructura de covarianzas) de series de tiempo multivariadas, lineales y no lineales, permanecen estables en el tiempo.
+
+### Propuesta metodológica
+
+- Un procedimiento de contraste asintótico, no paramétrico, aplicable a muchos modelos GARCH multivariados, que no exige estimar los parámetros del modelo y que, según los autores, funciona bien en dimensiones altas.
+- El resumen anuncia la base teórica, un estudio de simulación, una aplicación a datos financieros y extensiones a cambios múltiples y a series con cuarto momento infinito.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Estabilidad de la estructura de covarianzas en el tiempo | Hipótesis de estructura constante (D7) contra la que se lee la evolución de las matrices de correlación por ventana |
+| Detección de cambios (*break detection*) | Detección evolutiva de regímenes; la tesis no usa este contraste |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Ancla revisada por pares para afirmar que existe una literatura de contrastes de cambio en la matriz de covarianzas de series multivariadas.
+
+### Limitaciones (relevantes para la adaptación)
+
+- Solo se leyó el resumen: **no** atribuirle el estadístico, sus supuestos (más allá de lo que dice el resumen) ni resultados de simulación.
+- Su marco (modelos multivariados de volatilidad, como los GARCH, y una aplicación a datos financieros, según el resumen) difiere del de la tesis (228 meses, 16 series en niveles); la comparación es de contexto, no de método aplicado.
+- Metadatos sin ver en la editorial (Project Euclid) ni en Crossref.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | Bibliografía del artículo no consultada |

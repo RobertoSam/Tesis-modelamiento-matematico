@@ -9,7 +9,7 @@ title: "Lahiri (2003) — Resampling methods for dependent data"
 | **Código de ficha** | FB-069 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
 | **Fecha de procesamiento** | 24 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
-| **Estado de lectura** | Solo localizada (metadatos e índice de capítulos de la editorial); texto no consultado |
+| **Estado de lectura** | Texto parcial (17-11-2026): sección 2.5 (pp. 25–29) y la frase inicial del cap. 7 (p. 176), leídas con una herramienta que resume sobre una copia de los caps. 2 y 7 publicada en un sitio docente (no en la editorial). Metadatos e índice: editorial (24-10-2026) |
 | **Tipo de fuente** | Libro (monografía; editorial académica) |
 
 ## 2. Referencia completa (APA 7.ª edición)
@@ -31,23 +31,32 @@ Lahiri, S. N. (2003). *Resampling methods for dependent data*. Springer. https:/
 
 ### Contenido verificado
 
-Solo el índice: métodos de bootstrap por bloques, sus propiedades, comparación y elección del tamaño de bloque.
+- Índice (editorial): métodos de bootstrap por bloques, sus propiedades, comparación y elección del tamaño de bloque.
+- **Sección 2.5, «Moving Block Bootstrap» (17-11-2026).** Fuente de lectura: copia de los capítulos 2 y 7 en el sitio docente de Kevin Sheppard (bashtage.github.io/kevinsheppard.com/files/teaching/mfe/advanced-econometrics/Lahiri_2and7.pdf), con encabezados impresos «2. Bootstrap Methods» y «2.5 Moving Block Bootstrap 25», y paginación coherente con el índice de la editorial (cap. 2, pp. 17–43; cap. 7, pp. 175–197). La copia no trae portada ni página legal: la identificación con el libro se apoya en esa coincidencia, no en una página de créditos. Texto extraído por OCR, con errores de símbolos.
+  - p. 25: define las observaciones como una sucesión estacionaria de variables aleatorias, $\mathcal{X}_n=\{X_1,\dots,X_n\}$, y el bloque $B_i=(X_i,\dots,X_{i+\ell-1})$ de longitud $\ell$ que empieza en $X_i$, $1\le i\le N$, con $N=n-\ell+1$ (bloques móviles solapados).
+  - **p. 29, primera de dos observaciones finales de la sección:** «it is easy to see that the above description of the MBB and the "blocks of blocks" bootstrap applies almost verbatim if, to begin with, the observations $X_1,\dots,X_n$ were random vectors instead of random variables».
+  - p. 176 (cap. 7): el planteamiento de la elección del tamaño de bloque toma un proceso estacionario débilmente dependiente $\{X_i\}_{i\in\mathbb{Z}}$ en $\mathbb{R}^d$.
+- No leído: las demostraciones, los caps. 3–6 y el resto del cap. 7. **No** se verificó que el libro enuncie resultados de consistencia específicos para el caso vectorial en la sección 2.5 (la observación de la p. 29 se refiere a la descripción del método).
 
 ## 5. Conceptos clave (equivalencia de dominio)
 
 | Concepto del documento | Equivalente/aplicación en la tesis (series BCRP) |
 |---|---|
 | Bootstrap por bloques | Remuestreo con L = 24 (y L = 12 y 36 como sensibilidad) |
+| Bloque $B_i=(X_i,\dots,X_{i+\ell-1})$ de observaciones vectoriales (sec. 2.5, p. 29) | Bloque de los vectores de 16 incrementos $\Delta\mathbf{x}_t$: las 16 series comparten el inicio del bloque (bootstrap por bloques conjunto, `def:bloques` y `def:nulo-estructura`) |
 
 ## 6. Aporte a la tesis, limitaciones y diferenciación
 
 ### Aporte
 
 - Referencia de manual para el bootstrap por bloques, revisada por la editorial.
+- **Fuente del bootstrap por bloques conjunto (17-11-2026):** la sec. 2.5 (p. 29) indica que la descripción del bootstrap de bloques móviles se aplica casi literalmente cuando las observaciones son vectores aleatorios. Remuestrear bloques de vectores $(\Delta\mathbf{x}_i,\dots,\Delta\mathbf{x}_{i+\ell-1})$ equivale a usar el mismo inicio de bloque para todas las series; **esa equivalencia es una lectura de la tesis**, inmediata pero no escrita así en el libro.
 
 ### Limitaciones (relevantes para la adaptación)
 
-- **No se verificó que trate el caso multivariado con los mismos inicios de bloque para todas las series** (bloque conjunto). Hasta leerlo, el texto no debe atribuírselo: queda `\pendiente` para esa afirmación.
+- **Caso multivariado (17-11-2026):** la sec. 2.5 (p. 29) extiende la descripción del método a observaciones vectoriales; el texto se leyó en una copia no oficial (sitio docente), no en la editorial, y solo en parte.
+- La observación de la p. 29 es breve y descriptiva: no atribuirle resultados de validez asintótica para el caso vectorial ni para series no estacionarias (en la tesis, los incrementos).
+- El esquema de la tesis sortea $\lceil n'/L\rceil$ inicios uniformes en $\{1,\dots,n'-L+1\}$ y recorta al final; no se cotejó, línea por línea, con la formulación completa de la sec. 2.5 (número de bloques remuestreados y tratamiento del sobrante), que solo se leyó en lo citado arriba.
 - La elección L = 24 es de la tesis; el cap. 7 trata la elección empírica del tamaño de bloque y podría servir para justificarla (por verificar).
 
 ## 7. Referencias internas relevantes
