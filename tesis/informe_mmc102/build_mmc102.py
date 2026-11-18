@@ -354,11 +354,11 @@ parrafo_caratula("FACULTAD DE CIENCIAS", 14, True, 0, 4)
 parrafo_caratula("Unidad de Posgrado", 12, False, 0, 14)
 # Escudo de la UNI, como en el formato del curso
 escudo = parrafo_caratula("", despues=14)
-escudo.add_run().add_picture(str(AQUI / "logo_uni.png"), width=Cm(3.8))
+escudo.add_run().add_picture(str(AQUI / "logo_uni.png"), width=Cm(3.4))
 parrafo_caratula("MAESTRÍA EN CIENCIAS EN MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", 12, True, 0, 24)
 parrafo_caratula("“Detección evolutiva de regímenes del ciclo financiero peruano mediante "
                  "Clasificación Factorial Jerárquica y aprendizaje automático”", 14, True, 0, 24)
-parrafo_caratula("CURSO: MMC102 – Seminario de Tesis II", 12, True, 0, 44)
+parrafo_caratula("CURSO: MMC102 – Seminario de Tesis II", 12, True, 0, 20)
 
 # Firmas del asesor y del tesista, lado a lado, en una tabla sin bordes
 firmas = d.add_table(rows=1, cols=2)
@@ -369,18 +369,26 @@ BLOQUES = [
     [("__________________________", False), ("TESISTA", True),
      ("Roberto Carlos Samaniego Salcedo", False), ("Código UNI: 20256037E", False)],
 ]
-for celda, lineas in zip(firmas.rows[0].cells, BLOQUES):
+# Firma manuscrita del tesista: se inserta solo si existe el archivo local (ignorado por Git,
+# para no publicar la firma en el repositorio). La celda del asesor reserva el mismo alto.
+FIRMA = AQUI / "firma_tesista.png"
+for k, (celda, lineas) in enumerate(zip(firmas.rows[0].cells, BLOQUES)):
     celda.width = Cm(7.75)
     vacio = celda.paragraphs[0]._element
+    espacio = parrafo_caratula("", despues=0)
+    espacio.paragraph_format.line_spacing = Cm(1.5)
+    if k == 1 and FIRMA.exists():
+        espacio.add_run().add_picture(str(FIRMA), height=Cm(1.4))
+    mover_a_celda(espacio, celda)
     for texto, negrita in lineas:
         mover_a_celda(parrafo_caratula(texto, 11, negrita, 0, 2), celda)
     vacio.getparent().remove(vacio)
 
 # Campo de calificación y firma del Director de la Unidad de Posgrado
-parrafo_caratula("NOTA FINAL: ____________", 12, True, 40, 50)
+parrafo_caratula("NOTA FINAL: ____________", 12, True, 24, 40)
 parrafo_caratula("__________________________", 11, False, 0, 2)
 parrafo_caratula("DR. ROSENDO OCHOA JIMÉNEZ", 11, True, 0, 2)
-parrafo_caratula("Director de la Unidad de Posgrado", 11, False, 0, 36)
+parrafo_caratula("Director de la Unidad de Posgrado", 11, False, 0, 24)
 parrafo_caratula("LIMA – PERÚ", 12, True, 0, 4)
 parrafo_caratula("2026-II", 12, True, 0, 0).paragraph_format.keep_with_next = False
 
