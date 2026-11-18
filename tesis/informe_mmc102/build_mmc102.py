@@ -547,14 +547,7 @@ for k in (0, 1):
     pp = pie.paragraphs[0]
     pp.alignment = WD_ALIGN_PARAGRAPH.CENTER
     campo_pagina(pp)
-enc = secciones[0].header
-enc.is_linked_to_previous = False
-pe = enc.paragraphs[0]
-pe.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-re_ = pe.add_run("Tesis de maestría — versión del 9 de noviembre de 2026")
-re_.italic = True
-re_.font.size = Pt(8)
-re_.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
+# Sin encabezado de versión: el informe del curso no lleva marca de borrador.
 
 # Hoja apaisada para la matriz
 m = secciones[2]
