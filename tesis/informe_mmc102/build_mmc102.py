@@ -351,11 +351,14 @@ def mover_a_celda(p, celda):
 # Encabezado institucional y título
 parrafo_caratula("UNIVERSIDAD NACIONAL DE INGENIERÍA", 16, True, 0, 4)
 parrafo_caratula("FACULTAD DE CIENCIAS", 14, True, 0, 4)
-parrafo_caratula("Unidad de Posgrado", 12, False, 0, 28)
-parrafo_caratula("MAESTRÍA EN CIENCIAS EN MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", 12, True, 0, 40)
+parrafo_caratula("Unidad de Posgrado", 12, False, 0, 14)
+# Escudo de la UNI, como en el formato del curso
+escudo = parrafo_caratula("", despues=14)
+escudo.add_run().add_picture(str(AQUI / "logo_uni.png"), width=Cm(3.8))
+parrafo_caratula("MAESTRÍA EN CIENCIAS EN MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", 12, True, 0, 24)
 parrafo_caratula("“Detección evolutiva de regímenes del ciclo financiero peruano mediante "
-                 "Clasificación Factorial Jerárquica y aprendizaje automático”", 14, True, 0, 40)
-parrafo_caratula("CURSO: MMC102 – Seminario de Tesis II", 12, True, 0, 70)
+                 "Clasificación Factorial Jerárquica y aprendizaje automático”", 14, True, 0, 24)
+parrafo_caratula("CURSO: MMC102 – Seminario de Tesis II", 12, True, 0, 44)
 
 # Firmas del asesor y del tesista, lado a lado, en una tabla sin bordes
 firmas = d.add_table(rows=1, cols=2)
@@ -374,10 +377,10 @@ for celda, lineas in zip(firmas.rows[0].cells, BLOQUES):
     vacio.getparent().remove(vacio)
 
 # Campo de calificación y firma del Director de la Unidad de Posgrado
-parrafo_caratula("NOTA FINAL: ____________", 12, True, 60, 70)
+parrafo_caratula("NOTA FINAL: ____________", 12, True, 40, 50)
 parrafo_caratula("__________________________", 11, False, 0, 2)
 parrafo_caratula("DR. ROSENDO OCHOA JIMÉNEZ", 11, True, 0, 2)
-parrafo_caratula("Director de la Unidad de Posgrado", 11, False, 0, 50)
+parrafo_caratula("Director de la Unidad de Posgrado", 11, False, 0, 36)
 parrafo_caratula("LIMA – PERÚ", 12, True, 0, 4)
 parrafo_caratula("2026-II", 12, True, 0, 0).paragraph_format.keep_with_next = False
 
