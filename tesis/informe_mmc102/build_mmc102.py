@@ -318,39 +318,68 @@ for t in d.tables:
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
 
 # ---------------------------------------------------------------- Carátula
+# Carátula del curso MMC102 según "Estructura Seminario de Tesis II - 2026-2" de la Unidad de
+# Posgrado: incluye las firmas del asesor y del tesista y el campo de NOTA FINAL que llena el asesor.
 p0 = d.paragraphs[0]
-LINEAS = [
-    ("UNIVERSIDAD NACIONAL DE INGENIERÍA", "Poppins", 22, True, 6),
-    ("UNIDAD DE POSGRADO FACULTAD DE CIENCIAS", "Arial", 16, True, 12),
-    ("[LOGO]", None, None, None, 12),
-    ("INFORME PRELIMINAR DE TESIS", "Arial", 14, True, 4),
-    ("“DETECCIÓN EVOLUTIVA DE REGÍMENES DEL CICLO FINANCIERO PERUANO MEDIANTE "
-     "CLASIFICACIÓN FACTORIAL JERÁRQUICA Y APRENDIZAJE AUTOMÁTICO”", "Arial", 14, True, 14),
-    ("PARA OBTENER EL GRADO ACADÉMICO DE MAESTRO EN CIENCIAS CON MENCIÓN EN:", "Arial", 12, False, 0),
-    ("MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", "Arial", 12, False, 14),
-    ("ELABORADA POR:", "Arial", 12, True, 6),
-    ("ROBERTO CARLOS SAMANIEGO SALCEDO", "Arial", 12, True, 14),
-    ("ASESOR:", "Arial", 12, True, 6),
-    ("DR. SERGIO CAMIZ", "Arial", 14, True, 14),
-    ("LIMA, PERÚ", "Arial", 14, True, 6),
-    ("2026", "Arial", 12, True, 0),
-]
-for texto, fuente, tam, negrita, despues in LINEAS:
+FUENTE = "Arial"
+
+
+def parrafo_caratula(texto, tam=12, negrita=False, antes=0, despues=0, ancla=None):
+    """Crea un párrafo centrado de la carátula y lo coloca antes del primer párrafo del cuerpo."""
     p = d.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     pf = p.paragraph_format
-    pf.space_before, pf.space_after, pf.line_spacing = Pt(0), Pt(despues), 1.0
+    pf.space_before, pf.space_after, pf.line_spacing = Pt(antes), Pt(despues), 1.0
     pf.first_line_indent = Cm(0)
-    if texto == "[LOGO]":
-        p.add_run().add_picture(str(AQUI / "logo_uni.png"), width=Cm(5.6))
-    else:
+    pf.keep_with_next = True
+    if texto:
         r = p.add_run(texto)
         r.bold = negrita
         r.font.size = Pt(tam)
-        r.font.name = fuente
-        r._element.rPr.rFonts.set(qn("w:hAnsi"), fuente)
-        r._element.rPr.rFonts.set(qn("w:cs"), fuente)
-    p0._element.addprevious(p._element)
+        r.font.name = FUENTE
+        r._element.rPr.rFonts.set(qn("w:hAnsi"), FUENTE)
+        r._element.rPr.rFonts.set(qn("w:cs"), FUENTE)
+    (ancla if ancla is not None else p0._element).addprevious(p._element)
+    return p
+
+
+def mover_a_celda(p, celda):
+    """Traslada un párrafo ya creado al interior de una celda de tabla."""
+    celda._tc.append(p._element)
+
+
+# Encabezado institucional y título
+parrafo_caratula("UNIVERSIDAD NACIONAL DE INGENIERÍA", 16, True, 0, 4)
+parrafo_caratula("FACULTAD DE CIENCIAS", 14, True, 0, 4)
+parrafo_caratula("Unidad de Posgrado", 12, False, 0, 28)
+parrafo_caratula("MAESTRÍA EN CIENCIAS EN MODELIZACIÓN MATEMÁTICA Y COMPUTACIONAL", 12, True, 0, 40)
+parrafo_caratula("“Detección evolutiva de regímenes del ciclo financiero peruano mediante "
+                 "Clasificación Factorial Jerárquica y aprendizaje automático”", 14, True, 0, 40)
+parrafo_caratula("CURSO: MMC102 – Seminario de Tesis II", 12, True, 0, 70)
+
+# Firmas del asesor y del tesista, lado a lado, en una tabla sin bordes
+firmas = d.add_table(rows=1, cols=2)
+firmas.alignment = WD_TABLE_ALIGNMENT.CENTER
+p0._element.addprevious(firmas._tbl)
+BLOQUES = [
+    [("__________________________", False), ("ASESOR", True), ("Dr. Sergio Camiz", False)],
+    [("__________________________", False), ("TESISTA", True),
+     ("Roberto Carlos Samaniego Salcedo", False), ("Código UNI: 20256037E", False)],
+]
+for celda, lineas in zip(firmas.rows[0].cells, BLOQUES):
+    celda.width = Cm(7.75)
+    vacio = celda.paragraphs[0]._element
+    for texto, negrita in lineas:
+        mover_a_celda(parrafo_caratula(texto, 11, negrita, 0, 2), celda)
+    vacio.getparent().remove(vacio)
+
+# Campo de calificación y firma del Director de la Unidad de Posgrado
+parrafo_caratula("NOTA FINAL: ____________", 12, True, 60, 70)
+parrafo_caratula("__________________________", 11, False, 0, 2)
+parrafo_caratula("DR. ROSENDO OCHOA JIMÉNEZ", 11, True, 0, 2)
+parrafo_caratula("Director de la Unidad de Posgrado", 11, False, 0, 50)
+parrafo_caratula("LIMA – PERÚ", 12, True, 0, 4)
+parrafo_caratula("2026-II", 12, True, 0, 0).paragraph_format.keep_with_next = False
 
 # ---------------------------------------------------------------- Matriz de consistencia
 H = ["Problema de estudio", "Problemas", "Objetivos", "Variables y dimensiones", "Diseño metodológico"]
