@@ -13,6 +13,29 @@ los pendientes. Las entradas van de la más reciente a la más antigua. El detal
 cada cambio está en el [historial de commits](https://github.com/RobertoSam/Tesis-modelamiento-matematico/commits/main).
 :::
 
+## 18 de noviembre de 2026
+
+**Informe MMC102: carátula del curso, firma del tesista y envío al asesor**
+
+- **Carátula del curso.** La portada de tesis se reemplazó por la carátula del formato
+  *Estructura Seminario de Tesis II – 2026-2*: escudo de la UNI, curso MMC102, firmas del
+  asesor y del tesista, campo de NOTA FINAL y firma del Director de la Unidad de Posgrado.
+- **Encabezado.** Se retiró la marca de versión de las páginas preliminares.
+- **Firma.** El informe lleva la firma del tesista; `build_mmc102.py` la inserta desde
+  `tesis/informe_mmc102/firma_tesista.png`, por lo que se conserva al recompilar.
+- **Contenido.** El texto del informe no cambió: solo varió la primera página.
+- **Envío.** Se preparó el correo al Dr. Camiz con los enlaces al PDF y al Word firmados, para
+  su evaluación y envío a la Unidad de Posgrado.
+
+**Pendientes**
+
+- Enviar el correo al Dr. Camiz y recoger la nota y sus observaciones.
+- Repetir los autoencoders con las 16 series.
+- Validar la segmentación con la partición por tendencias segmentadas.
+- Verificar la HFC evolutiva contra el programa original.
+- Obtener el crédito de 2006 y el crédito a tipo de cambio constante, y fijar el parámetro c
+  de la regla de fases.
+
 ## 8–9 de noviembre de 2026
 
 **Informe para el Seminario de Tesis II (MMC102): documento consolidado de cinco capítulos y primeras observaciones del asesor**
