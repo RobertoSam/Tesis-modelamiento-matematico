@@ -35,5 +35,3 @@ data/results/*.pt
 R/*.html
 R/*_files/
 
-# Firma manuscrita del tesista: no se publica en el repositorio
-tesis/informe_mmc102/firma_tesista.png
