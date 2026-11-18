@@ -1462,8 +1462,8 @@ sección define los dos nulos que dan esa referencia y el criterio de OE4 que se
 segundo. Los dos se construyen con remuestreo por bloques, cuyo fundamento general para datos
 dependientes se remite a \textcite{kunsch_1989}\verificar{ficha preliminar: texto no consultado;
 no se verificó que el artículo defina el esquema de bloques móviles solapados del código.} y a
-\textcite{lahiri_2003}\verificar{metadatos verificados; texto no consultado. Solo se cita como
-manual del bootstrap por bloques.}.
+\textcite{lahiri_2003}\verificar{metadatos verificados; texto leído en parte (sec.~2.5 y
+p.~176) en una copia no oficial; se cita como manual del bootstrap por bloques.}.
 
 \begin{definicion}[Índices por bloques]\label{def:bloques}
 Para una longitud $n'$ y una longitud de bloque $\Lb\le n'$, sean $\mb=\lceil n'/\Lb\rceil$ y
@@ -1594,10 +1594,16 @@ la correlación contemporánea y la dinámica corta, pero dispersa en el tiempo 
 estructura más largo que un bloque. (b) Si la muestra tiene tramos de varianza muy distinta, las
 réplicas los mezclan, y el nulo puede ser más fácil de superar que una estructura constante
 genuina. (c) La acumulación conserva la deriva de cada serie, como la versión con deriva del nulo
-de tendencias; D7 no pide el tratamiento mixto de D8 para este nulo. (d) El esquema con los
-mismos inicios para todas las series es una elección de la tesis
-\pendiente{fuente del bootstrap por bloques conjunto, con los mismos inicios de bloque para todas
-las series; sin ficha que lo trate}.
+de tendencias; D7 no pide el tratamiento mixto de D8 para este nulo. (d) El bootstrap de bloques
+móviles se describe para observaciones escalares, y su descripción se extiende sin cambios a
+vectores aleatorios
+\parencite[sec.~2.5, p.~29]{lahiri_2003}\verificar{texto leído en parte en una copia no oficial
+de los caps.~2 y~7; la equivalencia con los mismos inicios de bloque es de la tesis.}. Aplicarlo a
+las observaciones vectoriales $\Delta\vx_t$, remuestreando bloques del vector completo, equivale
+a usar los mismos inicios de bloque para todas las series; esa equivalencia, la regla de
+$\lceil n'/\Lb\rceil$ inicios de la \cref{def:bloques} y su uso con los incrementos de series
+no estacionarias son pasos de la tesis, no resultados de la fuente, que tampoco se invoca para
+la validez asintótica del caso vectorial.
 \end{observacion}
 
 \subsection{Criterio de OE4}
