@@ -1,0 +1,69 @@
+---
+title: "Pang, Shen, Cao y van den Hengel (2021) — Deep learning for anomaly detection: A review"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (resumen leído, 19-11-2026)"}
+Los metadatos se verificaron en dos repositorios institucionales de las universidades de los autores (UTS y SMU), que **difieren en el año del fascículo** (marzo de 2021 en UTS; marzo de 2022 en SMU). No se vieron en la editorial (ACM Digital Library) ni en Crossref (la consulta a api.crossref.org no obtuvo permiso). Solo se leyó el resumen (en arXiv y en los dos repositorios). No se describe el contenido más allá del resumen.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-109 *(numeración correlativa propuesta; la mayor existente era FB-108)* |
+| **Fecha de procesamiento** | 19 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído; texto no consultado |
+| **Tipo de fuente** | Artículo de revisión en revista con revisión por pares (*ACM Computing Surveys*) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Pang, G., Shen, C., Cao, L., & van den Hengel, A. (2021). Deep learning for anomaly detection: A review. *ACM Computing Surveys*, *54*(2), 1–38. https://doi.org/10.1145/3439950
+
+> **Verificación (19-11-2026):**
+> - **OPUS, repositorio de la University of Technology Sydney** (opus.lib.uts.edu.au/handle/10453/147799): autores G. Pang, C. Shen, L. Cao, A. V. D. Hengel; *ACM Computing Surveys*; vol. 54; núm. 2; pp. 1–38; fecha del fascículo 2021-03; editorial Association for Computing Machinery; DOI 10.1145/3439950 (como relación «is based on»); estado «Published» (el PDF adjunto es la versión aceptada). El título del registro aparece abreviado («Deep Learning for Anomaly Detection»).
+> - **InK, repositorio de la Singapore Management University** (ink.library.smu.edu.sg/sis_research/7016): título completo «Deep learning for anomaly detection: A review»; autores en el orden Guansong Pang, Chunhua Shen, Longbing Cao, Anton van den Hengel; artículo de revista (versión publicada); vol. 54; núm. 2; pp. 1–38; DOI 10.1145/3439950; ACM; ISSN 0360-0300. **Fecha: marzo de 2022** (difiere de UTS).
+> - **arXiv:2007.02500v3**: título, autores en el mismo orden y DOI 10.1145/3439950.
+> - **No visto:** ACM Digital Library ni Crossref. **Queda con `verificar`: año (2021 frente a 2022) y número de artículo.** Se adopta 2021 (fecha del fascículo en UTS); dblp, base secundaria, también la registra como 2021, lo que solo sirve para localizar.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de anomalías con aprendizaje profundo |
+| **Área secundaria** | Taxonomía de métodos |
+| **Relevancia para la tesis** | **MEDIA.** Sustituye a `chalapathy_chawla_2019` (*preprint*) como revisión revisada por pares del campo, en el cap. 2, `sec:dl` |
+| **Frente de la tesis al que aporta** | Estado del arte de la vía AE/LSTM (complemento, regla 5) |
+
+## 4. Resumen analítico
+
+Solo lo que dice el resumen.
+
+- Revisión de la detección de anomalías basada en aprendizaje profundo (la detección de anomalías también se llama detección de valores atípicos o de novedades).
+- Taxonomía con 3 categorías generales y 11 categorías finas de métodos.
+- Para cada método revisa las intuiciones clave, las funciones objetivo, los supuestos subyacentes, las ventajas y las desventajas, y cómo abordan los desafíos del campo; cierra con oportunidades futuras.
+- **El resumen no menciona autoencoders, error de reconstrucción ni series de tiempo.** No se le atribuye nada sobre esos temas.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Anomalía | Mes que no comparte la estructura típica; posible lectura del error de reconstrucción (inferencia de la tesis, no del artículo) |
+| Supuestos de cada familia de métodos | Discusión explícita de los supuestos de AE/LSTM (regla 5) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Revisión publicada en revista: puede citarse como panorama del campo en lugar del *preprint* de Chalapathy y Chawla (2019).
+
+### Limitaciones
+
+- Solo resumen leído: **no** atribuirle afirmaciones sobre autoencoders, error de reconstrucción, series de tiempo o tamaño de muestra.
+- Año con discrepancia entre repositorios (2021/2022).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | Bibliografía del artículo no consultada |

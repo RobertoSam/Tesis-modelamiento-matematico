@@ -1,0 +1,78 @@
+---
+title: "Audibert, Michiardi, Guyard, Marti y Zuluaga (2020) — USAD: Unsupervised anomaly detection on multivariate time series"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (texto parcial, 19-11-2026)"}
+Los metadatos se verificaron en el repositorio institucional de EURECOM (registro y PDF de la versión de los autores). No se vieron en la editorial (ACM Digital Library) ni en Crossref (sin permiso). **Las páginas de las actas no aparecen en ninguna de las fuentes vistas** y la editorial se infiere del prefijo del DOI y del formato ACM del PDF. El texto se leyó en parte (sec. 3.2, 3.3, 5.2 y 6), con una herramienta que resume.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-111 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 19 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Texto parcial (versión de los autores en el repositorio de EURECOM) |
+| **Tipo de fuente** | Ponencia en actas con revisión por pares (KDD 2020, ACM) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Audibert, J., Michiardi, P., Guyard, F., Marti, S., & Zuluaga, M. A. (2020). USAD: Unsupervised anomaly detection on multivariate time series. En *26th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD '20)* [VERIFICAR: páginas, título exacto del volumen de actas y editorial]. Association for Computing Machinery. https://doi.org/10.1145/3394486.3403392
+
+> **Verificación (19-11-2026):**
+> - **EURECOM, registro de la publicación** (eurecom.fr/en/node/4901803): título «USAD: Unsupervised anomaly detection on multivariate time series»; autores en el orden Julien Audibert, Pietro Michiardi, Frederic Guyard, Sebastien Marti, Maria A. Zuluaga; KDD 2020, 26th ACM SIGKDD Conference on Knowledge Discovery and Data Mining, San Diego (evento virtual), 23–27 de agosto de 2020; DOI 10.1145/3394486.3403392; tipo «Conference». Sin páginas, editorial ni ISBN.
+> - **PDF de la versión de los autores** (eurecom.fr/publication/6271/download/data-publi-6271_1.pdf), bloque «ACM Reference Format»: mismos autores (con tildes: Frédéric, Sébastien), título «USAD : UnSupervised Anomaly Detection on Multivariate Time Series», KDD '20, 23–27 de agosto de 2020, evento virtual, 10 páginas, mismo DOI. Sin rango de páginas.
+> - **No visto:** ACM Digital Library ni Crossref. Quedan con `verificar` las páginas y el título exacto del volumen de actas.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de anomalías en series de tiempo multivariadas |
+| **Área secundaria** | Autoencoders con entrenamiento adversario; error de reconstrucción |
+| **Relevancia para la tesis** | **ALTA** para el `\pendiente` de l. ~345 del cap. 2: fuente revisada por pares que usa explícitamente el **error de reconstrucción de autoencoders** como puntuación de anomalía en **series multivariadas** |
+| **Frente de la tesis al que aporta** | Estado del arte de la vía AE/LSTM; lectura del error de reconstrucción |
+
+## 4. Resumen analítico
+
+### Según el resumen (registro de EURECOM)
+
+- Supervisión automática de sistemas informáticos de Orange, donde el número creciente de sensores vuelve lenta o propensa a errores la supervisión por expertos.
+- **USAD**: método rápido y estable basado en autoencoders entrenados de forma adversaria, sin datos etiquetados; el entrenamiento adversario aísla las anomalías y mantiene rápido el entrenamiento.
+- Evaluado en cinco conjuntos públicos (robusto, rápido de entrenar, preciso) y en un estudio de factibilidad con datos propios de Orange.
+
+### Lo leído en el texto (versión de los autores, resumido por la herramienta de lectura)
+
+- **Sec. 3.2:** «Autoencoder-based anomaly detection uses the reconstruction error as the anomaly score». La puntuación de USAD (ec. 9) combina dos errores de reconstrucción cuadráticos con pesos α + β = 1.
+- **Sec. 3.3:** el entrenamiento debe recoger el comportamiento normal de «a few weeks/months» de datos; el conjunto de Orange cubre unos 32 días.
+- **Sec. 5.2:** robustez ante anomalías en los datos de entrenamiento hasta alrededor de 5 %; el desempeño baja desde 10 %.
+- **Sec. 6:** reunir un período continuo de entrenamiento con pocas anomalías fue difícil.
+- El artículo **no** fija un tamaño mínimo de muestra.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Error de reconstrucción como puntuación de anomalía | Error de reconstrucción del autoencoder (y del PCA, en la validación *walk-forward*) como señal de meses atípicos |
+| Entrenamiento con datos mayormente normales | Supuesto que impone la vía AE: el entrenamiento define lo «típico» (regla 5) |
+| Robustez ante anomalías en el entrenamiento | Riesgo en la tesis: las crisis están dentro de una muestra corta |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Respaldo revisado por pares, y explícito en el texto (sec. 3.2), de que la detección de anomalías con autoencoders usa el error de reconstrucción como puntuación, aplicado a series multivariadas.
+- Hace visible un supuesto que la tesis debe discutir: el entrenamiento se hace sobre datos con pocas anomalías.
+
+### Limitaciones
+
+- Datos de sensores con muchas observaciones (semanas o meses de alta frecuencia): **no** sostiene nada sobre series macrofinancieras mensuales cortas.
+- Texto leído en parte y con una herramienta que resume; no atribuir detalles de arquitectura ni de resultados numéricos.
+- Páginas de las actas sin verificar.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Su et al. (2019), OmniAnomaly | Media | Fichada (`su_et_al_2019`); que USAD la cite no se comprobó |

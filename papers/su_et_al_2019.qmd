@@ -1,0 +1,70 @@
+---
+title: "Su et al. (2019) — Robust anomaly detection for multivariate time series through stochastic recurrent neural network"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (resumen leído, 19-11-2026)"}
+Los metadatos se verificaron en el repositorio institucional de Stevens Institute of Technology (Pure). No se vieron en la editorial (ACM Digital Library; doi.org no obtuvo permiso) ni en Crossref (sin permiso). **El orden de los autores del repositorio difiere del de una base secundaria** (ver la sección 2). Solo se leyó el resumen, en una versión resumida por la herramienta de lectura (el repositorio no permitió copiarlo literalmente). No se describe el contenido más allá del resumen.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-110 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 19 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (repositorio institucional); texto no consultado |
+| **Tipo de fuente** | Ponencia en actas con revisión por pares (KDD 2019, ACM) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Su, Y., Liu, R., Zhao, Y., Sun, W., Niu, C., & Pei, D. (2019). Robust anomaly detection for multivariate time series through stochastic recurrent neural network. En *KDD '19: Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (pp. 2828–2837). Association for Computing Machinery. https://doi.org/10.1145/3292500.3330672
+
+> **Verificación (19-11-2026):** registro en Stevens Pure (researchwith.stevens.edu): título; autores en el orden Ya Su, Rong Liu, Youjian Zhao, Wei Sun, Chenhao Niu, Dan Pei; publicación anfitriona «KDD 2019 - Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining»; congreso en Anchorage (Estados Unidos), 4–8 de agosto de 2019; pp. 2828–2837; ISBN electrónico 9781450362016; DOI 10.1145/3292500.3330672; fecha de publicación 25 de julio de 2019; «Published»; clasificado como «Conference contribution › peer-review»; nota de derechos «© 2019 Association for Computing Machinery».
+>
+> **Discrepancia:** una base secundaria (bibtex.github.io, entrada KDD-2019-SuZNLSP) da el orden Su, Zhao, Niu, Liu, Sun, Pei. Los repositorios Pure a veces reordenan autores; **el orden queda con `verificar`** hasta verlo en la ACM Digital Library. La cita en el texto («Su et al., 2019») no depende del orden, porque el primer autor coincide.
+>
+> **No visto:** doi.org (sin permiso) ni Crossref (sin permiso).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Detección de anomalías en series de tiempo multivariadas |
+| **Área secundaria** | Redes recurrentes estocásticas; puntuación por reconstrucción |
+| **Relevancia para la tesis** | **MEDIA.** Fuente revisada por pares de que la reconstrucción de un modelo recurrente entrenado con patrones normales se usa como señal de anomalía en series multivariadas (cap. 2, `sec:dl`, `\pendiente` de l. ~345) |
+| **Frente de la tesis al que aporta** | Estado del arte de la vía AE/LSTM; lectura del error de reconstrucción |
+
+## 4. Resumen analítico
+
+Solo lo que dice el resumen (versión resumida por la herramienta de lectura).
+
+- Propone **OmniAnomaly**, una red neuronal recurrente estocástica para detectar anomalías en series de tiempo multivariadas de equipos industriales (servidores, naves espaciales, motores).
+- Aprende representaciones robustas de los patrones **normales** (con conexión de variables estocásticas y flujo normalizante planar) y señala las anomalías por la **probabilidad de reconstrucción**.
+- Interpreta cada anomalía detectada a partir de las probabilidades de reconstrucción de las series univariadas que la componen.
+- Evaluación en dos conjuntos públicos aeroespaciales y uno de servidores publicado por los autores; F1 global de 0,86 (0,09 sobre el mejor método de comparación) y exactitud de interpretación de hasta 0,89.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Probabilidad de reconstrucción como puntuación de anomalía | Error de reconstrucción del autoencoder como señal de meses atípicos |
+| Interpretación por serie | Contribución de cada una de las 16 series al error de un mes |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Ancla revisada por pares para la idea general de usar la reconstrucción de un modelo entrenado con datos normales como señal de anomalía en series **multivariadas**.
+
+### Limitaciones
+
+- Usa **probabilidad** de reconstrucción (modelo estocástico), no el error cuadrático de un autoencoder determinista: no equipararlos sin matiz.
+- Datos industriales de alta frecuencia y muestras grandes, muy distintos de 228 meses × 16 series: **no** sostiene nada sobre series macrofinancieras cortas.
+- Solo resumen; no atribuirle detalles de arquitectura, umbrales ni supuestos.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | Bibliografía del artículo no consultada |

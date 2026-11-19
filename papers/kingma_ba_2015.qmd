@@ -1,0 +1,59 @@
+---
+title: "Kingma y Ba (2015) — Adam: A method for stochastic optimization"
+---
+
+::: {.callout-note title="Ficha de referencia técnica (resumen leído, 19-11-2026)"}
+Fuente del optimizador Adam, usado en el diseño del autoencoder (Rmd, A.5). Metadatos verificados en arXiv (nota de los autores) y en el repositorio institucional de la Universidad de Ámsterdam (UvA-DARE). Solo se leyó el resumen.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-112 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 19 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen leído (arXiv y UvA-DARE); texto no consultado |
+| **Tipo de fuente** | Ponencia en congreso con revisión por pares (ICLR 2015); sin actas con editorial ni paginación |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Kingma, D. P., & Ba, J. (2015). *Adam: A method for stochastic optimization* [Ponencia]. 3rd International Conference on Learning Representations (ICLR 2015), San Diego. https://doi.org/10.48550/arXiv.1412.6980
+
+> **Verificación (19-11-2026):**
+> - **arXiv:1412.6980** (página de resumen): título; autores Diederik P. Kingma y Jimmy Ba; campo «Comments»: «Published as a conference paper at the 3rd International Conference for Learning Representations, San Diego, 2015»; DOI de arXiv 10.48550/arXiv.1412.6980 (DataCite); versiones v1 (22-12-2014) a v9 (30-01-2017).
+> - **UvA-DARE** (dare.uva.nl/id/a20791d3-1aff-464a-8544-268383c33a75): autores D. P. Kingma y L. J. Ba; tipo «Paper»; International Conference on Learning Representations 2015; fecha mayo de 2015; 13 páginas; mismo DOI.
+> - **No visto:** el sitio de ICLR (iclr.cc). Las fuentes vistas solo dan la ciudad («San Diego») y el año; no las fechas del congreso ni los editores, que no se agregan.
+> - Ninguna de las fuentes vistas muestra actas con editorial ni paginación; el único DOI visto es el de arXiv, que se usa como enlace.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Optimización estocástica para el entrenamiento de redes neuronales |
+| **Relevancia para la tesis** | **BAJA (técnica).** Cierra la marca «Adam [VERIFICAR: sin ficha]» del Rmd (A.5, tabla de parámetros) y sirve si la tesis nombra el optimizador |
+| **Frente de la tesis al que aporta** | Diseño de los autoencoders y de las redes LSTM (iteración 4) |
+
+## 4. Resumen analítico
+
+Solo lo que dice el resumen.
+
+- Adam es un algoritmo de optimización de primer orden, basado en gradientes, para funciones objetivo estocásticas, con estimaciones adaptativas de momentos de orden bajo del gradiente.
+- Según los autores: fácil de implementar, computacionalmente eficiente, con poca memoria, adecuado para problemas grandes en datos o parámetros, para objetivos no estacionarios y para gradientes ruidosos o dispersos.
+- Incluye un análisis de convergencia (cota de *regret*) y resultados empíricos favorables frente a otros optimizadores estocásticos; discute la variante AdaMax (norma infinito).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Optimizador Adam | Optimizador del autoencoder (tasa 0,005 en el Rmd, A.5) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+- Solo se cita como fuente del algoritmo. **No** usarla para justificar la tasa de aprendizaje, la parada temprana ni el desempeño con muestras cortas: el resumen no trata esos puntos.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| — | — | Bibliografía del artículo no consultada |

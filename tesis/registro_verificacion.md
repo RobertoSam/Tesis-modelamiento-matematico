@@ -17,7 +17,11 @@ dual—; Camiz y Diblasi (2013) y Denimal (2001) siguen sin localizarse y el boo
 conjunto no se buscó (sección «Pendientes bibliográficos (15-11-2026)»). El 17-11-2026 (seguimiento,
 sobre `d4841e9`) se halló en Lahiri (2003, sec. 2.5, p. 29) la fuente del bootstrap por bloques
 conjunto y se fichó Aue, Hörmann, Horváth y Reimherr (2009) para la detección de cambios en la
-matriz de covarianzas (sección «Pendientes bibliográficos (17-11-2026)»). Las marcas se contaron con
+matriz de covarianzas (sección «Pendientes bibliográficos (17-11-2026)»). El 19-11-2026 (seguimiento,
+sobre `67a9979`) se ficharon Pang et al. (2021), Su et al. (2019) y Audibert et al. (2020) —fuentes
+revisadas por pares sobre detección de anomalías con aprendizaje profundo y error de reconstrucción en
+series multivariadas— y Kingma y Ba (2015), fuente del optimizador Adam (sección «Pendientes
+bibliográficos (19-11-2026)»). Las marcas se contaron con
 `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
 Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada
@@ -80,7 +84,7 @@ edición. Abreviaturas de la columna «Marcas en los documentos»:
 | `escofier_pages_2023` | Fuente de la terminología de calidad de representación (cos²) y contribuciones de la escuela francesa | **13-11-2026:** no se localizó una tabla de contenidos oficial de `lebart_morineau_piron_1995` (ed. 1995) que muestre la sección de cos²/contribuciones; la ficha de Lebart queda como marco general. En su lugar se verificó Escofier y Pagès (2023), *Analyses factorielles simples et multiples*, 5e éd., Dunod, ISBN 978-2-10-085957-3: el extracto oficial de Dunod (Feuilletage_3448.pdf) incluye la sección 1.9 «Aides à l'interprétation» (p. 24), con «qualité de représentation» definida como **coseno cuadrado** y «contribution d'un élément à l'inertie d'un axe», para individuos y variables. Metadatos de la portada/créditos del extracto; total de páginas no visto | Tesis: `\pendiente` en cap. 3, «Calidad de representación y contribuciones» (`sec:cos2`, l. ~429) y cap. 2, estado del arte (`02_estado_arte.tex`, l. ~291). Informe: `[CITA PENDIENTE]` en la misma sección | Cerrado (terminología y conceptos; no las fórmulas exactas de `def:cos2`). La fila de `lebart_morineau_piron_1995` sigue abierta en cuanto a su sección de cos² |
 | `bruynooghe_1978` | Bruynooghe (1978), *Les Cahiers de l'Analyse des Données*, 3(1), 7–33 | Metadatos verificados en Numdam. Texto no consultado: la propiedad de reducibilidad que exige el índice de la HFC no se le atribuye | Tesis: cap. 2, «Clasificación Factorial Jerárquica» (`sec:hfc`), `\verificar` (sustituye al `\pendiente` de 3a). Informe: `v2-bru` | Cerrado (metadatos, 24-10-2026); contenido no consultado |
 | `hubert_arabie_1985` | Hubert y Arabie (1985), *Journal of Classification*, 2(1), 193–218 | Metadatos tomados de RePEc/IDEAS: contrastar con SpringerLink. La atribución del índice de Rand ajustado no se verificó en el texto | Tesis: cap. 3, «Clasificación Factorial Jerárquica» (`sec:met-hfc`), `\verificar`. Informe: `v3-ha`. Rmd: A.4, «HFC evolutiva» | Fichada (preliminar); pendiente |
-| — | Fuente del optimizador Adam | Sin ficha en `papers/`; citado por el nombre, sin autor ni año | Rmd: A.5, «Diseño del autoencoder» (tabla de parámetros). No figura en RmdF (la sección 7 no desarrolla las redes) | Pendiente |
+| `kingma_ba_2015` | Fuente del optimizador Adam | **19-11-2026:** fichada (FB-112). Metadatos en arXiv:1412.6980 (nota de los autores: ICLR 2015, San Diego) y en UvA-DARE; resumen leído | Rmd: A.5, «Diseño del autoencoder» (tabla de parámetros), `[VERIFICAR: sin ficha]`. No figura en RmdF (la sección 7 no desarrolla las redes) | Fuente identificada; sustitución de la marca del Rmd pendiente del desarrollador |
 | `kunsch_1989` | Künsch (1989), *The Annals of Statistics*, 17(3) | Páginas 1217–1241 (secundarias; Project Euclid bloquea el acceso automatizado). **No se verificó que el artículo defina el esquema de bloques móviles solapados del código** | Tesis: cap. 2, «Nulos de referencia y criterio del ancho de ventana» (`sec:nulos`), dos `\verificar` (uno propio y uno conjunto con Lahiri). Informe: `v2-kun` (y `v2-lah`, conjunta). RmdF y Rmd: chunk `funciones` (bootstrap por bloques). src: `remuestreo` (docstring del módulo) | Fichada (preliminar); pendiente |
 | `pyper_peterman_1998` | Pyper y Peterman (1998), *Canadian Journal of Fisheries and Aquatic Sciences*, 55, 2127–2140 | Volumen y páginas (solo en una fuente secundaria); fe de erratas sin consultar; **no se comprobó que la fórmula de $n_{\text{ef}}$ del código, con truncamiento $J = \lfloor n/5 \rfloor$, sea la de este artículo** (una fuente secundaria atribuye la estructura de la fórmula, sin truncamiento, a Quenouille, 1947) | Tesis e Informe: cap. 2, «Adecuación muestral» (`v2-pp`). RmdF: chunk `funciones` y 2.2, «Persistencia y tamaño muestral efectivo». Rmd: chunk `funciones` y A.2, «Autocorrelación, muestra efectiva y sensibilidad de Bartlett». NB05, celda 5. src: `series_tiempo.n_efectivo` | Fichada (preliminar); pendiente |
 | `kish_1965` | Kish (1965), *Survey sampling*, Wiley | Metadatos verificados en el catálogo de la Universidad de Pensilvania. Texto no consultado: capítulo y página de la fórmula $1/\sum\omega^2$. Intento del 24-10-2026 (tarea B2) sin resultado: las fuentes accesibles que la atribuyen a Kish (viñeta de PracTools, Wikipedia) son secundarias y no dan una página verificable. Se pidió a Roberto la página del libro | Tesis: cap. 2, «Tamaño efectivo de una ventana y umbrales por ventana» (`sec:kish`), `\verificar`. Informe: `v2-kish`. RmdF: sección 4 y 4.2 nombran «el $n$ efectivo de Kish», sin año ni marca | Fichada (preliminar); pendiente |
@@ -172,7 +176,7 @@ salvo para `borio_2014`, cuyo DOI resolvió hacia Elsevier).
 | `hotelling_1933` | Crossref | Ninguna | Texto; continuación en el n.º 7 (no se cita) | Cerrado (metadatos); contenido no consultado |
 | `lebart_morineau_piron_1995` | Base Horizon del IRD; autoridad de la BnF | Ninguna | Texto (sección de cos²) | Cerrado (metadatos); contenido no consultado |
 | `goodfellow_bengio_courville_2016` | Catálogo de la TUAT | Ninguna | Texto | Cerrado (metadatos); contenido no consultado |
-| `chalapathy_chawla_2019` | arXiv | Resumen | *Preprint*: solo exploración (campo `verificar`) | Fichada; *preprint* |
+| `chalapathy_chawla_2019` | arXiv | Resumen | *Preprint*: solo exploración (campo `verificar`). **19-11-2026:** la revisión publicada `pang_et_al_2021` puede ocupar su lugar | Fichada; *preprint* |
 | `gomez_gonzalez_et_al_2013` | Repositorio del Banco de la República | Texto parcial | **Orden de autores** (campo `verificar`) | Fichada; pendiente (orden de autores) |
 | `brandao_marques_perez_ruiz_2017` | FMI (PDF) | Resumen | **Grafía del primer autor** y DOI (campo `verificar`) | Fichada; pendiente (grafía) |
 | `minaya_lupu_cabello_2017` | BIS | Resumen | — | Cerrado (metadatos); contenido: solo resumen |
@@ -287,6 +291,27 @@ fuente de cada dato en las fichas y en `auditorias/notas/2026-11-17_bibliotecari
 
 Entradas del `.bib`: 107 (106 + `aue_et_al_2009`), sin claves duplicadas y todas con ficha en
 `papers/` (parseo de pybtex). Conteo de marcas no rehecho (la tarea no toca los documentos).
+
+### Pendientes bibliográficos (19-11-2026)
+
+Encargo de la sesión de seguimiento del 19-11-2026 (rama `iteracion-3c`, commit de partida
+`67a9979`): fuentes revisadas por pares para el `\pendiente` de `02_estado_arte.tex` (l. ~345) sobre
+el error de reconstrucción de autoencoders como señal de anomalía en series multivariadas y sobre
+aprendizaje profundo con series macrofinancieras cortas; en segundo lugar, la fuente de Adam. Detalle
+y fuente de cada dato en las fichas y en `auditorias/notas/2026-11-19_bibliotecario.md`. Las citas
+**no** se integraron en la tesis, el informe ni el Rmd.
+
+| Clave | Metadatos verificados en | Lectura | Qué falta | Marcas en los documentos | Estado |
+|---|---|---|---|---|---|
+| `audibert_et_al_2020` (USAD, KDD 2020) | Repositorio de EURECOM (registro y versión de los autores); no en ACM DL ni Crossref (sin permiso) | Texto parcial: sec. 3.2 («Autoencoder-based anomaly detection uses the reconstruction error as the anomaly score»), 3.3, 5.2 y 6 | Páginas, título del volumen y editorial (campo `verificar`) | Tesis: `\pendiente` en cap. 2, `sec:dl` (l. ~345). Informe: sin marca equivalente | Ficha preliminar (FB-111). Sostiene la primera mitad del `\pendiente` |
+| `su_et_al_2019` (OmniAnomaly, KDD 2019) | Stevens Pure (repositorio institucional; revisado por pares); no en ACM DL ni Crossref | Resumen | **Orden de autores** (difiere de una base secundaria) | Ídem | Ficha preliminar (FB-110). Sostiene el uso de la probabilidad de reconstrucción en series multivariadas |
+| `pang_et_al_2021` (*ACM Computing Surveys*) | Repositorios de UTS y SMU; arXiv:2007.02500; no en ACM DL ni Crossref | Resumen | **Año** (2021 en UTS, 2022 en SMU) y número de artículo | Puede sustituir a `chalapathy_chawla_2019` en `sec:dl` | Ficha preliminar (FB-109). El resumen no menciona autoencoders ni series de tiempo |
+| `kingma_ba_2015` (Adam) | arXiv (nota de los autores) y UvA-DARE | Resumen | Sitio de ICLR no consultado | Rmd: A.5, `[VERIFICAR: sin ficha]` (fila «Fuente del optimizador Adam» de la tabla principal) | Cerrado (metadatos) |
+| — (aprendizaje profundo con series macrofinancieras cortas) | — | — | Una fuente revisada por pares; la búsqueda solo dio *preprints* y documentos sin revisión | Segunda mitad del `\pendiente` de `sec:dl` | **Sigue pendiente** |
+
+Entradas del `.bib`: 111 (107 + 4), sin claves duplicadas y todas con ficha en `papers/` (conteo con
+expresión regular; pybtex no estaba instalado y no se instaló). Conteo de marcas no rehecho (la tarea
+no toca los documentos).
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe
 
