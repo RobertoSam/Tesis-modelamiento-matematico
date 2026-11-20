@@ -328,10 +328,11 @@ volumen en PMLR.} combinan ambas ideas en el LSTM-autoencoder, que resume una se
 código, y \textcite{gal_ghahramani_2016}\verificar{editores del volumen; PDF no consultado.} dan
 una lectura del \emph{dropout} como inferencia aproximada, de la que se obtiene una medida de la
 incertidumbre del modelo. La detección de anomalías con aprendizaje profundo tiene revisiones
-propias, por ahora solo como fuente de exploración
-\parencite{chalapathy_chawla_2019}\verificar{\emph{preprint} sin revisión por pares (fuente de
-exploración); su resumen no menciona autoencoders ni series de tiempo, y el DOI de arXiv no se
-comprobó.}.
+propias, entre ellas una revisión con taxonomía del campo
+\parencite{pang_et_al_2021}\verificar{año del fascículo (2021/2022) y número de artículo; solo
+resumen leído.}; la de \textcite{chalapathy_chawla_2019}\verificar{\emph{preprint} sin revisión
+por pares (fuente de exploración); su resumen no menciona autoencoders ni series de tiempo, y el
+DOI de arXiv no se comprobó.} se conserva solo como fuente de exploración.
 
 El precedente más cercano en el dominio financiero es el de
 \textcite{tuhin_et_al_2025}\verificar{lista completa de autores contra la fuente original.}, que
@@ -342,9 +343,17 @@ interpretación económica es difícil. Ese es el desafío que la tesis enfrenta
 cortos: por eso trata los autoencoders y las redes LSTM como complemento anclado en el PCA y
 subordinado a la evidencia (\cref{sec:epistemologia}).
 
-\pendiente{fuentes revisadas por pares sobre el uso del error de reconstrucción de autoencoders
-como señal de anomalía en series multivariadas y sobre aprendizaje profundo con series
-macrofinancieras cortas: sin ficha}
+En la literatura de detección de anomalías en series de tiempo multivariadas, los métodos basados
+en autoencoders usan el error de reconstrucción como puntuación de anomalía
+\parencite[sec.~3.2]{audibert_et_al_2020}\verificar{texto leído en parte en la versión de los
+autores; páginas de las actas sin verificar.}; una variante usa la probabilidad de reconstrucción
+de una red recurrente estocástica entrenada con patrones normales
+\parencite{su_et_al_2019}\verificar{orden de autores sin verificar en la editorial; solo resumen
+leído.}. Esas aplicaciones usan datos de sensores o de servidores, con muchas observaciones y un
+período de entrenamiento con pocas anomalías \parencite[sec.~3.3 y~5.2]{audibert_et_al_2020},
+condiciones que no se cumplen en una muestra mensual corta que contiene las crisis.
+\pendiente{fuente revisada por pares sobre aprendizaje profundo con series macrofinancieras
+cortas: sin ficha}
 
 % -----------------------------------------------------------------------------
 \section{Perú y América Latina}
