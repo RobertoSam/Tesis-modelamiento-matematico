@@ -21,7 +21,11 @@ matriz de covarianzas (sección «Pendientes bibliográficos (17-11-2026)»). El
 sobre `67a9979`) se ficharon Pang et al. (2021), Su et al. (2019) y Audibert et al. (2020) —fuentes
 revisadas por pares sobre detección de anomalías con aprendizaje profundo y error de reconstrucción en
 series multivariadas— y Kingma y Ba (2015), fuente del optimizador Adam (sección «Pendientes
-bibliográficos (19-11-2026)»). Las marcas se contaron con
+bibliográficos (19-11-2026)»). El 21-11-2026 (seguimiento, sobre `b864902`) se ficharon Tölö (2020)
+—LSTM y GRU para predecir crisis sistémicas, *Journal of Financial Stability*— y Beutel, List y von
+Schweinitz (2019) —sobreajuste del aprendizaje automático en alerta temprana, misma revista, sin redes
+neuronales—; Sakurada y Yairi (2014) no se fichó (sección «Pendientes bibliográficos (21-11-2026)»).
+Las marcas se contaron con
 `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
 Las ubicaciones remiten a secciones y bloques, no a números de línea, que cambian con cada
@@ -311,6 +315,26 @@ y fuente de cada dato en las fichas y en `auditorias/notas/2026-11-19_biblioteca
 
 Entradas del `.bib`: 111 (107 + 4), sin claves duplicadas y todas con ficha en `papers/` (conteo con
 expresión regular; pybtex no estaba instalado y no se instaló). Conteo de marcas no rehecho (la tarea
+no toca los documentos).
+
+### Pendientes bibliográficos (21-11-2026)
+
+Encargo de la sesión de seguimiento del 21-11-2026 (rama `iteracion-3c`, commit de partida
+`b864902`): búsqueda dirigida de fuentes revisadas por pares sobre redes recurrentes o autoencoders con
+datos macrofinancieros de baja frecuencia y la limitación del tamaño de muestra, para el `\pendiente`
+de `02_estado_arte.tex`, `sec:ea-dl` (l. ~355); en segundo lugar, Sakurada y Yairi (2014). Detalle y
+fuente de cada dato en las fichas y en `auditorias/notas/2026-11-21_bibliotecario.md`. Las citas **no**
+se integraron en la tesis ni en el informe.
+
+| Clave | Metadatos verificados en | Lectura | Qué falta | Marcas en los documentos | Estado |
+|---|---|---|---|---|---|
+| `tolo_2020` (*Journal of Financial Stability*, 49) | Repositorio del Banco de Finlandia (urn.fi: volumen 49, agosto de 2020) y research.fi (revista, ISSN, tipo A1 arbitrado); DOI y número de artículo solo en RePEc. doi.org y ScienceDirect sin permiso | Resumen | Número de artículo (100746) y DOI en la editorial; texto (validación y tamaño de muestra no leídos) | Tesis: `\pendiente` en cap. 2, `sec:ea-dl` (l. ~355); listado en cap. 7, `sec:pend-marcas`. Informe: sin marca equivalente | Ficha preliminar (FB-113). Sostiene que hay LSTM/GRU revisadas por pares sobre datos macrofinancieros (17 países, 1870–2016); **no** sostiene nada sobre el tamaño de muestra |
+| `beutel_list_von_schweinitz_2019` (*Journal of Financial Stability*, 45) | Repositorio del IWH (autores, revista, vol. 45, diciembre de 2019, DOI); número de artículo en el repositorio de código del autor | Resumen del artículo; texto parcial del DP 48/2018 del Bundesbank | Número de artículo en la editorial; pasajes sobre el sobreajuste en la versión publicada | Ídem | Ficha preliminar (FB-114). Sostiene que el aprendizaje automático flexible logra un ajuste alto dentro de la muestra y pierde frente al logit fuera de ella. **No incluye redes neuronales** |
+| — (aprendizaje **profundo** y tamaño de muestra, en revista) | — | Chung (arXiv:2310.17571) sí lo discute, pero es *preprint* sin revista localizada | Fuente revisada por pares que trate explícitamente la limitación para redes profundas | Segunda mitad del `\pendiente` de `sec:ea-dl` | **Cerrable en parte** con las dos fichas (ver la «Regla para el redactor» de la nota) |
+| `sakurada_yairi_2014` (sin ficha) | — | — | Metadatos en ACM Digital Library: solo se localizó en fuentes secundarias (BibBase, Springer Professional) | Ninguna | Pendiente de fichar |
+
+Entradas del `.bib`: 113 (111 + 2), sin claves duplicadas, llaves balanceadas y todas con ficha en
+`papers/` (conteo con expresión regular; pybtex no instalado). Conteo de marcas no rehecho (la tarea
 no toca los documentos).
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe

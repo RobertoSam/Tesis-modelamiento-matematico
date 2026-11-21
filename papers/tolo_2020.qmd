@@ -1,0 +1,80 @@
+---
+title: "Tölö (2020) — Predicting systemic financial crises with recurrent neural networks"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (solo resumen, 21-11-2026)"}
+La revista, el año, el volumen y el carácter de artículo arbitrado se verificaron en dos registros institucionales finlandeses: el repositorio del Banco de Finlandia (urn.fi) y el portal nacional research.fi. **El DOI y el número de artículo solo se vieron en RePEc/IDEAS** (base secundaria): la página del DOI y ScienceDirect no se pudieron abrir (permiso no concedido; no se reintentó). Solo se leyó el resumen. **No se leyó el texto** del artículo ni del documento de trabajo previo (EconStor, permiso no concedido), así que esta ficha **no** dice nada de cómo trata el autor el tamaño de muestra.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-113 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 21 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen (en el repositorio del Banco de Finlandia y en RePEc) |
+| **Tipo de fuente** | Artículo en revista con revisión por pares (*Journal of Financial Stability*, Elsevier) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Tölö, E. (2020). Predicting systemic financial crises with recurrent neural networks. *Journal of Financial Stability*, *49*, Artículo 100746 [VERIFICAR: número de artículo y DOI, vistos solo en RePEc]. https://doi.org/10.1016/j.jfs.2020.100746
+
+> **Verificación (21-11-2026):**
+>
+> - **Repositorio del Banco de Finlandia** (urn.fi/URN:NBN:fi:bof-202002181112), la institución del autor: título; autor Eero Tölö; año 2020; volumen 49; «August» (2020); fecha del registro 31-05-2020; nota «Published in BoF 14/2019». El registro no nombra la revista y no tiene archivos.
+> - **research.fi** (portal nacional de información de investigación de Finlandia, registro 0368373920): título; Tölö, Eero; *Journal of Financial Stability*; 2020 («August (2020)»); ISSN 1572-3089; tipo A1, «journal article (refereed), original research»; revisado por pares: sí; organización: Bank of Finland. No da volumen, número de artículo ni DOI.
+> - **RePEc/IDEAS** (secundaria, solo para localizar): *Journal of Financial Stability*, Elsevier, vol. 49(C), 2020; DOI 10.1016/j.jfs.2020.100746; enlace a ScienceDirect (PII S1572308920300243); palabras clave «Early warning system; Systemic Banking crises; Neural networks; Validation»; JEL G21, C45, C52. El número de artículo **no** figura en la página: 100746 se toma del sufijo del DOI y queda con `verificar`.
+> - **No visto:** doi.org y ScienceDirect (sin permiso; no se reintentó). Tampoco Crossref (bloqueado en sesiones anteriores).
+> - **Versión previa:** Bank of Finland Research Discussion Papers 14/2019, ISBN 978-952-323-287-7 (registro de la Deutsche Digitale Bibliothek, proveedor ZBW). Es un documento de trabajo: **no se cita**; la tesis cita el artículo de revista.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Sistemas de alerta temprana de crisis financieras sistémicas |
+| **Área secundaria** | Redes neuronales recurrentes (LSTM y GRU) con series macrofinancieras de largo plazo |
+| **Relevancia para la tesis** | **ALTA** para el `\pendiente` de `sec:ea-dl` (cap. 2): es una fuente revisada por pares que aplica LSTM a datos macrofinancieros de un panel de países, no a datos de sensores |
+| **Frente de la tesis al que aporta** | Estado del arte de la vía AE/LSTM; contraste con la muestra mensual corta del Perú |
+
+## 4. Resumen analítico
+
+### Según el resumen (repositorio del Banco de Finlandia, RePEc)
+
+- Usa redes neuronales recurrentes para predecir crisis financieras sistémicas con uno a cinco años de anticipación.
+- Datos: la base de Jordà, Schularick y Taylor, de 17 países entre 1870 y 2016. El resumen **no** dice la frecuencia ni el número de crisis.
+- Las redes LSTM y GRU superan a las redes neuronales simples, que a su vez ya superaban a la regresión logística. El autor lo atribuye a que las redes recurrentes predicen de forma más robusta a partir de series de tiempo: «Behind the success is the recurrent networks' ability to make more robust predictions from the time series data».
+- Los resultados se mantienen en un análisis de sensibilidad amplio.
+
+### Lo que no se leyó
+
+- El texto completo. No se sabe cómo valida el autor los modelos (aunque «Validation» es palabra clave), qué regularización usa ni si discute el número de crisis o el tamaño de muestra. **No atribuirle nada de eso.**
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| LSTM y GRU sobre series macrofinancieras | Vía AE/LSTM de la tesis (complemento del PCA y la HFC) |
+| Panel de 17 países y 147 años | Contraste: la tesis tiene un solo país y 228 meses (2007-01 a 2025-12) |
+| Predicción supervisada de crisis | La tesis no predice: describe regímenes sin etiquetas (regla 5, «datos primero») |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Muestra que la literatura revisada por pares ya aplicó LSTM a datos macrofinancieros, con un objetivo de alerta temprana.
+- Permite situar la tesis: ese trabajo usa un panel muy largo de varios países para acumular crisis; la tesis no tiene esa profundidad.
+
+### Limitaciones
+
+- Solo resumen leído; DOI y número de artículo sin verificar en la editorial.
+- Es un problema **supervisado** (predecir crisis fechadas), distinto del uso no supervisado de la tesis.
+- El resumen no trata el tamaño de muestra. Que el panel largo responda a la escasez de crisis es una **lectura de la tesis**, no del autor.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Base de Jordà, Schularick y Taylor (macrohistoria) | Baja | Sin ficha; no se citó la obra de origen |
+| `hochreiter_schmidhuber_1997` (LSTM) | — | Fichada; que Tölö la cite no se comprobó |
+| `beutel_list_von_schweinitz_2019` | Media | Fichada el mismo día; misma revista y mismo problema (alerta temprana), sin redes neuronales |

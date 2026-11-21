@@ -1,0 +1,84 @@
+---
+title: "Beutel, List y von Schweinitz (2019) — Does machine learning help us predict banking crises?"
+---
+
+::: {.callout-warning title="Ficha PRELIMINAR (resumen del artículo; texto del documento de trabajo previo, 21-11-2026)"}
+Los metadatos del artículo se verificaron en el repositorio del IWH (Instituto de Halle para la Investigación Económica, institución de uno de los autores). El número de artículo se vio en el repositorio de código del propio autor, no en la editorial: doi.org y ScienceDirect no se abrieron. Del artículo de revista **solo se leyó el resumen**. El texto que se leyó es el del **documento de trabajo previo** (Deutsche Bundesbank, Discussion Paper 48/2018), en el sitio del Bundesbank y con una herramienta que resume. Lo que sigue sobre el texto puede no coincidir con la versión publicada. **El trabajo no incluye redes neuronales** (nota 3 del documento de trabajo).
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-114 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 21 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
+| **Estado de lectura** | Resumen del artículo; texto parcial del documento de trabajo previo (DP 48/2018) |
+| **Tipo de fuente** | Artículo en revista con revisión por pares (*Journal of Financial Stability*, Elsevier) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Beutel, J., List, S., & von Schweinitz, G. (2019). Does machine learning help us predict banking crises? *Journal of Financial Stability*, *45*, Artículo 100693 [VERIFICAR: número de artículo visto en el repositorio de código del autor, no en la editorial]. https://doi.org/10.1016/j.jfs.2019.100693
+
+> **Verificación (21-11-2026):**
+>
+> - **Repositorio del IWH** (iwh-halle.de, «Does Machine Learning Help us Predict Banking Crises?»): autores en el orden Johannes Beutel, Sophia List, Gregor von Schweinitz; *Journal of Financial Stability*, vol. 45, diciembre de 2019 (fecha de la página: 15-12-2019); DOI 10.1016/j.jfs.2019.100693; resumen (cortado al final). No da el número de artículo.
+> - **Repositorio de código de G. von Schweinitz** (GitHub, «Codes for Beutel, List and von Schweinitz (JFS, 2019)»), forma de cita del autor: «Journal of Financial Stability, 45, 100693».
+> - **RePEc/IDEAS** (secundaria): mismos autores, revista, vol. 45(C), 2019 y DOI; palabras clave «Early warning system; Logit; Machine learning; Systemic banking crises»; JEL C35, C53, G01.
+> - **No visto:** doi.org, ScienceDirect ni Crossref.
+> - **Documento de trabajo previo:** Beutel, List y von Schweinitz, «An evaluation of early warning models for systemic banking crises: Does machine learning improve predictions?», Deutsche Bundesbank Discussion Paper 48/2018, 28-12-2018 (página del Bundesbank). **No se cita**; se usó solo para leer el texto.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Sistemas de alerta temprana de crisis bancarias sistémicas |
+| **Área secundaria** | Aprendizaje automático frente a logit; sobreajuste con pocas crisis |
+| **Relevancia para la tesis** | **MEDIA-ALTA** para el `\pendiente` de `sec:ea-dl`: evidencia revisada por pares de que los métodos flexibles de aprendizaje automático se ajustan muy bien dentro de la muestra y rinden peor fuera de ella con datos macrofinancieros. **No** trata aprendizaje profundo |
+| **Frente de la tesis al que aporta** | Estado del arte de la vía AE/LSTM (limitación del tamaño de muestra); epistemología (complemento subordinado al PCA) |
+
+## 4. Resumen analítico
+
+### Según el resumen del artículo (repositorio del IWH, RePEc)
+
+- Compara el desempeño **fuera de la muestra** de modelos de alerta temprana de crisis bancarias sistémicas en economías avanzadas durante unos 45 años.
+- Contrasta un logit de referencia con varios métodos de aprendizaje automático: «machine learning methods often attain a very high in-sample fit», pero «they are outperformed by the logit approach in recursive out-of-sample evaluations».
+- El resultado se mantiene con distintas métricas, definiciones de crisis, parámetros de preferencias, longitudes de muestra, conjuntos de variables y transformaciones de datos.
+- Concluye que los modelos de aprendizaje automático necesitan mejoras antes de aportar valor, y que «Conventional logit models appear to use the available information already fairly efficiently».
+- Predictores principales: expansiones del crédito, auges de precios de activos y desequilibrios externos.
+
+### Lo leído en el documento de trabajo (DP 48/2018, resumido por la herramienta de lectura)
+
+- **Sec. 2.2, p. 3:** métodos comparados: k vecinos más cercanos, árboles de decisión, bosques aleatorios y máquinas de vectores de soporte.
+- **Nota 3, p. 4:** las redes neuronales se probaron y **se dejaron fuera** por el tiempo de cómputo y porque no mostraban ganancias significativas; su estimación exige muchos puntos iniciales aleatorios.
+- **Nota 4, p. 4:** estos conjuntos de datos «typically contain only a limited number of observations».
+- **Datos (sec. 1, p. 2; sec. 3.1; nota 9, p. 8):** trimestrales, 15 economías avanzadas, 1970–2016, 22 crisis bancarias sistémicas, 1 801 observaciones.
+- **Sec. 4.4, pp. 16–18:** el sobreajuste sería un problema mayor en al menos algunos modelos y persiste tras ajustar los hiperparámetros; el logit «naturally limit[s] the amount of overfit».
+- **Apéndice A.2, pp. 29–30:** «When the number of crisis events contained in the sample is reduced, estimation uncertainty increases».
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ajuste alto dentro de la muestra y bajo fuera de ella | Riesgo de la vía AE/LSTM con 228 meses; razón de la validación *walk-forward* |
+| Pocas crisis en la muestra | La muestra peruana contiene pocos episodios de referencia |
+| Logit como referencia parsimoniosa | El PCA como ancla lineal de la vía AE/LSTM |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente revisada por pares de que, con datos macrofinancieros de baja frecuencia y pocas crisis, los métodos flexibles de aprendizaje automático sobreajustan y no superan a un modelo lineal parsimonioso fuera de la muestra.
+
+### Limitaciones
+
+- **No incluye redes neuronales ni aprendizaje profundo.** No sirve como fuente sobre LSTM o autoencoders; solo sobre aprendizaje automático flexible en general.
+- La explicación por sobreajuste y la frase sobre el número de crisis están en el **documento de trabajo**; el resumen del artículo solo da el contraste entre el ajuste dentro y fuera de la muestra. Antes de citar páginas, contrastar con la versión publicada.
+- Problema supervisado (predecir crisis fechadas), distinto del uso no supervisado de la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Holopainen y Sarlin (resultados opuestos, según la sec. 4.4 del DP) | Media | Sin ficha; año y revista no vistos |
+| `tolo_2020` | Media | Fichada el mismo día; misma revista, con redes recurrentes |
