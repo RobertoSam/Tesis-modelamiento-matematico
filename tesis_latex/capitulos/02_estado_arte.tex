@@ -352,8 +352,20 @@ de una red recurrente estocástica entrenada con patrones normales
 leído.}. Esas aplicaciones usan datos de sensores o de servidores, con muchas observaciones y un
 período de entrenamiento con pocas anomalías \parencite[sec.~3.3 y~5.2]{audibert_et_al_2020},
 condiciones que no se cumplen en una muestra mensual corta que contiene las crisis.
-\pendiente{fuente revisada por pares sobre aprendizaje profundo con series macrofinancieras
-cortas: sin ficha}
+
+Con datos macrofinancieros, las redes recurrentes se han usado sobre todo en sistemas de alerta
+temprana: \textcite{tolo_2020}\verificar{número de artículo y DOI vistos solo en RePEc; solo
+resumen leído.} predice crisis sistémicas con redes LSTM y GRU sobre un panel de 17 países entre
+1870 y 2016. En ese mismo campo, los métodos flexibles de aprendizaje automático logran un ajuste
+muy alto dentro de la muestra, pero el logit los supera en la evaluación recursiva fuera de ella
+\parencite{beutel_list_von_schweinitz_2019}\verificar{número de artículo visto en el repositorio
+del autor; el trabajo no incluye redes neuronales.}. Ambos trabajos resuelven un problema
+supervisado, la predicción de crisis fechadas de antemano, mientras que la tesis usa estas redes
+sin etiquetas, para describir regímenes. La tesis tampoco dispone de un panel así: trabaja con un
+solo país y una muestra mensual corta, lo que refuerza el carácter de complemento de la vía
+AE/LSTM.
+\pendiente{fuente revisada por pares que discuta el tamaño de muestra para redes profundas con
+series macrofinancieras: sin ficha}
 
 % -----------------------------------------------------------------------------
 \section{Perú y América Latina}
