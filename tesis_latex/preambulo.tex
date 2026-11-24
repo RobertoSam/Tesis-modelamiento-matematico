@@ -74,6 +74,9 @@
 \titleformat{\subsubsection}{\normalfont\bfseries\itshape\normalsize}{\thesubsubsection}{0.8em}{}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
+% Caja del número de página en el índice y en las listas: con 12 pt, la de 1,55 em de la clase
+% book desbordaba con los números de tres cifras (auditoría 3c, m-04).
+\makeatletter\renewcommand{\@pnumwidth}{2em}\makeatother
 
 % ---- Tablas, figuras y listas ------------------------------------------------
 \usepackage{booktabs, longtable, array}

@@ -100,7 +100,7 @@ sus parámetros, a diferencia de la posición «datos primero» de la tesis
 
 La heterogeneidad que documentan estos trabajos, entre países y en el tiempo, justifica estudiar
 el caso peruano por separado. Pero las definiciones se construyeron con series de varias décadas
-de economías avanzadas. La muestra mensual del Perú abarca menos de veinte años, insuficiente para
+de economías avanzadas. La muestra mensual del Perú abarca de \anioInicioDatos{} a \anioFinDatos{}, insuficiente para
 identificar ciclos de 8 a 30 años, y el índice de precios de inmuebles del BCRP es trimestral. Por
 eso la tesis no estima ciclos completos sino \emph{regímenes}, configuraciones estructurales
 dentro de la muestra (\cref{sec:ciclo}), y reemplaza la selección de variables por concordancia
@@ -209,11 +209,13 @@ el número de cambios; \textcite{aminikhanghahi_cook_2017} revisan los métodos 
 supervisados de detección en series de tiempo. En esos términos, la datación de la tesis combina un costo cuadrático, una
 búsqueda exacta y una regla para el número de tramos.
 
-La búsqueda exacta es el resultado clásico de \textcite{fisher_1958}\verificar{páginas (789--798),
-solo en fuentes secundarias; número y DOI ya verificados. Ficha preliminar, texto no leído: solo
-se cita su aporte general.}: cuando los datos están ordenados, la partición que minimiza la suma de
-cuadrados intragrupo puede hallarse exactamente, sin inicialización, por programación dinámica
-(\cref{prop:fisher}). \textcite{camiz_roig_2011}\verificar{el nombre del editor de las actas
+La búsqueda exacta es el resultado clásico de \textcite{fisher_1958}. El artículo distingue el
+problema sin restricción del restringido a grupos contiguos, propio de los datos ordenados, y
+muestra que en este la partición que minimiza la suma de cuadrados intragrupo ponderada puede
+hallarse exactamente, sin inicialización, mediante un lema de suboptimización, que hoy se expresa
+como programación dinámica (\cref{prop:fisher}). Señala además que la variación de esa suma con el
+número de grupos ayuda a elegirlo, y sugiere reducir un problema multivariado a una dimensión con
+el primer componente principal. \textcite{camiz_roig_2011}\verificar{el nombre del editor de las actas
 (O.~Papú) se infirió por analogía; el año figura como 2010/2011 en la ficha.} aplican esa
 partición a la serie del primer valor propio del EPCA para fechar períodos de estructura estable
 en cronologías de anillos de árboles, y realizan después un PCA en cada período.
@@ -299,7 +301,15 @@ tarea que asume el \cref{cap:marco}.
 Las ayudas a la interpretación de la escuela, la calidad de representación ($\cos^2$) y las
 contribuciones, se toman con la terminología de \textcite{escofier_pages_2023}
 (\cref{sec:cos2}).
-\pendiente{Camiz y Diblasi (2013), fuente de la ponderación gaussiana de las ventanas: sin ficha}
+
+La ponderación de las ventanas proviene de \textcite{camiz_diblasi_2013}\verificar{ponencia sin
+actas localizadas; metadatos solo del PDF.}, que formalizan el EPCA como un PCA en cada posición de
+una ventana móvil, resumido en la evolución de los primeros valores propios y de las correlaciones
+de las series con los primeros ejes. Como, con pesos uniformes, dos ventanas consecutivas difieren
+solo en dos observaciones, proponen pesos gaussianos que privilegian el centro de la ventana; en su
+ejemplo, diez acciones de París entre 2009 y 2010 con una ventana de 15 días, esos pesos suavizan
+las curvas. El signo de los ejes se fija con las series más correlacionadas con ellos, y los
+autores advierten que un cambio progresivo de signo es difícil de controlar.
 
 % -----------------------------------------------------------------------------
 \section{Aprendizaje profundo para series de tiempo}
@@ -392,11 +402,8 @@ EMBIG y coeficiente de dolarización)\verificar{la ficha distingue «reservas» 
 series del BCRP corresponden.}. A continuación, el EPCA se aplica al conjunto completo y a cada
 grupo por separado, con una ventana móvil gaussiana de 48 meses. La serie del primer valor propio
 se particiona en subperíodos de estabilidad mediante el algoritmo de
-\textcite{fisher_1958}\verificar{páginas (789--798), que constan solo en fuentes secundarias;
-volumen, número y DOI ya verificados. La ficha es preliminar: el texto no se ha leído y solo se
-cita su aporte general.}, y el número de cortes se
-elige con el criterio de \textcite{calinski_harabasz_1974}\verificar{ficha preliminar: texto no
-consultado; páginas 1--27 solo en fuentes secundarias. Solo se cita su aporte general.}.
+\textcite{fisher_1958}, y el número de cortes se elige con el criterio de
+\textcite{calinski_harabasz_1974}.
 
 Los autores interpretan sus resultados por grupo. El grupo de salud financiera resulta el más
 estable en el tiempo; el de tasas pierde estabilidad antes de los episodios de crisis, por lo que
@@ -449,7 +456,7 @@ toma de ella la tesis y qué queda sin resolver.
 \small
 \caption{Síntesis del estado del arte por línea temática}
 \label{tab:sintesis-ea}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.248\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
 \toprule
 Línea & Qué ofrece & Qué toma la tesis & Qué queda abierto \\
 \midrule

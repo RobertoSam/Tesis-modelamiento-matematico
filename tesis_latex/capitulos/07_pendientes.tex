@@ -130,25 +130,33 @@ liquidez M2 incluida, se conservan como antecedente (decisión D17.4).}
 {Permitirá evaluar HT4 y los objetivos \labelcref{oe:dl,oe:incertidumbre,oe:comparacion}, hoy sin
 evaluar.}
 
-\subsection{Cifras pendientes de generar}
+\subsection{Cifras de la iteración 3c por usar en el capítulo de resultados}
 \label{sec:pend-cifras}
 
-\tema{Agregar a \texttt{herramientas/cifras\_mapa.csv} las macros que el \cref{cap:resultados} y
-los anexos piden y que se muestran como pendientes.}
-{Las cifras no se escriben a mano (regla 3). El redactor dejó la lista con su archivo, filtro,
-columna y formato en su nota del 7-nov-2026; algunas exigen un archivo de resumen o una columna de
-orden nueva.}
-{El desarrollador.}
-{Al regenerar \texttt{cifras.tex}, las cifras aparecen en el documento sin editar el texto.}
+\tema{Usar en el \cref{cap:resultados} las macros que el redactor pidió en su nota del 7-nov-2026.
+Ya no falta generarlas: están en \texttt{herramientas/cifras\_mapa.csv} y en \texttt{cifras.tex},
+y ninguna se muestra como faltante al compilar.}
+{Las cifras no se escriben a mano (regla 3). Su uso en el texto del \cref{cap:resultados} queda
+para la vuelta de ese capítulo, que no se publica sin la aprobación de Roberto (regla 7).}
+{El redactor, en la vuelta del \cref{cap:resultados}.}
+{Las cifras del \cref{cap:resultados} entrarán por macro, sin copiarse a mano.}
 
-\subsection{Productos que faltan del análisis vigente}
+\subsection{Productos del análisis vigente por integrar}
 \label{sec:pend-productos}
 
-\tema{Una tabla de compatibilidad entre los cortes de la datación y los episodios, con $h=3$ y
-$h=6$; las figuras del dendrograma de la HFC y de la trayectoria de la datación con sus cortes.}
-{La correspondencia de HT3 se describe hoy por contención de episodios en regímenes, no por
-distancia (\cref{sec:res-validacion}); el análisis vigente no generó esas figuras.}
-{El desarrollador.}
+\tema{Integrar en el \cref{cap:resultados} tres productos que ya existen: la tabla de
+compatibilidad entre los cortes de la datación y los episodios, con $h=3$ y $h=6$
+(\path{data/results/final/09a_compatibilidad_cortes.csv}, con su réplica en R,
+\path{R_compatibilidad_cortes.csv}, en la misma carpeta), la figura del dendrograma de la HFC
+(\path{reports/figures/final/07c_hfc_dendrograma.png}) y la de la trayectoria del PCA-MM\ventanaMediaMovil{} con
+los cortes de la datación y los episodios (\path{reports/figures/final/09a_trayectoria_pca_mm12.png}).}
+{El análisis vigente ya generó los tres productos, pero el \cref{cap:resultados} todavía los
+declara pendientes y describe la correspondencia de HT3 por contención de episodios en regímenes,
+no por distancia (\cref{sec:res-validacion}). Su integración, y la revisión de la lectura de HT3
+que de ella se siga, corresponden a la vuelta del \cref{cap:resultados}; este capítulo no
+adelanta esa lectura.}
+{El redactor, en la vuelta del \cref{cap:resultados}, con la aprobación de Roberto (regla 7); las
+distancias entre cortes y episodios entrarán por macro.}
 {Precisará la evaluación de HT3 y hará más legible el \cref{cap:resultados}.}
 
 \subsection{Contexto simulado y potencia del criterio de ventana}
@@ -198,8 +206,8 @@ reunión con el asesor.}
 \tema{Cerrar las marcas abiertas de este documento: \total{nverificar} notas
 \textcolor{orange!70!black}{\textbf{VERIFICAR}} sobre obras con ficha y \total{npendiente} marcas
 \textcolor{red!75!black}{\textbf{PENDIENTE}}, contadas automáticamente al compilar. Entre las
-pendientes están las cifras de la \cref{sec:pend-cifras} y las fuentes sin ficha: Denimal (2001),
-Camiz y Diblasi (2013) y una fuente revisada por pares que discuta el tamaño de muestra para
+pendientes están los productos por integrar de la \cref{sec:pend-productos} y las fuentes sin
+ficha: Denimal (2001) y una fuente revisada por pares que discuta el tamaño de muestra para
 redes profundas con series macrofinancieras (\cref{sec:ea-dl}); las aplicaciones de redes
 recurrentes y de aprendizaje automático a la alerta temprana de crisis ya tienen ficha. La igualdad
 entre la correlación anti-imagen y la correlación parcial se presenta como hecho algebraico, sin
@@ -250,8 +258,8 @@ Diseño del sorteo de D19 & Tesista o asesor & \cref{sec:pend-d19} \\
 Regla de etiquetado de fases & Asesor & \cref{sec:pend-fases} \\
 Episodios peruanos y pospandemia & Tesista y bibliotecario & \cref{sec:pend-episodios} \\
 AE y LSTM con \nSeries{} series & Desarrollador (iteración 4) & \cref{sec:pend-dl} \\
-Cifras pendientes & Desarrollador & \cref{sec:pend-cifras} \\
-Tabla de compatibilidad y figuras & Desarrollador & \cref{sec:pend-productos} \\
+Cifras de la iteración 3c en el cap.~5 & Redactor & \cref{sec:pend-cifras} \\
+Tabla de compatibilidad y figuras en el cap.~5 & Redactor y tesista & \cref{sec:pend-productos} \\
 Contexto simulado & Desarrollador y redactor & \cref{sec:pend-simulado} \\
 Formalizaciones incompletas & Redactor & \cref{sec:pend-formal} \\
 Objetivos condicionales y preguntas & Asesor & \cref{sec:pend-condicionales} \\
