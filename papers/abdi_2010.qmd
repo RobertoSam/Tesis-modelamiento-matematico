@@ -1,0 +1,79 @@
+---
+title: "Abdi (2010) — Congruence: Congruence coefficient, RV coefficient, and Mantel coefficient"
+---
+
+::: {.callout-note title="Texto completo leído por Roberto (7-11-2026); incorporada a la rama el 24-11-2026"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF de la
+carpeta de Dropbox del asesor. Se incorporó a `iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo
+M-03 d), se pasó al formato de la Ficha Estándar sin agregar contenido y se completaron las páginas y
+el DOI con la página de la editorial (SAGE Knowledge).
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-117 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar y metadatos: agente bibliotecario |
+| **Estado de lectura** | Texto completo leído el 7-11-2026 por Roberto (PDF de la carpeta de Dropbox del asesor) |
+| **Tipo de fuente** | Entrada de enciclopedia académica (SAGE). Fuente de referencia, no artículo de investigación |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Abdi, H. (2010). Congruence: Congruence coefficient, RV coefficient, and Mantel coefficient. En N. J. Salkind (Ed.), *Encyclopedia of research design* (pp. 223–229). SAGE Publications. https://doi.org/10.4135/9781412961288.n71
+
+> **Verificación (24-11-2026):** la página de la entrada en SAGE Knowledge (sk.sagepub.com, editorial)
+> muestra: título de la entrada «Congruence»; *Encyclopedia of Research Design*; editor Neil J. Salkind;
+> SAGE Publications, Inc.; 2010; pp. 223–229; DOI del capítulo 10.4135/9781412961288.n71 (DOI del libro
+> 10.4135/9781412961288). La página consultada **no muestra el autor** ni el subtítulo: el autor (Abdi) y
+> el título completo con subtítulo vienen del PDF que leyó Roberto. Si se exige el título tal como lo
+> indexa la editorial, es «Congruence». El lugar de edición (Thousand Oaks, CA, en el `.bib` del informe
+> de `main`) no se vio en la página y APA 7 no lo exige.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Coeficientes de similitud entre configuraciones factoriales |
+| **Área secundaria** | Inferencia por permutaciones |
+| **Relevancia para la tesis** | **MEDIA.** Fuente didáctica del coeficiente RV y del coeficiente de congruencia (criterio de ventana del EPCA; comparación de réplicas bootstrap). La fuente primaria del RV en la tesis sigue siendo `robert_escoufier_1976` |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático): `def:rv-cargas` |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Define y compara tres coeficientes de congruencia entre configuraciones factoriales: el coeficiente de
+congruencia de Tucker (coseno entre matrices de cargas), el RV de Escoufier (coseno entre matrices de
+productos escalares, entre 0 y 1, insensible a rotaciones y dilataciones) y el de Mantel (correlación
+entre matrices de distancias). Explica que sus distribuciones bajo la hipótesis nula no tienen forma
+analítica simple y se evalúan con permutaciones o aproximaciones (Kazi-Aoual et al., 1995; Josse et
+al., 2008).
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Coeficiente de congruencia de Tucker | Comparación de cargas entre ventanas o réplicas (`tucker_1951`, fichada) |
+| Coeficiente RV (matrices de productos escalares) | RV de cargas entre ventanas adyacentes no solapadas (`def:rv-cargas`) |
+| Nulo sin forma analítica simple: permutaciones | La tesis usa un nulo de estructura constante por remuestreo, no permutaciones |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Presentación conjunta y accesible del RV y del coeficiente de congruencia, con sus propiedades (rango, invariancia a rotaciones y dilataciones).
+
+### Limitaciones
+
+- Entrada de enciclopedia: complementa, no sustituye, a Robert y Escoufier (1976) y a Tucker (1951).
+- El RV de la tesis se calcula sobre **cargas**; la ficha describe el RV sobre matrices de productos escalares. La adaptación es de la tesis.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `robert_escoufier_1976` | Alta | Fichada |
+| `tucker_1951` | Media | Fichada |
+| Kazi-Aoual et al. (1995); Josse et al. (2008) | Media (distribución del RV bajo H0) | Sin ficha |

@@ -9,7 +9,7 @@ title: "Horn (1965) — A rationale and test for the number of factors in factor
 | **Código de ficha** | FB-020 *(numeración correlativa propuesta; verificar contra las fichas existentes)* |
 | **Fecha de procesamiento** | 20 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude, agente bibliotecario) |
-| **Estado de lectura** | Resumen leído (página de la editorial); texto no consultado |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 (PDF de la carpeta de Dropbox «Camiz - Samaniego», compartida por el asesor). Contenido verificado: crítica al criterio de Kaiser por la inflación muestral de los primeros valores propios; procedimiento con matrices de variables aleatorias y promedio de sus valores propios; ejemplo con 65 variables y 297 adultos (16 raíces > 1, 9 factores retenidos). *(Declaración de Roberto, de la ficha de `main`, commit `63c6914`; incorporada a `iteracion-3c` el 24-11-2026, M-03 d. Hasta el 8-11-2026: resumen leído en la página de la editorial.)* |
 
 ## 2. Referencia completa (APA 7.ª edición)
 
@@ -34,13 +34,17 @@ Según el resumen: si se acepta la cota inferior de Guttman (raíz latente igual
 
 ### Propuesta metodológica
 
-El resumen propone estimar esa parte mediante un procedimiento basado en generar variables aleatorias. Los detalles del procedimiento (número de réplicas, uso de la media o de un percentil) **no se verificaron**: la tesis usa el percentil 95 y debe declararlo como elección propia, no como regla de Horn, hasta leer el texto.
+El resumen propone estimar esa parte mediante un procedimiento basado en generar variables aleatorias. Según la lectura del texto (8-11-2026), el procedimiento genera matrices de variables aleatorias y usa el **promedio** de sus valores propios como referencia, y critica el criterio de Kaiser porque los primeros valores propios muestrales están inflados por el muestreo. **El percentil 95 que usa la tesis es una elección propia, no la regla de Horn** (Horn usa la media). El número de réplicas no consta en la nota de lectura.
+
+### Ejemplo
+
+65 variables y 297 adultos: 16 raíces mayores que uno y 9 factores retenidos.
 
 ## 5. Conceptos clave (equivalencia de dominio)
 
 | Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
 |---|---|
-| Raíces latentes atribuibles al error de muestreo | Valores propios de matrices de correlaciones de datos gaussianos independientes del mismo tamaño (228 × 17 o 227 × 17) |
+| Raíces latentes atribuibles al error de muestreo | Valores propios de matrices de correlaciones de datos gaussianos independientes del mismo tamaño (228 × 16 en niveles, D1 y D16; 227 × 16 en el anexo de robustez, D15) |
 | Descontar esa parte | Retener las componentes cuyo valor propio supera al de referencia |
 
 ## 6. Aporte a la tesis, limitaciones y diferenciación
@@ -52,7 +56,7 @@ El resumen propone estimar esa parte mediante un procedimiento basado en generar
 ### Limitaciones (relevantes para la adaptación)
 
 - El procedimiento supone observaciones independientes; con series muy autocorrelacionadas (NIV), la referencia gaussiana independiente subestima la variabilidad muestral de los valores propios.
-- Contenido conocido solo por el resumen.
+- La nota de lectura no registra el número de réplicas ni la distribución de las variables aleatorias: no atribuírselos.
 
 ## 7. Referencias internas relevantes
 

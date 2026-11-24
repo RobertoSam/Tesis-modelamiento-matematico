@@ -1,0 +1,92 @@
+---
+title: "Camiz y Spada (2024) — Checking the stability of correlation of chronologies over time"
+---
+
+::: {.callout-note title="Lectura parcial de Roberto (8-11-2026); incorporada a la rama el 24-11-2026"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF de la
+carpeta de Dropbox del asesor. Se incorporó a `iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo
+M-03 d) y se pasó al formato de la Ficha Estándar **sin agregar contenido**. El bibliotecario no
+tuvo acceso al PDF.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-116 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar: agente bibliotecario |
+| **Estado de lectura** | Texto leído el 8-11-2026 por Roberto: introducción, métodos (ventana móvil, pesos, EHFC, partición de períodos) y conclusiones; resultados leídos parcialmente |
+| **Tipo de fuente** | Artículo en revista (*Annals of Silvicultural Research*, CREA; indizada en DOAJ). Misma revista que `camiz_et_al_2020` |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Spada, F. (2024). Checking the stability of correlation of chronologies over time: An example on *Pinus pinea* L. rings widths. *Annals of Silvicultural Research, 49*(1), 13–23. https://doi.org/10.12899/asr-2455 [VERIFICAR: volumen, número, páginas y DOI vistos solo en la primera página del PDF; doi.org y la página de la revista no se pudieron abrir]
+
+> **Verificación (24-11-2026):**
+>
+> - **Ficha de Roberto:** volumen 49, número 1, pp. 13–23 y DOI tomados de la primera página del PDF.
+> - **Buscador web:** la página de la revista (journals-crea.4science.it, artículo 2455, que redirige a
+>   creajournals.crea.gov.it) aparece con el título exacto «Checking the stability of correlation of
+>   chronologies over time: an example on Pinus pinea L. rings widths»; el identificador 2455 coincide con
+>   el sufijo del DOI. DOAJ y el CRIS de la PUCP también la listan (secundarias, solo para localizar).
+> - **No visto:** doi.org/10.12899/asr-2455 y la página de la revista (permiso no respondido en la
+>   sesión; no se reintentó). El volumen, el número, las páginas y el año no se cotejaron con la editorial.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis evolutivo de la estructura de correlaciones (EPCA y HFC evolutiva, EHFC) |
+| **Área secundaria** | Partición de Fisher sobre la serie del primer valor propio; elección del número de tramos con Caliński y Harabasz |
+| **Relevancia para la tesis** | **ALTA.** Antecedente publicado de la EHFC y del procedimiento de datación que usa la tesis. **Contradice** la afirmación de la tesis de que no hay una EHFC publicada (ver la sección 6) |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) y datación (09a) |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Propone el análisis evolutivo conjunto con PCA y HFC: el EPCA y la **HFC evolutiva (EHFC)**, ambas
+sobre una ventana móvil de 10 años (el doble del número de series) con pesos gaussianos (k = 3),
+aplicadas a cinco cronologías de *Pinus pinea* (1925–2003). Explica los criterios para elegir el ancho
+de la ventana (sensibilidad frente a ruido, ventana mucho mayor que p, múltiplo de la periodicidad).
+Para la EHFC sigue la evolución de las inercias de los nodos y la topología de los dendrogramas
+(animación, formato Newick y distancias de Robinson-Foulds). Parte el período con el algoritmo de
+Fisher sobre la serie del primer valor propio y elige el número de intervalos con máximos locales del
+índice de Caliński y Harabasz entre 2 y 10; obtiene siete intervalos y estudia dos de ellos por
+separado.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| EHFC: HFC en cada ventana; inercias de los nodos y topología de los dendrogramas | Objetivo exploratorio condicional de la tesis (formalización de una EHFC) |
+| Ventana de 10 años = 2 × número de series | Grilla de ventanas de la tesis (D10); la regla «2p» es del artículo, no de la tesis |
+| Criterios del ancho de ventana (ruido, ventana ≫ p, múltiplo de la periodicidad) | Contraste con el criterio RV + nulo de la tesis (objetivo de ventana) |
+| Fisher sobre el primer valor propio; CH con máximos locales entre 2 y 10 | Datación de la tesis (09a) y uso del CH (D11) |
+| Pesos gaussianos (k = 3) | Pesos $\tilde\omega_u$ del cap. 3; la equivalencia con $\nu$ no está establecida |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Antecedente **publicado** de la HFC evolutiva. Según la ficha de Roberto, corrige la afirmación previa de que no había una EHFC publicada.
+- Antecedente del procedimiento de datación: Fisher sobre el primer valor propio y número de tramos por máximos locales del CH.
+- Da criterios explícitos (aunque no formales) para el ancho de ventana.
+
+### Limitaciones y diferenciación
+
+- **Choque con la tesis:** `02_estado_arte.tex` (vacío 2, «No existe en la literatura revisada un algoritmo EHFC publicado») y el cierre del capítulo («no existe una especificación previa contra la cual validarla») quedan contradichos por esta ficha. El bibliotecario no corrige el texto: lo decide Roberto y lo redacta el redactor LaTeX.
+- La ficha no dice si la EHFC del artículo es un algoritmo unificado o la aplicación de la HFC en cada ventana con lectura conjunta: atribuirle solo lo que la ficha registra (seguimiento de inercias de nodos y de la topología de dendrogramas).
+- Resultados leídos parcialmente; no atribuirle cifras de resultados más allá de «siete intervalos».
+- Dominio dendrocronológico (cinco series anuales, estacionarias en lo aproximado).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `fisher_1958` | Alta | Fichada; texto completo leído por Roberto |
+| `calinski_harabasz_1974` | Alta | Fichada (preliminar) |
+| `camiz_et_al_2020` (HFC, mismas cronologías) | Alta | Fichada |
+| `camiz_diblasi_2013` (pesos gaussianos) | Alta | Fichada el 24-11-2026; que este artículo la cite no se comprobó |
+| Robinson y Foulds (distancia entre árboles) | Baja | Sin ficha |

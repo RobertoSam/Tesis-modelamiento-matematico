@@ -1,0 +1,80 @@
+---
+title: "Purizaca (2023) — EPCA aplicado a precios de commodities"
+---
+
+::: {.callout-note title="Texto completo leído por Roberto (8-11-2026); metadatos sin cotejar con el repositorio"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF de la
+carpeta de Dropbox del asesor. Se incorporó a `iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo
+M-03 d) y se pasó al formato de la Ficha Estándar sin agregar contenido. El bibliotecario no tuvo
+acceso al PDF y no pudo ver el registro del repositorio (ver la sección 2).
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-119 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar: agente bibliotecario |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 por Roberto (PDF de la carpeta de Dropbox del asesor) |
+| **Tipo de fuente** | Tesis de maestría en Estadística (PUCP; asesor: S. Camiz). Fuente institucional |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Purizaca Rosillo, L. G. (2023). *EPCA aplicado a precios de commodities* [Tesis de maestría, Pontificia Universidad Católica del Perú]. [VERIFICAR: URL o *handle* del repositorio PUCP y año de sustentación o de registro]
+
+> **Verificación (24-11-2026):** un buscador web devuelve un archivo de tesis.pucp.edu.pe para el título
+> exacto, pero el repositorio de tesis de la PUCP respondió con una página de bloqueo antirrobots
+> («Access Denied»); no se buscó una ruta alternativa. Tres registros de ALICIA (CONCYTEC) que el buscador
+> asoció a la consulta correspondían a otras tesis. Datos de la referencia: solo del PDF, según la ficha
+> de Roberto (las citas internas del PDF aparecen como «?»).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | EPCA con datación de Fisher |
+| **Área secundaria** | PCA dinámico generalizado (GDPC) |
+| **Relevancia para la tesis** | **MEDIA-ALTA.** Antecedente peruano reciente de la escuela del asesor; precedente de un CH sin máximo interior (D11) |
+| **Frente de la tesis al que aporta** | Estado del arte (escuela de Camiz) y datación (09a) |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Tesis de maestría en Estadística (asesor: S. Camiz). Aplica PCA, EPCA y PCA dinámico generalizado
+(GDPC) a 21 precios mensuales de materias primas del FMI, 1990–2021. PCA: el primer componente recoge
+70,6 % de la inercia (tendencia común). EPCA: ventana de 72 meses y pesos gaussianos con 3
+desviaciones; Fisher sobre el primer valor propio; el índice de Caliński y Harabasz no alcanza un
+máximo, por lo que fija 7 tramos donde los incrementos se vuelven marginales. El GDPC reduce el error
+de reconstrucción, a costa de parsimonia.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| EPCA mensual, ventana de 72 meses, pesos gaussianos | EPCA mensual de la tesis (grilla de ventanas, D10) |
+| Fisher sobre el primer valor propio | Datación de la tesis (09a) |
+| CH sin máximo: corte donde los incrementos son marginales | D11 (el CH solo selecciona si muestra un óptimo interior) |
+| GDPC | Alternativa dinámica no adoptada por la tesis |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Antecedente peruano del EPCA con datación de Fisher, con datos mensuales.
+- Precedente de que el índice de Caliński y Harabasz puede no tener un máximo interior.
+
+### Limitaciones
+
+- Precios de materias primas, no series financieras peruanas.
+- Metadatos sin cotejar con el repositorio: citar con `\verificar` si se usa.
+- La regla de «incrementos marginales» es de esa tesis; no es un criterio formal.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `fisher_1958`, `calinski_harabasz_1974` | Alta | Fichadas |
+| `camiz_diblasi_2013` | Alta | Fichada; que esta tesis la cite no se comprobó |
+| Peña y Yohai (GDPC) | Baja | Sin ficha |

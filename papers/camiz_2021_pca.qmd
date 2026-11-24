@@ -1,0 +1,77 @@
+---
+title: "Camiz (2021) — Principal component analysis (material de clase)"
+---
+
+::: {.callout-important title="Material docente NO publicado — solo apoyo, no fuente de la tesis"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF
+«Camiz - 2021 - Principal Component Analysis.pdf» (fechado el 13-06-2021), de la carpeta de Dropbox
+del asesor. Se incorporó a `iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo M-03 d) y se pasó al
+formato de la Ficha Estándar sin agregar contenido. Como material no publicado, se usa como
+**exploración y apoyo docente**, igual que los *preprints* (criterio de Plaut, 2018): toda afirmación
+de la tesis debe apoyarse en una fuente publicada. **No** se agrega a `tesis/referencias.bib`.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-118 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar: agente bibliotecario |
+| **Estado de lectura** | Texto leído el 7-11-2026 por Roberto: secciones 1 a 2.1 completas y ejemplo de Linnerud |
+| **Tipo de fuente** | Material de clase no publicado del asesor (sin editorial ni repositorio) |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S. (2021). *Principal component analysis* [Material de clase no publicado].
+
+> **Verificación:** no hay fuente oficial contra la cual verificar; los datos vienen del PDF (fecha
+> interna 13-06-2021).
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | PCA en el marco del análisis exploratorio |
+| **Área secundaria** | Reglas de parada (vara quebrada, Rencher–Bartlett) |
+| **Relevancia para la tesis** | **BAJA como cita; MEDIA como guía.** Ayuda a leer las fuentes publicadas del asesor y de la escuela francesa |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático) |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Presenta el PCA en el marco del análisis exploratorio: inercia, ejes, componentes, cargas, calidad de
+representación (cos²) y contribuciones de variables y unidades. Cita el principio de Benzécri (1982)
+de que los datos deben «hablar por sí mismos». Discute la vara quebrada (Barton y David, 1956;
+Frontier, 1976) y la prueba de Rencher–Bartlett, y concluye que en un marco exploratorio no hay una
+regla de parada única; recomienda interpretar los ejes con sentido sin reducir artificialmente la
+tabla. Recomienda la varianza con divisor n.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del material | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| cos² y contribuciones | `sec:cos2` (fuente publicada: `escofier_pages_2023`) |
+| Vara quebrada y Rencher–Bartlett | `sec:retencion` (fuentes publicadas: `frontier_1976`, `camiz_pillar_2018`) |
+| Sin regla de parada única | Triangulación del número de componentes |
+| Varianza con divisor n | Convención de estandarización del código |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Apoyo conceptual del §2.2.3 y §2.2.4 del informe (según la ficha de `main`); coherente con la posición «datos primero» del asesor (regla 5 de `CLAUDE.md`).
+
+### Limitaciones
+
+- No publicado: no se cita como fuente de una afirmación de la tesis.
+- Lectura parcial (secciones 1 a 2.1).
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Benzécri (1982) | Media | Sin ficha (la tesis ficha `benzecri_1973`) |
+| Barton y David (1956) | Media | Sin ficha |
+| `frontier_1976` | Alta | Fichada |

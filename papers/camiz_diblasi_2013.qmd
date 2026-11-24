@@ -1,0 +1,85 @@
+---
+title: "Camiz y Diblasi (2013) — Evolutionary principal component analysis"
+---
+
+::: {.callout-note title="Texto completo leído por Roberto (7-11-2026); metadatos solo del PDF"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF
+«Camiz Diblasi 2013 XLI CAE.pdf», de la carpeta de Dropbox del asesor. Se incorporó a la rama
+`iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo M-03 d) y se pasó al formato de la Ficha
+Estándar **sin agregar contenido**: las secciones 1 a 4 conservan lo que registró Roberto; las
+secciones 5 a 7 solo reordenan esa información. El bibliotecario **no** tuvo acceso al PDF.
+**Corrige el estado «no localizada»** que el registro arrastraba desde el 24-10-2026.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-115 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar: agente bibliotecario |
+| **Estado de lectura** | Texto completo leído el 7-11-2026 por Roberto (PDF de la carpeta de Dropbox del asesor, «Camiz Diblasi 2013 XLI CAE.pdf») |
+| **Tipo de fuente** | Ponencia en coloquio (XLI Coloquio Argentino de Estadística). **No** es un artículo con revisión por pares localizado; no se vieron actas, ISBN ni URL |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Camiz, S., & Diblasi, A. (2013). *Evolutionary principal component analysis* [Ponencia]. XLI Coloquio Argentino de Estadística, Mendoza, Argentina. [VERIFICAR: datos de edición de las actas (ISBN o URL), si existen; metadatos tomados solo del PDF]
+
+> **Verificación (24-11-2026):** título, autores, año y evento constan en la ficha de Roberto, tomados
+> del PDF. El bibliotecario no pudo cotejarlos con una fuente oficial: una búsqueda web más (título,
+> autores, «Coloquio Argentino de Estadística», 2013, Mendoza) no devolvió las actas ni un programa del
+> coloquio; las siete búsquedas anteriores (24-10 a 15-11-2026, ver el registro) tampoco. El nombre de
+> pila de la segunda autora no consta en la ficha: se mantiene la inicial «A.».
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Análisis en componentes principales evolutivo (EPCA) con ventana móvil |
+| **Área secundaria** | Ponderación gaussiana de las observaciones de la ventana |
+| **Relevancia para la tesis** | **ALTA.** Fuente original del esquema de pesos gaussianos del EPCA, que la tesis marcaba `\pendiente` en el cap. 2 (`sec:ea-factoriales`) y en el cap. 3 (ponderación de las ventanas) |
+| **Frente de la tesis al que aporta** | Frente 3 (Marco matemático): EPCA |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Formaliza el EPCA: un PCA en cada posición de una ventana móvil, resumido en dos gráficos (evolución
+de los primeros valores propios y de las correlaciones de las series con los primeros ejes). Propone
+pesos gaussianos que dan más importancia a los meses centrales, porque con pesos uniformes la
+diferencia entre ventanas depende solo de dos observaciones. Ejemplo: diez acciones de la bolsa de
+París, 2009–2010, ventana de 15 días y pesos en [−4, 4]; los pesos gaussianos suavizan las curvas. El
+signo de los ejes se fija para conservar el de las series más correlacionadas, aunque los cambios
+progresivos de signo son difíciles de controlar.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| PCA en cada posición de una ventana móvil | EPCA sobre las 16 series mensuales en niveles (D1, D16) |
+| Pesos gaussianos centrados en la ventana | Pesos $\tilde\omega_u$ de la ecuación de pesos del cap. 3 (parámetro $\nu$) |
+| Con pesos uniformes, dos ventanas consecutivas difieren solo en dos observaciones | Motivo para privilegiar el centro de la ventana |
+| Pesos en [−4, 4] | La ficha **no** permite afirmar que ese intervalo sea el $\nu$ de la tesis: no se identificó la parametrización exacta |
+| Signo de los ejes fijado por las series más correlacionadas | Problema de la orientación de los ejes entre ventanas |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Fuente original del esquema de pesos gaussianos del EPCA y de su lectura con dos gráficos (§2.2.6 del informe; cap. 2 y cap. 3 de la tesis).
+- Justificación del peso gaussiano: con pesos uniformes, la diferencia entre ventanas consecutivas depende solo de dos observaciones.
+- Reconoce como difícil de controlar el cambio progresivo de signo de los ejes.
+
+### Limitaciones
+
+- Ponencia sin actas localizadas: fuente institucional débil; citarla con `\verificar` hasta tener los datos de edición.
+- El ejemplo es diario (bolsa de París, ventana de 15 días): no respalda el ancho de 48 meses ni otro ancho mensual.
+- La ficha no da la fórmula exacta de los pesos: la equivalencia entre «pesos en [−4, 4]» y el parámetro $\nu$ (o el *k* = 3 de Atoche Murrieta, 2022, y de Camiz y Spada, 2024) **no** está establecida.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| `camiz_maulucci_roig_2010` (ventana rectangular) | Alta | Fichada |
+| `atoche_murrieta_2022` (pesos gaussianos, *k* = 3) | Alta | Fichada; no cita esta ponencia en la parte leída |
+| `camiz_spada_2024` (EPCA y EHFC con pesos gaussianos) | Alta | Fichada el 24-11-2026 (traída de `main`) |

@@ -2,10 +2,20 @@
 title: "Fisher (1958) — On grouping for maximum homogeneity"
 ---
 
-::: {.callout-warning title="Ficha PRELIMINAR"}
-Elaborada a partir de la referencia bibliográfica localizada y del contenido ampliamente
-documentado del trabajo, **sin lectura del texto completo**. Antes de citarla en el informe
-final hay que leer el artículo y completar o corregir las secciones 4 a 6.
+::: {.callout-note title="Texto completo leído el 8-11-2026"}
+Leído desde el PDF de la carpeta de Dropbox «Camiz - Samaniego» compartida por el asesor.
+Verificado en el texto: pp. 789–798; problema de agrupamiento que minimiza la suma de cuadrados
+ponderada D; problemas sin restricción y restringido (orden previo y particiones contiguas);
+ejemplo del nivel del lago Michigan-Huron, 1860–1955 (96 años, G = 1 a 10, Tabla 794); lema de
+suboptimización; utilidad de la variación de D con G para elegir el número de grupos; sugerencia
+de reducir un problema multivariado con el primer componente principal; prueba (apéndice) de que
+la partición de mínimos cuadrados es contigua en el problema sin restricción. Las secciones 4 a 6
+de esta ficha, redactadas antes de la lectura, deben revisarse contra estas notas.
+
+*(Nota tomada de la ficha de `main`, commit `63c6914`, lectura de Roberto. Incorporada a la rama
+`iteracion-3c` el 24-11-2026 por el bibliotecario, hallazgo M-03 d. El bibliotecario no tuvo acceso
+al PDF: las secciones 4 a 6 se ajustaron solo donde la nota anterior las contradice o las completa,
+y lo que no consta en ella sigue marcado.)*
 :::
 
 ## 1. Datos identificadores
@@ -15,13 +25,19 @@ final hay que leer el artículo y completar o corregir las secciones 4 a 6.
 | **Código de ficha** | FB-017 *(verificar numeración contra las fichas existentes)* |
 | **Fecha de procesamiento** | 4 de octubre de 2026 |
 | **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude) |
-| **Estado de lectura** | No leído — localizado (preliminar) |
+| **Estado de lectura** | Texto completo leído el 8-11-2026 por Roberto (ver la nota inicial). Hasta esa fecha, preliminar |
 
 ## 2. Referencia completa (APA 7.ª edición)
 
 Fisher, W. D. (1958). On grouping for maximum homogeneity. *Journal of the American Statistical Association, 53*(284), 789–798. https://doi.org/10.1080/01621459.1958.10501479
 
 > **Verificación:** El 2026-10-20 la página de Taylor & Francis (editorial) apareció en el buscador con el título «On Grouping for Maximum Homogeneity: Journal of the American Statistical Association: Vol 53, No 284» y el DOI 10.1080/01621459.1958.10501479 en su dirección: quedan respaldados el volumen 53, el número 284 y el DOI. La página no se pudo abrir (error de acceso), y JSTOR, doi.org y Semantic Scholar tampoco fueron accesibles. **Las páginas 789–798 siguen constando solo en fuentes secundarias.** Texto no consultado: la ficha sigue siendo preliminar y la pregunta sobre el caso multivariado (sección 4) sigue abierta.
+>
+> **Actualización (24-11-2026, M-03 d):** las páginas **789–798** constan en el propio artículo, según
+> la lectura de Roberto del 8-11-2026 (nota inicial); se dan por verificadas en la fuente primaria y se
+> retira el campo `verificar` del `.bib`. La página de la editorial y doi.org siguen sin haberse podido
+> abrir desde las sesiones del bibliotecario (una búsqueda web del 24-11-2026 tampoco devolvió la página
+> de Taylor & Francis). Ficha ya no preliminar.
 
 ## 3. Clasificación temática
 
@@ -40,7 +56,15 @@ Agrupar observaciones de forma que los grupos sean lo más homogéneos posible, 
 
 ### Propuesta metodológica
 
-Para datos ordenados en una dimensión, la partición óptima en k grupos contiguos puede hallarse **exactamente** porque el problema tiene estructura de subproblemas óptimos. *[Confirmar si el paper trata el caso multivariado o solo el unidimensional: la tesis lo aplica a trayectorias de 3 dimensiones, y la extensión es directa pero debe declararse.]*
+Para datos ordenados en una dimensión, la partición óptima en k grupos contiguos puede hallarse **exactamente** porque el problema tiene estructura de subproblemas óptimos (en la lectura de Roberto: «lema de suboptimización»). El artículo distingue el problema sin restricción del restringido (orden previo y particiones contiguas) y prueba, en un apéndice, que en el problema sin restricción la partición de mínimos cuadrados es contigua.
+
+### Caso multivariado (actualizado el 24-11-2026)
+
+Según la nota de lectura, el artículo **sugiere reducir un problema multivariado con el primer componente principal**. La nota no dice que el artículo resuelva la partición directamente sobre vectores: la aplicación de la tesis a trayectorias de 3 dimensiones sigue siendo una **extensión de la tesis**, que debe declararse como tal. En cambio, la partición de la serie del primer valor propio (Camiz y Roig, 2011; Camiz y Spada, 2024) es un caso unidimensional.
+
+### Ejemplo
+
+Nivel del lago Michigan-Huron, 1860–1955 (96 años), con G = 1 a 10 grupos.
 
 ## 5. Conceptos clave (equivalencia de dominio)
 
@@ -59,8 +83,8 @@ Para datos ordenados en una dimensión, la partición óptima en k grupos contig
 
 ### Limitaciones (relevantes para la adaptación)
 
-- El número de grupos k no lo determina el método: requiere un criterio adicional (en 09, una regla de codo explícita).
-- Ficha preliminar.
+- El número de grupos k no lo determina el método: requiere un criterio adicional (en 09, una regla de codo explícita). El artículo señala la utilidad de observar la variación de D con G para elegirlo (nota de lectura); no se registró que proponga una regla formal.
+- La aplicación multivariada de la tesis es una extensión propia (ver la sección 4).
 
 ## 7. Referencias internas relevantes
 

@@ -1,0 +1,71 @@
+---
+title: "Torres y Baltazar (2023) — Análisis de los componentes cíclicos de las principales variables macroeconómicas para el Perú, 2004–2022"
+---
+
+::: {.callout-note title="Lectura parcial de Roberto (8-11-2026); metadatos sin cotejar con el repositorio"}
+Ficha creada en `main` (commit `63c6914`, 8-11-2026) a partir de la lectura de Roberto del PDF de la
+carpeta de Dropbox del asesor. Se incorporó a `iteracion-3c` el 24-11-2026 (bibliotecario, hallazgo
+M-03 d) y se pasó al formato de la Ficha Estándar sin agregar contenido. El bibliotecario no tuvo
+acceso al PDF ni localizó el registro del repositorio de ESAN.
+:::
+
+## 1. Datos identificadores
+
+| Campo | Detalle |
+|---|---|
+| **Código de ficha** | FB-120 *(numeración correlativa propuesta)* |
+| **Fecha de procesamiento** | 8 de noviembre de 2026 (en `main`); incorporada a `iteracion-3c` el 24 de noviembre de 2026 |
+| **Procesado por** | Roberto Samaniego Salcedo (con asistencia de Claude); formato estándar: agente bibliotecario |
+| **Estado de lectura** | Texto leído parcialmente el 8-11-2026 por Roberto: resumen, hipótesis, metodología y tablas de correlaciones |
+| **Tipo de fuente** | Trabajo de suficiencia profesional (Universidad ESAN). Fuente institucional de pregrado/titulación; sin revisión por pares |
+
+## 2. Referencia completa (APA 7.ª edición)
+
+Torres Armas, F., & Baltazar Chávez, J. O. (2023). *Análisis de los componentes cíclicos de las principales variables macroeconómicas para el Perú en el periodo 2004–2022* [Trabajo de suficiencia profesional, Universidad ESAN]. [VERIFICAR: URL o *handle* del repositorio de ESAN]
+
+> **Verificación (24-11-2026):** una búsqueda web (autores, título, ESAN) no devolvió el registro del
+> repositorio de ESAN. Datos de la referencia: solo del PDF, según la ficha de Roberto.
+
+## 3. Clasificación temática
+
+| Campo | Detalle |
+|---|---|
+| **Área principal** | Hechos estilizados del ciclo económico peruano |
+| **Área secundaria** | Filtro de Baxter-King; desestacionalización TRAMO/SEATS |
+| **Relevancia para la tesis** | **BAJA-MEDIA.** Contraste: tradición de filtros frente al enfoque exploratorio |
+| **Frente de la tesis al que aporta** | Estado del arte (antecedentes peruanos) |
+
+## 4. Resumen analítico
+
+*(Texto de la ficha de Roberto, sin cambios de contenido.)*
+
+Con datos trimestrales del BCRP (2004–2022), desestacionalizados con TRAMO/SEATS, extrae el componente
+cíclico de cada variable con el filtro de Baxter-King y calcula su correlación de Pearson con el ciclo
+del PBI, adelantada y rezagada, en 2004–2015 y 2016–2022. En 2016–2022, el consumo, la inversión, las
+exportaciones, las importaciones, la inflación y la tasa activa en soles son procíclicos; el tipo de
+cambio y los términos de intercambio, contracíclicos.
+
+## 5. Conceptos clave (equivalencia de dominio)
+
+| Concepto del trabajo | Equivalente/aplicación en la tesis (series BCRP) |
+|---|---|
+| Ciclo por filtro de Baxter-King | La tesis no filtra: trabaja en niveles (D1) y deja hablar a los datos |
+| Correlación con el ciclo del PBI por subperíodos | Cambio de estructura entre períodos (EPCA, datación) |
+
+## 6. Aporte a la tesis, limitaciones y diferenciación
+
+### Aporte
+
+- Antecedente peruano reciente que mide ciclos con la tradición de filtros (contraste con el enfoque exploratorio de la tesis).
+
+### Limitaciones
+
+- Ciclo **económico** (referencia: PBI), no financiero; datos trimestrales.
+- Trabajo de suficiencia profesional: fuente débil para el estado del arte.
+- Lectura parcial; metadatos sin cotejar con el repositorio.
+
+## 7. Referencias internas relevantes
+
+| Referencia citada | Prioridad | Estado en el proyecto |
+|---|---|---|
+| Baxter y King (1999) | Baja | Sin ficha |
