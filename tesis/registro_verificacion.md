@@ -30,6 +30,9 @@ el estado del registro de la revisión del informe preliminar del 8-11-2026 (com
 Diblasi (2013) pasa de «no localizada» a fichada (texto leído por Roberto), Fisher (1958) y Horn (1965)
 pasan a «texto completo leído», y se incorporan seis fichas (sección «Reconciliación con `main`
 (24-11-2026, M-03 d)»).
+El 25-11-2026 (vuelta 1 de 3c, aviso del redactor, sobre `34a7181`) `camiz_diblasi_2013` pasó de
+`@unpublished` a `@presentation` para que biblatex-apa imprima el nombre del coloquio, y se intentó de
+nuevo cotejar `camiz_spada_2024` (sección «Ponencia y cotejo de Camiz y Spada (25-11-2026)»).
 Las marcas se contaron con
 `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
@@ -390,6 +393,22 @@ Entradas del `.bib`: 115 (113 + `camiz_diblasi_2013` y `camiz_spada_2024`), sin 
 llaves balanceadas y todas con ficha en `papers/` (conteo con expresión regular; pybtex y biber no
 instalados: el `.bib` **no** se compiló con biber). Conteo de marcas no rehecho (la tarea no toca los
 documentos).
+
+### Ponencia y cotejo de Camiz y Spada (25-11-2026)
+
+Vuelta 1 de la iteración 3c, sobre `34a7181`, a pedido del redactor (`auditorias/notas/2026-11-24_redactor-latex.md`,
+sección 4). Detalle y fuentes en `auditorias/notas/2026-11-25_bibliotecario.md`.
+
+| Clave | Qué se hizo | Fuente consultada | Resultado | Estado |
+|---|---|---|---|---|
+| `camiz_diblasi_2013` | Tipo de entrada `@unpublished` → `@presentation` (biblatex-apa, APA 10.5). Clave, campos y `verificar` sin cambios; ningún dato nuevo | `apa.bbx` v9.17: el *driver* `unpublished` no imprime `eventtitle`; el *driver* `presentation` lo imprime con `venue` (macro `eventinfo`) | Compilado con `latexmk` (biber): «Camiz, S., & Diblasi, A. (2013). *Evolutionary principal component analysis* [Ponencia]. XLI Coloquio Argentino de Estadística, Mendoza, Argentina.» Sin citas indefinidas | Corregida la impresión; metadatos siguen con `verificar` (solo del PDF) |
+| `camiz_spada_2024` | Nuevo intento de cotejo | doi.org/10.12899/asr-2455: permiso no respondido (no se reintentó). Página de la revista (journals-crea.4science.it, artículo 2455): redirige a creajournals.crea.gov.it, permiso no respondido. DOAJ (directorio, base secundaria): título, autores «Sergio Camiz» y «Francesco Spada», vol. 49, núm. 1, DOI 10.12899/asr-2455, **fecha «Oct 2023»**, sin páginas | No confirmado en fuente oficial. **Discrepancia de año:** DOAJ fecha el número en octubre de 2023; la entrada dice 2024 (del PDF). Páginas 13–23 sin segunda fuente | Sin cambios en ficha ni `.bib` (`verificar` se mantiene); año en duda |
+
+Para el informe (Quarto, `tesis/apa.csl`): pandoc 3.1.3 lee `@presentation` sin tipo CSL (`""`) y
+`@unpublished` con evento como `speech`; con el CSL del proyecto ambas salen igual: «… analysis.
+Ponencia. XLI Coloquio Argentino de Estadística, Mendoza, Argentina.» (la descripción no va entre
+corchetes). El informe aún no cita la obra; si la cita, el editor debe revisar esa salida con el pandoc
+de Quarto.
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe
 
