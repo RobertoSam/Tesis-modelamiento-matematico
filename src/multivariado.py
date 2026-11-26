@@ -248,3 +248,30 @@ def tabla_correlaciones(X, nombres):
     """Matriz de correlaciones de Pearson como DataFrame con los nombres de las series."""
     return pd.DataFrame(np.corrcoef(np.asarray(X, dtype=float), rowvar=False),
                         index=nombres, columns=nombres)
+
+
+# Tolerancia relativa con la que se declara empatado el máximo de |r| entre las series de una clase
+# de la HFC (hallazgo m-01 de la auditoría de la iteración 3c). Es la misma en el Rmd final
+# (`TOL_EMPATE_REPRESENTANTE` en el chunk b5-hfc).
+TOL_EMPATE_REPRESENTANTE = 1e-10
+
+
+def empate_maximo_abs(r, tol=TOL_EMPATE_REPRESENTANTE):
+    """True si el máximo de |r| lo alcanza más de un elemento, con tolerancia relativa `tol`.
+
+    Se usa para marcar el empate del representante de una clase de la HFC (la serie más
+    correlacionada, en valor absoluto, con el factor de la clase). No cambia la elección del
+    representante (`np.argmax(np.abs(r))`): solo deja constancia de que esa elección no la
+    decide el criterio sino el orden o la última cifra decimal.
+
+    En una clase de dos series estandarizadas, el factor es el primer componente de la clase y
+    ambas series tienen |r| = sqrt((1 + |r12|) / 2): el empate es estructural, no numérico.
+    Con una sola serie no hay empate.
+
+    Ejemplo: empate_maximo_abs([-0.8676372370227423, 0.8676372370227425]) -> True.
+    """
+    a = np.abs(np.asarray(r, dtype=float))
+    if a.size < 2:
+        return False
+    m = a.max()
+    return bool(np.sum(a >= m - tol * m) > 1)

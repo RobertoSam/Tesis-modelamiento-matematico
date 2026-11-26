@@ -2326,12 +2326,25 @@ clases_hfc <- function(hier, ncl) {
                                          nodo = if (u[i] > 0) p + u[i] else -u[i]))
 }
 factor_clase <- function(hfc_v, Zv, cl) if (cl$nodo <= p) Zv[, cl$nodo] else hfc_v$repvar[, 2 * (cl$nodo - p) - 1]
+# Hallazgo m-01 (auditoría 3c): empate del representante. TRUE para los miembros de una clase en la
+# que el máximo de |r| lo alcanza más de una serie, con tolerancia relativa 1e-10 (la misma de
+# TOL_EMPATE_REPRESENTANTE en src/multivariado.py). No cambia el representante ni el criterio
+# (which.max). En una clase de dos series estandarizadas el empate es estructural: ambas tienen
+# |r| = sqrt((1 + |r12|) / 2) con el factor de la clase, y which.max elige por la última cifra decimal
+TOL_EMPATE_REPRESENTANTE <- 1e-10
+empate_maximo_abs <- function(r, tol = TOL_EMPATE_REPRESENTANTE) {
+  a <- abs(r)
+  if (length(a) < 2) return(FALSE)
+  m <- max(a)
+  sum(a >= m - tol * m) > 1
+}
 composicion_hfc <- function(hfc_v, Zv) do.call(rbind, lapply(3:4, function(ncl) do.call(rbind, lapply(clases_hfc(hfc_v$hier, ncl), function(cl) {
   f <- factor_clase(hfc_v, Zv, cl)
   r <- sapply(cl$miembros, function(j) cor(Zv[, j], f))
   data.frame(particion = ncl, clase = cl$clase, nodo = cl$nodo, serie = colnames(Zv)[cl$miembros],
              codigo = as.character(meta_an$codigo)[cl$miembros], r_factor = r,
-             representante = seq_along(cl$miembros) == which.max(abs(r)), stringsAsFactors = FALSE)
+             representante = seq_along(cl$miembros) == which.max(abs(r)),
+             empate_representante = empate_maximo_abs(r), stringsAsFactors = FALSE)
 }))))
 pares3 <- rbind(c(1, 2), c(1, 3), c(2, 3))
 cor_boot <- function(Fm, inicios, largo) {
@@ -2386,7 +2399,8 @@ write.csv(corr_hfc, file.path(dir_final, "R_hfc_correlaciones3.csv"), row.names 
 write.csv(boot_hfc$replicas, file.path(dir_final, "R_hfc_bootstrap.csv"), row.names = FALSE)
 write.csv(boot_hfc$coclasificacion, file.path(dir_final, "R_hfc_coclasificacion.csv"), row.names = FALSE)
 resumen_comp <- do.call(rbind, lapply(split(comp_hfc, list(comp_hfc$particion, comp_hfc$clase), drop = TRUE), function(g) data.frame(
-  Clases = g$particion[1], Clase = g$clase[1], Series = paste(g$serie, collapse = ", "), Representante = g$serie[g$representante])))
+  Clases = g$particion[1], Clase = g$clase[1], Series = paste(g$serie, collapse = ", "), Representante = g$serie[g$representante],
+  `Empate del representante` = g$empate_representante[1], check.names = FALSE)))
 knitr::kable(resumen_comp[order(resumen_comp$Clases, resumen_comp$Clase), ], row.names = FALSE,
              caption = "Clases de la HFC por composición. Detalle (código BCRP, correlación con el factor) en R_hfc_clases3.csv.")
 ```
@@ -3111,6 +3125,9 @@ par_dr <- rbind(par_dr,
   fila_tabla("niveles", s5, "Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante", "07c_hfc_clases3.csv",
              with(comp_hfc, paste(particion, clase, nodo, codigo, representante)),
              function(py) with(py, paste(particion, clase, nodo, codigo, as.logical(representante)))),
+  fila_tabla("niveles", s5, "Empate del representante (máximo de |r| alcanzado por más de una serie, tolerancia relativa 1e-10; m-01)", "07c_hfc_clases3.csv",
+             with(comp_hfc, paste(particion, clase, codigo, empate_representante)),
+             function(py) with(py, paste(particion, clase, codigo, as.logical(empate_representante)))),
   fila_num("niveles", s5, "Correlación de cada serie con el factor de su clase", "07c_hfc_clases3.csv", comp_hfc$r_factor,
            function(py) py$r_factor, 1e-10),
   fila_num("niveles", s5, "Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap (original y sin tendencia)", "07c_hfc_correlaciones3.csv",

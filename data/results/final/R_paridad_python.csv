@@ -44,6 +44,7 @@
 "niveles","Transiciones y 2017-10 (sección 4.5; D10, D13, D17.3)","Tabla de 2017-10 por método × ancho × pesos (dos objetos del RV)","24 filas","24 filas","data/results/final/07b_tabla_2017_10.csv",0,"sí"
 "niveles","Transiciones y 2017-10 (sección 4.5; D10, D13, D17.3)","Clasificación de 2017-10 (D13 con D17.3)","2 filas","2 filas","data/results/final/07b_clasificacion_2017_10.csv",0,"sí"
 "niveles","HFC (sección 5)","Particiones en 3 y 4 clases: clase, nodo, código BCRP y representante","32 filas","32 filas","data/results/final/07c_hfc_clases3.csv",0,"sí"
+"niveles","HFC (sección 5)","Empate del representante (máximo de |r| alcanzado por más de una serie, tolerancia relativa 1e-10; m-01)","32 filas","32 filas","data/results/final/07c_hfc_clases3.csv",0,"sí"
 "niveles","HFC (sección 5)","Correlación de cada serie con el factor de su clase","0,9923 0,9792 0,9940 0,9726 0,9911","0,9923 0,9792 0,9940 0,9726 0,9911","data/results/final/07c_hfc_clases3.csv",0,"sí"
 "niveles","HFC (sección 5)","Correlaciones 3 × 3 entre factores y entre representantes, con p5-p95 bootstrap (original y sin tendencia)","-0,0712 -0,4828 0,1136 0,0763 -0,2632","-0,0712 -0,4828 0,1136 0,0763 -0,2632","data/results/final/07c_hfc_correlaciones3.csv",1.58206781009085e-15,"sí"
 "niveles","HFC (sección 5)","Rand ajustado (3 y 4 clases) y cofenética por réplica (500, L = 24)","500 réplicas","1,0000 1,0000 1,0000 1,0000 0,8005","data/results/final/07c_hfc_bootstrap.csv",4.44089209850063e-16,"sí"
