@@ -181,6 +181,22 @@ cifras:
   regimenCincoFin: "octubre de 2022"  # data/results/final/09a_regimenes_pca.csv | orden=5 | fin
   regimenSeisInicio: "noviembre de 2022"  # data/results/final/09a_regimenes_pca.csv | orden=6 | inicio
   regimenSeisFin: "diciembre de 2025"  # data/results/final/09a_regimenes_pca.csv | orden=6 | fin
+  faseRegimenUno: "Transición"  # data/results/final/09a_regimenes_pca.csv | orden=1 | fase
+  faseRegimenDos: "Transición"  # data/results/final/09a_regimenes_pca.csv | orden=2 | fase
+  faseRegimenTres: "Contracción"  # data/results/final/09a_regimenes_pca.csv | orden=3 | fase
+  faseRegimenCuatro: "Transición"  # data/results/final/09a_regimenes_pca.csv | orden=4 | fase
+  faseRegimenCinco: "Expansión"  # data/results/final/09a_regimenes_pca.csv | orden=5 | fase
+  faseRegimenSeis: "Expansión"  # data/results/final/09a_regimenes_pca.csv | orden=6 | fase
+  compatCorteUnoCrisisGlobalDistancia: "0"  # data/results/final/09a_compatibilidad_cortes.csv | orden=1;episodio=Crisis financiera global;compatible_h6=True | distancia_meses
+  compatCorteUnoCrisisGlobalLado: "dentro"  # data/results/final/09a_compatibilidad_cortes.csv | orden=1;episodio=Crisis financiera global;compatible_h6=True | lado
+  compatCorteTresTaperDistancia: "4"  # data/results/final/09a_compatibilidad_cortes.csv | orden=3;episodio=Taper tantrum;compatible_h6=True | distancia_meses
+  compatCorteTresTaperLado: "después"  # data/results/final/09a_compatibilidad_cortes.csv | orden=3;episodio=Taper tantrum;compatible_h6=True | lado
+  compatCorteTresMateriasPrimasDistancia: "2"  # data/results/final/09a_compatibilidad_cortes.csv | orden=3;episodio=Colapso de las materias primas;compatible_h6=True | distancia_meses
+  compatCorteTresMateriasPrimasLado: "antes"  # data/results/final/09a_compatibilidad_cortes.csv | orden=3;episodio=Colapso de las materias primas;compatible_h6=True | lado
+  compatCorteCuatroGuerraComercialDistancia: "5"  # data/results/final/09a_compatibilidad_cortes.csv | orden=4;episodio=Guerra comercial EE. UU.–China;compatible_h6=True | distancia_meses
+  compatCorteCuatroGuerraComercialLado: "después"  # data/results/final/09a_compatibilidad_cortes.csv | orden=4;episodio=Guerra comercial EE. UU.–China;compatible_h6=True | lado
+  compatCorteCuatroCovidDistancia: "2"  # data/results/final/09a_compatibilidad_cortes.csv | orden=4;episodio=COVID-19;compatible_h6=True | distancia_meses
+  compatCorteCuatroCovidLado: "después"  # data/results/final/09a_compatibilidad_cortes.csv | orden=4;episodio=COVID-19;compatible_h6=True | lado
   espectroLentoMedianaNivelesSinTendencia: "93,4"  # data/results/final/anexo/05c_espectro_resumen.csv | version=niv_det | mediana_pct
   espectroLentoMedianaTransformadas: "23,4"  # data/results/final/anexo/05c_espectro_resumen.csv | version=tr | mediana_pct
   filasParidad: "56"  # data/results/final/R_paridad_resumen.csv | (única fila) | filas
