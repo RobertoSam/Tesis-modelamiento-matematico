@@ -248,7 +248,45 @@ nombre, se clasifica con la regla de la \cref{def:confirmada}.
 La HFC (\cref{def:hfc}) se corta en \clasesHfcMenor{} y en \clasesHfcMayor{} clases. Las clases se comparan por su composición,
 nunca por el número del nodo, que depende del orden de las fusiones. De cada clase se informan su
 factor y su serie representante, que el código define como la serie de la clase más
-correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. Las
+correlacionada, en valor absoluto, con el factor; la definición se consultará con el asesor. En las
+clases de dos series ese criterio no elige ninguna, por la observación siguiente.
+
+\begin{observacion}[El representante en una clase de dos series]\label{obs:hfc-representante-dos}
+Sea $\gA=\{j,j'\}$, $j\ne j'$, una clase de la HFC con exactamente dos series estandarizadas, y sea
+$r=r_{jj'}\ne0$. Entonces
+\[
+  \abs{\rho(\vz_j,\fac_{\gA})}=\abs{\rho(\vz_{j'},\fac_{\gA})}=\sqrt{\frac{1+\abs{r}}{2}},
+\]
+de modo que el máximo de $\abs{\rho(\vz_k,\fac_{\gA})}$, $k\in\gA$, lo alcanzan las dos series y
+el criterio «mayor $\abs{r}$ con el factor» no define un representante: cualquier elección entre
+$j$ y $j'$ proviene de una regla de desempate, no del criterio.
+\end{observacion}
+
+\begin{proof}
+Como los grupos de la HFC solo crecen por unión de grupos disjuntos no vacíos
+(\cref{def:hfc}), un grupo de dos series se forma necesariamente al fusionar las hojas $\{j\}$ y
+$\{j'\}$, cualquiera que sea el paso de la jerarquía en que ocurra. Por la
+\cref{prop:hfc-hojas}, con $s=\operatorname{sgn}(r)$, su factor es
+$\fac_{\gA}=(\vz_j+s\,\vz_{j'})/\sqrt2$ salvo el signo, que no altera los valores absolutos; por
+la \cref{prop:hfc-inercia}(b), su varianza alcanza la cota,
+$\frac1n\norm{\fac_{\gA}}^2=\lambda_1(\mR_{\gA})=\mu_1^{\{j\}\{j'\}}=1+\abs{r}$, de modo que
+$\mathbf{w}^{\gA}$ es un vector propio unitario de $\mR_{\gA}$ asociado a $\lambda_1(\mR_{\gA})$ y
+$\fac_{\gA}$ es la primera componente principal de la clase. Las
+series están centradas y tienen $\frac1n\norm{\vz_j}^2=\frac1n\norm{\vz_{j'}}^2=1$ y
+$\frac1n\vz_j^{\T}\vz_{j'}=r$, de donde
+\[
+  \tfrac1n\vz_j^{\T}\fac_{\gA}=\frac{1+s\,r}{\sqrt2}=\frac{1+\abs{r}}{\sqrt2},\qquad
+  \tfrac1n\vz_{j'}^{\T}\fac_{\gA}=\frac{r+s}{\sqrt2}=s\,\frac{1+\abs{r}}{\sqrt2}.
+\]
+Dividiendo por el producto de las desviaciones típicas, $1\cdot\sqrt{1+\abs{r}}$, se obtiene
+$\abs{\rho(\vz_j,\fac_{\gA})}=\abs{\rho(\vz_{j'},\fac_{\gA})}=(1+\abs{r})/\sqrt{2(1+\abs{r})}=
+\sqrt{(1+\abs{r})/2}$.
+\end{proof}
+
+Si $r=0$, el \cref{lem:pca2} no determina el factor ($\kappa_{\gA}=\kappa_{\gB}=1$) y la
+observación no se aplica; con $r\ne0$ la igualdad es exacta, de modo que en aritmética de punto
+flotante las dos correlaciones solo difieren por redondeo. Por eso la definición del representante
+que se consulta al asesor (\cref{sec:pend-representante}) debe resolver también este caso. Las
 correlaciones entre los factores y entre los representantes se acompañan de intervalos bootstrap,
 también sin la tendencia lineal de cada serie. La estabilidad de la jerarquía se mide con las
 réplicas del bootstrap por bloques: el índice de Rand ajustado de cada partición frente a la
