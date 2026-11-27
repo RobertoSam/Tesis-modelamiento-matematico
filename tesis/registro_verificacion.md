@@ -33,6 +33,10 @@ pasan a «texto completo leído», y se incorporan seis fichas (sección «Recon
 El 25-11-2026 (vuelta 1 de 3c, aviso del redactor, sobre `34a7181`) `camiz_diblasi_2013` pasó de
 `@unpublished` a `@presentation` para que biblatex-apa imprima el nombre del coloquio, y se intentó de
 nuevo cotejar `camiz_spada_2024` (sección «Ponencia y cotejo de Camiz y Spada (25-11-2026)»).
+El 27-11-2026 (vuelta 2 de 3c, fase 0, tareas F0-5 y F0-6, sobre `402f6f3`) se intentó otra vez cotejar
+`camiz_spada_2024`, sin resultado en fuente oficial, y se inventariaron los dos `.bib` del informe en
+`origin/main` y las nueve fichas en conflicto con `main`, sin modificar ningún `.bib` (sección «Fase 0
+de la vuelta 2: Camiz y Spada, `.bib` de `main` y fichas en conflicto (27-11-2026)»).
 Las marcas se contaron con
 `git grep`, no a mano (sección «Conteo de marcas abiertas», al final).
 
@@ -409,6 +413,79 @@ Para el informe (Quarto, `tesis/apa.csl`): pandoc 3.1.3 lee `@presentation` sin 
 Ponencia. XLI Coloquio Argentino de Estadística, Mendoza, Argentina.» (la descripción no va entre
 corchetes). El informe aún no cita la obra; si la cita, el editor debe revisar esa salida con el pandoc
 de Quarto.
+
+### Fase 0 de la vuelta 2: Camiz y Spada, `.bib` de `main` y fichas en conflicto (27-11-2026)
+
+Tareas F0-5 y F0-6 de `asesoria/2026-11-26_plan-cierre-iteracion-3c.md`, rama `iteracion-3c` sobre
+`402f6f3`; `origin/main` en `1bb4dcb` (tras `git fetch`). Detalle y fuentes en
+`auditorias/notas/2026-11-27_bibliotecario.md`. **Ningún `.bib` se modificó**
+(`git diff 7c58906 -- tesis/referencias.bib` vacío).
+
+**F0-5 · `camiz_spada_2024`.**
+
+| Fuente | Resultado |
+|---|---|
+| doi.org/10.12899/asr-2455 (WebFetch) | Permiso no respondido; no se reintentó |
+| doi.org (negociación de contenido) y api.crossref.org (`curl`) | Proxy de la sesión: 403 (política de salida); no se reintentó |
+| api.crossref.org/works/10.12899/asr-2455 (WebFetch) | Permiso no respondido |
+| Revista: journals-crea.4science.it, artículo 2455 (vista y PDF) | 302 a creajournals.crea.gov.it; ese dominio: permiso no respondido |
+| CRIS de la PUCP | Página antirrobots («Access Denied») |
+| IRIS Sapienza (hdl 11573/507241) y core.ac.uk (354494486), hallados por el buscador | Otras obras (`camiz_roig_2011` y `camiz_et_al_2020`); sin datos de este artículo |
+
+Resultado: **sin verificar** en fuente oficial el año (2023 en DOAJ, base secundaria; 2024 en el PDF),
+las páginas 13–23 ni el DOI. Ficha: solo se agregó el año a la marca `[VERIFICAR]` y se registraron los
+intentos del 25 y del 27-11-2026. `.bib`: sin cambios; su campo `verificar` **no** menciona el año en
+duda (anotado para W-5/W-7: lo corrige el bibliotecario cuando se pueda tocar el `.bib`). Sigue sin
+cita en la tesis hasta R-4.
+
+**Hallazgo colateral (`camiz_roig_2011`).** El registro de IRIS Sapienza (repositorio institucional
+de la universidad del primer autor; hdl 11573/507241, tipo «Atto di comunicazione a congresso») muestra:
+autores Camiz y Roig, F. A.; título «Evolutionary analysis applied to tree-ring series»; «Actas E-ICES
+6»; «Comisión Nacional de Energía Atómica - CNEA»; 2011; pp. 30-37; ISBN 9789871323210. Coincide con la
+entrada del `.bib`. **No lista editor:** el editor «O. Papú» sigue inferido y su `verificar` se
+mantiene. Ni la ficha ni el `.bib` se tocaron (fuera del encargo); queda para la próxima vuelta del
+bibliotecario.
+
+**F0-6 (a) · claves de los `.bib` del informe en `origin/main`.** `tesis/informe_mmc102/referencias.bib`:
+67 entradas; `referencias_extra.bib`: 21 (3 repetidas en ambos: `lorenzo_seva_ten_berge_2006`,
+`robert_escoufier_1976`, `josse_pages_husson_2008`). 85 claves distintas.
+
+| Clase | Claves | N.º |
+|---|---|---|
+| Ya en `tesis/referencias.bib` | Las 67 de `referencias.bib`; de `referencias_extra.bib`: `camiz_diblasi_2013`, `camiz_spada_2024`, `kwiatkowski_et_al_1992`, `goodfellow_bengio_courville_2016`, `borio_2014` (más las 3 repetidas) | 72 |
+| Con ficha en `papers/`, sin entrada | `abdi_2010`, `camiz_2021_pca`, `purizaca_2023`, `torres_baltazar_2023` | 4 |
+| Sin ficha (ni en la rama ni en `main`) | `camiz_aedeclahfac`, `camiz_claede_2025`, `samaniego_2026`, `alcaraz_cabello_nivin_2024`, `winkelried_2017`, `rumelhart_hinton_williams_1986`, `jolliffe_cadima_2016`, `lecun_bengio_hinton_2015`, `srivastava_et_al_2014` | 9 |
+
+Diferencias de campos clave (tipo, año, volumen, número, páginas, DOI) en las 72 compartidas: solo tres.
+`camiz_diblasi_2013` es `@misc` en `main` y `@presentation` en la rama (cambio del 25-11-2026);
+`kwiatkowski_et_al_1992`, DOI con «Y» final en `main` y «y» en la rama (los DOI no distinguen
+mayúsculas); `lorenzo_seva_ten_berge_2006`, sin DOI en `main` y con DOI en la rama.
+
+Citas en el informe de `main` (`git grep` en los `.md` de `tesis/informe_mmc102/`; los conteos de
+líneas incluyen la copia concatenada `_tmp_informe.md`): `alcaraz_cabello_nivin_2024` (6 líneas;
+`01_introduccion.md` y `02_marco_teorico.md`) y `winkelried_2017` (2; `02_marco_teorico.md`) se citan
+**sin ficha**; `purizaca_2023` (6; `02_marco_teorico.md`) se cita con ficha y sin entrada en el `.bib`
+único. Las otras diez claves sin entrada no se citan. Estas tres son prioritarias
+para W-7 (R-7). `camiz_2021_pca` no se agrega por criterio de la ficha (material no publicado).
+
+**F0-6 (b) · nueve fichas en conflicto.** Comparación de `git show origin/main:papers/<f>.qmd` con la
+rama (lectura completa y búsqueda automática de frases de `main` ausentes en la rama).
+
+| Ficha | Conflicto | ¿La rama pierde algo de `main`? |
+|---|---|---|
+| `abdi_2010` | *add/add* | **Sí, menor:** la remisión «(§2.2.7 del informe)» del aporte. El resto está o se superó con datos verificados (páginas y DOI de SAGE) |
+| `camiz_2021_pca` | *add/add* | No |
+| `camiz_diblasi_2013` | *add/add* | No |
+| `camiz_spada_2024` | *add/add* | No |
+| `purizaca_2023` | *add/add* | No |
+| `torres_baltazar_2023` | *add/add* | No |
+| `fisher_1958` | contenido | No: la nota de lectura de `main` está literal; la pregunta abierta de `main` sobre el caso multivariado se respondió con esa misma nota |
+| `horn_1965` | contenido | No: la declaración de lectura de `main` está literal; «228 × 17» pasó a «228 × 16» por D16 |
+| `congreso_2018` | contenido | No: «evento nacional, externo al análisis en el sentido de la decisión D18» (`main`) y «evento peruano; externo al análisis en el sentido de D18» (rama) dicen lo mismo |
+
+Resolución propuesta para la fusión: tomar la versión de la rama en las nueve y, en `abdi_2010`,
+reponer la remisión al §2.2.7 del informe. No se editó la ficha (no es un dato bibliográfico
+verificado).
 
 ### Marcas `\pendiente` no bibliográficas de la tesis LaTeX y recuadros «Pendiente» del informe
 

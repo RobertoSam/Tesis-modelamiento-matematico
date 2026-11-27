@@ -21,7 +21,7 @@ tuvo acceso al PDF.
 
 ## 2. Referencia completa (APA 7.ª edición)
 
-Camiz, S., & Spada, F. (2024). Checking the stability of correlation of chronologies over time: An example on *Pinus pinea* L. rings widths. *Annals of Silvicultural Research, 49*(1), 13–23. https://doi.org/10.12899/asr-2455 [VERIFICAR: volumen, número, páginas y DOI vistos solo en la primera página del PDF; doi.org y la página de la revista no se pudieron abrir]
+Camiz, S., & Spada, F. (2024). Checking the stability of correlation of chronologies over time: An example on *Pinus pinea* L. rings widths. *Annals of Silvicultural Research, 49*(1), 13–23. https://doi.org/10.12899/asr-2455 [VERIFICAR: año (2023 en DOAJ, 2024 en el PDF), volumen, número, páginas y DOI vistos solo en la primera página del PDF; doi.org, Crossref y la página de la revista no se pudieron abrir (24, 25 y 27-11-2026)]
 
 > **Verificación (24-11-2026):**
 >
@@ -32,6 +32,33 @@ Camiz, S., & Spada, F. (2024). Checking the stability of correlation of chronolo
 >   el sufijo del DOI. DOAJ y el CRIS de la PUCP también la listan (secundarias, solo para localizar).
 > - **No visto:** doi.org/10.12899/asr-2455 y la página de la revista (permiso no respondido en la
 >   sesión; no se reintentó). El volumen, el número, las páginas y el año no se cotejaron con la editorial.
+>
+> **Cotejo del 25-11-2026:** DOAJ (directorio, **base secundaria**; artículo
+> c45929613a3546edac0ae7ed00dfa63d) da título, autores «Sergio Camiz» y «Francesco Spada», vol. 49,
+> núm. 1 y DOI 10.12899/asr-2455, que coinciden con la entrada, pero fecha el número en **«Oct 2023»**
+> y no da páginas. **Discrepancia de año:** 2023 (DOAJ) frente a 2024 (primera página del PDF, según la
+> ficha de `main`: «metadatos tomados de la primera página del PDF»). doi.org y la revista: permiso no
+> respondido. CRIS de la PUCP: página antirrobots.
+>
+> **Cotejo del 27-11-2026 (F0-5, plan del 26-11-2026):** sin resultado en fuente oficial.
+>
+> - doi.org/10.12899/asr-2455 (WebFetch): permiso no respondido; no se reintentó.
+> - doi.org con negociación de contenido y api.crossref.org/works/10.12899/asr-2455 (`curl`): el proxy
+>   de la sesión rechazó la conexión (403, política de salida); api.crossref.org con WebFetch: permiso
+>   no respondido. No se reintentó.
+> - Página de la revista: journals-crea.4science.it/index.php/asr/article/view/2455 y el PDF
+>   (…/article/download/2455/2227/8414) redirigen (302) a creajournals.crea.gov.it; ese dominio: permiso
+>   no respondido. No se reintentó ni se buscó otra ruta.
+> - CRIS de la PUCP: otra vez la página antirrobots («Access Denied»).
+> - Dos resultados del buscador resultaron ser **otras obras**: el registro de IRIS Sapienza
+>   (hdl 11573/507241) es Camiz y Roig, «Evolutionary analysis applied to tree-ring series», actas de
+>   E-ICES 6 (2011), pp. 30–37 (`camiz_roig_2011`); el PDF de core.ac.uk (354494486) es
+>   `camiz_et_al_2020`. Ninguno aporta datos sobre este artículo.
+>
+> El año, las páginas 13–23 y el DOI siguen **sin verificar** en fuente oficial. No se cambió ningún
+> dato: solo se agregó el año a la marca `[VERIFICAR]`. Si Roberto puede abrir la página del artículo
+> en la revista, basta con el encabezado del número (volumen, número, año) y la cita que sugiere la
+> revista.
 
 ## 3. Clasificación temática
 
