@@ -1,0 +1,5 @@
+universo,n_min,h,primer_mes,ultimo_mes,n_total,n_cubiertos,fraccion
+meses_muestra,,3,2007-01,2025-12,228,87,0.3815789473684211
+meses_muestra,,6,2007-01,2025-12,228,105,0.4605263157894737
+posiciones_corte_admisibles,12,3,2008-12,2025-01,194,81,0.4175257731958763
+posiciones_corte_admisibles,12,6,2008-12,2025-01,194,96,0.4948453608247423

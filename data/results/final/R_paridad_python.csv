@@ -55,4 +55,5 @@
 "niveles","Datación (sección 6; D12, D17.1)","Frecuencia de cada corte a ±3 meses (200 réplicas, L = 24, índices compartidos)","0,8550 0,9750 0,4000 0,9550 1,0000","0,8550 0,9750 0,4000 0,9550 1,0000","data/results/final/09a_estabilidad_cortes.csv",0,"sí"
 "niveles","Datación (sección 6; D12, D17.1)","Regímenes: orden, inicio, fin, meses, fase y episodios contenidos","6 filas","6 filas","data/results/final/09a_regimenes_pca.csv",0,"sí"
 "niveles","Datación (sección 6; D12, D17.1)","Compatibilidad corte × episodio: distancia, lado y marcas con h = 3 y h = 6 (def:tolerancia)","30 filas","30 filas","data/results/final/09a_compatibilidad_cortes.csv",0,"sí"
+"niveles","Datación (sección 6; D12, D17.1)","Cobertura de los episodios: meses de la muestra y posiciones de corte admisibles a h ≤ 3 y h ≤ 6 meses (F0-3)","4 filas","4 filas","data/results/final/09a_cobertura_episodios.csv",0,"sí"
 "niveles","Datación (sección 6; D12, D17.1)","Componente de crédito medio de cada régimen (2 decimales)","-1,4500 -1,3000 -0,7900 0,1700 0,9700","-1,4500 -1,3000 -0,7900 0,1700 0,9700","data/results/final/09a_regimenes_pca.csv",0,"sí"

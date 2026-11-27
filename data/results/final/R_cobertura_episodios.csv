@@ -1,0 +1,5 @@
+"universo","n_min","h","primer_mes","ultimo_mes","n_total","n_cubiertos","fraccion"
+"meses_muestra",,3,"2007-01","2025-12",228,87,0.381578947368421
+"meses_muestra",,6,"2007-01","2025-12",228,105,0.460526315789474
+"posiciones_corte_admisibles",12,3,"2008-12","2025-01",194,81,0.417525773195876
+"posiciones_corte_admisibles",12,6,"2008-12","2025-01",194,96,0.494845360824742

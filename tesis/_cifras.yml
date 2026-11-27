@@ -199,5 +199,5 @@ cifras:
   compatCorteCuatroCovidLado: "después"  # data/results/final/09a_compatibilidad_cortes.csv | orden=4;episodio=COVID-19;compatible_h6=True | lado
   espectroLentoMedianaNivelesSinTendencia: "93,4"  # data/results/final/anexo/05c_espectro_resumen.csv | version=niv_det | mediana_pct
   espectroLentoMedianaTransformadas: "23,4"  # data/results/final/anexo/05c_espectro_resumen.csv | version=tr | mediana_pct
-  filasParidad: "57"  # data/results/final/R_paridad_resumen.csv | (única fila) | filas
-  filasParidadCoinciden: "57"  # data/results/final/R_paridad_resumen.csv | (única fila) | coinciden
+  filasParidad: "58"  # data/results/final/R_paridad_resumen.csv | (única fila) | filas
+  filasParidadCoinciden: "58"  # data/results/final/R_paridad_resumen.csv | (única fila) | coinciden
